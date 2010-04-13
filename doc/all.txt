@@ -1,0 +1,52 @@
+试着在mingw32环境编译berkerlyDB,但结果不太好，无论是静态库还是动态库，都无法完整的编译出来(虽然静态库
+编译出来了，但无法把它链接到该库本身带的几个工具程序，所以我们用这个库的话可能也有这个问题)。
+这个库在vs2005下的编译应该没有问题，直接使用库带的vs工程文件编译即可。
+
+在mingw32环境中 , # -mwindows can drop the dos window when app run. got this knowleage at dev-cpp's makefile generate function
+
+在mingw32环境中，链接openssl时注意库输入顺序为： -lssl -lcrypto -lwsock32 -lgdi32 其他顺序将导致链接错误。
+
+create table 中 autoincrement 关键字的用法。
+create table testit ( tid integer primary key AUTOINCREMENT,tname );
+注意，数据类型字段必须是integer ，而且该字段还必须是primary key 约束的。
+
+现在能同时编译四个版本的程序，分别是：
+	debug_shared,release_shared,debug_static, release_static
+工程设置已经完毕，编译已经完成。(qt 4.2.0p)
+好象用UPX压缩过的程序执行时占用的内存比不压缩的时候更多。
+
+在未安装VS2005的机器上运行VS2005编译的C++程序 
+1. 问题描述：
+
+最近在VS2005下用C++写了一个Console程序，在一台未安装VS2005的机器上不能正常运行。
+用命令行方式运行，提示：
+“系统无法执行指定的程序”
+直接双击运行，提示：
+“由于应用程序的配置不正确，应用程序未能启动，重新安装应用程序可能会纠正这个问题”
+
+用VC6和VS2003也有这个问题，只不过会提示说找不到“***.dll”，把需要的dll拷贝到目标机器就可以正常运行了。而VS2005并没有提示缺少哪些dll。
+
+2. 解决方案：
+
+在水木C++版请教了一下，ass做出了回答（非常感谢ass的帮助）。把他的回答摘录如下，大家共同学习：
+
+“因为没有msvcr80.dll
+可以改一下编译选项 多线程dll(/MD)改成多线程(MT)这样就静态链接，
+也可以从你的vc8安装盘上找到再分发包vcredist_xxx.exe和你的程序捆绑安装。”
+
+根据ass指导的思路，自己实验了一下，感觉以下两种解决办法是比较方便的：
+
+方法一：
+在C:\Program Files\Microsoft Visual Studio 8\VC\redi
+st\Debug_NonRedist\x86\Microsoft.VC80.DebugCRT 下找到了下列文件：
+
+msvcm80d.dll
+msvcp80d.dll
+msvcr80d.dll
+Microsoft.VC80.DebugCRT.manifest
+
+把这几个文件拷贝到目标机器上，与运行程序同一文件夹或放到system32下，就可以运行那个程序了。
+
+方法二：
+修改“C++/Code Generation”中的运行时库选项，将/MD或/MDd 改为 /MT或/MTd，这样就实现了对VC运行时库的静态链接，在运行时就不再需要VC的dll了。
+

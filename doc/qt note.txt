@@ -1,0 +1,4 @@
+Qt 的socket实例一般是可重用的，在disconnect之后可心不销毁而重新connect别一个主机。
+qt 编译中static和shared是无法同时配置并且编译的，必须在两个不同的目录里面编译这两种目标。
+Qt 中的信号多次连接将多次都生效。
+qmake -t vcapp -o hehe.vcproj 在windows上可从.pro文件生成vc 工程文件

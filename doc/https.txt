@@ -1,0 +1,26 @@
+通过HTTPS访问服务器数据步骤：
+
+首先需要初始化SSL　上下文环境。并且只需要初始化一次即可。
+
+
+openssl0.9.7g能够在VS2005环境下成功编译，但在编译时需要修改ntdll.mak 文件，将其中的CFLAG 中的/W3 修改为/W0,否则也是无法编译的。
+openssl0.9.8则根本不支持VS2005环境编译。在这新版本里面加入许多新的功能，但对新的VS8的支持还有问题。
+如果程序有保存的以前的任务列表，则启动时加载了该列表，如果再启动这个重装载的任务，将导致程序崩溃。
+整站程序中需要处理URL后面带fregment的情况，因为这样会重复下载同一个页面，浪费时间及资源。
+
+
+有机会试一下它对VS7或者6的支持怎么样。现在只有用老一点的版本了。
+在e:\cygwin\opt 和e:\project\vc\下有上面两个版本的源码。
+
+解决方法:
+对于openssl0.9.8及以上版本无法在VS2005环境编译的问题，在执行ms\do_ms.bat后还需要执行下面的命令：
+perl Configure VC-WIN32
+其中原因可能是上面执行的脚本做的有点问题。
+ erent storage class
+         cryptoecec_asn1.c(259) : see declaration of 'ECPKPARAMETERS_it'
+				 cryptoecec_asn1.c(273) : error C2370: 'EC_PRIVATEKEY_it' : redefinition; diffe
+
+OPENSSL 的release DLL链接到VS2005的debug程序的时候，会导致程序崩溃。而链接到VS2005的
+release程序则没有问题。(WINDOWS平台);
+
+在使用ms\32all.bat执行编译的时候，能够编译所有的目标，包括动态库，静态库，release和debug版本的。非常全面，适用于开发时编译用的选项。

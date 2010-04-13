@@ -1,0 +1,1507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NullGetClass</class>
+ <widget class="QMainWindow" name="NullGetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>671</width>
+    <height>496</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>NullGetClass</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QSplitter" name="splitter_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QSplitter" name="splitter_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QTreeView" name="mui_tv_category">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::CustomContextMenu</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
+       <widget class="QDockWidget" name="dockWidget">
+        <property name="features">
+         <set>QDockWidget::DockWidgetClosable</set>
+        </property>
+        <property name="windowTitle">
+         <string>User Feedback</string>
+        </property>
+        <widget class="QWidget" name="dockWidgetContents"/>
+       </widget>
+      </widget>
+      <widget class="QSplitter" name="splitter_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QTreeView" name="mui_tv_task_list">
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::CustomContextMenu</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+       </widget>
+       <widget class="QSplitter" name="splitter">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QTabWidget" name="mui_tw_segment_graph_log">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab_5">
+          <attribute name="title">
+           <string>Summary</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Log</string>
+          </attribute>
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="margin">
+            <number>9</number>
+           </property>
+           <item>
+            <widget class="QTreeView" name="mui_tv_seg_log_list">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="dragEnabled">
+              <bool>false</bool>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="indentation">
+              <number>20</number>
+             </property>
+             <property name="itemsExpandable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_4">
+          <attribute name="title">
+           <string>Graph</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Peers</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QTreeView" name="treeView"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>Files</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QTreeView" name="treeView_2"/>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QTreeView" name="mui_tv_seg_list">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="dragEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="indentation">
+          <number>20</number>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>671</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Plugins">
+    <property name="title">
+     <string>&amp;Plugins</string>
+    </property>
+    <addaction name="action_Plugins"/>
+    <addaction name="separator"/>
+    <addaction name="actionTestWidgetPlugin"/>
+    <addaction name="action_FileSplitter"/>
+    <addaction name="action_MediaFileModifier"/>
+   </widget>
+   <widget class="QMenu" name="menu_Search">
+    <property name="title">
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="action_MP3"/>
+    <addaction name="action_Software"/>
+    <addaction name="action_Game"/>
+    <addaction name="action_File"/>
+    <addaction name="action_Page"/>
+   </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <widget class="QMenu" name="menuSpeed_Limit_Mode">
+     <property name="windowIcon">
+      <iconset>
+       <normaloff>icons/speed.PNG</normaloff>icons/speed.PNG</iconset>
+     </property>
+     <property name="title">
+      <string>Speed &amp;Limit Mode</string>
+     </property>
+     <addaction name="action_Unlimited"/>
+     <addaction name="action_Manual"/>
+     <addaction name="action_Automatic"/>
+     <addaction name="separator"/>
+     <addaction name="action_Remember"/>
+    </widget>
+    <addaction name="action_Connect_Disconnect"/>
+    <addaction name="action_Site_Explorer"/>
+    <addaction name="actionWalk_Site"/>
+    <addaction name="separator"/>
+    <addaction name="action_Shut_Down_When_Done"/>
+    <addaction name="action_Hang_Up_When_Done"/>
+    <addaction name="actionRedial_if_Disconnected"/>
+    <addaction name="separator"/>
+    <addaction name="menuSpeed_Limit_Mode"/>
+    <addaction name="separator"/>
+    <addaction name="action_Download_Rules"/>
+    <addaction name="separator"/>
+    <addaction name="action_Save_as_default"/>
+    <addaction name="actionDefault_Download_Properties"/>
+    <addaction name="action_Options"/>
+   </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menuStyle">
+     <property name="title">
+      <string>Style</string>
+     </property>
+     <addaction name="action_Default_Palette"/>
+     <addaction name="separator"/>
+     <addaction name="action_Plastique"/>
+     <addaction name="actionWindowsX_P"/>
+     <addaction name="action_Mac"/>
+     <addaction name="actionMo_tif"/>
+     <addaction name="action_CDE"/>
+     <addaction name="action_Windows"/>
+     <addaction name="actionCleanlooks"/>
+     <addaction name="separator"/>
+     <addaction name="action_NorwegianWood"/>
+    </widget>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>Language</string>
+     </property>
+     <addaction name="actionGet_Other"/>
+     <addaction name="separator"/>
+     <addaction name="action_Chinese_simple"/>
+     <addaction name="action_Chinese_trad"/>
+     <addaction name="action_English"/>
+    </widget>
+    <widget class="QMenu" name="menuSkin">
+     <property name="title">
+      <string>Skin</string>
+     </property>
+     <addaction name="actionNone"/>
+     <addaction name="actionCustom_Background"/>
+     <addaction name="actionXP_Luna"/>
+     <addaction name="actionXP_Luna_Gradient"/>
+     <addaction name="actionSkype_Gradient"/>
+     <addaction name="actionNormal"/>
+     <addaction name="actionImageBk"/>
+    </widget>
+    <widget class="QMenu" name="menuToolbar">
+     <property name="title">
+      <string>Toolbar</string>
+     </property>
+     <addaction name="actionShow_Text"/>
+     <addaction name="separator"/>
+     <addaction name="actionButtons"/>
+    </widget>
+    <addaction name="actionDetail"/>
+    <addaction name="actionDrop_zone"/>
+    <addaction name="separator"/>
+    <addaction name="menuToolbar"/>
+    <addaction name="separator"/>
+    <addaction name="action_Show_Columns_Editor"/>
+    <addaction name="actionGrid"/>
+    <addaction name="separator"/>
+    <addaction name="menuSkin"/>
+    <addaction name="separator"/>
+    <addaction name="menuLanguage"/>
+    <addaction name="separator"/>
+    <addaction name="menuStyle"/>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionPaste_URL"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="actionInvert_Select"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind"/>
+    <addaction name="actionFind_next"/>
+   </widget>
+   <widget class="QMenu" name="menu_Category">
+    <property name="title">
+     <string>&amp;Category</string>
+    </property>
+    <addaction name="actionNew_Cagegory"/>
+    <addaction name="action_cat_Move_To"/>
+    <addaction name="action_Delete_cat"/>
+    <addaction name="separator"/>
+    <addaction name="action_Cat_Property"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_New_Database"/>
+    <addaction name="action_Open_Database"/>
+    <addaction name="action_Merge_Database"/>
+    <addaction name="action_Save_Database"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_Previous_File"/>
+    <addaction name="actionImport_Previous_Batch_File"/>
+    <addaction name="action_Export_Information"/>
+    <addaction name="action_Export"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_Broken_D_ownloads"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_list"/>
+    <addaction name="action_Export_list"/>
+    <addaction name="actionProcess_Web_Page_File"/>
+    <addaction name="separator"/>
+    <addaction name="action_Recently_Downloaded_Files"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_Manual_NullGet"/>
+    <addaction name="separator"/>
+    <addaction name="actionC_heck_for_a_new_version"/>
+    <addaction name="action_About_NullGet"/>
+    <addaction name="action_Go_to_NullGet_Home_Page"/>
+    <addaction name="actionFAQ_in_Internet"/>
+    <addaction name="action_User_Manual_in_Internet"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
+   <widget class="QMenu" name="menu_Jobs">
+    <property name="title">
+     <string>&amp;Jobs</string>
+    </property>
+    <widget class="QMenu" name="menu_Rename">
+     <property name="title">
+      <string>&amp;Rename</string>
+     </property>
+     <addaction name="action_Task_File_Rename"/>
+     <addaction name="action_Comment_As_Filename"/>
+    </widget>
+    <addaction name="action_New_Download"/>
+    <addaction name="action_New_Bittorrent"/>
+    <addaction name="action_New_Metalink"/>
+    <addaction name="actionAdd_batch_download"/>
+    <addaction name="action_Start"/>
+    <addaction name="action_Pause"/>
+    <addaction name="action_Start_All"/>
+    <addaction name="action_Pause_All"/>
+    <addaction name="action_Schedule"/>
+    <addaction name="separator"/>
+    <addaction name="action_task_Move_To"/>
+    <addaction name="action_Delete_task"/>
+    <addaction name="menu_Rename"/>
+    <addaction name="separator"/>
+    <addaction name="action_Properties"/>
+    <addaction name="separator"/>
+    <addaction name="actionMove_Up"/>
+    <addaction name="actionMove_Down"/>
+    <addaction name="separator"/>
+    <addaction name="action_Check_for_update"/>
+    <addaction name="action_Download_Again"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Exec_download_file"/>
+    <addaction name="actionOpen_de_stination_directory"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menu_Category"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Jobs"/>
+   <addaction name="menu_Tools"/>
+   <addaction name="menu_Search"/>
+   <addaction name="menu_Plugins"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string>Main ToolBar</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_Start"/>
+   <addaction name="action_Pause"/>
+   <addaction name="action_New_Download"/>
+   <addaction name="action_Delete_task"/>
+   <addaction name="action_Properties"/>
+   <addaction name="actionMove_Up"/>
+   <addaction name="actionMove_Down"/>
+   <addaction name="actionOpen_Exec_download_file"/>
+   <addaction name="actionOpen_de_stination_directory"/>
+   <addaction name="actionFind"/>
+   <addaction name="actionFind_next"/>
+   <addaction name="action_Connect_Disconnect"/>
+   <addaction name="actionDefault_Download_Properties"/>
+   <addaction name="action_Options"/>
+   <addaction name="action_About_NullGet"/>
+   <addaction name="actionQuit"/>
+  </widget>
+  <widget class="QToolBar" name="speed_histogram_toolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string>Speed Histogram ToolBar Carrier </string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextOnly</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/system-shutdown.png</normaloff>:/icons/system-shutdown.png</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="statusTip">
+    <string>Quit NullGet</string>
+   </property>
+  </action>
+  <action name="action_Save">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/filesave.png</normaloff>icons/crystalsvg/32x32/actions/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="action_Manual_NullGet">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/toggle_log.png</normaloff>icons/crystalsvg/32x32/actions/toggle_log.png</iconset>
+   </property>
+   <property name="text">
+    <string>User &amp;Manual</string>
+   </property>
+  </action>
+  <action name="actionNew_Cagegory">
+   <property name="text">
+    <string>&amp;New Cagegory ...</string>
+   </property>
+  </action>
+  <action name="action_cat_Move_To">
+   <property name="text">
+    <string>&amp;Move to ...</string>
+   </property>
+  </action>
+  <action name="action_Delete_cat">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/editdelete.png</normaloff>icons/crystalsvg/32x32/actions/editdelete.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+  </action>
+  <action name="action_Cat_Property">
+   <property name="text">
+    <string>&amp;Properties ...</string>
+   </property>
+  </action>
+  <action name="actionPaste_URL">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/editpaste.png</normaloff>icons/crystalsvg/32x32/actions/editpaste.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste URL</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select &amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionInvert_Select">
+   <property name="text">
+    <string>&amp;Invert Selection</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/edit-find.png</normaloff>:/icons/edit-find.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Find ...</string>
+   </property>
+   <property name="statusTip">
+    <string>Find Task</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionFind_next">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/go-down-search.png</normaloff>:/icons/go-down-search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Find &amp;Next</string>
+   </property>
+   <property name="statusTip">
+    <string>Find Next Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="actionDetail">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Detail</string>
+   </property>
+  </action>
+  <action name="actionDrop_zone">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Drop &amp;Zone</string>
+   </property>
+  </action>
+  <action name="actionShow_Text">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Show Text</string>
+   </property>
+  </action>
+  <action name="actionButtons">
+   <property name="text">
+    <string>Buttons ...</string>
+   </property>
+  </action>
+  <action name="action_Show_Columns_Editor">
+   <property name="text">
+    <string>&amp;Columns ...</string>
+   </property>
+  </action>
+  <action name="actionGrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Grid</string>
+   </property>
+  </action>
+  <action name="actionNone">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>(None)</string>
+   </property>
+  </action>
+  <action name="actionGet_Other">
+   <property name="text">
+    <string>Get Other</string>
+   </property>
+  </action>
+  <action name="action_Chinese_simple">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Chinese(&amp;Simple)</string>
+   </property>
+  </action>
+  <action name="action_English">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;English</string>
+   </property>
+  </action>
+  <action name="action_Chinese_trad">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Chinese(&amp;Trad)</string>
+   </property>
+  </action>
+  <action name="action_Connect_Disconnect">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/network-connect.png</normaloff>:/icons/network-connect.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Connect/Disconnect</string>
+   </property>
+   <property name="statusTip">
+    <string>Connect/Disconnect The Selected Task</string>
+   </property>
+  </action>
+  <action name="action_Site_Explorer">
+   <property name="text">
+    <string>&amp;Site Explorer</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+  </action>
+  <action name="action_Shut_Down_When_Done">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Shut Down When Done</string>
+   </property>
+  </action>
+  <action name="action_Hang_Up_When_Done">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Hang Up When Done</string>
+   </property>
+  </action>
+  <action name="actionRedial_if_Disconnected">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Redial if Disconnected</string>
+   </property>
+  </action>
+  <action name="action_Download_Rules">
+   <property name="text">
+    <string>&amp;Download Rules</string>
+   </property>
+  </action>
+  <action name="action_Save_as_default">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save as default</string>
+   </property>
+  </action>
+  <action name="actionDefault_Download_Properties">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>Default Download &amp;Properties</string>
+   </property>
+   <property name="statusTip">
+    <string>Default Download Property</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+0</string>
+   </property>
+  </action>
+  <action name="action_Options">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/preferences-system.png</normaloff>:/icons/preferences-system.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Options...</string>
+   </property>
+   <property name="statusTip">
+    <string>Change Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+0</string>
+   </property>
+  </action>
+  <action name="action_Unlimited">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Unlimited</string>
+   </property>
+  </action>
+  <action name="action_Manual">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Manual</string>
+   </property>
+  </action>
+  <action name="action_Automatic">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Automatic</string>
+   </property>
+  </action>
+  <action name="action_Remember">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Remember</string>
+   </property>
+  </action>
+  <action name="action_MP3">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/mimetypes/video.png</normaloff>icons/crystalsvg/32x32/mimetypes/video.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;MP3</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
+  <action name="action_Software">
+   <property name="text">
+    <string>&amp;Software</string>
+   </property>
+  </action>
+  <action name="action_Game">
+   <property name="text">
+    <string>&amp;Game</string>
+   </property>
+  </action>
+  <action name="action_File">
+   <property name="text">
+    <string>&amp;File</string>
+   </property>
+  </action>
+  <action name="action_Page">
+   <property name="text">
+    <string>&amp;Page</string>
+   </property>
+  </action>
+  <action name="actionC_heck_for_a_new_version">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/filesystems/www.png</normaloff>icons/crystalsvg/32x32/filesystems/www.png</iconset>
+   </property>
+   <property name="text">
+    <string>C&amp;heck for a new version</string>
+   </property>
+  </action>
+  <action name="action_About_NullGet">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/Resources/nullget-1.png</normaloff>:/Resources/nullget-1.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About NullGet</string>
+   </property>
+   <property name="statusTip">
+    <string>About NullGet</string>
+   </property>
+  </action>
+  <action name="action_Go_to_NullGet_Home_Page">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/filesystems/folder_home.png</normaloff>icons/crystalsvg/32x32/filesystems/folder_home.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Go to NullGet Home Page -&gt;</string>
+   </property>
+  </action>
+  <action name="actionFAQ_in_Internet">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/help.png</normaloff>icons/crystalsvg/32x32/actions/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>FAQ in Internet</string>
+   </property>
+  </action>
+  <action name="action_User_Manual_in_Internet">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/filesystems/network.png</normaloff>icons/crystalsvg/32x32/filesystems/network.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;User Manual in Internet</string>
+   </property>
+  </action>
+  <action name="action_New_Database">
+   <property name="text">
+    <string>&amp;New Database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_Open_Database">
+   <property name="text">
+    <string>&amp;Open Database...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_Merge_Database">
+   <property name="text">
+    <string>&amp;Merge Database...</string>
+   </property>
+  </action>
+  <action name="action_Save_Database">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/filesave.png</normaloff>icons/crystalsvg/32x32/actions/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save Database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save &amp;As...</string>
+   </property>
+  </action>
+  <action name="actionImport_Previous_File">
+   <property name="text">
+    <string>Import &amp;Previous File...</string>
+   </property>
+  </action>
+  <action name="actionImport_Previous_Batch_File">
+   <property name="text">
+    <string>Import Previous &amp;Batch File...</string>
+   </property>
+  </action>
+  <action name="action_Export_Information">
+   <property name="text">
+    <string>&amp;Export Information...</string>
+   </property>
+  </action>
+  <action name="action_Export">
+   <property name="text">
+    <string>&amp;Export...</string>
+   </property>
+  </action>
+  <action name="actionImport_Broken_D_ownloads">
+   <property name="text">
+    <string>Import Broken D&amp;ownloads...</string>
+   </property>
+  </action>
+  <action name="actionImport_list">
+   <property name="text">
+    <string>Import &amp;list...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+</string>
+   </property>
+  </action>
+  <action name="action_Export_list">
+   <property name="text">
+    <string>&amp;Export list...</string>
+   </property>
+  </action>
+  <action name="actionProcess_Web_Page_File">
+   <property name="text">
+    <string>Process &amp;Web Page File...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="action_Recently_Downloaded_Files">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/crystalsvg/22x22/actions/history.png</normaloff>icons/crystalsvg/22x22/actions/history.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Recently Downloaded Files</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionCustom_Background">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Custom Background...</string>
+   </property>
+  </action>
+  <action name="actionXP_Luna">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>XP_Luna</string>
+   </property>
+  </action>
+  <action name="actionXP_Luna_Gradient">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>XP_Luna(Gradient)</string>
+   </property>
+  </action>
+  <action name="actionSkype_Gradient">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Skype(Gradient)</string>
+   </property>
+  </action>
+  <action name="actionNormal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Normal</string>
+   </property>
+  </action>
+  <action name="actionImageBk">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ImageBk</string>
+   </property>
+  </action>
+  <action name="action_New_Download">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Download...</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a New Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="action_New_Bittorrent">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Bittorrent...</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a New Bittorrent Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="action_New_Metalink">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Metalink...</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a New Metalink Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actionAdd_batch_download">
+   <property name="text">
+    <string>Add &amp;batch download...</string>
+   </property>
+  </action>
+  <action name="action_Start">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/media-playback-start.png</normaloff>icons/media-playback-start.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Start</string>
+   </property>
+   <property name="statusTip">
+    <string>Start The Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="action_Pause">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/media-playback-pause.png</normaloff>:/icons/media-playback-pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Pause</string>
+   </property>
+   <property name="statusTip">
+    <string>Pause The Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+  </action>
+  <action name="action_Start_All">
+   <property name="text">
+    <string>&amp;Start All</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+  </action>
+  <action name="action_Pause_All">
+   <property name="text">
+    <string>Pause &amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="action_Schedule">
+   <property name="text">
+    <string>&amp;Schedule</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+S</string>
+   </property>
+  </action>
+  <action name="action_task_Move_To">
+   <property name="text">
+    <string>&amp;Move To...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="action_Delete_task">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete The Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Del</string>
+   </property>
+  </action>
+  <action name="action_Task_File_Rename">
+   <property name="text">
+    <string>&amp;Rename...</string>
+   </property>
+  </action>
+  <action name="action_Comment_As_Filename">
+   <property name="text">
+    <string>&amp;Comment As Filename</string>
+   </property>
+  </action>
+  <action name="action_Properties">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/document-properties.png</normaloff>:/icons/document-properties.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Properties...</string>
+   </property>
+   <property name="statusTip">
+    <string>View The Selected Task's Property</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Enter</string>
+   </property>
+  </action>
+  <action name="actionMove_Up">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/arrow-up.png</normaloff>:/icons/arrow-up.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move &amp;Up</string>
+   </property>
+   <property name="statusTip">
+    <string>Move Up The Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Up</string>
+   </property>
+  </action>
+  <action name="actionMove_Down">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/arrow-down.png</normaloff>:/icons/arrow-down.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move &amp;Down</string>
+   </property>
+   <property name="statusTip">
+    <string>Move Down The Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Down</string>
+   </property>
+  </action>
+  <action name="action_Check_for_update">
+   <property name="text">
+    <string>&amp;Check for update</string>
+   </property>
+  </action>
+  <action name="action_Download_Again">
+   <property name="text">
+    <string>&amp;Download Again</string>
+   </property>
+  </action>
+  <action name="actionOpen_Exec_download_file">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/system-run.png</normaloff>:/icons/system-run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open/Exec download &amp;file</string>
+   </property>
+   <property name="statusTip">
+    <string>Execute Selected Task</string>
+   </property>
+   <property name="shortcut">
+    <string>Enter</string>
+   </property>
+  </action>
+  <action name="actionOpen_de_stination_directory">
+   <property name="icon">
+    <iconset resource="NullGet.qrc">
+     <normaloff>:/icons/document-open-folder.png</normaloff>:/icons/document-open-folder.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open de&amp;stination directory</string>
+   </property>
+   <property name="statusTip">
+    <string>Open The Selected Task directory</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Enter</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/qt.PNG</normaloff>icons/qt.PNG</iconset>
+   </property>
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="action_Seg_Log_Copy">
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="action_Seg_Log_Select_All">
+   <property name="text">
+    <string>&amp;Select All</string>
+   </property>
+  </action>
+  <action name="action_Seg_Log_Save_To_File">
+   <property name="text">
+    <string>Save to file ...</string>
+   </property>
+  </action>
+  <action name="action_Seg_List_Start">
+   <property name="text">
+    <string>&amp;Start</string>
+   </property>
+  </action>
+  <action name="action_Seg_List_Stop">
+   <property name="text">
+    <string>S&amp;top</string>
+   </property>
+  </action>
+  <action name="action_Seg_List_Restart">
+   <property name="text">
+    <string>&amp;Restart</string>
+   </property>
+  </action>
+  <action name="action_Increase_split_parts">
+   <property name="text">
+    <string>&amp;Increase split parts</string>
+   </property>
+  </action>
+  <action name="action_Decrease_split_parts">
+   <property name="text">
+    <string>&amp;Decrease split parts</string>
+   </property>
+  </action>
+  <action name="action_Plastique">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Plastique</string>
+   </property>
+  </action>
+  <action name="action_Mac">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Mac</string>
+   </property>
+  </action>
+  <action name="actionMo_tif">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mo&amp;tif</string>
+   </property>
+  </action>
+  <action name="action_CDE">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;CDE</string>
+   </property>
+  </action>
+  <action name="action_Windows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Windows</string>
+   </property>
+  </action>
+  <action name="actionWindowsX_P">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Windows&amp;XP</string>
+   </property>
+  </action>
+  <action name="action_Show_Hide_Main_Widow">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Show/Hide Main Widow</string>
+   </property>
+  </action>
+  <action name="action_Monitor_Clipboard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Monitor Clipboard</string>
+   </property>
+  </action>
+  <action name="action_Disable_Browser_Monitor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Disable Browser Monitor</string>
+   </property>
+  </action>
+  <action name="action_Move_top">
+   <property name="text">
+    <string>Move &amp;top</string>
+   </property>
+  </action>
+  <action name="action_Move_bottom">
+   <property name="text">
+    <string>Move &amp;bottom</string>
+   </property>
+  </action>
+  <action name="action_Site_Properties">
+   <property name="text">
+    <string>Site &amp;Properties...</string>
+   </property>
+  </action>
+  <action name="action_Comment">
+   <property name="text">
+    <string>&amp;Comment...</string>
+   </property>
+  </action>
+  <action name="action_Browse_Referer">
+   <property name="text">
+    <string>Browse &amp;Referer</string>
+   </property>
+  </action>
+  <action name="action_Browse_With_Site_Explorer">
+   <property name="text">
+    <string>Browse With Site &amp;Explorer</string>
+   </property>
+  </action>
+  <action name="action_Copy_URL_To_ClipBoard">
+   <property name="text">
+    <string>&amp;Copy URL To ClipBoard</string>
+   </property>
+  </action>
+  <action name="action_Clear_Seg_Log">
+   <property name="text">
+    <string>C&amp;lear Log</string>
+   </property>
+  </action>
+  <action name="actionWalk_Site">
+   <property name="text">
+    <string>&amp;Walk Site</string>
+   </property>
+  </action>
+  <action name="actionCleanlooks">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Cleanlooks</string>
+   </property>
+  </action>
+  <action name="action_NorwegianWood">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;NorwegianWood</string>
+   </property>
+  </action>
+  <action name="action_Default_Palette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Default Palette</string>
+   </property>
+  </action>
+  <action name="action_Plugins">
+   <property name="text">
+    <string>&amp;Plugins...</string>
+   </property>
+  </action>
+  <action name="actionTestWidgetPlugin">
+   <property name="text">
+    <string>TestWidgetPlugin</string>
+   </property>
+  </action>
+  <action name="action_FileSplitter">
+   <property name="text">
+    <string>File&amp;Splitter</string>
+   </property>
+  </action>
+  <action name="action_MediaFileModifier">
+   <property name="text">
+    <string>&amp;MediaFileModifier</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="NullGet.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>NullGetClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

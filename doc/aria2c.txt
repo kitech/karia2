@@ -1,0 +1,8 @@
+XML-RPC:
+        aria2.tellStatus
+                bitfield: 下载进度，以十六进制表示，FFFF 格式，2字节，最高位代表index为0的piece。如果其中一位置位表示，已经下载，否则没有。空闲的位在最低位，为0。
+                          aria2以切片的方式表示进度。哪块下载完成，哪块没下载完成都用这个表示，可以转为绘成圆点的表示形式。
+
+重复添加一个torrent文件的时候，出现这个错误:
+        InfoHash c8c4a3cf526db97b244deddc87c0d00fe14aa080 is already registered.
+

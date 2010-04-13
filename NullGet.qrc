@@ -1,0 +1,22 @@
+<RCC>
+  <qresource prefix="/">
+    <file>icons/arrow-down.png</file>
+    <file>icons/arrow-up.png</file>
+    <file>icons/configure.png</file>
+    <file>icons/document-open-folder.png</file>
+    <file>icons/document-properties.png</file>
+    <file>icons/edit-find.png</file>
+    <file>icons/go-down-search.png</file>
+    <file>icons/list-add.png</file>
+    <file>icons/list-remove.png</file>
+    <file>icons/media-playback-pause.png</file>
+    <file>icons/media-playback-start.png</file>
+    <file>icons/network-connect.png</file>
+    <file>icons/network-disconnect.png</file>
+    <file>icons/preferences-system.png</file>
+    <file>icons/system-run.png</file>
+    <file>icons/system-shutdown.png</file>
+    <file>Resources/nullget-1.png</file>
+    <file>Resources/icon_32x32.png</file>
+  </qresource>
+</RCC>
