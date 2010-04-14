@@ -1,3 +1,12 @@
+// sqlitecategorymodel.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-14 16:23:47 +0800
+// Version: $Id$
+// 
+
 #include "sqlitecategorymodel.h"
 
 /////////////////////////////////////
@@ -6,25 +15,22 @@
 
 SqliteCategoryModel * SqliteCategoryModel::mHandle = 0 ;
 
-SqliteCategoryModel * SqliteCategoryModel::instance ( QObject *parent  ) 
+SqliteCategoryModel * SqliteCategoryModel::instance(QObject *parent) 
 {
-	if( SqliteCategoryModel::mHandle == 0 )
-	{
+	if (SqliteCategoryModel::mHandle == 0 ) {
 		SqliteCategoryModel::mHandle = new SqliteCategoryModel(parent);
 	}
 
-	return SqliteCategoryModel::mHandle ;
-
+	return SqliteCategoryModel::mHandle;
 }
 
 SqliteCategoryModel::SqliteCategoryModel( QObject *parent)
-: QAbstractItemModel(parent) 
+  : QAbstractItemModel(parent) 
 {
 	mStorage = new SqliteStorage(parent);
 	this->mStorage->open();
 	mModelData = mStorage->getCatSet();
 	mCatsTableColumns = mStorage->getCatsColumns();
-
 }
 
 
@@ -48,6 +54,15 @@ bool  SqliteCategoryModel::reload()	//重新从配置文件中读取
 	return true ;
 }
 
+int SqliteCategoryModel::getCatIdByModel(QModelIndex &index)
+{
+    if (!index.isValid()) {
+        return -1;
+    } else {
+        return index.internalId();
+    }
+}
+
 int SqliteCategoryModel::columnCount(const QModelIndex &/*parent*/) const
 {
 	if (this->mModelData.size() == 0) {
@@ -64,8 +79,7 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 	//qDebug()<<__FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
-	if( role == Qt::DecorationRole && index.column() == 0 )	//只有第一列显示图片就可以了。
-	{
+	if (role == Qt::DecorationRole && index.column() == 0 ) { //只有第一列显示图片就可以了。
 		return QImage(qApp->applicationDirPath()+"/"+"icons/crystalsvg/16x16/filesystems/folder_violet_open.png");
 	}
 
@@ -104,22 +118,15 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 	QModelIndex pmi = index.parent();
 	int pcol , prow ;
 
-	if( ! pmi.isValid() )
-	{
+	if (! pmi.isValid()) {
 		QSqlRecord rec ;
-		for( int i = 0 ; i < this->mModelData.count() ; i ++ )
-		{
+		for (int i = 0 ; i < this->mModelData.count() ; i ++ ) {
 			rec = this->mModelData.at(i);
-			if( rec.value("cat_id") == "0" )
-			{
-				QVariant rv = QVariant() ;
-				if( col == 0 )
-				{
+			if (rec.value("cat_id") == "0") {
+				QVariant rv = QVariant();
+				if (col == 0) {
 					rv = rec.value("display_name");
-				}
-				else if( col == 1 )
-				{
-					
+				} else if( col == 1 ) {
 					rv = rec.value("cat_id");
 				}
 				//else if ( col == 2 )
@@ -127,34 +134,28 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 					//rv = rec.value("display_name").toString() + "=" + rec.value("path").toString(); 
 					//rv = rec.value("cat_id");
 				//}
-				else
-				{
-					rv = rec.value(col) ;
+				else {
+					rv = rec.value(col);
 				}
-				return rv ;
+				return rv;
 				//break ;
-			}
-			else
-			{
+			} else {
 				//rec.clear():
 			}
 		} // end for
 	}  // end if( ! pmi.isValid() )
-	else
-	{
-		for( int i = 0 ; i < this->mModelData.count() ; i ++ )
-		{
-			if( this->mModelData.at(i).value("cat_id").toInt() == catID )
-			{
+	else {
+		for (int i = 0 ; i < this->mModelData.count() ; i ++) {
+			if (this->mModelData.at(i).value("cat_id").toInt() == catID) {
 				QSqlRecord rec = this->mModelData.at(i) ;
-				return rec.value(  index.column() );
+				return rec.value(index.column());
 			}
-		}		
+		}
 	}
 
 	qDebug()<<" model error";
-	assert( 1==2 );
-	return QVariant() ;
+	assert(1 == 2);
+	return QVariant();
 }
 
 Qt::ItemFlags SqliteCategoryModel::flags(const QModelIndex &index) const

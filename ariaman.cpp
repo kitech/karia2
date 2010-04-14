@@ -27,9 +27,9 @@ AriaMan::AriaMan(QObject *parent)
     , mAriaProc(NULL)
 {
 #ifdef Q_OS_WIN
-    this->mPidFile = QCoreApplication::applicationDirPath() + "/.nullget/aria2.pid";
+    this->mPidFile = QCoreApplication::applicationDirPath() + "/.karia2/aria2.pid";
 #else
-    this->mPidFile = QDir::homePath() + "/.nullget/aria2.pid";
+    this->mPidFile = QDir::homePath() + "/.karia2/aria2.pid";
 #endif
 
     this->defaultRpcPort = 6800;

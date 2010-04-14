@@ -75,22 +75,23 @@ void TaskOption::setDefaultValue()
 	mFindUrlByMirror = 1 ;
 	//QString mReferrer ;
 	//QString mCategory ;
+    this->mCatId = -1;
 	mSavePath = "." ;
 	//QString mSaveName ;
 	mSplitCount = 5 ; 
 	mNeedLogin = 0 ;
-	mLoginUserName = "" ;
-	mLoginPassword = "" ;
+	mLoginUserName = "";
+	mLoginPassword = "";
 	mComment = "" ;
-	mStartState = 1	;	//0,1,2
+	mStartState = 1;	//0,1,2
 
 	////////
 	mAlterUrls.clear();
 	
 	//
-	mAutoDownSubdirFromFtp = 1 ;
-	mAutoCreateSubdirLocally = 1 ; 
-	mAutoCreateCategory  = 1 ;
+	mAutoDownSubdirFromFtp = 1;
+	mAutoCreateSubdirLocally = 1; 
+	mAutoCreateCategory  = 1;
 	
 	mProxyTypeHttp = 0 ;
 	mProxyTypeFtp = 0;
@@ -125,6 +126,7 @@ void TaskOption::dump()
 	qDebug()<<"mProxyTypeFtp:"<<mProxyTypeFtp ;
 	qDebug()<<"mProxyTypeMedia:"<<mProxyTypeMedia  ;		
 }
+
 
 ////////////////////
 // 这些变量名起的太飘然了
@@ -176,29 +178,29 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	//this->mCatView->header()->setHidden(true);		//隐藏Tree Header
 	//this->mCatView->setColumnHidden(1,true);
 	
-	this->mSwapValue = this->mCatModel->index(0,0,this->mCatModel->index(0,0) ).data().toString() ;
+    this->mCatId = this->mCatModel->index(0, 0, this->mCatModel->index(0, 0)).internalId();
+	this->mSwapValue = this->mCatModel->index(0, 0, this->mCatModel->index(0,0)).data().toString();
 	this->ui.tid_g_le_cb_category->setEditText(this->mSwapValue);
 	this->ui.tid_g_cb_save_to->clear();	
 	this->ui.tid_g_cb_save_to->addItem(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 	this->ui.tid_g_cb_save_to->addItem(this->mCatModel->index(1,1,this->mCatModel->index(0,0) ).data().toString());
 	this->ui.tid_g_cb_save_to->setEditText(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 
-	QObject::connect(this->mCatView,SIGNAL( pressed  ( const QModelIndex &  )),this,SLOT(onCatListClicked( const QModelIndex & )));
+	QObject::connect(this->mCatView, SIGNAL(pressed(const QModelIndex & )), 
+                     this, SLOT(onCatListClicked(const QModelIndex &)));
 	//QObject::connect(this->mCatView->selectionModel(),SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
 	//	this,SLOT(onCatListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
 
 #ifdef WIN32
 	this->ui.tid_g_cb_save_to->setEditText("C:/NGDownload");
 #else
-	
 	this->ui.tid_g_cb_save_to->setEditText( "~/NGDownload" );
-
 #endif
+
 	QCompleter * completer = new QCompleter(this);
 	DirCompleterModel *dirModel = new DirCompleterModel(completer);
 	completer->setModel(dirModel);
 	this->ui.tid_g_cb_save_to->setCompleter(completer);
-
 }
 
 taskinfodlg::~taskinfodlg()
@@ -207,7 +209,7 @@ taskinfodlg::~taskinfodlg()
 }
 
 taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )	
-	:QDialog(parent)
+	: QDialog(parent)
 {
 
 	ui.setupUi(this);
@@ -280,8 +282,6 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 	}
 }
 
-
-
 void taskinfodlg::onUrlBoxChange(QString text)
 {
 	//this->ui.tid_g_le_le_rename->setText(ui.tid_g_le_url->text());	
@@ -306,11 +306,12 @@ void taskinfodlg::onCategoryBoxChange(int index)
 
 }
 
-void taskinfodlg::onCategoryBoxChange(const QString & text )
+void taskinfodlg::onCategoryBoxChange(const QString & text)
 {
-	qDebug()<<__FUNCTION__ << text ;
-	if( text.isEmpty() || text.isNull() || text.length() == 0 )
+	qDebug()<<__FUNCTION__ << text;
+	if (text.isEmpty() || text.isNull() || text.length() == 0) {
 		this->ui.tid_g_le_cb_category->setEditText(this->mSwapValue);
+    }
 	this->ui.tid_g_le_cb_category->lineEdit()->setWindowIcon(QIcon("icons/crystalsvg/16x16/filesystems/folder_violet_open.png"));
 }
 
@@ -326,6 +327,7 @@ TaskOption * taskinfodlg::getOption()
 	param->mTaskUrl = ui.tid_g_le_url->text() ;
 	param->mFindUrlByMirror = ui.tid_g_cb_seache_mirror->isChecked()?1:0 ;
 	param->mReferrer = ui.tid_g_le_referrer->text() ;
+    param->mCatId = this->mCatId;
 	param->mCategory = ui.tid_g_le_cb_category->currentText();
 
 #ifdef WIN32
@@ -336,8 +338,6 @@ TaskOption * taskinfodlg::getOption()
 
 #endif
 	
-	
-
 	param->mSaveName = ui.tid_g_le_le_rename->text();
 	if( param->mSaveName.isEmpty() )
 	{		
@@ -430,11 +430,8 @@ void taskinfodlg::onChangeSaveDirectory()
 
 	QString newDir = QFileDialog::getExistingDirectory(this);
 
-	if( newDir.isEmpty() || newDir.length() == 0 )
-	{
-	}
-	else
-	{
+	if (newDir.isEmpty() || newDir.length() == 0) {
+	} else {
 		this->ui.tid_g_cb_save_to->setEditText(newDir);
 	}
 }
@@ -450,6 +447,7 @@ void taskinfodlg::onCatListClicked( const QModelIndex & index )
 	qDebug()<<this->ui.tid_g_le_cb_category->currentText();
 
 	mSwapValue = idx0.data().toString() ;
+    this->mCatId = idx0.internalId();
 
 	//this->mCatLineEdit->setText(index.model()->index(index.row(),0).data().toString());
 	this->ui.tid_g_cb_save_to->setEditText(idx.data().toString());

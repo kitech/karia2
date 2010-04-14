@@ -51,11 +51,12 @@ public:
 //private:
 
 	//general
-	QString mTaskUrl ;
+	QString mTaskUrl;
     QString mOldUrl;
 	int mFindUrlByMirror;
 	QString mReferrer;
 	QString mCategory;
+    int mCatId;
 	QString mSavePath;
 	QString mSaveName;
 	int mSplitCount; 
@@ -100,14 +101,15 @@ public :
 private:
     Ui::taskinfodlgClass ui;
 
-	CategoryComboBoxItemDelegate * mCCID ;
+	CategoryComboBoxItemDelegate * mCCID;
 
-	QAbstractItemModel * mCatModel ;
+	QAbstractItemModel * mCatModel;
 
-	QTreeView * mCatView ;
-	QLineEdit * mCatLineEdit ;
+	QTreeView *mCatView;
+	QLineEdit *mCatLineEdit;
 
-	QString mSwapValue ;
+    int mCatId;
+	QString mSwapValue;
 
 	///////////////
 	void expandAll(QModelIndex  index );

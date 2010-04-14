@@ -21,7 +21,7 @@ AbstractStorage::AbstractStorage(QObject *parent)
 #else	//其他像linux平台，该用户可能无法在程序的安装目录创建文件夹权限,所以在用户主目录下创建。
 
 	//this->storePath = QCoreApplication::applicationDirPath() + "/data/";
-	this->storePath = QDir::homePath() + "/.nullget/data/";
+	this->storePath = QDir::homePath() + "/.karia2/data/";
 
 #endif
 

@@ -1,3 +1,12 @@
+// catmandlg.h --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-14 16:19:42 +0800
+// Version: $Id$
+// 
+
 #ifndef CATMANDLG_H
 #define CATMANDLG_H
 
@@ -20,11 +29,9 @@
 
 #include "sqlitestorage.h"
 
-
 class CatManDlg : public QDialog
 {
-    Q_OBJECT
-
+    Q_OBJECT;
 public:
     CatManDlg(QWidget *parent = 0);
     ~CatManDlg();
@@ -33,7 +40,7 @@ public:
 	QString getNewCatName() ;
 	QString getNewCatDir();
 
-	public slots:	
+public slots:	
 	//void expandAll(QModelIndex  index = QModelIndex() );
 	//void collapseAll();
 	void changeMoveToState(QModelIndexList & indexList);
@@ -41,13 +48,13 @@ public:
 private:
     Ui::CatManDlgClass ui;
 
-	QAbstractItemModel * mCatModel ;
+	QAbstractItemModel *mCatModel;
 
-	int mState ;
+	int mState;
 
 private slots:
-	void	onCategoryListSelectChange( const QItemSelection & selection , const QItemSelection & previou  ) ;
-	void onModifyCategoryDefaultDirectory( );
+	void onCategoryListSelectChange(const QItemSelection & selection, const QItemSelection & previou);
+	void onModifyCategoryDefaultDirectory();
 	//void onCreateNewCategory();
 	void onCatNameChanged(QString name);
 

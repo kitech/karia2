@@ -1,3 +1,12 @@
+// sqlitecategorymodel.h --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-14 16:23:14 +0800
+// Version: $Id$
+// 
+
 #ifndef SQLITECATEGORYMODEL_H
 #define SQLITECATEGORYMODEL_H
 
@@ -9,22 +18,22 @@
 /////category model , like QDirModol , but the item source is not file system directorys
 class SqliteCategoryModel : public QAbstractItemModel   
 {
-	Q_OBJECT
-
+	Q_OBJECT;
 public:
-
-	static SqliteCategoryModel * instance ( QObject *parent = 0 ) ;
-	static SqliteCategoryModel * mHandle ;
+	static SqliteCategoryModel *instance( QObject *parent = 0);
+	static SqliteCategoryModel *mHandle;
 
 	bool reload();	//重新从配置文件中读取
 	virtual ~SqliteCategoryModel();
 
+    int getCatIdByModel(QModelIndex &index);
+
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant headerData(int section, Qt::Orientation orientation,
-		int role = Qt::DisplayRole) const;
+                        int role = Qt::DisplayRole) const;
 	QModelIndex index(int row, int column,
-		const QModelIndex &parent = QModelIndex()) const;
+                      const QModelIndex &parent = QModelIndex()) const;
 	QModelIndex parent(const QModelIndex &child) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;

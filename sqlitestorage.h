@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 19:36:20 +0800
-// Version: $Id: sqlitestorage.h 48 2010-04-03 11:40:29Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef SQLITESTORAGE_H

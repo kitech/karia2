@@ -169,7 +169,7 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 	index = mdl->index(modelRows,ng::tasks::org_url );
 	mdl->setData(index ,option->mTaskUrl );		
 	index = mdl->index(modelRows,ng::tasks::cat_id );
-	mdl->setData(index ,ng::cats::downloading );
+	mdl->setData(index ,ng::cats::downloading);
 	index = mdl->index(modelRows,ng::tasks::create_time );
 	mdl->setData(index ,QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd") );
 	index = mdl->index(modelRows,ng::tasks::file_length_abtained );

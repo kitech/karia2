@@ -1,3 +1,12 @@
+// catmandlg.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-14 16:19:49 +0800
+// Version: $Id$
+// 
+
 #include <QtGui>
 #include <QDir>
 #include <QFileInfo>
@@ -25,11 +34,11 @@ CatManDlg::CatManDlg(QWidget *parent)
 	//this->ui.cmd_tv_cat_tree->expand(this->mCatModel->index(1,0,this->mCatModel->index(0,0)) );
 		
 	QObject::connect(this->ui.cmd_tv_cat_tree->selectionModel(),
-			SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-		this,SLOT(onCategoryListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
-	QObject::connect(this->ui.cmd_tb_change_director,SIGNAL(clicked()),this,SLOT(onModifyCategoryDefaultDirectory( )));
+                     SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &)),
+                     this, SLOT(onCategoryListSelectChange(const QItemSelection &, const QItemSelection &)));
+	QObject::connect(this->ui.cmd_tb_change_director, SIGNAL(clicked()), this, SLOT(onModifyCategoryDefaultDirectory()));
 	//QObject::connect(this->ui.okButton,SIGNAL(clicked()),this,SLOT(onCreateNewCategory()));
-	QObject::connect(this->ui.cmd_le_cat_name,SIGNAL(textChanged(QString )),this,SLOT(onCatNameChanged(QString)));
+	QObject::connect(this->ui.cmd_le_cat_name, SIGNAL(textChanged(QString )), this, SLOT(onCatNameChanged(QString)));
 	
 	//on windows
 	this->ui.cmd_le_default_directory->setText("C:\\NGDownloads\\");
