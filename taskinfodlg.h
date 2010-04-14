@@ -48,6 +48,8 @@ public:
 	
 	void dump();
 
+    static TaskOption *fromModelRow(QAbstractItemModel *model, int row);
+
 //private:
 
 	//general

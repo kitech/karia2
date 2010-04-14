@@ -19,11 +19,10 @@
 class SqliteTaskModel : public QAbstractItemModel
 {
 	Q_OBJECT;
-
 public:    
     ~SqliteTaskModel();
 
-	static SqliteTaskModel * instance ( int cat_id , QObject *parent = 0 ) ;
+	static SqliteTaskModel *instance(int cat_id, QObject *parent = 0);
 	static bool removeInstance(int cat_id);
 
 	//static SqliteTaskModel * mHandle ;
@@ -42,23 +41,22 @@ public:
 	virtual bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
 	virtual bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
 	virtual bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
-	
 
 public slots:
 	//inherient
-	bool submit () ;
+	bool submit();
 	//inherient
-	void revert () ;
+	void revert();
+
 private:
 	
-	SqliteTaskModel( int cat_id , QObject *parent = 0 );
+	SqliteTaskModel(int cat_id, QObject *parent = 0);
 
-	SqliteStorage * mStorage ;
-	QVector<QSqlRecord>  mModelData ;
-	QVector<QString>   mTasksTableColumns ;
+	SqliteStorage *mStorage ;
+	QVector<QSqlRecord>  mModelData;
+	QVector<QString> mTasksTableColumns;
 
-	int mCatID  ;
-
+	int mCatID;
 };
 
 #endif // SQLITETASKMODEL_H

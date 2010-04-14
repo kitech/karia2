@@ -149,36 +149,41 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 
 	//将任务信息添加到 task list view 中
 	QModelIndex index;
-	QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading,0);
+	// QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
+    QAbstractItemModel *mdl = SqliteTaskModel::instance(option->mCatId, 0);
 	int modelRows = mdl->rowCount();
-	mdl->insertRows(modelRows,1);
-	index = mdl->index(modelRows, ng::tasks::task_id );
-	mdl->setData(index ,taskId);
+	mdl->insertRows(modelRows, 1);
+	index = mdl->index(modelRows, ng::tasks::task_id);
+	mdl->setData(index, taskId);
 	index = mdl->index(modelRows, ng::tasks::task_status);
-	mdl->setData(index ,"ready");
-	index = mdl->index(modelRows,ng::tasks::file_name);
-	mdl->setData(index , TaskQueue::getFileNameByUrl(option->mTaskUrl) );
-	index = mdl->index(modelRows,ng::tasks::block_activity);
-	mdl->setData(index ,QString("0/0") );
-	index = mdl->index(modelRows,ng::tasks::active_block_count);
-	mdl->setData(index ,QString("0") );
-	index = mdl->index(modelRows,ng::tasks::total_block_count );
-	mdl->setData(index ,QString("%1").arg(option->mSplitCount) );
-	index = mdl->index(modelRows,ng::tasks::real_url );
-	mdl->setData(index ,option->mTaskUrl );	
-	index = mdl->index(modelRows,ng::tasks::org_url );
-	mdl->setData(index ,option->mTaskUrl );		
-	index = mdl->index(modelRows,ng::tasks::cat_id );
-	mdl->setData(index ,ng::cats::downloading);
-	index = mdl->index(modelRows,ng::tasks::create_time );
-	mdl->setData(index ,QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd") );
-	index = mdl->index(modelRows,ng::tasks::file_length_abtained );
-	mdl->setData(index ,QString("false") );
+	mdl->setData(index, "ready");
+    index = mdl->index(modelRows, ng::tasks::save_path);
+    mdl->setData(index, option->mSavePath);
+	index = mdl->index(modelRows, ng::tasks::file_name);
+	mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
+	index = mdl->index(modelRows, ng::tasks::block_activity);
+	mdl->setData(index, QString("0/0") );
+	index = mdl->index(modelRows, ng::tasks::active_block_count);
+	mdl->setData(index, QString("0"));
+	index = mdl->index(modelRows, ng::tasks::split_count);
+	mdl->setData(index, QString("%1").arg(option->mSplitCount));
+	index = mdl->index(modelRows, ng::tasks::real_url);
+	mdl->setData(index, option->mTaskUrl);	
+	index = mdl->index(modelRows, ng::tasks::org_url);
+	mdl->setData(index, option->mTaskUrl);		
+	index = mdl->index(modelRows, ng::tasks::cat_id );
+	// mdl->setData(index ,ng::cats::downloading);
+    mdl->setData(index, option->mCatId);
+	index = mdl->index(modelRows, ng::tasks::create_time );
+	mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+	index = mdl->index(modelRows, ng::tasks::file_length_abtained);
+	mdl->setData(index, QString("false"));
 
     // TaskQueue *tq = TaskQueue::instance(task_id);
     // tq->setUrl(option->mTaskUrl);
 
-	return true ;
+
+	return true;
 }
 
 //static 
@@ -421,7 +426,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
     QString bitString;
 
 	//maybe should use mCatID , but we cant know the value here , so use default downloading cat
-	QAbstractItemModel * mdl = SqliteTaskModel::instance( ng::cats::downloading ,  this) ;
+	QAbstractItemModel *mdl = SqliteTaskModel::instance(ng::cats::downloading, this);
 
 	//QDateTime bTime , eTime ; 
 	//bTime = QDateTime::currentDateTime();
@@ -476,6 +481,8 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
                     <<"mode:"<<btSts["mode"]
                     <<"info:"<<btSts["info"];
         }
+    } else {
+        qDebug()<<__FUNCTION__<<" cant found update model";
     }
 
 	// int taskCount = mdl->rowCount();

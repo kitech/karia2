@@ -981,14 +981,16 @@ void NullGet::onCatListSelectChange( const QItemSelection & selected, const QIte
 	}
 }
 
+// TODO, handle multi row select case
 void NullGet::onStartTask() 
 {
 	qDebug()<<__FUNCTION__<<__LINE__;	
-	QAbstractItemModel *model = SqliteTaskModel::instance(ng::cats::downloading, this);
-	QAbstractItemView *view = this->mTaskListView ;
-	int step = model->columnCount() ;
-
-	int taskId = -1 ;
+	// QAbstractItemModel *model = SqliteTaskModel::instance(ng::cats::downloading, this);
+	QAbstractItemView *view = this->mTaskListView;
+    QAbstractItemModel *model = view->model();
+	int step = model->columnCount();
+    
+	int taskId = -1;
     QString url;
 	QModelIndexList smil = view->selectionModel()->selectedIndexes();
 	//qDebug()<<smil.size();
@@ -996,6 +998,7 @@ void NullGet::onStartTask()
         return;
     }
 
+    TaskOption *taskOptions = TaskOption::fromModelRow(model, smil.at(0).row());
     taskId = smil.value(0 + ng::tasks::task_id).data().toInt();
     url = smil.value(0 + ng::tasks::org_url).data().toString();
 
@@ -1024,7 +1027,9 @@ void NullGet::onStartTask()
         args.insert(0, torrentConntent);
         args.insert(1, uris);
 
-        options["split"] = QString("5");
+        // options["split"] = QString("5");
+        options["split"] = taskOptions->mSplitCount;
+        options["dir"] = taskOptions->mSavePath;
         args.insert(2, options);
     } else if (url.startsWith("file://") && url.endsWith(".metalink")) {
         aria2RpcMethod = QString("aria2.addMetalink");
@@ -1035,7 +1040,9 @@ void NullGet::onStartTask()
         metalinkFile.close();
 
         args.insert(0, metalinkContent);
-        options["split"] = QString("5");
+        // options["split"] = QString("5");
+        options["split"] = taskOptions->mSplitCount;
+        options["dir"] = taskOptions->mSavePath;
         args.insert(1, options);
 
     } else {
@@ -1043,7 +1050,9 @@ void NullGet::onStartTask()
         uris << QString(url);
         args.insert(0, uris);
     
-        options["split"] = QString("3");
+        // options["split"] = QString("3");
+        options["split"] = taskOptions->mSplitCount;
+        options["dir"] = taskOptions->mSavePath;
         args.insert(1, options);
     }
 
@@ -1061,32 +1070,34 @@ void NullGet::onStartTask()
         QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
         this->mAriaTorrentUpdater.start();
     }
+
+    delete taskOptions; taskOptions = NULL;
 }
 
-void NullGet::onStartTask(int pTaskId)
-{
-	qDebug()<<__FUNCTION__<<__LINE__;
+// void NullGet::onStartTask(int pTaskId)
+// {
+// 	qDebug()<<__FUNCTION__<<__LINE__;
 
-	//假设任务的运行句柄即TaskQueue实例不存在
-	if (this->mTaskMan->containsInstance(pTaskId)) {
-		// TaskQueue::onStartTask(pTaskId);
-	} else {
-		// TaskQueue * hTask = TaskQueue::instance(pTaskId,0);
-		// QObject::connect( hTask , SIGNAL(  onTaskDone(int  ) ), 
-		// 	this, SLOT(onTaskDone(int ) ) );
-		// QObject::connect(hTask,SIGNAL(taskCompletionChanged(int  , int  , QString ) ) ,
-		// 	this->mDropZone,SLOT( onRunTaskCompleteState(int  , int  , QString  ) ) ) ;
-		// QObject::connect( hTask ,SIGNAL( taskCompletionChanged( TaskQueue *  , bool   ) ) ,
-		// 	TaskBallMapWidget::instance(),SLOT(onRunTaskCompleteState(TaskQueue *  , bool  ) ) ) ;
+// 	//假设任务的运行句柄即TaskQueue实例不存在
+// 	if (this->mTaskMan->containsInstance(pTaskId)) {
+// 		// TaskQueue::onStartTask(pTaskId);
+// 	} else {
+// 		// TaskQueue * hTask = TaskQueue::instance(pTaskId,0);
+// 		// QObject::connect( hTask , SIGNAL(  onTaskDone(int  ) ), 
+// 		// 	this, SLOT(onTaskDone(int ) ) );
+// 		// QObject::connect(hTask,SIGNAL(taskCompletionChanged(int  , int  , QString ) ) ,
+// 		// 	this->mDropZone,SLOT( onRunTaskCompleteState(int  , int  , QString  ) ) ) ;
+// 		// QObject::connect( hTask ,SIGNAL( taskCompletionChanged( TaskQueue *  , bool   ) ) ,
+// 		// 	TaskBallMapWidget::instance(),SLOT(onRunTaskCompleteState(TaskQueue *  , bool  ) ) ) ;
 
-		// TaskBallMapWidget::instance()->onRunTaskCompleteState(hTask , true );
+// 		// TaskBallMapWidget::instance()->onRunTaskCompleteState(hTask , true );
 
-		// TaskQueue::onStartTask(pTaskId );
-		// QObject::connect(hTask,SIGNAL(destroyed(QObject*)),this,SLOT(onObjectDestroyed(QObject*)) );
-	}
+// 		// TaskQueue::onStartTask(pTaskId );
+// 		// QObject::connect(hTask,SIGNAL(destroyed(QObject*)),this,SLOT(onObjectDestroyed(QObject*)) );
+// 	}
 
-	return;
-}
+// 	return;
+// }
 
 void NullGet::onStartTaskAll()
 {

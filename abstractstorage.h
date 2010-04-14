@@ -16,16 +16,21 @@
 #include <QMap>
 #include <QVector>
 #include <QStringList>
+#include <QThread>
 
-class AbstractStorage : public QObject
+class AbstractStorage : public QThread
 {
 	Q_OBJECT;
 public:
     AbstractStorage(QObject *parent);
     virtual ~AbstractStorage();
 
-	virtual bool open() = 0 ;
-	virtual bool close() = 0 ;
+	virtual bool open() = 0;
+	virtual bool close() = 0;
+
+    virtual bool transaction() = 0;
+    virtual bool commit() = 0;
+    virtual bool rollback() = 0;
 
 	//virtual void writeDefault() = 0 ;
 

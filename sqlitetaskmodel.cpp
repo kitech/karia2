@@ -10,19 +10,16 @@
 #include "sqlitetaskmodel.h"
 
 //static
-QMap<int , SqliteTaskModel*> SqliteTaskModel::mHandle  ;
+QMap<int , SqliteTaskModel*> SqliteTaskModel::mHandle;
 
 //static 
-SqliteTaskModel * SqliteTaskModel::instance ( int cat_id , QObject *parent )
+SqliteTaskModel *SqliteTaskModel::instance(int cat_id, QObject *parent)
 {
-	SqliteTaskModel * tm = 0 ;
+	SqliteTaskModel * tm = 0;
 	
-	if( SqliteTaskModel::mHandle.contains(cat_id) )
-	{
+	if (SqliteTaskModel::mHandle.contains(cat_id)) {
 		tm = SqliteTaskModel::mHandle.value(cat_id);
-	}
-	else
-	{
+	} else {
 		//tm = new SqliteTaskModel(cat_id,parent);
 		tm = new SqliteTaskModel(cat_id,0);
 		SqliteTaskModel::mHandle.insert(cat_id,tm);
@@ -34,16 +31,13 @@ SqliteTaskModel * SqliteTaskModel::instance ( int cat_id , QObject *parent )
 //static 
 bool SqliteTaskModel::removeInstance(int cat_id)
 {
-	if( SqliteTaskModel::mHandle.contains(cat_id) )
-	{
+	if (SqliteTaskModel::mHandle.contains(cat_id)) {
 		SqliteTaskModel::mHandle.remove(cat_id);
-		return true ;
+		return true;
+	} else {
+		return false;
 	}
-	else
-	{
-		return false ;
-	}	
-	return false ;
+	return false;
 }
 
 SqliteTaskModel::SqliteTaskModel(int cat_id , QObject *parent)
@@ -170,10 +164,8 @@ Qt::ItemFlags SqliteTaskModel::flags(const QModelIndex &index) const
 
 QVariant SqliteTaskModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) 
-	{
-		switch (section) 
-		{
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+		switch (section) {
 				//case 0:
 				//	return tr("Cat Name");
 				//case 1:
@@ -202,12 +194,9 @@ QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &paren
 		//int taskID = this->mModelData.at(row).value("task_id").toInt(); 
 		return createIndex( row , column , 0 );
 
-	if (parent.isValid() == false )
-	{
+	if (parent.isValid() == false) {
 
-	}
-	else
-	{
+	} else {
 		assert( 1==2);
 	}
 	//    parentCatID = -1 ;
@@ -259,17 +248,14 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 
 	int count = 0 ;
 
-	if(  parent.isValid() )
-	{
+	if (parent.isValid()) {
 		count =  0 ;
-	}
-	else
-	{
+	} else {
 		count = this->mModelData.count();
 	}
 	
 	//qDebug()<<__FUNCTION__ <<":"<< count ;
-	return count ;
+	return count;
 
 	return 0;
 }
@@ -282,12 +268,10 @@ bool SqliteTaskModel::insertRows ( int row, int count, const QModelIndex & paren
 
 	beginInsertRows( parent , row , row+count -1 );//////////
 
-	for( int c = 0 ; c < count ; c ++)
-	{
+	for (int c = 0 ; c < count ; c ++) {
 		QSqlRecord rec ;
 
-		for( int i = 0 ; i < this->mTasksTableColumns.count() ; i ++)
-		{
+		for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
 			QSqlField currField;
 			currField.setName( this->mTasksTableColumns.at(i) );
 			currField.setValue(QVariant());
@@ -310,40 +294,36 @@ bool SqliteTaskModel::removeRows ( int row, int count, const QModelIndex & paren
 
 	beginRemoveRows  ( parent, delete_begin, delete_end ) ;	
 
-	for( int i = delete_end  ; i >= delete_begin  ; i -- )
-	{
+	for (int i = delete_end; i >= delete_begin ; i --) {
 		int taskID = this->mModelData.at(i).value("task_id").toInt();
 		this->mModelData.remove(row);
 		this->mStorage->deleteTask(taskID);
 		emit layoutChanged () ;	//这是必须，否则视图不能正常画出模型。
 	}
 
-	endRemoveRows () ;
+	endRemoveRows ();
 
 	return true ;
 }
 
-bool SqliteTaskModel::setData ( const QModelIndex & index , const QVariant & value, int role )
+bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value, int role )
 {
 	// qDebug()<<__FUNCTION__<<index.row()<<index.column()<<index.data()<<value ;
 
 	int row = index.row();
 	int col = index.column();
 
-	if( col == ng::tasks::dirty )
-	{
+	if (col == ng::tasks::dirty) {
 		
-	}
-	else
-	{
-		this->mModelData[row].setValue(col,value);
+	} else {
+		this->mModelData[row].setValue(col, value);
 		//qDebug()<<row<<":"<<col <<" " << value ;
 	}
 	// this->mModelData[row].setValue(this->mTasksTableColumns.count()-1,"true");
-    this->mModelData[row].setValue(ng::tasks::dirty,"true");
+    this->mModelData[row].setValue(ng::tasks::dirty, "true");
 	emit dataChanged(index,index);
 
-	return true ;
+	return true;
 }
 
 
@@ -352,10 +332,10 @@ bool SqliteTaskModel::submit ()
 	//把已经修改或者添加了的数据写入到数据库中。
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
-	for( int i = rowcnt - 1 ; i >=0 ; i -- )
-	{
-		if(this->mModelData.at(i).value("dirty").toString() == "true")
-		{
+
+    this->mStorage->transaction();
+	for (int i = rowcnt - 1 ; i >= 0 ; i --) {
+		if (this->mModelData.at(i).value("dirty").toString() == "true") {
 			dirtycnt ++;
 			QSqlRecord rec = this->mModelData.at(i);
 
@@ -369,12 +349,14 @@ bool SqliteTaskModel::submit ()
 			QString  eclapsed_time = rec.value("eclapsed_time").toString();
 			QString  abtained_length = rec.value("abtained_length").toString();
 			QString  left_length = rec.value("left_length").toString();
+            QString  split_count = rec.value("split_count").toString();
 			QString  block_activity = rec.value("block_activity").toString();
 			QString  total_block_count = rec.value("total_block_count").toString();
 			QString  active_block_count = rec.value("active_block_count").toString();
 			QString  cat_id = rec.value("cat_id").toString();
 			QString  comment = rec.value("comment").toString();
 			QString  place_holder = rec.value("place_holder").toString();
+            QString  save_path = rec.value("save_path").toString();
 			QString  file_name = rec.value("file_name").toString();
 			QString  abtained_percent = rec.value("abtained_percent").toString();
 			QString  org_url = rec.value("org_url").toString();
@@ -392,46 +374,48 @@ bool SqliteTaskModel::submit ()
 			QString  dirty = rec.value("dirty").toString();
             QString  aria_gid = rec.value("aria_gid").toString();
 
-			if( this->mStorage->containsTask(taskID))
-			{
+			if (this->mStorage->containsTask(taskID)) {
 				//update 
-				this->mStorage->updateTask( taskID ,file_size,retry_times,create_time,current_speed,average_speed,
-                                            eclapsed_time,abtained_length,left_length,block_activity,
-                                            total_block_count,active_block_count,cat_id,comment,place_holder,
-                                            file_name,abtained_percent,org_url,real_url,redirect_times,finish_time,
-                                            task_status,total_packet,abtained_packet,left_packet,total_timestamp,
-                                            abtained_time_stamp,left_timestamp,file_length_abtained,dirty, aria_gid );
-			}
-			else
-			{
+				this->mStorage->updateTask(taskID, file_size, retry_times, create_time, current_speed, average_speed,
+                                           eclapsed_time, abtained_length, left_length, split_count, block_activity,
+                                           total_block_count, active_block_count, cat_id, comment, place_holder,
+                                           save_path, file_name, abtained_percent, org_url, real_url, redirect_times,
+                                           finish_time,
+                                           task_status, total_packet, abtained_packet, left_packet, total_timestamp,
+                                           abtained_time_stamp, left_timestamp, file_length_abtained, dirty, aria_gid);
+			} else {
 				//insert
-				this->mStorage->addTask( taskID , file_size,retry_times,create_time,current_speed,average_speed,eclapsed_time,abtained_length,left_length,block_activity,total_block_count,active_block_count,cat_id,comment,place_holder,file_name,abtained_percent,org_url,real_url,redirect_times,finish_time,task_status,total_packet,abtained_packet,left_packet,total_timestamp,abtained_time_stamp,left_timestamp,file_length_abtained,dirty    );
+				this->mStorage->addTask(taskID, file_size, retry_times, create_time, current_speed,
+                                        average_speed, eclapsed_time, abtained_length, left_length, 
+                                        split_count, block_activity, total_block_count, active_block_count, cat_id,
+                                        comment, place_holder, save_path, file_name, abtained_percent, org_url, real_url,
+                                        redirect_times, finish_time, task_status, total_packet, abtained_packet,
+                                        left_packet, total_timestamp, abtained_time_stamp, left_timestamp,
+                                        file_length_abtained, dirty);
 			}
 
-			this->mModelData[i].setValue("dirty","false");	//清除dirty 标记
-
+			this->mModelData[i].setValue("dirty", "false");	 //清除dirty 标记
 		}
 	}
+    this->mStorage->commit();
 
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count() ;
+	qDebug()<<"there is about "<<dirtycnt<<"dirty rows to submit"<<this->mModelData.count();
 
-	return true ;
+	return true;
 }
 
 void SqliteTaskModel::revert()
 {
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
-	for( int i = 0 ; i < rowcnt ; i ++ )
-	{
-		if( this->mModelData.at(i).contains("dirty") && this->mModelData.at(i).value("dirty").toString() == "true")
-		{
+	for (int i = 0 ; i < rowcnt ; i ++) {
+		if (this->mModelData.at(i).contains("dirty") && this->mModelData.at(i).value("dirty").toString() == "true") {
 			dirtycnt ++;
 		}
 	}
 
 	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
-	return ;
+	return;
 }
 
 

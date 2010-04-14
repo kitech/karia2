@@ -90,7 +90,7 @@ public slots:
 
 	//任务管理
 	void onStartTask();		
-	void onStartTask(int pTaskId);
+	// void onStartTask(int pTaskId);
 
 	void onStartTaskAll();	
 	void onPauseTask() ;

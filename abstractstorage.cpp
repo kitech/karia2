@@ -13,7 +13,7 @@
 #include "abstractstorage.h"
 
 AbstractStorage::AbstractStorage(QObject *parent)
-	: QObject(parent)
+	: QThread(parent)
 {
 	
 #ifdef WIN32	
@@ -76,14 +76,12 @@ AbstractStorage::AbstractStorage(QObject *parent)
 		"cat_id=7,display_name=deleted,raw_name=deleted,folder=no,path="SAVE_PREFIX_STR"/NGDownload/deleted,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false"
 	};
 	
-	for( int line = 0 ; line < 8; line ++ )
-	{
+	for (int line = 0 ; line < 8; line ++) {
 		QStringList cat = QString(rawcat[line]).split(",");
 		QMap<QString , QString> catmap ;
-		for( int fieldCount = 0 ; fieldCount < cat.size() ; fieldCount ++ )
-		{
+		for (int fieldCount = 0 ; fieldCount < cat.size() ; fieldCount ++) {
 			QStringList kv = cat.at(fieldCount).split("=");
-			catmap.insert(kv.at(0),kv.at(1));
+			catmap.insert(kv.at(0), kv.at(1));
 		}
 		this->defaultCategorys.append(catmap);
 	}
@@ -98,12 +96,14 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"eclapsed_time       ,"
 			"abtained_length     ,"
 			"left_length         ,"
+        "split_count,"
 			"block_activity      ,"
 			"total_block_count   ,"
 			"active_block_count  ,"
 			"cat_id              ,"
 			"comment             ,"
 			"place_holder        ,"
+        "save_path,"
 			"file_name           ,"
 			"abtained_percent    ,"
 			"org_url             ,"

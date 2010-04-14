@@ -105,28 +105,47 @@ void TaskOption::dump()
 	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror  ;
 	qDebug()<<"mReferrer:"<<mReferrer ;
 	qDebug()<<"mCategory:"<<mCategory ;
+    qDebug()<<"mCatId:"<<mCatId;
 	qDebug()<<"mSavePath:"<<mSavePath  ;
 	qDebug()<<"mSaveName:"<<mSaveName ;
 	qDebug()<<"mSplitCount:"<<mSplitCount  ; 
 	qDebug()<<"mNeedLogin:"<<mNeedLogin  ;
 	qDebug()<<"mLoginUserName:"<<mLoginUserName  ;
 	qDebug()<<"mLoginPassword:"<<mLoginPassword  ;
-	qDebug()<<"mComment:"<<mComment  ;
-	qDebug()<<"mStartState:"<<mStartState 	;	//0,1,2
+	qDebug()<<"mComment:"<<mComment;
+	qDebug()<<"mStartState:"<<mStartState;	//0,1,2
 
 	////////
 	//mAlterUrls.clear();
 	
 	//
-	qDebug()<<"mAutoDownSubdirFromFtp:"<<mAutoDownSubdirFromFtp  ;
-	qDebug()<<"mAutoCreateSubdirLocally:"<<mAutoCreateSubdirLocally  ; 
-	qDebug()<<"mAutoCreateCategory:"<<mAutoCreateCategory   ;
+	qDebug()<<"mAutoDownSubdirFromFtp:"<<mAutoDownSubdirFromFtp;
+	qDebug()<<"mAutoCreateSubdirLocally:"<<mAutoCreateSubdirLocally; 
+	qDebug()<<"mAutoCreateCategory:"<<mAutoCreateCategory;
 	
-	qDebug()<<"mProxyTypeHttp:"<<mProxyTypeHttp  ;
-	qDebug()<<"mProxyTypeFtp:"<<mProxyTypeFtp ;
-	qDebug()<<"mProxyTypeMedia:"<<mProxyTypeMedia  ;		
+	qDebug()<<"mProxyTypeHttp:"<<mProxyTypeHttp;
+	qDebug()<<"mProxyTypeFtp:"<<mProxyTypeFtp;
+	qDebug()<<"mProxyTypeMedia:"<<mProxyTypeMedia;		
 }
 
+// static
+TaskOption *TaskOption::fromModelRow(QAbstractItemModel *model, int row)
+{
+    Q_ASSERT(model != NULL);
+    TaskOption *option = NULL;
+
+    option = new TaskOption();
+    option->mTaskUrl = model->data(model->index(row, ng::tasks::org_url)).toString();
+    option->mReferrer = model->data(model->index(row, ng::tasks::org_url)).toString();
+    // option->mCategory = 
+    option->mCatId = model->data(model->index(row, ng::tasks::cat_id)).toInt();
+    option->mSaveName = model->data(model->index(row, ng::tasks::file_name)).toString();
+    option->mSavePath = model->data(model->index(row, ng::tasks::save_path)).toString();
+    option->mSplitCount = model->data(model->index(row, ng::tasks::split_count)).toInt();
+    option->mComment = model->data(model->index(row, ng::tasks::comment)).toString();
+
+    return option;
+}
 
 ////////////////////
 // 这些变量名起的太飘然了

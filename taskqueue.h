@@ -75,7 +75,6 @@ public:
     bool setPeers(int taskId, QVariantList &peers);
 
 public slots:
-
 	void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;
 	
 	void onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive);
