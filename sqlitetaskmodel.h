@@ -42,6 +42,8 @@ public:
 	virtual bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
 	virtual bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
 
+    bool moveTasks(int srcCatId, int destCatId, QModelIndexList &mil);
+
 public slots:
 	//inherient
 	bool submit();

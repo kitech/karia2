@@ -1300,7 +1300,7 @@ void NullGet::onDeleteTask()
 {
 	qDebug()<<__FUNCTION__;
 	
-	QAbstractItemModel * from_model = 0 , * to_model = 0 ;
+	SqliteTaskModel * from_model = 0 , * to_model = 0 ;
 	QModelIndex idx ;
 	QItemSelectionModel * sim = 0 ;
 	QModelIndexList mil ;
@@ -1308,8 +1308,8 @@ void NullGet::onDeleteTask()
 	int row = -1 ;
 	int colcnt = -1 ;
 
-	from_model = this->mTaskListView->model();
-    to_model = SqliteTaskModel::instance(ng::cats::deleted, 0);
+	from_model = static_cast<SqliteTaskModel*>(this->mTaskListView->model());
+    to_model = static_cast<SqliteTaskModel*>(SqliteTaskModel::instance(ng::cats::deleted, 0));
 
 	colcnt = from_model->columnCount();
 	sim = this->mTaskListView->selectionModel();
@@ -1319,10 +1319,20 @@ void NullGet::onDeleteTask()
 	for (int row = rowcnt - 1 ; row >= 0 ; row --) {
 		int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
-        
-        qDebug()<<"DDDD:"<<taskId<<ariaGid;
+        int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::cat_id)).toInt();
 
-		this->onDeleteTask(taskId);
+        qDebug()<<"DDDD:"<<taskId<<ariaGid;
+        QModelIndexList rmil;
+        for (int col = 0; col < colcnt; col ++) {
+            rmil.append(mil.at(row * colcnt + col));
+        }
+        if (srcCatId == ng::cats::deleted) {
+            // delete it directly
+            from_model->removeRows(mil.value(row * colcnt).row(), 1);
+        } else {
+            int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil);
+        }
+		// this->onDeleteTask(taskId);
 	}
 }
 

@@ -260,31 +260,31 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 	return 0;
 }
 
-bool SqliteTaskModel::insertRows ( int row, int count, const QModelIndex & parent  )
+bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent  )
 {
 	//qDebug()<<__FUNCTION__<<row;
 
 	assert( ! parent.isValid() ) ;
 
-	beginInsertRows( parent , row , row+count -1 );//////////
+	beginInsertRows(parent, row, row+count - 1);//////////
 
 	for (int c = 0 ; c < count ; c ++) {
-		QSqlRecord rec ;
-
+		QSqlRecord rec;
 		for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
 			QSqlField currField;
 			currField.setName( this->mTasksTableColumns.at(i) );
 			currField.setValue(QVariant());
 			rec.append(currField);
 		}
-		this->mModelData.append(rec);
+		// this->mModelData.append(rec);
+        this->mModelData.insert(row + c, rec);
 	}
-	endInsertRows();//////////
+	endInsertRows(); //////////
 
 	return true ;
 }
 
-bool SqliteTaskModel::removeRows ( int row, int count, const QModelIndex & parent  )
+bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent  )
 {
 	//qDebug()<<__FUNCTION__<<row;
 	
@@ -419,11 +419,45 @@ void SqliteTaskModel::revert()
 }
 
 
+bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mil)
+{
+    SqliteTaskModel *srcModel = NULL;
+    SqliteTaskModel *destModel = NULL;
 
+    srcModel = SqliteTaskModel::instance(srcCatId);
+    destModel = SqliteTaskModel::instance(destCatId);
 
+    int columnCount = srcModel->columnCount();
+    int moveRowCount = mil.count() / columnCount;
 
+    QVector<QMap<int, QVariant> > rowItemData;
+    for (int row = moveRowCount - 1; row >= 0; row --) {
+        for (int col = 0; col < columnCount; col ++) {
+            rowItemData.append(srcModel->itemData(mil.at(row * columnCount + col)));
+        }
 
+        // 
+        srcModel->removeRows(mil.at(row * columnCount).row(), 1);
+        destModel->insertRows(0, 1);
+        for (int col = 0 ; col < columnCount; col ++) {
+            QMap<int, QVariant> itemData = rowItemData.at(col);
+            if (col == ng::tasks::cat_id) {
+                itemData[Qt::DisplayRole] = QString("%1").arg(destCatId);
+            }
+            if (col == ng::tasks::dirty) {
+                itemData[Qt::DisplayRole] = QString("true");
+            }
+            
+            destModel->setData(destModel->index(0, col), itemData[Qt::DisplayRole], Qt::DisplayRole);
+            // QMapIterator<int, QVariant> mit(itemData);
+            // while (mit.hasNext()) {
+            //     mit.next();
+            //     destModel->setData(destModel->index(0, col), mit.value(), mit.key());
+            // }
+        }
+    }
+    destModel->submit();
 
-
-
+    return true;
+}
 
