@@ -40,7 +40,13 @@ QVariant TaskServerModel::headerData(int section, Qt::Orientation orientation, i
 
 bool TaskServerModel::setData(QVariantList &servers)
 {
-    this->removeRows(0, this->mServers.count());
+	// check for servers.count()'s value, if 0, no operation needed
+	if (servers.count() == 0) {
+		return false;
+	}
+	if (this->mServers.count() > 0) {
+		this->removeRows(0, this->mServers.count());
+	}
 
     this->mRawServers = servers;
     QList<QMap<char, QString> > tServers;
@@ -127,6 +133,9 @@ bool TaskServerModel::insertRows(int row, int count, const QModelIndex & parent)
 
 bool TaskServerModel::removeRows(int row, int count, const QModelIndex & parent)
 {
+	if (count <= 0) {
+		return true;
+	}
     this->beginRemoveRows(QModelIndex(), row, row + count - 1);
     for (int i = row + count - 1; i >= row; i --) {
         this->mServers.removeAt(i);
