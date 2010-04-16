@@ -1,19 +1,38 @@
-installation:
+Installation:
 
-1.on *nix platform
+1.On *nix platform
 
 make sure you have the openSSL library installed to the standard path , /usr/ or /usr/local
 or set add the lib path to  LD_LIBRARY_PATH envirenment variant . 
-make sure you have Qt 4.2.2 or later library (should less than Qt 4.5.0) installed .
+make sure you have Qt 4.4.0 or later library installed .
 
 Then execute qmake command in NullGet root path .If your Qt library is not in the 
-stardard path,you shoud use qmake with absolute path , su as /opt/qt/4.2.2/bin/qmake.
+stardard path,you shoud use qmake with absolute path , su as /opt/qt/4.4.0/bin/qmake.
 
 Next , you can type make . Thus will genarate NullGet excatuable file in the 
 NullGet root path.
 
 At last you can type ./NullGet .
 
-2. on Windows platform
+2. On Windows platform
 
-coming later.
+Requirement:
+        >= VC++ 2005
+          zlib
+          openssl
+        >= Qt 4.4.0
+
+Notes:
+    We assumed that zlib and openssl library put at Z:\librarys\
+
+open VC++ command line tools:
+cd /path/to/karia2-x.x.x/
+> qmake -r
+> nmake
+> 
+
+
+3. On Mac OS X
+
+coming soon.
+   
