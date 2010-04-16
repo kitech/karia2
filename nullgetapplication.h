@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-09 00:16:45 +0000
-// Version: $Id: nullgetapplication.h 86 2010-04-08 17:05:57Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef NULLGETAPPLICATION_H

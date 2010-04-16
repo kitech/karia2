@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-06 13:22:13 +0800
-// Version: $Id: aboutdialog.h 94 2010-04-10 13:34:04Z liuguangzhao $
+// Version: $Id$
 // 
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H

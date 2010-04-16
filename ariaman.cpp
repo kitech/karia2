@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-02 21:17:03 +0800
-// Version: $Id: ariaman.cpp 95 2010-04-10 16:57:45Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include <errno.h>

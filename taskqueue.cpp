@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:14:39 +0800
-// Version: $Id: taskqueue.cpp 99 2010-04-12 17:41:17Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include <cassert>

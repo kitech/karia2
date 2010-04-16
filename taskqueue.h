@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:14:45 +0800
-// Version: $Id: taskqueue.h 99 2010-04-12 17:41:17Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef TASKQUEUE_H

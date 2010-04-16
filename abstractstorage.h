@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 21:03:20 +0800
-// Version: $Id: abstractstorage.h 82 2010-04-07 14:10:41Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef ABSTRACTSTORAGE_H

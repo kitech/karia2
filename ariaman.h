@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-02 21:16:57 +0800
-// Version: $Id: ariaman.h 82 2010-04-07 14:10:41Z liuguangzhao $
+// Version: $Id$
 // 
 #ifndef _ARIAMAN_H_
 #define _ARIAMAN_H_

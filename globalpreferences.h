@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 21:02:46 +0800
-// Version: $Id: globalpreferences.h 82 2010-04-07 14:10:41Z liuguangzhao $
+// Version: $Id$
 // 
 #ifndef GLOBALPREFERENCES_H
 #define GLOBALPREFERENCES_H

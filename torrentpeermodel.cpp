@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 10:59:15 +0800
-// Version: $Id: torrentpeermodel.cpp 80 2010-04-07 07:18:09Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include "torrentpeermodel.h"

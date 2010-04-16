@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 14:50:35 +0800
-// Version: $Id: sqlitesegmentmodel.cpp 78 2010-04-07 07:13:03Z liuguangzhao $
+// Version: $Id$
 // 
 #include <cassert>
 

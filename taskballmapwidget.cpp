@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-04 21:14:24 +0800
-// Version: $Id: taskballmapwidget.cpp 89 2010-04-09 09:25:56Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include <QVector>

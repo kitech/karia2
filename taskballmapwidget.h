@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-04 21:11:16 +0800
-// Version: $Id: taskballmapwidget.h 89 2010-04-09 09:25:56Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef TASKBALLMAPWIDGET_H

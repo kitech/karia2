@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-06 13:22:27 +0800
-// Version: $Id: aboutdialog.cpp 94 2010-04-10 13:34:04Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include <QtGui>

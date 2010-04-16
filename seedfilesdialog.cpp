@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-11 16:22:25 +0800
-// Version: $Id: seedfilesdialog.cpp 98 2010-04-12 09:42:30Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include "seedfilesdialog.h"

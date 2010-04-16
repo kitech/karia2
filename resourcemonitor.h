@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-05 11:02:42 +0800
-// Version: $Id: resourcemonitor.h 64 2010-04-05 04:05:15Z liuguangzhao $
+// Version: $Id$
 // 
 
 #ifndef RESOURCEMONITOR_H

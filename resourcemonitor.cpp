@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-05 11:02:35 +0800
-// Version: $Id: resourcemonitor.cpp 64 2010-04-05 04:05:15Z liuguangzhao $
+// Version: $Id$
 // 
 
 #include <cassert>

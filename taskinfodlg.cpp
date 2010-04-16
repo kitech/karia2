@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-08 00:16:42 +0800
-// Version: $Id: taskinfodlg.cpp 83 2010-04-07 17:09:07Z liuguangzhao $
+// Version: $Id$
 // 
 #include <QtCore>
 #include <QtGui>
