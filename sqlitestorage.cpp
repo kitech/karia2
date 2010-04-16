@@ -320,14 +320,26 @@ bool SqliteStorage::dumpDefaultTasks()
 	return true ;
 }
 
-bool SqliteStorage::addUserOptions(QString key , QString value , QString type  )
+bool SqliteStorage::addDefaultOption(QString key, QString value, QString type)
 {
-	QString sql = this->optInsSql.arg("user_options").arg(key).arg(value).arg(type);
+	QString sql = this->optInsSql.arg("default_options").arg(key).arg(value).arg(type).arg("false");
+	
+	QSqlQuery q(this->mOptionsDB);
+	q.exec(sql);
+
+	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql;
+
+	return true;
+}
+
+bool SqliteStorage::addUserOption(QString key, QString value, QString type)
+{
+	QString sql = this->optInsSql.arg("user_options").arg(key).arg(value).arg(type).arg("false");
 	
 	QSqlQuery q ( this->mOptionsDB);
 	q.exec(sql );
 
-	qDebug()<< q.lastError()<<": " << sql ;
+	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql ;
 
 	return true ;
 }
@@ -341,6 +353,60 @@ bool SqliteStorage::deleteUserOption( QString key )
 	qDebug()<< q.lastError()<<": " << sql ;
 	return true ;
 }
+
+QString SqliteStorage::getDefaultOption(QString key)
+{
+    QString sql = QString("SELECT option_value FROM default_options WHERE option_name='%1'").arg(key);
+    QString ov = QString::null;
+
+    QSqlQuery q(this->mOptionsDB);
+    q.exec(sql);
+	if (q.next()) {
+        QSqlRecord rec = q.record();
+
+        // qDebug()<<__FUNCTION__<<rec;
+        //assert( rec.count() == 1 );
+        if (rec.count() == 1) {
+            ov = rec.value(0).toString();
+        } else {
+            //result = (quint64)(-1);
+            // assert( 1 == 2 );
+        }
+    } else {
+        // qDebug()<<__FUNCTION__<<"no result set";
+    }
+    // qDebug()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
+
+	return ov;
+}
+
+QString SqliteStorage::getUserOption(QString key)
+{
+    QString sql = QString("SELECT option_value FROM user_options WHERE option_name='%1'").arg(key);
+    QString ov = QString::null;
+
+    QSqlQuery q(this->mOptionsDB);
+    q.exec(sql);
+	if (q.next()) {
+        QSqlRecord rec = q.record();
+
+        // qDebug()<<__FUNCTION__<<rec;
+        //assert( rec.count() == 1 );
+        if (rec.count() == 1) {
+            ov = rec.value(0).toString();
+        } else {
+            //result = (quint64)(-1);
+            // assert( 1 == 2 );
+        }
+    } else {
+        // qDebug()<<__FUNCTION__<<"no result set";
+    }
+
+	// qDebug()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
+
+	return ov;   
+}
+
 bool SqliteStorage::addTask( int task_id , 
 			QString file_size            , 
 			QString retry_times          ,
@@ -575,7 +641,7 @@ int SqliteStorage::getNextValidTaskID()
 
 	qDebug()<< q.lastError()<<": " << sql ;
 
-	sql =  "SELECT MAX(seq_id) AS max_seq_id FROM seq_tasks ";
+	sql = "SELECT MAX(seq_id) AS max_seq_id FROM seq_tasks ";
 
 	q.exec(sql);
 
@@ -588,7 +654,7 @@ int SqliteStorage::getNextValidTaskID()
 
 	//qDebug()<< q.lastError()<<": " << sql << max_task_id ;
 
-	return ( max_task_id  );
+	return (max_task_id);
 
 }
 

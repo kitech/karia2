@@ -97,10 +97,10 @@ class SqliteStorage : public AbstractStorage
 {
 	Q_OBJECT;
 public:
-	SqliteStorage(QObject *parent);
+	SqliteStorage(QObject *parent = 0);
 	~SqliteStorage();
 
-	static SqliteStorage *instance(QObject *parent);
+	static SqliteStorage *instance(QObject *parent = 0);
 
 
 	virtual bool open();
@@ -117,8 +117,12 @@ public:
 	bool dumpDefaultOptions();
 	bool dumpDefaultTasks();
 
-	bool addUserOptions(QString key , QString value , QString type);
+    bool addDefaultOption(QString key, QString value, QString type);
+	bool addUserOption(QString key , QString value , QString type);
 	bool deleteUserOption( QString key );
+    QString getDefaultOption(QString key);
+    QString getUserOption(QString key);
+
 	bool addTask(int task_id ,		
                  QString file_size            , 
                  QString retry_times          ,
@@ -223,7 +227,7 @@ public:
 
 	quint64 getFileSizeById( int task_id);
 
-private: 
+private slots: 
     void onTaskDBNotification(const QString &name);
     void onOptionDBNotification(const QString &name);
 

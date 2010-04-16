@@ -59,10 +59,11 @@ AbstractStorage::AbstractStorage(QObject *parent)
 	this->defaultOptions.insert("maxsimultaneousjobs" , "10" ) ;
 
 #ifdef WIN32
-#define SAVE_PREFIX_STR "C:"
+    #define SAVE_PREFIX_STR "C:"
 #else
 	#define SAVE_PREFIX_STR "~"
 #endif
+
 	///////////////////////
 	///////////////////////
 	char *rawcat[256] = {
