@@ -796,6 +796,12 @@ int NullGet::createTask(TaskOption *option)
 	return taskId;
 }
 
+int NullGet::createTask(int taskId, TaskOption *option)
+{
+    this->mTaskMan->addTaskModel(taskId, option);
+    return taskId;
+}
+
 int NullGet::createTaskSegment(int pTaskId ,QString purl , long fromPostion , long yourLength )
 {
 	
@@ -906,10 +912,8 @@ void NullGet::onSegmentListSelectChange( const QItemSelection & selected, const 
 	}
 }
 
-void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected )
+void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected)
 {
-	qDebug()<<__FUNCTION__;
-
 	int taskId ;
 	int segId ;
 	QString segName ;
@@ -950,8 +954,7 @@ void NullGet::onCatListSelectChange( const QItemSelection & selected, const QIte
 {
 	qDebug()<<__FUNCTION__<<selected;
 	
-	if( selected.size() == 1 )
-	{
+	if (selected.size() == 1) {
 		QModelIndex currentIndex ;
 		currentIndex = selected.at(0).indexes().at(0) ;
 		qDebug()<< currentIndex ;
@@ -1014,6 +1017,7 @@ void NullGet::onStartTask()
         // 先把这个任务对象创建了
         payload["taskId"] = QString("%1").arg(taskId);
         payload["url"] = url;
+        this->createTask(taskId, taskOptions);
     }
 
     if (url.startsWith("file://") && url.endsWith(".torrent")) {
@@ -1329,153 +1333,159 @@ void NullGet::onDeleteTask()
         if (srcCatId == ng::cats::deleted) {
             // delete it directly
             from_model->removeRows(mil.value(row * colcnt).row(), 1);
+			//在system tray 显示移动任务消息
+			this->mSysTrayIcon->showMessage(tr("Delete Task ."), QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
+                                            QSystemTrayIcon::Information, 5000);
         } else {
             int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil);
+			//在system tray 显示移动任务消息
+			this->mSysTrayIcon->showMessage(tr("Move Task ."), QString(tr("Move To Trash Now. TaskId: %1")).arg(taskId),
+                                            QSystemTrayIcon::Information, 5000);
         }
-		// this->onDeleteTask(taskId);
 	}
 }
 
-void NullGet::onDeleteTask(int pTaskId)
-{
-	qDebug()<<__FUNCTION__;
+// void NullGet::onDeleteTask(int pTaskId)
+// {
+// 	qDebug()<<__FUNCTION__;
 
-	TaskQueue * tq = this->mTaskMan;
-	QAbstractItemModel * from_model = 0 , * to_model = 0 ;
-	QModelIndex index ; 
-	int row = -1 , colcnt = -1 ;
+// 	TaskQueue * tq = this->mTaskMan;
+// 	QAbstractItemModel * from_model = 0 , * to_model = 0 ;
+// 	QModelIndex index ; 
+// 	int row = -1 , colcnt = -1 ;
 
-	from_model = this->mTaskListView->model() ;
-	to_model = SqliteTaskModel::instance(ng::cats::deleted, this);
+// 	from_model = this->mTaskListView->model() ;
+// 	to_model = SqliteTaskModel::instance(ng::cats::deleted, this);
 
-	colcnt = from_model->rowCount();
+// 	colcnt = from_model->rowCount();
 
-	if( tq != 0 )
-	{
-		// if( tq->mGotLength < tq->mTotalLength )
-		// {
-		// 	int ret = QMessageBox::question(this,tr("Delete task..."),tr("Deleting an unfinished task,are you sure ?") ,QMessageBox::Ok,QMessageBox::Cancel);
-		// 	if( ret == QMessageBox::Cancel) return;
-		// }
-		for( int i = 0 ; i < from_model->rowCount() ;  ++ i)
-		{
-			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
-			{
-				row = i ;
-				break ;
-			}
-		}
-		if( row >= 0 )	//找到这个任务的数据模型了。
-		{
+// 	if( tq != 0 )
+// 	{
+// 		// if( tq->mGotLength < tq->mTotalLength )
+// 		// {
+// 		// 	int ret = QMessageBox::question(this,tr("Delete task..."),tr("Deleting an unfinished task,are you sure ?") ,QMessageBox::Ok,QMessageBox::Cancel);
+// 		// 	if( ret == QMessageBox::Cancel) return;
+// 		// }
+// 		for( int i = 0 ; i < from_model->rowCount() ;  ++ i)
+// 		{
+// 			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
+// 			{
+// 				row = i ;
+// 				break ;
+// 			}
+// 		}
+// 		if( row >= 0 )	//找到这个任务的数据模型了。
+// 		{
 
-			//在system tray 显示移动任务消息
-			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
+// 			//在system tray 显示移动任务消息
+// 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
 			
-			tq->onTaskListCellNeedChange( pTaskId , ng::tasks::task_status , 
-                                          tq->getStatusString(TaskQueue::TS_COMPLETE));
+// 			tq->onTaskListCellNeedChange( pTaskId , ng::tasks::task_status , 
+//                                           tq->getStatusString(TaskQueue::TS_COMPLETE));
 
-			// //将线程数据移动出来。
-			// for( int j = 0 ; j < tq->mSegmentThread.size() ; ++j)
-			// {
-			// 	tq->mSegmentThread[j]->bePauseing = true ;
-			// 	tq->mSegmentThread[j]->terminate();
-			// 	//assert( tq->mSegmentThread[j]->isRunning() == false  );
-			// }
-			//清除线程窗口列表
-			this->mSegLogListView->setModel(0);
-			this->mSegListView->setModel(0);
-			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
-			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
+// 			// //将线程数据移动出来。
+// 			// for( int j = 0 ; j < tq->mSegmentThread.size() ; ++j)
+// 			// {
+// 			// 	tq->mSegmentThread[j]->bePauseing = true ;
+// 			// 	tq->mSegmentThread[j]->terminate();
+// 			// 	//assert( tq->mSegmentThread[j]->isRunning() == false  );
+// 			// }
+// 			//清除线程窗口列表
+// 			this->mSegLogListView->setModel(0);
+// 			this->mSegListView->setModel(0);
+// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
+// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
 
-			//int idx = this->mTaskQueue.indexOf(tq);
+// 			//int idx = this->mTaskQueue.indexOf(tq);
 
-			int torows = to_model->rowCount();
-			to_model->insertRows(torows,1);
+// 			int torows = to_model->rowCount();
+// 			to_model->insertRows(torows,1);
 			
-			for( int j = 0 ; j < colcnt ; j ++)
-			{
-				index = to_model->index(torows,j);
-				to_model->setData(index,from_model->data(from_model->index(row,j)) );
-			}
-			from_model->removeRows(row,1);
-			from_model->submit();
+// 			for( int j = 0 ; j < colcnt ; j ++)
+// 			{
+// 				index = to_model->index(torows,j);
+// 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
+// 			}
+// 			from_model->removeRows(row,1);
+// 			from_model->submit();
 
-			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
-			to_model->submit();
+// 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
+// 			to_model->submit();
 
-			// tq->mTaskStatus = TaskQueue::TS_COMPLETE ;
-			// tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
+// 			// tq->mTaskStatus = TaskQueue::TS_COMPLETE ;
+// 			// tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
 
-			qDebug()<<__FUNCTION__<<" delete task done :"<<tq;
+// 			qDebug()<<__FUNCTION__<<" delete task done :"<<tq;
 
-		}
-		else
-		{
-			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-			assert ( 1== 2 );
-		}
-	}	//end if( tq != 0 )
-	else if( from_model == SqliteTaskModel::instance(ng::cats::deleted,this) )
-	{
-		qDebug()<<"cant delete from deletion model";
-	}
-	else
-	{		
-		//可能是上次没下载完成或者出错的任务，所有还没有任务执行对象
-		//只需要处理一下模型中数的数据就可以了。
-		for( int i = 0 ; i < from_model->rowCount() ;   i ++ )
-		{
-			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
-			{				
-				row = i ;
-				break ;
-			}
-		}
-		//qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId << " at row:"<<row ;
+// 		}
+// 		else
+// 		{
+// 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
+// 			assert ( 1== 2 );
+// 		}
+// 	}	//end if( tq != 0 )
+// 	else if( from_model == SqliteTaskModel::instance(ng::cats::deleted,this) )
+// 	{
+// 		qDebug()<<"cant delete from deletion model";
+// 	}
+// 	else
+// 	{		
+// 		//可能是上次没下载完成或者出错的任务，所有还没有任务执行对象
+// 		//只需要处理一下模型中数的数据就可以了。
+// 		for( int i = 0 ; i < from_model->rowCount() ;   i ++ )
+// 		{
+// 			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
+// 			{				
+// 				row = i ;
+// 				break ;
+// 			}
+// 		}
+// 		//qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId << " at row:"<<row ;
 		
-		if( row >= 0 )	//找到这个任务的数据模型了。
-		{
-			//在system tray 显示移动任务消息
-			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
+// 		if( row >= 0 )	//找到这个任务的数据模型了。
+// 		{
+// 			//在system tray 显示移动任务消息
+// 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
 
-			//清除线程窗口列表
-			this->mSegLogListView->setModel(0);
-			this->mSegListView->setModel(0);
-			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
+// 			//清除线程窗口列表
+// 			this->mSegLogListView->setModel(0);
+// 			this->mSegListView->setModel(0);
+// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
 			
-			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
+// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
 			
-			int torows = to_model->rowCount();
-			to_model->insertRows(torows,1);
+// 			int torows = to_model->rowCount();
+// 			to_model->insertRows(torows,1);
 
-			for( int j = 0 ; j < colcnt ; j ++)
-			{
-				index = to_model->index(torows,j);
-				to_model->setData(index,from_model->data(from_model->index(row,j)) );
-			}
+// 			for( int j = 0 ; j < colcnt ; j ++)
+// 			{
+// 				index = to_model->index(torows,j);
+// 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
+// 			}
 
-			from_model->removeRows(row,1);
-			from_model->submit();
+// 			from_model->removeRows(row,1);
+// 			from_model->submit();
 
-			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
-			to_model->submit();
+// 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
+// 			to_model->submit();
 
-			//this->mTaskQueue.remove(idx);
-			//this->mDoneTaskQueue.append(tq);
-			//tq->mTaskStatus = TaskQueue::TS_DONE ;
-			//tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
+// 			//this->mTaskQueue.remove(idx);
+// 			//this->mDoneTaskQueue.append(tq);
+// 			//tq->mTaskStatus = TaskQueue::TS_DONE ;
+// 			//tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
 
-			qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId ;
-		}
-		else
-		{
-			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-			assert ( 1== 2 );
-		}
-	}
+// 			qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId ;
+// 		}
+// 		else
+// 		{
+// 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
+// 			assert ( 1== 2 );
+// 		}
+// 	}
 
 
-}
+// }
+
 void NullGet::onDeleteTaskAll()
 {
 	qDebug()<<__FUNCTION__ ;
@@ -1485,11 +1495,10 @@ void NullGet::onDeleteTaskAll()
 
 	model = SqliteTaskModel::instance(ng::cats::downloading,this) ;
 
-	for( int i = 0 ; i < model->rowCount() ; ++ i )
-	{
+	for (int i = 0 ; i < model->rowCount() ; ++ i) {
 		index = model->index(i,0) ;
 		int taskId = model->data(index).toInt();
-		this->onDeleteTask(taskId);
+		// this->onDeleteTask(taskId);
 	}
 }
 void NullGet::onDeleteSegment()
@@ -1980,7 +1989,7 @@ QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ( "completed
 
 void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    // qDebug()<<__FUNCTION__<<response<<payload;
 
     int taskId = payload.toInt();
     QVariantMap sts = response.toMap();

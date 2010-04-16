@@ -95,7 +95,7 @@ public slots:
 
 	void onMemoryOverLoad();
 
-	void setTaskId(int task_id);
+	// void setTaskId(int task_id);
 	int getMaxSegCount(int pTaskId,int cat_id);
 	bool getFileAbtained( int pTaskId , int cat_id);
 	QString getRealUrlModel(int pTaskId,int cat_id);

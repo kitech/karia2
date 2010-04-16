@@ -138,7 +138,7 @@ QString TaskQueue::getStatusString(int status)
 
 bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 {
-	assert(option != 0 );
+	assert(option != 0);
     Task *task = NULL;
     if (!this->mTasks.contains(taskId)) {
         task = new Task(taskId, option->mTaskUrl);
@@ -151,34 +151,39 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 	QModelIndex index;
 	// QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
     QAbstractItemModel *mdl = SqliteTaskModel::instance(option->mCatId, 0);
-	int modelRows = mdl->rowCount();
-	mdl->insertRows(modelRows, 1);
-	index = mdl->index(modelRows, ng::tasks::task_id);
-	mdl->setData(index, taskId);
-	index = mdl->index(modelRows, ng::tasks::task_status);
-	mdl->setData(index, "ready");
-    index = mdl->index(modelRows, ng::tasks::save_path);
-    mdl->setData(index, option->mSavePath);
-	index = mdl->index(modelRows, ng::tasks::file_name);
-	mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
-	index = mdl->index(modelRows, ng::tasks::block_activity);
-	mdl->setData(index, QString("0/0") );
-	index = mdl->index(modelRows, ng::tasks::active_block_count);
-	mdl->setData(index, QString("0"));
-	index = mdl->index(modelRows, ng::tasks::split_count);
-	mdl->setData(index, QString("%1").arg(option->mSplitCount));
-	index = mdl->index(modelRows, ng::tasks::real_url);
-	mdl->setData(index, option->mTaskUrl);	
-	index = mdl->index(modelRows, ng::tasks::org_url);
-	mdl->setData(index, option->mTaskUrl);		
-	index = mdl->index(modelRows, ng::tasks::cat_id );
-	// mdl->setData(index ,ng::cats::downloading);
-    mdl->setData(index, option->mCatId);
-	index = mdl->index(modelRows, ng::tasks::create_time );
-	mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
-	index = mdl->index(modelRows, ng::tasks::file_length_abtained);
-	mdl->setData(index, QString("false"));
-
+    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole, 
+                                     QString("%1").arg(taskId), 1, Qt::MatchExactly | Qt::MatchWrap);
+    if (mil.count() == 0) {
+        int modelRows = mdl->rowCount();
+        mdl->insertRows(modelRows, 1);
+        index = mdl->index(modelRows, ng::tasks::task_id);
+        mdl->setData(index, taskId);
+        index = mdl->index(modelRows, ng::tasks::task_status);
+        mdl->setData(index, "ready");
+        index = mdl->index(modelRows, ng::tasks::save_path);
+        mdl->setData(index, option->mSavePath);
+        index = mdl->index(modelRows, ng::tasks::file_name);
+        mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
+        index = mdl->index(modelRows, ng::tasks::block_activity);
+        mdl->setData(index, QString("0/0") );
+        index = mdl->index(modelRows, ng::tasks::active_block_count);
+        mdl->setData(index, QString("0"));
+        index = mdl->index(modelRows, ng::tasks::split_count);
+        mdl->setData(index, QString("%1").arg(option->mSplitCount));
+        index = mdl->index(modelRows, ng::tasks::real_url);
+        mdl->setData(index, option->mTaskUrl);	
+        index = mdl->index(modelRows, ng::tasks::org_url);
+        mdl->setData(index, option->mTaskUrl);		
+        index = mdl->index(modelRows, ng::tasks::cat_id );
+        // mdl->setData(index ,ng::cats::downloading);
+        mdl->setData(index, option->mCatId);
+        index = mdl->index(modelRows, ng::tasks::create_time );
+        mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+        index = mdl->index(modelRows, ng::tasks::file_length_abtained);
+        mdl->setData(index, QString("false"));
+    } else {
+        // model exists, resume task
+    }
     // TaskQueue *tq = TaskQueue::instance(task_id);
     // tq->setUrl(option->mTaskUrl);
 
@@ -818,10 +823,10 @@ int TaskQueue::getActiveSegCount(int pTaskId, int cat_id)
 	return msc;
 }
 
-void TaskQueue::setTaskId(int task_id)
-{
-	// this->mTaskId = task_id ;
-}
+// void TaskQueue::setTaskId(int task_id)
+// {
+// 	// this->mTaskId = task_id ;
+// }
 
 QBitArray TaskQueue::getCompletionBitArray(int taskId)
 {
@@ -830,7 +835,7 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId)
     int numPieces = 0;
 
 	//maybe should use mCatID , but we cant know the value here , so use default downloading cat
-	QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading,  this);
+	QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, this);
 
     // i known it must be only one match
     QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole, 
@@ -841,6 +846,7 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId)
         idx = mil.at(0);
         bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
         numPieces = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
+        // qDebug()<<__FUNCTION__<<numPieces<<bitString;
 
         QStringList bitList = bitString.split(",");
         QBitArray ba(bitList.length());
@@ -851,10 +857,12 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId)
         }
         // ba.resize(qMin(bitList.length(), numPieces));
         ba.resize(numPieces);
-        // qDebug()<<"string is "<<bitString<<" BS:"<<ba.size();
+        // qDebug()<<"string is "<<bitString<<" BS:"<<ba.size()<<ba;
+        // dumpBitArray(ba);
         // return bitString;
         return ba;
     } else {
+        // qDebug()<<__FUNCTION__<<"can not found bit model";
         return QBitArray();
     }
 }

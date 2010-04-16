@@ -29,7 +29,7 @@ documentation.extra = cp release/*.exe Z:/temp
 
 INSTALLS += documentation
 
-VERSION = 1.2.90
+VERSION = 0.0.90
 
 #########################
 INCLUDEPATH += ./libmaia/

@@ -61,6 +61,7 @@ public slots:
 	void testFunc2();
 	
 	int createTask(TaskOption * option);
+    int createTask(int taskId, TaskOption *option);
 	int createTaskSegment(int pTaskId , QString purl , long fromPostion , long yourLength );
 
 	void onSegmentListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
@@ -103,7 +104,7 @@ public slots:
 	void onPauseSegment();
 
 	void onDeleteTask();
-	void onDeleteTask(int pTaskId);
+	// void onDeleteTask(int pTaskId);
 	void onDeleteTaskAll();
 	void onDeleteSegment();
 	void onDeleteSegment(int pTaskId,int pSegId);
