@@ -54,6 +54,8 @@ doc/thunder.txt -text
 /genqm.sh -text
 /gents.bat -text
 /gents.sh -text
+/getopt4.cpp -text
+/getopt4.h -text
 /globalpreferences.cpp -text
 /globalpreferences.h -text
 /hash.cpp -text
@@ -140,6 +142,11 @@ libng/qtmd5.h -text
 /preferencesdialog.cpp -text
 /preferencesdialog.h -text
 /preferencesdialog.ui -text
+qtsingleapplication/QtSingleApplication -text
+qtsingleapplication/qtlocalpeer.cpp -text
+qtsingleapplication/qtlocalpeer.h -text
+qtsingleapplication/qtsingleapplication.cpp -text
+qtsingleapplication/qtsingleapplication.h -text
 /radarscanner.cpp -text
 /radarscanner.h -text
 /resource.h -text

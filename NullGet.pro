@@ -32,7 +32,7 @@ INSTALLS += documentation
 VERSION = 0.0.90
 
 #########################
-INCLUDEPATH += ./libmaia/
+INCLUDEPATH += ./libmaia/ ./qtsingleapplication
 
 unix{
 	LIBS += -lssl    	
@@ -77,6 +77,9 @@ MAIA_HEADERS = libmaia/maiaObject.h libmaia/maiaFault.h libmaia/maiaXmlRpcClient
              libmaia/maiaXmlRpcServer.h libmaia/maiaXmlRpcServerConnection.h
 MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcClient.cpp \
              libmaia/maiaXmlRpcServer.cpp libmaia/maiaXmlRpcServerConnection.cpp
+
+QTSINGALAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
+QTSINGALAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
 # Input
 HEADERS += aboutdialog.h \
@@ -123,7 +126,10 @@ HEADERS += aboutdialog.h \
            libng/md5.h \
            torrentpeermodel.h \
            taskservermodel.h \
-           seedfilesdialog.h
+           seedfilesdialog.h \  
+           getopt4.h \
+           qtsingleapplication/qtlocalpeer.h \
+           qtsingleapplication/qtsingleapplication.h
 
 win32{
         HEADERS += DiskInfo.h	
@@ -174,7 +180,10 @@ SOURCES += aboutdialog.cpp \
            libng/qtmd5.cpp \
            torrentpeermodel.cpp \
            taskservermodel.cpp \
-           seedfilesdialog.cpp
+           seedfilesdialog.cpp \
+           getopt4.cpp \
+           qtsingleapplication/qtlocalpeer.cpp \
+           qtsingleapplication/qtsingleapplication.cpp
 
 win32{
         SOURCES += DiskInfo.cpp
@@ -201,8 +210,11 @@ FORMS += aboutdialog.ui \
          preferencesdialog.ui  \
          seedfilesdialog.ui
 
-HEADERS += $$MAIA_HEADERS
-SOURCES += $$MAIA_SOURCES
+HEADERS += $$MAIA_HEADERS 
+SOURCES += $$MAIA_SOURCES 
+
+# HEADERS += $$QTSINGLEAPP_HEADERS
+# SOURCES += $$QTSINGLEAPP_SOURCES
 
 TRANSLATIONS += translations/nullget_en_US.ts \
                 translations/nullget_zh_CN.ts \

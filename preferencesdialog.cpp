@@ -25,8 +25,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 	//	this->ui.stackedWidget,SLOT( setCurrentIndex ( int  ) ) );
 	QObject::connect(this->uiwin.listWidget, SIGNAL(currentRowChanged(int)),
                      this, SLOT(onPreferencesSelectChanged(int)));
-
     this->show();
+
+    this->generalLoaded = false;;
+    this->defaultPropertiesLoaded = false;
+    this->connectionLoaded = false;
+    this->monitorLoaded = false;
+    this->graphLogLoaded = false;
+    this->virtusLoaded = false;
+    this->advancedLoaded = false;
+
     this->loadGeneralOptions();
 }
 
@@ -46,6 +54,37 @@ void PreferencesDialog::onPreferencesSelectChanged(int index)
 	title = this->uiwin.listWidget->item(index)->text();
 	this->uiwin.label_7->setText(title);
 	this->uiwin.stackedWidget->setCurrentIndex(index);
+    
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    switch(index) {
+    case 0:
+        if (!this->generalLoaded) {
+            this->loadGeneralOptions();
+        }
+        break;
+    case 1:
+        if (!this->defaultPropertiesLoaded) {
+            this->loadDefaultProperties();
+        }
+        break;
+    case 2:
+        if (!this->connectionLoaded) {
+            this->loadConnectionOptions();
+        }
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
+        break;
+    case 6:
+        break;
+    default:
+        Q_ASSERT(1 == 2);
+        break;
+    };
+    QApplication::restoreOverrideCursor();
 }
 
 void PreferencesDialog::loadStatus(QString msg)
@@ -88,6 +127,49 @@ void PreferencesDialog::loadGeneralOptions()
 
     optionValue = this->loadKey("writedatasize", "12345");
     this->uiwin.lineEdit_2->setText(optionValue);
+
+    this->generalLoaded = true;
+}
+
+void PreferencesDialog::loadDefaultProperties()
+{
+    QString optionName;
+    QString optionValue;
+    
+    optionValue = this->loadKey("defaultrefer", "http://www.qtchina.net");
+    this->uiwin.lineEdit_3->setText(optionValue);
+
+    optionValue = this->loadKey("taskstartschedule", "imidiate");
+    if (optionValue == "manual") {
+        this->uiwin.radioButton_3->setChecked(true);
+    } else {
+        this->uiwin.radioButton_4->setChecked(true);
+    }
+    
+    optionValue = this->loadKey("maxsegmenteverytask", "567");
+    this->uiwin.spinBox_8->setValue(optionValue.toInt());
+
+    this->defaultPropertiesLoaded = true;
+}
+
+void PreferencesDialog::loadConnectionOptions()
+{
+    QString optionName;
+    QString optionValue;
+
+    optionValue = this->loadKey("connecttimeout", "98");
+    this->uiwin.spinBox_2->setValue(optionValue.toInt());
+
+    optionValue = this->loadKey("readdatatimeout", "97");
+    this->uiwin.spinBox_3->setValue(optionValue.toInt());
+
+    optionValue = this->loadKey("retrydelaytimeout", "16");
+    this->uiwin.spinBox_4->setValue(optionValue.toInt());
+
+    optionValue = this->loadKey("maxsimulatejobs", "7");
+    this->uiwin.spinBox_5->setValue(optionValue.toInt());
+
+    this->connectionLoaded = true;
 }
 
 void PreferencesDialog::saveAllOptions()

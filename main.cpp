@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QApplication>
+
 #include <QTranslator>
 #include <QLocale>
 
@@ -10,10 +11,22 @@
 int main(int argc, char *argv[])
 {
 	//Q_INIT_RESOURCE(styles);
-    NullGetApplication a(argc, argv);
-    a.addLibraryPath(a.applicationDirPath() + "/plugins");
+    NullGetApplication app(argc, argv);
+    app.addLibraryPath(app.applicationDirPath() + "/plugins");
 
-	a.setQuitOnLastWindowClosed(false);
+	app.setQuitOnLastWindowClosed(false);
+
+    if (app.isRunning()) {
+        qDebug()<<"Another instance of karia2 is running.";
+        QString msg("hi master, are you ok?");
+        bool sendok = app.sendMessage(msg);
+        if (sendok) {
+            
+        } else {
+
+        }
+        return 0;
+    }
 
     NullGet w;
 
@@ -44,8 +57,11 @@ int main(int argc, char *argv[])
 	//w.activateWindow();
 	w.show();
 
+    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), 
+                     &app, SLOT(handleMessage(const QString &)));
+
 	//w.initialMainWindow() ;
 
-    //a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));	//这就是问题所在。2006-9-14
-    return a.exec();
+    //app.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));	//这就是问题所在。2006-9-14
+    return app.exec();
 }

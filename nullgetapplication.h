@@ -11,22 +11,26 @@
 #define NULLGETAPPLICATION_H
 
 #include <QApplication>
+#include <QtSingleApplication>  // add include_once in this file
 
-class NullGetApplication : public QApplication
+class NullGetApplication : public QtSingleApplication
 {
 	Q_OBJECT;
+
 public:
     NullGetApplication(int & argc, char ** argv);
     ~NullGetApplication();
-#ifdef Q_OS_WIN32
+
+#if defined(Q_OS_WIN32)
 	virtual bool winEventFilter ( MSG * msg, long * result );
-#else
-    #ifdef Q_OS_MAC
+#elif defined(Q_OS_MAC)
     virtual bool macEventFilter(EventHandlerCallRef caller, EventRef event ) ;
-    #else
+#else
 	virtual bool x11EventFilter ( XEvent * event ) ;
-    #endif
 #endif
+
+public slots:
+    void handleMessage(const QString &msg);
 
 private:
     

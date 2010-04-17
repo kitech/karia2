@@ -32,11 +32,21 @@ private:
     bool  mIsModified;
     SqliteStorage *storage;
 
+    bool generalLoaded;
+    bool defaultPropertiesLoaded;
+    bool connectionLoaded;
+    bool monitorLoaded;
+    bool graphLogLoaded;
+    bool virtusLoaded;
+    bool advancedLoaded;
+
 private slots:
 	void onPreferencesSelectChanged(int index);
     void loadStatus(QString msg);
     QString loadKey(QString key, QString dvalue);
     void loadGeneralOptions();
+    void loadDefaultProperties();
+    void loadConnectionOptions();
     void saveAllOptions();
 };
 
