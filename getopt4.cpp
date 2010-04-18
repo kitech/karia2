@@ -4,6 +4,9 @@
 #define QT_NO_CAST_ASCII
 #define QT_NO_ASCII_CAST
 
+#include <QtCore>
+
+
 #include "getopt4.h"
 
 #include <qapplication.h>
@@ -201,6 +204,7 @@ bool GetOpt::parse( bool untilFirstSwitchOnly )
             stack.push(it.next());
         }
     }
+    qDebug()<<stack;
 
     const OptionConstIterator obegin = options.begin();
     const OptionConstIterator oend = options.end();

@@ -116,10 +116,18 @@ public slots:
 
 	//help actions
 	void onGotoHomePage();
-	void onAboutQt(){	QMessageBox::aboutQt ( this  ) ;	}
+	void onAboutQt(){ QMessageBox::aboutQt(this);	}
 
 	//////////
 	void onShowWalkSiteWindow();
+
+    // arguments handler
+    void handleArguments();
+    void handleArguments(int argc, char **argv);
+    void handleArguments(QStringList args);
+
+    // single application message handler
+    void onOtherKaria2MessageRecived(const QString &msg);
 
 private:
     Ui::NullGetClass mainUI; 

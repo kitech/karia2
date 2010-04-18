@@ -36,6 +36,16 @@
 
 // LastUpdated: $Id$
 
+/*
+  bugs:
+  1. 
+  --uri=http://localhost/abcd.tar.gz  is ok
+  but, -u http://localhost/abcd.tar.gz is faild
+  but, -uhttp://localhost/abcd.tar.gz is ok
+
+  
+ */
+
 #ifndef GETOPT4_H
 #define GETOPT4_H
 

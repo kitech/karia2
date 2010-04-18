@@ -61,6 +61,7 @@
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
 #include "seedfilesdialog.h"
+#include "getopt4.h"
 
 //////
 #include "libng/html-parse.h"
@@ -138,9 +139,9 @@ void NullGet::firstShowHandler()
 	
 	this->initialMainWindow();
 #ifdef WIN32
-	this->onSwitchWindowStyle(mainUI.actionWindowsX_P); //初始化为windowsxp风格
+	this->onSwitchWindowStyle(mainUI.actionWindowsX_P); //set default windowsxp UI style
 #else
-	this->onSwitchWindowStyle(mainUI.action_Plastique); //初始化为windowsxp风格
+	this->onSwitchWindowStyle(mainUI.action_Plastique); //set default Plastique UI style
 #endif
 
 	this->update();
@@ -222,13 +223,16 @@ void NullGet::firstShowHandler()
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
 
+    // process arguments 
+    this->handleArguments();
+
 	//test area 测试代码区　---------开始-----------------
 	LabSpace * labspace = new LabSpace(this);
 	//labspace->show();
 
 #ifdef Q_OS_WIN32
 	//注册系统热键。发向该窗口的。
-	if (! ::RegisterHotKey(this->winId(),'C',MOD_CONTROL|MOD_SHIFT,'C')) {
+	if (! ::RegisterHotKey(this->winId(), 'C', MOD_CONTROL|MOD_SHIFT, 'C')) {
 		qDebug()<<"::RegisterHotKey faild";
 	}
 #else	
@@ -3689,13 +3693,12 @@ void NullGet::showEvent ( QShowEvent * event )
 	QWidget::showEvent(event);
 
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
-	if( firstShowEvent == true )
-	{	
-		firstShowEvent = false ;
+	if (firstShowEvent == true) {	
+		firstShowEvent = false;
 		//添加首次显示要处理的工作
 		qDebug()<<__FUNCTION__<<__LINE__<<"first show";
 		//this->firstShowHandler();
-		QTimer::singleShot(50,this,SLOT(firstShowHandler()));
+		QTimer::singleShot(50, this, SLOT(firstShowHandler()));
 	}
 }
 
@@ -3857,6 +3860,79 @@ void NullGet::onShowWalkSiteWindow()
 		this->mWalkSiteDockWidget->showMinimized();
 
 }
+
+void NullGet::handleArguments()
+{
+    int argc = qApp->argc();
+    char **argv = qApp->argv();
+
+    this->handleArguments(argc, argv);
+}
+
+void NullGet::handleArguments(int argc, char **argv)
+{
+    QStringList args;
+
+    for (int i = 0 ; i < argc; ++i) {
+        args.append(QString(argv[i]));
+    }
+
+    this->handleArguments(args);
+}
+
+void NullGet::handleArguments(QStringList args)
+{
+    QString uri, uri2;
+    QString shortArgName;
+    QString longArgName;
+    QString defaultArgValue = QString::null;
+    
+    args.takeFirst(); // it is app name
+    GetOpt  go(args);
+    
+    shortArgName = "u";
+    longArgName = "uri";
+    go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case:  -uabcd.zip
+    go.addOptionalArgument(shortArgName, &uri2); //  deal with case:    -u abcd.zip
+
+    if (!go.parse()) {
+        // qDebug()<<__FUNCTION__<<"Arg parse faild.";
+        return;
+    }
+
+    qDebug()<<uri<<uri2;
+
+    if (uri == QString::null && uri2 == QString::null) {
+        qDebug()<<__FUNCTION__<<"No uri specified.";
+        return;
+    }
+
+    uri = (uri == QString::null) ? uri2 : uri;
+
+    QClipboard *cb = QApplication::clipboard();
+    cb->setText(uri);
+    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text();
+
+    this->mainUI.action_New_Download->trigger();
+    qApp->setActiveWindow(this);
+    this->setFocus(Qt::MouseFocusReason);
+}
+
+void NullGet::onOtherKaria2MessageRecived(const QString &msg)
+{
+    QStringList args;
+    
+    if (msg.startsWith("sayhello:")) {
+        qDebug()<<__FUNCTION__<<"You says: "<<msg;
+    } else if (msg.startsWith("cmdline:")) {
+        args = msg.right(msg.length() - 8).split(" ");
+        this->handleArguments(args);
+    } else {
+        qDebug()<<__FUNCTION__<<"Unknown message type: "<<msg;
+    }
+}
+
+
 //dynamic language switch
 void NullGet::retranslateUi()
 {
@@ -3870,7 +3946,6 @@ void NullGet::onObjectDestroyed(QObject * obj )
 	obj->dumpObjectInfo () ;
 	obj->dumpObjectTree () ;
 }
-
 
 
 //QAXFACTORY_DEFAULT(NullGet,

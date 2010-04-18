@@ -1,3 +1,13 @@
+// main.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-18 12:50:15 +0800
+// Version: $Id$
+// 
+
+
 #include <QtCore>
 #include <QtGui>
 #include <QApplication>
@@ -7,6 +17,36 @@
 
 #include "nullgetapplication.h"
 #include "nullget.h"
+
+QString packArguments(QApplication *app, int argc, char **argv)
+{
+    int cargc = 0;
+    QString cmdLine;
+    QStringList args;
+
+    args = app->arguments();
+#ifdef Q_OS_WIN
+    // the string given by arguments().at(0) might not be the program name on Windows, 
+    // depending on how the application was started.
+    // args.prepend(app->applicationFilePath());
+    if (args.count() == 0) {
+        args.append(app->applicationFilePath());
+    } else if (!args.at(0).endsWith("nullget.exe", Qt::CaseInsensitive)) {
+        args.prepend(app->applicationFilePath());
+    } else {
+        // ok, get argument's mechinism the same as *nix, go on 
+    }
+#endif
+
+    cargc = args.count();
+    
+    cmdLine = args.join(" ");
+    
+    qDebug()<<__FUNCTION__<<cmdLine;
+    return cmdLine;
+}
+// unpack is not need, because getopt4 support QStringList format cmdLine.
+// int unpackArguments(QString cmdLine, char **argv);
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +58,11 @@ int main(int argc, char *argv[])
 
     if (app.isRunning()) {
         qDebug()<<"Another instance of karia2 is running.";
-        QString msg("hi master, are you ok?");
+        QString msg("sayhello: hi master, are you ok?");
         bool sendok = app.sendMessage(msg);
+        msg = "cmdline:" + packArguments(&app, argc, argv);
+        sendok = app.sendMessage(msg);
+
         if (sendok) {
             
         } else {
@@ -28,7 +71,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    NullGet w;
+    NullGet win;
 
 	//这种方法只能在启动的时候用，其他时候更改无效。
 	//QTranslator translator;
@@ -55,8 +98,10 @@ int main(int argc, char *argv[])
 	//w.setFocus();
 	//w.raise();
 	//w.activateWindow();
-	w.show();
+	win.show();
 
+    QObject::connect(&app, SIGNAL(messageReceived(const QString&)),
+                     &win, SLOT(onOtherKaria2MessageRecived(const QString&)));
     QObject::connect(&app, SIGNAL(messageReceived(const QString&)), 
                      &app, SLOT(handleMessage(const QString &)));
 
