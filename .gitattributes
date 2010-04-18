@@ -146,6 +146,10 @@ libng/qtmd5.h -text
 qtsingleapplication/QtSingleApplication -text
 qtsingleapplication/qtlocalpeer.cpp -text
 qtsingleapplication/qtlocalpeer.h -text
+qtsingleapplication/qtlockedfile.cpp -text
+qtsingleapplication/qtlockedfile.h -text
+qtsingleapplication/qtlockedfile_unix.cpp -text
+qtsingleapplication/qtlockedfile_win.cpp -text
 qtsingleapplication/qtsingleapplication.cpp -text
 qtsingleapplication/qtsingleapplication.h -text
 /radarscanner.cpp -text
