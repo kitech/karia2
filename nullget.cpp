@@ -3883,6 +3883,7 @@ void NullGet::handleArguments(int argc, char **argv)
 void NullGet::handleArguments(QStringList args)
 {
     QString uri, uri2;
+    QString refer, refer2;
     QString shortArgName;
     QString longArgName;
     QString defaultArgValue = QString::null;
@@ -3893,7 +3894,12 @@ void NullGet::handleArguments(QStringList args)
     shortArgName = "u";
     longArgName = "uri";
     go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case:  -uabcd.zip
-    go.addOptionalArgument(shortArgName, &uri2); //  deal with case:    -u abcd.zip
+    // go.addOptionalArgument(shortArgName, &uri2); //  deal with case:    -u abcd.zip
+
+    QString referShortArgName = "r";
+    QString referLongArgName = "refer";
+    go.addOptionalOption('r', referLongArgName, &refer, defaultArgValue);
+    // go.addOptionalArgument(referShortArgName, &refer2);
 
     if (!go.parse()) {
         // qDebug()<<__FUNCTION__<<"Arg parse faild.";
@@ -3901,6 +3907,7 @@ void NullGet::handleArguments(QStringList args)
     }
 
     qDebug()<<uri<<uri2;
+    qDebug()<<refer<<refer2;
 
     if (uri == QString::null && uri2 == QString::null) {
         qDebug()<<__FUNCTION__<<"No uri specified.";
@@ -3908,6 +3915,12 @@ void NullGet::handleArguments(QStringList args)
     }
 
     uri = (uri == QString::null) ? uri2 : uri;
+
+    // fix for opera %l or %u give the error url
+    if (uri.startsWith("http:/", Qt::CaseInsensitive)
+        && !uri.startsWith("http://", Qt::CaseInsensitive)) {
+        uri = uri.replace("http:/", "http://");
+    }
 
     QClipboard *cb = QApplication::clipboard();
     cb->setText(uri);

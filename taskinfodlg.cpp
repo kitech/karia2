@@ -166,7 +166,9 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	//如果剪贴板上是有效的URL，则认为这就是要添加的任务，直填写到任务URL栏中。
 	QClipboard * cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
-	QUrl u(cbstr) ;
+
+	QUrl u(cbstr);
+    qDebug()<<__FUNCTION__<<cbstr<<u<<u.isValid()<<u.scheme();   
 	if (u.isValid() && u.scheme().length() > 0) {
 		this->ui.tid_g_le_url->setText(cbstr);
     } if (cbstr.toLower().startsWith("magnet:?")) {
@@ -242,16 +244,17 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 	//
 	QClipboard * cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
+    qDebug()<<__FUNCTION__<<cbstr;
+
 	QUrl u(cbstr) ;
-	if( u.isValid() )
+	if (u.isValid()) {
 		this->ui.tid_g_le_url->setText(cbstr);
+    }
 	this->ui.tid_g_le_url->selectAll();
 
 	//
 	TaskOption * prm = param ;
-	if( prm != 0 )
-	{
-		//
+	if (prm != 0) {
 		//general
 		ui.tid_g_le_url->setText(prm->mTaskUrl);
 		ui.tid_g_cb_seache_mirror->setChecked(param->mFindUrlByMirror==1?true:false);

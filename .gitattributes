@@ -43,6 +43,7 @@ doc/C++.txt -text
 doc/MPC.txt -text
 doc/all.txt -text
 doc/aria2c.txt -text
+doc/browsers.txt -text
 doc/flashget.txt -text
 doc/https.txt -text
 doc/qt[!!-~]note.txt -text
