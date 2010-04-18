@@ -25,6 +25,9 @@ public:
 
     int rpcPort();
 
+signals:
+    void taskLogReady(QString cuid, QString itime, QString log);
+
 private slots:
     void onAriaProcError(QProcess::ProcessError error);
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -32,6 +35,8 @@ private slots:
     void onAriaProcReadyReadStderr();
     void onAriaProcStarted();
     void onAriaProcStateChanged(QProcess::ProcessState newState);
+    
+    void onLogChannelReadyRead();
 
 private:
     QProcess *mAriaProc;
@@ -40,6 +45,9 @@ private:
     int defaultRpcPort;
     int currentRpcPort;
     QString mPidFile;
+    QString mLogFilePath;
+    QFile  *mLogFile;
+    QTextCodec *mCodec;
 };
 
 

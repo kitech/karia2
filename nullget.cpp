@@ -218,6 +218,8 @@ void NullGet::firstShowHandler()
     QObject::connect(&this->mAriaGlobalUpdater, SIGNAL(timeout()),
                      this, SLOT(onAriaGlobalUpdaterTimeout()));
     this->mAriaGlobalUpdater.start();
+    QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString, QString, QString)),
+                     this->mTaskMan, SLOT(onTaskLogArrived(QString, QString, QString)));
 
 	///////
 	this->hideUnimplementUiElement();
@@ -3465,31 +3467,20 @@ void NullGet::onOpenDistDirector()
 
 	ism = this->mTaskListView->selectionModel();
 	mil = ism->selectedIndexes();
-	if( mil.size() > 0 )
-	{
-		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	// taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
+	if (mil.size() > 0) {
+		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	
+        // taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
 		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
-		//tq = this->findTaskById(taskId  , atModel );
-		//tq = TaskQueue::findTaskById(taskId  );
-		//if( tq == 0 ) return ;
-		//if( tq->mTaskOption != 0 )
-		//if(0)
-		//{
-		//	//dir = tq->mTaskOption->mSavePath ;
-		//}
-		//else
-		//{
-		//	dir = QDir::currentPath();
-		//	
-		//}
+
 		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
-		durl = dir ;
+        if (dir.startsWith("~")) {
+            dir = QDir::homePath() + dir.right(dir.length() - 1);
+        }
+		durl = dir;
 
 		QDesktopServices::openUrl(durl);	//only qt >= 4.2
-	}
-	else
-	{
-		QMessageBox::warning(this,tr("No Task Selected"),tr("Please Select a Task For Operation"));
+	} else {
+		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
 	}
 }
 
@@ -3510,41 +3501,27 @@ void NullGet::onOpenExecDownloadedFile()
 
 	ism = this->mTaskListView->selectionModel();
 	mil = ism->selectedIndexes();
-	if( mil.size() > 0 )
-	{
-		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	//this->mTaskListViewModel->data(mil.at(0)).toInt();	
+	if (mil.size() > 0) {
+		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	
+        //this->mTaskListViewModel->data(mil.at(0)).toInt();	
 		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
 		fname = mil.at(ng::tasks::file_name).data().toString() ;
-		//tq = this->findTaskById(taskId , atModel );
-		//tq = TaskQueue::findTaskById(taskId );
-		//if( tq == 0 ) return ;
-		//if( tq->mTaskOption != 0 )
-		//if(0)
-		//{
-		//	//dir = tq->mTaskOption->mSavePath ;
-		//	//fname = tq->mTaskOption->mSaveName ;
-		//}
-		//else
-		//{
-		//	dir = QDir::currentPath();
-		//	fname = atModel->data(mil.at(2)).toString();
-		//}
+
 		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
-		durl = dir + QString("/") + fname ;
-		if( fname .length() == 0 || ! QDir().exists(durl) )
-		{
-			QMessageBox::warning(this,tr("Notice:"),
-				QString(tr("File <b>%1</b> not found,has it downloaded already?")).arg(durl));
-		}
-		else
-		{
+        if (dir.startsWith("~")) {
+            dir = QDir::homePath() + dir.right(dir.length() - 1);
+        }
+		durl = dir + QString("/") + fname;
+        QString fullUrl = QDir().absoluteFilePath(durl);
+		if (fname .length() == 0 || ! QDir().exists(fullUrl)) {
+			QMessageBox::warning(this, tr("Notice:"),
+                                 QString(tr("File <b>%1</b> not found,has it downloaded already?")).arg(fullUrl));
+		} else {
 			//QProcess::execute(openner);
-			QDesktopServices::openUrl(durl);	//only qt >= 4.2
+			QDesktopServices::openUrl(fullUrl );	//only qt >= 4.2
 		}
-	}
-	else
-	{
-		QMessageBox::warning(this,tr("No Task Selected"),tr("Please Select a Task For Operation"));
+	} else {
+		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
 	}
 }
 
@@ -3554,22 +3531,25 @@ void NullGet::onOpenExecDownloadedFile()
 void NullGet::onClipBoardDataChanged()
 {
 	
-	QClipboard * cb = QApplication::clipboard() ;	
+	QClipboard *cb = QApplication::clipboard() ;	
 	QString text = cb->text();
 
 	qDebug()<<cb->mimeData()->formats();
 	
-	if( text.length() > 0 )
-	{
+	if (text.length() > 0) {
 		QUrl uu(text);
-		if( uu.scheme().toUpper().compare("HTTP") ==0 || uu.scheme().toUpper().compare("FTP") == 0 )
-		{
-			//this->showNewDownloadDialog();
+		if (uu.scheme().toUpper().compare("HTTP") == 0 
+            || uu.scheme().toUpper().compare("HTTPS") == 0
+            || uu.scheme().toUpper().compare("FTP") == 0
+            || text.startsWith("magnet:?", Qt::CaseInsensitive)
+            || text.startsWith("flashget", Qt::CaseInsensitive)
+            || text.startsWith("qqdl:", Qt::CaseInsensitive)
+            || text.startsWith("thunder:", Qt::CaseInsensitive)) {
+			//this->showNewDownloadDialog(); // Open sometime later
 		}
 	}
 	
-	qDebug()<<text ;
-
+	qDebug()<<text;
 }
 void NullGet::caclAllTaskAverageSpeed() 
 {
@@ -3627,9 +3607,8 @@ void NullGet::onAllocateDiskFileSpace(quint64 fileLength , QString fileName )
 void NullGet::paintEvent ( QPaintEvent * event )
 {
 	QPainter painter(this);
-	QPoint p(0,0);
-	if( this->image.isNull() )
-	{
+	QPoint p(0, 0);
+	if (this->image.isNull()) {
 		this->image =QImage("4422b46f9b7e5389963077_zVzR8Bc2kwIf.jpg") ;
 		//qDebug()<<this->mCatView->windowOpacity();
 		//this->mCatView->setWindowOpacity(0.5);
@@ -3654,26 +3633,21 @@ void NullGet::closeEvent ( QCloseEvent * event )
 {
 	qDebug()<<__FUNCTION__ << this->sender() ;
 	//qDebug()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
-	if( this->sender() == 0 )	// 点击右上角的X号,将该行为转成窗口最小化，隐藏到系统托盘区域
-	{
+	if (this->sender() == 0) { // 点击右上角的X号,将该行为转成窗口最小化，隐藏到系统托盘区域
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		event->setAccepted(false);
-	}
-	else	//通过点击退出菜单，可认为用户是想退出的。
-	{
+	} else {//通过点击退出菜单，可认为用户是想退出的。
 		//if ( QMessageBox::question(this,"Are you sure?","Exit NullGet Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
 		{
 		//	event->setAccepted(false);	//不再传递了
 		//	return ;
 		}
-		if( this->mWalkSiteWnd != 0 )	//the other main window , close it here
-		{
+		if (this->mWalkSiteWnd != 0) { //the other main window , close it here
 			this->mWalkSiteWnd->close();
 			delete this->mWalkSiteWnd ;
 			this->mWalkSiteWnd = 0 ;
 		}
-		if( this->mHWalkSiteWndEx != 0 )	//the other main window , close it here
-		{
+		if (this->mHWalkSiteWndEx != 0) { //the other main window , close it here
 			this->mHWalkSiteWndEx->close();
 			delete this->mHWalkSiteWndEx ;
 			this->mHWalkSiteWndEx = 0 ;
@@ -3685,7 +3659,7 @@ void NullGet::closeEvent ( QCloseEvent * event )
 		QApplication::setQuitOnLastWindowClosed(true);
 		event->setAccepted(true );
 		QMainWindow::closeEvent(event);
-	}	
+	}
 }
 
 void NullGet::showEvent ( QShowEvent * event ) 
@@ -3708,23 +3682,19 @@ bool NullGet::winEvent ( MSG * msg, long * result )
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 	//whereis MOD_CONTROL ???
     // shutcut: CTRL+SHIFT+C
-	if( msg->message == WM_HOTKEY )
-	{
-		switch( msg->wParam )
-		{
+	if (msg->message == WM_HOTKEY) {
+		switch(msg->wParam) {
 		case 'C':
 			//做想做的事。我想用它抓图,哈哈，完全可以啊。
-			this->shootScreen() ;
-			qDebug()<<msg->message <<"xxx"<<(int)('G')<<":"<<msg->wParam<<" lp:"<< msg->lParam 
-			;
+			this->shootScreen();
+			qDebug()<<msg->message <<"xxx"<<(int)('G')<<":"<<msg->wParam<<" lp:"<< msg->lParam;
 			break;
 		default:
 			break ;
 		}
-		
 	}
 	
-	return QMainWindow::winEvent(msg,result);
+	return QMainWindow::winEvent(msg, result);
 }
 #else
 #ifdef Q_OS_MAC
@@ -3736,8 +3706,7 @@ bool NullGet::macEvent ( EventHandlerCallRef caller, EventRef event )
 bool NullGet::x11Event ( XEvent * event )
 {
     //qDebug()<<"XEvent->type:"<< event->type  ;
-    if(event->type == PropertyNotify)
-    {
+    if (event->type == PropertyNotify) {
         //qDebug()<<"dont push button";
     }
     return QMainWindow::x11Event(event);
@@ -3745,11 +3714,9 @@ bool NullGet::x11Event ( XEvent * event )
 void NullGet::keyReleaseEvent ( QKeyEvent * event )
 {
     // shortcut: CTRL+G
-    if(event->modifiers() == Qt::ControlModifier )
-    {
+    if (event->modifiers() == Qt::ControlModifier) {
         //qDebug()<<"with ctrl key ";
-        if(event->key() == Qt::Key_G )
-        {
+        if (event->key() == Qt::Key_G) {
             //qDebug()<<"key released: " << event->text();
             this->shootScreen();
         }
@@ -3767,14 +3734,12 @@ void NullGet::shootScreen()
 
 	QString fileName =	QString("abcd" ) + "."+format ;
 	
-	if( ! QFile::exists(fileName) )
-	{
+	if (! QFile::exists(fileName)) {
 		QFile ff(fileName);
 		ff.open(QIODevice::ReadWrite|QIODevice::Unbuffered);
 		ff.close();
 	}
-	if( ! screenSnapShot.save(fileName, format.toAscii()) )
-	{
+	if (! screenSnapShot.save(fileName, format.toAscii())) {
 		qDebug()<< "save screen snap shot error:"<<fileName ;
 	}
 }

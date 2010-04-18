@@ -25,6 +25,8 @@
 AriaMan::AriaMan(QObject *parent)
     : QObject(parent)
     , mAriaProc(NULL)
+    , mLogFile(NULL)
+    , mCodec(NULL)
 {
 #ifdef Q_OS_WIN
     this->mPidFile = QCoreApplication::applicationDirPath() + "/.karia2/aria2.pid";
@@ -66,6 +68,11 @@ AriaMan::AriaMan(QObject *parent)
         serv.close();
     }
 
+#ifdef Q_OS_WIN
+    this->mLogFilePath = "aria2c.log";
+#else
+    this->mLogFilePath = "/tmp/aria2c.log";
+#endif
     
     this->mStartArgs << "--no-conf"
                      << "--enable-xml-rpc=true"
@@ -75,11 +82,14 @@ AriaMan::AriaMan(QObject *parent)
                      << "--enable-dht=true"
                      << "--dht-listen-port=6881-6999"
                      << "--disable-ipv6=true"
-#ifdef Q_OS_WIN
-                     << "--log=aria2c.log"
-#else
-                     << "--log=/tmp/aria2c.log"
-#endif
+                     << "--log=-"
+        //                     << QString("--log=%1").arg(this->mLogFilePath)
+// #ifdef Q_OS_WIN
+//                      << "--log=aria2c.log"
+// #else
+//                      << "--log=/tmp/aria2c.log"
+// #endif
+                     << "--log-level=info"
                      << "--human-readable=false"
                      << "--check-certificate=false"
                      << "--user-agent=nullget/0.3"
@@ -88,10 +98,15 @@ AriaMan::AriaMan(QObject *parent)
     //                     << "--all-proxy=127.0.0.1:8118"
         
         ;
+
 }
 
 AriaMan::~AriaMan()
 {
+    if (this->mLogFile != NULL) {
+        this->mLogFile->close();
+        delete this->mLogFile;
+    }
     if (this->mAriaProc != NULL) {
         this->mAriaProc->kill();
         delete this->mAriaProc;
@@ -108,11 +123,12 @@ bool AriaMan::start()
         QObject::connect(this->mAriaProc, SIGNAL(finished(int, QProcess::ExitStatus)), 
                          this, SLOT(onAriaProcFinished(int, QProcess::ExitStatus)));
         // QObject::connect(this->mAriaProc, SIGNAL(readyReadStandardError()), this, SLOT(onAriaProcReadyReadStderr()));
-        // QObject::connect(this->mAriaProc, SIGNAL(readyReadStandardOutput()), this, SLOT(onAriaProcReadyReadStdout()));
+        QObject::connect(this->mAriaProc, SIGNAL(readyReadStandardOutput()), this, SLOT(onAriaProcReadyReadStdout()));
         QObject::connect(this->mAriaProc, SIGNAL(started()), this, SLOT(onAriaProcStarted()));
         QObject::connect(this->mAriaProc, SIGNAL(stateChanged(QProcess::ProcessState)), 
                          this, SLOT(onAriaProcStateChanged(QProcess::ProcessState)));
     }
+
     if (this->mAriaProc->state() == QProcess::NotRunning) {
 #ifdef Q_OS_WIN
         this->mAriaProc->start(qApp->applicationDirPath() + "/aria2c.exe", this->mStartArgs);
@@ -129,7 +145,18 @@ bool AriaMan::start()
         pidFile.write(QString("%1").arg(this->mAriaPid).toAscii());
 #endif
 
+        this->mCodec = QTextCodec::codecForLocale();
+        if (this->mCodec == NULL) {
+            this->mCodec = QTextCodec::codecForName("UTF-8");
+        }
+        this->mLogFile = new QFile(this->mLogFilePath);
+        // bool openok =
+        this->mLogFile->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
+        this->mLogFile->seek(this->mLogFile->size());
+        QObject::connect(this->mLogFile, SIGNAL(readyRead()), this, SLOT(onLogChannelReadyRead()));
+        // qDebug()<<__FUNCTION__<<this->mLogFile<<openok;
     }
+
     return true;
 }
 bool AriaMan::stop()
@@ -169,7 +196,47 @@ void AriaMan::onAriaProcReadyReadStdout()
         } else {
             logLine = this->mAriaProc->readAll();
         }
-        qDebug()<<logLine;
+        // qDebug()<<logLine;
+
+        // log parser
+        {
+            int ipos, spos;
+            QString cuid;
+            QString itime;
+            QString msg, umsg;
+            if ((ipos = logLine.indexOf("INFO - CUID#")) >= 0) {
+                if (logLine.indexOf("HttpServer: all response transmitted", ipos) >= 0
+                    || logLine.indexOf("Persist connection", ipos) >= 0) {
+                    // xml-rpc log
+                } else if (logLine.indexOf("Setting up HttpListenCommand", ipos) >= 0
+                           || logLine.indexOf("Using port 6800 for accepting new connections", ipos) >= 0) {
+                    // not care
+                } else {
+                    spos = logLine.indexOf(" ", ipos + 12);
+                    itime = logLine.left(26); // 2010-04-18 21:43:53.805873
+                    cuid = logLine.mid(ipos + 12, spos - ipos - 12);
+                    msg = logLine.right(logLine.length() - spos - 3);
+                    if (msg.indexOf("正在请求") >= 0 
+                        || msg.indexOf("收到应答") >= 0) {
+                        
+                        while ((logLine = this->mAriaProc->readLine()) != "\r\n"
+                               && this->mAriaProc->bytesAvailable() > 0) {
+                            msg += logLine;
+                        }
+                    }
+                    umsg = this->mCodec->toUnicode(msg.toAscii());
+
+                    // qDebug()<<"LOG-PART:"<<cuid<<itime<<umsg;
+                    emit this->taskLogReady(cuid, itime, umsg);
+                }
+            } else if (logLine.startsWith("[#")) {
+                // general progress bar
+            } else {
+                // not care
+            }
+        }
+
+        this->mLogFile->write(logLine.toAscii());
     }
 }
 void AriaMan::onAriaProcReadyReadStderr()
@@ -191,3 +258,17 @@ void AriaMan::onAriaProcStateChanged(QProcess::ProcessState newState)
 {
 }
 
+void AriaMan::onLogChannelReadyRead()
+{
+    QString line;
+    QStringList mline; // multiline
+
+    // qDebug()<<__FUNCTION__<<__LINE__<<"here";
+
+    Q_ASSERT(this->mLogFile->canReadLine());
+    while (this->mLogFile->bytesAvailable() > 0) {
+        line = this->mLogFile->readLine();
+
+        qDebug()<<line;
+    }
+}

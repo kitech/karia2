@@ -25,13 +25,14 @@ class SeedFileModel;
 
 class Task  {
 public:
+    Task(int taskId, QString taskUrl);
+    ~Task();
+
     int mTaskId;
     QString mTaskUrl;
     int mCatId;
 
-    Task(int taskId, QString taskUrl);
-    ~Task();
-
+    QVector<QPair<QString, QString> > mLogs;  // itime, log
 public:
     TorrentPeerModel *btPeerModel;
     TaskServerModel *serverModel;
@@ -103,6 +104,8 @@ public slots:
 
     QBitArray getCompletionBitArray(int taskId);
 
+    void onTaskLogArrived(QString cuid, QString itime, QString log);
+
 	//test 
 	void deleteLater () ;
 
@@ -128,6 +131,9 @@ private:
 
     static TaskQueue *mInstance;
     QHash<int, Task*> mTasks;
+    
+    QHash<QString, int> mTaskCUIDs; // cuid, taskId
+    QHash<QString, QVector<QPair<QString, QString> > > mUnattachedLogs; // cuid, <itime, log>
 };
 
 

@@ -867,6 +867,32 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId)
     }
 }
 
+void TaskQueue::onTaskLogArrived(QString cuid, QString itime, QString log)
+{
+    int taskId;
+    Task *task = NULL;
+    
+    // qDebug()<<"LOG-PART:"<<cuid<<itime<<log;
+    return; // use so much memory, omit it now
+
+    if (this->mTaskCUIDs.contains(cuid)) {
+        taskId = this->mTaskCUIDs.value(cuid);
+        task = this->mTasks.value(taskId);
+
+        task->mLogs.append(QPair<QString, QString>(itime, log));
+    } else {
+        // unattached log
+        if (this->mUnattachedLogs.contains(cuid)) {
+            
+            this->mUnattachedLogs[cuid].append(QPair<QString, QString>(itime, log));
+        } else {
+            QVector<QPair<QString, QString> > vlog;
+            vlog.append(QPair<QString, QString>(itime, log));
+            this->mUnattachedLogs.insert(cuid, vlog);
+        }
+    }
+}
+
 void TaskQueue::deleteLater () 
 {
 	qDebug()<<__FUNCTION__<<__LINE__;

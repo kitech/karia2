@@ -6,3 +6,8 @@ XML-RPC:
 重复添加一个torrent文件的时候，出现这个错误:
         InfoHash c8c4a3cf526db97b244deddc87c0d00fe14aa080 is already registered.
 
+
+log中的CUID#nn应该是TCP连接号。但是现在无法判断这个连接属于哪个任务的。
+        对于HTTP(S)协议，可以通过GET / HTTP/1.x这一行解析出来该CUID属于哪个任务。
+
+
