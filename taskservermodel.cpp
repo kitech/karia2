@@ -76,7 +76,7 @@ bool TaskServerModel::setData(QVariantList &servers)
         }
     }
     
-    this->beginInsertRows(QModelIndex(), 0, tServers.count() - 1);
+    this->beginInsertRows(QModelIndex(), 0, tServers.count());
     this->mServers = tServers;
     this->endInsertRows();
 

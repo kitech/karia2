@@ -1,4 +1,7 @@
 For opera menu:
     [Link Popup Menu]
     Item, "使用Nullget2下载"="Execute program,"xterm -e /home/gzleo/karia2-svn/NullGet","--uri=%l --refer=%u",,"nullget""
+    
+For Windows Opera:
+		问题，此扩展名未注册应用程序
 
