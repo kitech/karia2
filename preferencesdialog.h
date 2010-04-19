@@ -17,9 +17,28 @@
 
 
 #include "ui_preferencesdialog.h"
+#include "ui_proxyinfodialog.h"
 
 class SqliteStorage;
 
+//////////////////////
+class ProxyInfoDialog : public QDialog
+{
+    Q_OBJECT;
+public:
+    ProxyInfoDialog(QWidget *parent = 0);
+    ~ProxyInfoDialog();
+
+    QString getProxy();
+
+private:
+    Ui::ProxyInfoDialog uiwin;
+};
+
+
+///////////
+////////
+//////////
 class PreferencesDialog : public QDialog
 {
     Q_OBJECT;
@@ -28,7 +47,7 @@ public:
     ~PreferencesDialog();
 
 private:
-    Ui::PreferencesDialogClass uiwin;
+    Ui::PreferencesDialog uiwin;
     bool  mIsModified;
     SqliteStorage *storage;
 
@@ -38,16 +57,27 @@ private:
     bool monitorLoaded;
     bool graphLogLoaded;
     bool virtusLoaded;
+    bool proxyLoaded;
     bool advancedLoaded;
 
 private slots:
 	void onPreferencesSelectChanged(int index);
     void loadStatus(QString msg);
     QString loadKey(QString key, QString dvalue);
+    QVector<QPair<QString, QString> > loadKeyByType(QString type); // for proxy setting
+
     void loadGeneralOptions();
     void loadDefaultProperties();
     void loadConnectionOptions();
+    void loadProxyOptions();
     void saveAllOptions();
+
+    void onNoProxyChecked(bool checked);
+    void onCustomProxyChecked();
+    void onAddProxy();
+    void onModifyProxy();
+    void onDeleteProxy();
+    void onApplyProxy();
 };
 
 #endif // PREFERENCESDIALOG_H

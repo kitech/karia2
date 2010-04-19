@@ -3734,11 +3734,11 @@ void NullGet::showEvent ( QShowEvent * event )
 		//添加首次显示要处理的工作
 		qDebug()<<__FUNCTION__<<__LINE__<<"first show";
 		//this->firstShowHandler();
-		QTimer::singleShot(50, this, SLOT(firstShowHandler()));
+		QTimer::singleShot(30, this, SLOT(firstShowHandler()));
 	}
 }
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 bool NullGet::winEvent ( MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
@@ -3947,6 +3947,9 @@ void NullGet::handleArguments(QStringList args)
     if (uri.startsWith("http:/", Qt::CaseInsensitive)
         && !uri.startsWith("http://", Qt::CaseInsensitive)) {
         uri = uri.replace("http:/", "http://");
+    } else if (uri.startsWith("ftp:/", Qt::CaseInsensitive)
+               && !uri.startsWith("ftp://", Qt::CaseInsensitive)) {
+        uri = uri.replace("ftp:/", "ftp://");
     }
 
     QClipboard *cb = QApplication::clipboard();

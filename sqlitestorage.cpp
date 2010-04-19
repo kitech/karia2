@@ -407,6 +407,21 @@ QString SqliteStorage::getUserOption(QString key)
 	return ov;   
 }
 
+QVector<QPair<QString, QString> > SqliteStorage::getUserOptionsByType(QString type)
+{
+    QVector<QPair<QString, QString> > options;
+
+    QString sql = QString("SELECT option_name, option_value FROM user_options WHERE option_type='%1'").arg(type);
+
+    QSqlQuery query(this->mOptionsDB);
+    query.exec(sql);
+    while (query.next()) {
+        QSqlRecord rec = query.record();
+        options.append(QPair<QString, QString>(rec.value(0).toString(), rec.value(1).toString()));
+    }
+    return options;
+}
+
 bool SqliteStorage::addTask( int task_id , 
 			QString file_size            , 
 			QString retry_times          ,

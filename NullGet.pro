@@ -210,7 +210,8 @@ FORMS += aboutdialog.ui \
          webpageurlinputdlg.ui	\
          labspace.ui				\
          preferencesdialog.ui  \
-         seedfilesdialog.ui
+         seedfilesdialog.ui \
+         proxyinfodialog.ui
 
 HEADERS += $$MAIA_HEADERS 
 SOURCES += $$MAIA_SOURCES 

@@ -143,6 +143,7 @@ libng/qtmd5.h -text
 /preferencesdialog.cpp -text
 /preferencesdialog.h -text
 /preferencesdialog.ui -text
+/proxyinfodialog.ui -text
 qtsingleapplication/QtSingleApplication -text
 qtsingleapplication/qtlocalpeer.cpp -text
 qtsingleapplication/qtlocalpeer.h -text

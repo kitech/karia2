@@ -122,6 +122,7 @@ public:
 	bool deleteUserOption( QString key );
     QString getDefaultOption(QString key);
     QString getUserOption(QString key);
+    QVector<QPair<QString, QString> > getUserOptionsByType(QString type); // for proxy
 
 	bool addTask(int task_id ,		
                  QString file_size            , 
