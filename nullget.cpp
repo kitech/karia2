@@ -139,9 +139,9 @@ void NullGet::firstShowHandler()
 	
 	this->initialMainWindow();
 #ifdef WIN32
-	this->onSwitchWindowStyle(mainUI.actionWindowsX_P); //set default windowsxp UI style
+	// this->onSwitchWindowStyle(mainUI.actionWindowsX_P); //set default windowsxp UI style
 #else
-	this->onSwitchWindowStyle(mainUI.action_Plastique); //set default Plastique UI style
+	// this->onSwitchWindowStyle(mainUI.action_Plastique); //set default Plastique UI style
 #endif
 
 	this->update();
@@ -315,26 +315,42 @@ void NullGet::initPopupMenus()
 	group->addAction(mainUI.action_Manual);
 	group->addAction(mainUI.action_Automatic);
 
+    // should dynamic check available styles
 	//window style : "windows", "motif", "cde", "plastique", "windowsxp", or "macintosh" , "cleanlooks" 
 	//NorwegianWood
 	group = new QActionGroup(this) ;
-	mainUI.action_CDE->setData("cde");
-	mainUI.actionMo_tif->setData("motif");
-	mainUI.action_Mac->setData("macintosh");
-	mainUI.action_Windows->setData("windows");
-	mainUI.actionWindowsX_P->setData("windowsxp");
-	mainUI.action_Plastique->setData("plastique");
-	mainUI.actionCleanlooks->setData("cleanlooks");
+	// mainUI.action_CDE->setData("cde");
+	// mainUI.actionMo_tif->setData("motif");
+	// mainUI.action_Mac->setData("macintosh");
+	// mainUI.action_Windows->setData("windows");
+	// mainUI.actionWindowsX_P->setData("windowsxp");
+	// mainUI.action_Plastique->setData("plastique");
+	// mainUI.actionCleanlooks->setData("cleanlooks");
 	mainUI.action_NorwegianWood->setData("norwegianwood");
-	group->addAction(mainUI.action_CDE);
-	group->addAction(mainUI.actionMo_tif);
-	group->addAction(mainUI.action_Mac);
-	group->addAction(mainUI.action_Windows);
-	group->addAction(mainUI.actionWindowsX_P);
-	group->addAction(mainUI.action_Plastique);
-	group->addAction(mainUI.actionCleanlooks);
+	// group->addAction(mainUI.action_CDE);
+	// group->addAction(mainUI.actionMo_tif);
+	// group->addAction(mainUI.action_Mac);
+	// group->addAction(mainUI.action_Windows);
+	// group->addAction(mainUI.actionWindowsX_P);
+	// group->addAction(mainUI.action_Plastique);
+	// group->addAction(mainUI.actionCleanlooks);
 	group->addAction(mainUI.action_NorwegianWood);
-	QObject::connect(group,SIGNAL(triggered(QAction *) ),this , SLOT(onSwitchWindowStyle(QAction*)));
+    // automatic check supported style
+
+    QStringList styleKeys = QStyleFactory::keys();
+    QStyle *defaultStyle = QApplication::style();
+    // qDebug()<<QApplication::style()<<styleKeys;
+    for (int i = 0 ; i < styleKeys.count() ; ++i) {
+        QAction *styleAction = new QAction(styleKeys.at(i), this->mainUI.menuStyle);
+        styleAction->setData(styleKeys.at(i));
+        styleAction->setCheckable(true);
+        if (styleKeys.at(i).toLower() == defaultStyle->objectName()) {
+            styleAction->setChecked(true);
+        }
+        this->mainUI.menuStyle->addAction(styleAction);
+        group->addAction(styleAction);
+    }
+	QObject::connect(group, SIGNAL(triggered(QAction *)), this, SLOT(onSwitchWindowStyle(QAction*)));
 
 	//supported languages: en_US , zh_CN , zh_TW
 	group = new QActionGroup(this) ;
@@ -943,7 +959,7 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
 	QModelIndex index ;
 	QAbstractItemModel *mdl = 0;
 
-	//更新画图	及 线程列表区视图。
+	// update task ball and peer view
     if (this->mTaskMan->isTorrentTask(taskId)) {
         mdl = this->mTaskMan->torrentPeerModel(taskId);
         this->mSegListView->setModel(0);
@@ -952,7 +968,7 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
         mdl = this->mTaskMan->taskServerModel(taskId);
         this->mSegListView->setModel(mdl);
     }
-    qDebug()<<"Ball Ball"<<taskId<<mdl<<(mdl?mdl->rowCount():0);
+    qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl?mdl->rowCount():0);
     TaskBallMapWidget::instance()->onRunTaskCompleteState(taskId, true);
 }
 
@@ -3366,8 +3382,7 @@ void NullGet::onSwitchLanguage(QAction* action)
 	qtTranslator.load(langFile,qmPath);
 	//qDebug()<<"Loading file :"<<langFile ;
 
-	if( ! action->isChecked() )
-	{
+	if (! action->isChecked()) {
 		action->setChecked(true);
 	}
 
@@ -3382,31 +3397,29 @@ void NullGet::onSwitchSkinType(QAction* action)
 
 ////////////style
 //"windows", "motif", "cde", "plastique", "windowsxp", or "macintosh"
+// ("Bespin", "Oxygen", "Windows", "Motif", "CDE", "Plastique", "GTK+", "Cleanlooks")
+
 void NullGet::onSwitchWindowStyle(QAction * action )
 {
 	qDebug()<<__FUNCTION__<<":"<<__LINE__<<" typeL "<< action->data().toString()
 		<< this->sender() ;
-	if( action->data().toString() == "norwegianwood")
-	{
+    // QStringList styleKeys = QStyleFactory::keys();
+    // qDebug()<<styleKeys;
+
+	if (action->data().toString() == "norwegianwood") {
 		//qDebug()<<"NorwegianWood style";
 		QStyle * nw = new NorwegianWoodStyle() ;
 		QApplication::setStyle(nw);
-	}
-	else
-	{
+	} else {
 		QApplication::setStyle(action->data().toString());
 	}
 
-	if( mainUI.action_Default_Palette->isChecked() )
-	{
+	if (mainUI.action_Default_Palette->isChecked()) {
 		QApplication::setPalette(this->orginalPalette);
-	}
-	else
-	{
+	} else {
 		QApplication::setPalette(QApplication::style()->standardPalette());
 	}
-	if( ! action->isChecked() )
-	{
+	if (! action->isChecked()) {
 		action->setChecked(true);
 	}
 }

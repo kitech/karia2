@@ -81,7 +81,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
 		return;
 	}
     if (this->mBallBit.size() <= 0) {
-        qDebug()<<__FUNCTION__<<QString(" no bit set,");
+        qDebug()<<__FUNCTION__<<QString("No bit set,");
         // leave the widget raw clear
         return;
     }

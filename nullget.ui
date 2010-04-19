@@ -245,13 +245,6 @@
      </property>
      <addaction name="action_Default_Palette"/>
      <addaction name="separator"/>
-     <addaction name="action_Plastique"/>
-     <addaction name="actionWindowsX_P"/>
-     <addaction name="action_Mac"/>
-     <addaction name="actionMo_tif"/>
-     <addaction name="action_CDE"/>
-     <addaction name="action_Windows"/>
-     <addaction name="actionCleanlooks"/>
      <addaction name="separator"/>
      <addaction name="action_NorwegianWood"/>
     </widget>
@@ -1304,60 +1297,6 @@
   <action name="action_Decrease_split_parts">
    <property name="text">
     <string>&amp;Decrease split parts</string>
-   </property>
-  </action>
-  <action name="action_Plastique">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Plastique</string>
-   </property>
-  </action>
-  <action name="action_Mac">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Mac</string>
-   </property>
-  </action>
-  <action name="actionMo_tif">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Mo&amp;tif</string>
-   </property>
-  </action>
-  <action name="action_CDE">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;CDE</string>
-   </property>
-  </action>
-  <action name="action_Windows">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Windows</string>
-   </property>
-  </action>
-  <action name="actionWindowsX_P">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Windows&amp;XP</string>
    </property>
   </action>
   <action name="action_Show_Hide_Main_Widow">
