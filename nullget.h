@@ -130,7 +130,7 @@ public slots:
     void onOtherKaria2MessageRecived(const QString &msg);
 
 private:
-    Ui::NullGetClass mainUI; 
+    Ui::NullGet mainUI; 
 	AboutDialog *mpAboutDialog;
 	QTreeView * mTaskListView ;
 	QTreeView * mSegListView;

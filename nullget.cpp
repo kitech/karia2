@@ -970,6 +970,25 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
     }
     qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl?mdl->rowCount():0);
     TaskBallMapWidget::instance()->onRunTaskCompleteState(taskId, true);
+
+    {
+        // update task summary view
+        QString fileName = mil.at(ng::tasks::file_name).data().toString();
+        QString fileSize = mil.at(ng::tasks::file_size).data().toString();
+        QString speed = mil.at(ng::tasks::average_speed).data().toString();
+        QString blocks = mil.at(ng::tasks::block_activity).data().toString();
+        QString savePath = mil.at(ng::tasks::save_path).data().toString();
+        QString refer = mil.at(ng::tasks::org_url).data().toString();
+
+        this->mainUI.label_2->setText(fileName);
+        this->mainUI.label_2->setToolTip(fileName);
+        this->mainUI.label_3->setText(fileSize);
+        this->mainUI.label_5->setText(speed);
+        this->mainUI.label_7->setText(blocks);
+        this->mainUI.label_9->setText(savePath);
+        this->mainUI.label_11->setText(refer);
+        this->mainUI.label_11->setToolTip(refer);
+    }
 }
 
 void NullGet::onCatListSelectChange( const QItemSelection & selected, const QItemSelection & deselected )

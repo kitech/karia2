@@ -1,3 +1,12 @@
+// dropzone.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-19 23:00:53 +0800
+// Version: $Id$
+// 
+
 #include <QtCore>
 #include <QApplication>
 #include <QSizePolicy>

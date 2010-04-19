@@ -17,7 +17,8 @@ AboutDialog::AboutDialog(QWidget *parent)
 	ui.setupUi(this);
 
 	//
-	QObject::connect(ui.pushButton,SIGNAL(clicked()),this,SLOT(changeWindowSize()));
+	QObject::connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(changeWindowSize()));
+    this->ui.label_5->setText(QString(KARIA2_VERSION));
 }
 
 AboutDialog::~AboutDialog()

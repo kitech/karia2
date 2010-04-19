@@ -11,7 +11,7 @@
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="30"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="154"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="155"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31,7 +31,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../aboutdialog.ui" line="65"/>
         <location filename="../GeneratedFiles/ui_aboutdialog.h" line="150"/>
-        <source>NullGet(SwiftGet) 1.2.86</source>
+        <source>NullGet(SwiftGet)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="142"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="154"/>
+        <source>1.0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -41,32 +47,26 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="135"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="155"/>
-        <source>Buble</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="151"/>
-        <location filename="../aboutdialog.cpp" line="41"/>
+        <location filename="../aboutdialog.ui" line="159"/>
+        <location filename="../aboutdialog.cpp" line="35"/>
         <location filename="../GeneratedFiles/ui_aboutdialog.h" line="156"/>
         <source>&amp;FullScreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="174"/>
+        <location filename="../aboutdialog.ui" line="182"/>
         <location filename="../GeneratedFiles/ui_aboutdialog.h" line="157"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="181"/>
+        <location filename="../aboutdialog.ui" line="189"/>
         <location filename="../GeneratedFiles/ui_aboutdialog.h" line="158"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="38"/>
+        <location filename="../aboutdialog.cpp" line="32"/>
         <source>&amp;Normal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -419,14 +419,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>GLWidget</name>
-    <message>
-        <location filename="../glwidget.cpp" line="50"/>
-        <source>OpenGL pbuffers</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>LabSpaceClass</name>
     <message>
         <location filename="../labspace.ui" line="13"/>
@@ -463,1304 +455,1261 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>MusicSearchWndClass</name>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="129"/>
-        <source>MusicSearchWnd</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="137"/>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="138"/>
-        <source>MP3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="139"/>
-        <source>RM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="140"/>
-        <source>WMA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="141"/>
-        <source>FLASH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="142"/>
-        <source>OTHER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="144"/>
-        <source>&amp;Prev Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="145"/>
-        <source>&amp;Next Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="146"/>
-        <source>&amp;GO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="130"/>
-        <source>&amp;Select All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="131"/>
-        <source>&amp;Revert Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="132"/>
-        <source>&amp;Download Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="133"/>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_musicsearchwnd.h" line="134"/>
-        <source>&amp;Float</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>NullGet</name>
     <message>
-        <location filename="../nullget.cpp" line="510"/>
+        <location filename="../nullget.cpp" line="531"/>
         <source>NullGet Icon Tray Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1543"/>
+        <location filename="../nullget.cpp" line="1378"/>
+        <source>Delete permanently. TaskId: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.cpp" line="1383"/>
+        <source>Move Task .</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.cpp" line="1383"/>
+        <source>Move To Trash Now. TaskId: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.cpp" line="1582"/>
         <source>Task Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1686"/>
+        <location filename="../nullget.cpp" line="1725"/>
         <source>Delete Category:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1686"/>
+        <location filename="../nullget.cpp" line="1725"/>
         <source>Delete the Category and All sub Category?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2057"/>
+        <location filename="../nullget.cpp" line="2097"/>
         <source>pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2250"/>
+        <location filename="../nullget.cpp" line="2466"/>
         <source>Open a .metalink file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2251"/>
+        <location filename="../nullget.cpp" line="2467"/>
         <source>Metalink File (*.metalink)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2417"/>
-        <location filename="../nullget.cpp" line="2458"/>
+        <location filename="../nullget.cpp" line="2633"/>
+        <location filename="../nullget.cpp" line="2674"/>
         <source>Process Weg Page :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2417"/>
+        <location filename="../nullget.cpp" line="2633"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2458"/>
+        <location filename="../nullget.cpp" line="2674"/>
         <source>No URL(s) Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3350"/>
-        <location filename="../nullget.cpp" line="3405"/>
+        <location filename="../nullget.cpp" line="3564"/>
+        <location filename="../nullget.cpp" line="3605"/>
         <source>No Task Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3350"/>
-        <location filename="../nullget.cpp" line="3405"/>
+        <location filename="../nullget.cpp" line="3564"/>
+        <location filename="../nullget.cpp" line="3605"/>
         <source>Please Select a Task For Operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1382"/>
-        <location filename="../nullget.cpp" line="1449"/>
+        <location filename="../nullget.cpp" line="1378"/>
         <source>Delete Task .</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1382"/>
-        <location filename="../nullget.cpp" line="1449"/>
-        <source>Move It To Deleted Table Now. TaskId: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="1543"/>
+        <location filename="../nullget.cpp" line="1582"/>
         <source>Move It To Done Table Now. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2192"/>
+        <location filename="../nullget.cpp" line="2402"/>
         <source>Open a .torrent file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2193"/>
+        <location filename="../nullget.cpp" line="2403"/>
         <source>Torrent File (*.torrent)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3394"/>
+        <location filename="../nullget.cpp" line="3598"/>
         <source>Notice:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3395"/>
+        <location filename="../nullget.cpp" line="3599"/>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found,has it downloaded already?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3448"/>
+        <location filename="../nullget.cpp" line="3651"/>
         <source>Allocating File Space: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3457"/>
+        <location filename="../nullget.cpp" line="3660"/>
         <source>Waiting ...</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>NullGetClass</name>
     <message>
         <location filename="../nullget.ui" line="20"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="893"/>
-        <source>NullGetClass</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="111"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1098"/>
-        <source>Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="146"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1099"/>
-        <source>Graph</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="296"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1110"/>
-        <source>&amp;Category</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="285"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1109"/>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="221"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1104"/>
-        <source>&amp;View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="263"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1108"/>
-        <source>Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="225"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1105"/>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="241"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1106"/>
-        <source>Language</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="251"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1107"/>
-        <source>Skin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="177"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1101"/>
-        <source>&amp;Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="187"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1102"/>
-        <source>&amp;Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="195"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1103"/>
-        <source>Speed &amp;Limit Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="346"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1113"/>
-        <source>&amp;Jobs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="350"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1114"/>
-        <source>&amp;Rename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="332"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1112"/>
-        <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="306"/>
-        <location filename="../nullget.ui" line="815"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="959"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1111"/>
-        <source>&amp;File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="399"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1115"/>
-        <source>Main ToolBar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="441"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1119"/>
-        <source>Speed Histogram ToolBar Carrier </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="468"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="894"/>
-        <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="471"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="896"/>
-        <source>Quit NullGet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="480"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="898"/>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="489"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="899"/>
-        <source>User &amp;Manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="494"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="900"/>
-        <source>&amp;New Cagegory ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="499"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="901"/>
-        <source>&amp;Move to ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="508"/>
-        <location filename="../nullget.ui" line="1137"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="902"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1029"/>
-        <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="513"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="903"/>
-        <source>&amp;Properties ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="522"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="904"/>
-        <source>&amp;Paste URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="525"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="905"/>
-        <source>Ctrl+V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="530"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="906"/>
-        <source>Select &amp;All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="533"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="907"/>
-        <source>Ctrl+A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="538"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="908"/>
-        <source>&amp;Invert Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="547"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="909"/>
-        <source>&amp;Find ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="550"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="911"/>
-        <source>Find Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="553"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="913"/>
-        <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="562"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="914"/>
-        <source>Find &amp;Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="565"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="916"/>
-        <source>Find Next Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="568"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="918"/>
-        <source>F3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="579"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="919"/>
-        <source>&amp;Detail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="590"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="920"/>
-        <source>Drop &amp;Zone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="601"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="921"/>
-        <source>Show Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="606"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="922"/>
-        <source>Buttons ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="611"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="923"/>
-        <source>&amp;Columns ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="622"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="924"/>
-        <source>&amp;Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="633"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="925"/>
-        <source>(None)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="638"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="926"/>
-        <source>Get Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="649"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="927"/>
-        <source>Chinese(&amp;Simple)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="657"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="928"/>
-        <source>&amp;English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="665"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="929"/>
-        <source>Chinese(&amp;Trad)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="674"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="930"/>
-        <source>&amp;Connect/Disconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="677"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="932"/>
-        <source>Connect/Disconnect The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="682"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="934"/>
-        <source>&amp;Site Explorer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="685"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="935"/>
-        <source>F7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="693"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="936"/>
-        <source>&amp;Shut Down When Done</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="701"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="937"/>
-        <source>&amp;Hang Up When Done</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="709"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="938"/>
-        <source>Redial if Disconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="714"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="939"/>
-        <source>&amp;Download Rules</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="723"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="940"/>
-        <source>&amp;Save as default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="732"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="941"/>
-        <source>Default Download &amp;Properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="735"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="943"/>
-        <source>Default Download Property</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="738"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="945"/>
-        <source>Ctrl+Alt+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="747"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="946"/>
-        <source>&amp;Options...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="750"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="948"/>
-        <source>Change Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="753"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="950"/>
-        <source>Alt+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="764"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="951"/>
-        <source>&amp;Unlimited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="772"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="952"/>
-        <source>&amp;Manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="780"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="953"/>
-        <source>&amp;Automatic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="788"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="954"/>
-        <source>&amp;Remember</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="797"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="955"/>
-        <source>&amp;MP3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="800"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="956"/>
-        <source>F10</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="805"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="957"/>
-        <source>&amp;Software</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="810"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="958"/>
-        <source>&amp;Game</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="820"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="960"/>
-        <source>&amp;Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="829"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="961"/>
-        <source>C&amp;heck for a new version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="838"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="962"/>
-        <source>&amp;About NullGet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="841"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="964"/>
-        <source>About NullGet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="850"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="966"/>
-        <source>&amp;Go to NullGet Home Page -&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="859"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="967"/>
-        <source>FAQ in Internet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="868"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="968"/>
-        <source>&amp;User Manual in Internet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="873"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="969"/>
-        <source>&amp;New Database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="876"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="970"/>
-        <source>Ctrl+N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="881"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="971"/>
-        <source>&amp;Open Database...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="884"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="972"/>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="889"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="973"/>
-        <source>&amp;Merge Database...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="898"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="974"/>
-        <source>&amp;Save Database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="901"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="975"/>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="910"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="976"/>
-        <source>Save &amp;As...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="915"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="977"/>
-        <source>Import &amp;Previous File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="920"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="978"/>
-        <source>Import Previous &amp;Batch File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="925"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="979"/>
-        <source>&amp;Export Information...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="930"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="980"/>
-        <source>&amp;Export...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="935"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="981"/>
-        <source>Import Broken D&amp;ownloads...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="940"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="982"/>
-        <source>Import &amp;list...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="943"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="983"/>
-        <source>Ctrl+</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="948"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="984"/>
-        <source>&amp;Export list...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="953"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="985"/>
-        <source>Process &amp;Web Page File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="956"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="986"/>
-        <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="965"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="987"/>
-        <source>&amp;Recently Downloaded Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="968"/>
         <location filename="../GeneratedFiles/ui_nullget.h" line="988"/>
-        <source>Ctrl+R</source>
+        <source>NullGet Main WIndow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="976"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="989"/>
-        <source>Custom Background...</source>
+        <location filename="../nullget.ui" line="58"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1186"/>
+        <source>User Feedback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="984"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="990"/>
-        <source>XP_Luna</source>
+        <location filename="../nullget.ui" line="88"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1199"/>
+        <source>Summary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="992"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="991"/>
-        <source>XP_Luna(Gradient)</source>
+        <location filename="../nullget.ui" line="99"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1187"/>
+        <source>FType</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1000"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="992"/>
-        <source>Skype(Gradient)</source>
+        <location filename="../nullget.ui" line="116"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1189"/>
+        <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1008"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="993"/>
-        <source>Normal</source>
+        <location filename="../nullget.ui" line="123"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1190"/>
+        <source>()</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1016"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="994"/>
-        <source>ImageBk</source>
+        <location filename="../nullget.ui" line="133"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1191"/>
+        <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1025"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="995"/>
-        <source>&amp;New Download...</source>
+        <location filename="../nullget.ui" line="150"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1193"/>
+        <source>Block</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1028"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="997"/>
-        <source>Create a New Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1031"/>
-        <location filename="../nullget.ui" line="1046"/>
-        <location filename="../nullget.ui" line="1061"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="999"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1004"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1009"/>
-        <source>F4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1040"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1000"/>
-        <source>&amp;New Bittorrent...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1043"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1002"/>
-        <source>Create a New Bittorrent Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1066"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1010"/>
-        <source>Add &amp;batch download...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1075"/>
-        <location filename="../nullget.ui" line="1267"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1011"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1067"/>
-        <source>&amp;Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1078"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1013"/>
-        <source>Start The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1081"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1015"/>
-        <source>F5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1090"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1016"/>
-        <source>&amp;Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1093"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1018"/>
-        <source>Pause The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1096"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1020"/>
-        <source>F6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1101"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1021"/>
-        <source>&amp;Start All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1104"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1022"/>
-        <source>F8</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1109"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1023"/>
-        <source>Pause &amp;All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1112"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1024"/>
-        <source>F9</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1117"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1025"/>
-        <source>&amp;Schedule</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1120"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1026"/>
-        <source>Alt+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1125"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1027"/>
-        <source>&amp;Move To...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1128"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1028"/>
-        <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1140"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1031"/>
-        <source>Delete The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1143"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1033"/>
-        <source>Alt+Del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1148"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1034"/>
-        <source>&amp;Rename...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1153"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1035"/>
-        <source>&amp;Comment As Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1162"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1036"/>
-        <source>&amp;Properties...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1165"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1038"/>
-        <source>View The Selected Task&apos;s Property</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1168"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1040"/>
-        <source>Alt+Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1177"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1041"/>
-        <source>Move &amp;Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1180"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1043"/>
-        <source>Move Up The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1183"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1045"/>
-        <source>Alt+Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1192"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1046"/>
-        <source>Move &amp;Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1195"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1048"/>
-        <source>Move Down The Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1198"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1050"/>
-        <source>Alt+Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1203"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1051"/>
-        <source>&amp;Check for update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1208"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1052"/>
-        <source>&amp;Download Again</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1217"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1053"/>
-        <source>Open/Exec download &amp;file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1220"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1055"/>
-        <source>Execute Selected Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1223"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1057"/>
-        <source>Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1232"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1058"/>
-        <source>Open de&amp;stination directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1235"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1060"/>
-        <source>Open The Selected Task directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1238"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1062"/>
-        <source>Ctrl+Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1247"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1063"/>
-        <source>About Qt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1252"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1064"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1257"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1065"/>
-        <source>&amp;Select All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1262"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1066"/>
-        <source>Save to file ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1272"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1068"/>
-        <source>S&amp;top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1277"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1069"/>
-        <source>&amp;Restart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1282"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1070"/>
-        <source>&amp;Increase split parts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1287"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1071"/>
-        <source>&amp;Decrease split parts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1298"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1072"/>
-        <source>&amp;Plastique</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1306"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1073"/>
-        <source>&amp;Mac</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1314"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1074"/>
-        <source>Mo&amp;tif</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1322"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1075"/>
-        <source>&amp;CDE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1330"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1076"/>
-        <source>&amp;Windows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1341"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1077"/>
-        <source>Windows&amp;XP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1352"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1078"/>
-        <source>&amp;Show/Hide Main Widow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1363"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1079"/>
-        <source>&amp;Monitor Clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1371"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1080"/>
-        <source>&amp;Disable Browser Monitor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1376"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1081"/>
-        <source>Move &amp;top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1381"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1082"/>
-        <source>Move &amp;bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1386"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1083"/>
-        <source>Site &amp;Properties...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1391"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1084"/>
-        <source>&amp;Comment...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1396"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1085"/>
-        <source>Browse &amp;Referer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1401"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1086"/>
-        <source>Browse With Site &amp;Explorer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1406"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1087"/>
-        <source>&amp;Copy URL To ClipBoard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1411"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1088"/>
-        <source>C&amp;lear Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1416"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1089"/>
-        <source>&amp;Walk Site</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="64"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1097"/>
-        <source>User Infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1055"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1005"/>
-        <source>&amp;New Metalink...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1058"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1007"/>
-        <source>Create a New Metalink Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1424"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1090"/>
-        <source>&amp;Cleanlooks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1432"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1091"/>
-        <source>&amp;NorwegianWood</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1443"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1092"/>
-        <source>&amp;Default Palette</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1448"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1093"/>
-        <source>&amp;Plugins...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1453"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1094"/>
-        <source>TestWidgetPlugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1458"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1095"/>
-        <source>File&amp;Splitter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1463"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1096"/>
-        <source>&amp;MediaFileModifier</source>
+        <location filename="../nullget.ui" line="157"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1194"/>
+        <source>n/n </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../nullget.ui" line="167"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1100"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1195"/>
+        <source>Dest Dir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="192"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1197"/>
+        <source>Refer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="242"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1200"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="277"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1201"/>
+        <source>Graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="282"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1202"/>
+        <source>Peers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="292"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1203"/>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="335"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1204"/>
         <source>&amp;Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="345"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1205"/>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="355"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1206"/>
+        <source>&amp;Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="363"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1207"/>
+        <source>Speed &amp;Limit Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="389"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1208"/>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="393"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1209"/>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="402"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1210"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="412"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1211"/>
+        <source>Skin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="424"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1212"/>
+        <source>Toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="446"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1213"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="457"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1214"/>
+        <source>&amp;Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="467"/>
+        <location filename="../nullget.ui" line="976"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1054"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1215"/>
+        <source>&amp;File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="493"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1216"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="507"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1217"/>
+        <source>&amp;Jobs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="511"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1218"/>
+        <source>&amp;Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="560"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1219"/>
+        <source>Main ToolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="602"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1223"/>
+        <source>Speed Histogram ToolBar Carrier </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="629"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="989"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="632"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="991"/>
+        <source>Quit NullGet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="641"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="993"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="650"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="994"/>
+        <source>User &amp;Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="655"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="995"/>
+        <source>&amp;New Cagegory ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="660"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="996"/>
+        <source>&amp;Move to ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="669"/>
+        <location filename="../nullget.ui" line="1298"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="997"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1124"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="674"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="998"/>
+        <source>&amp;Properties ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="683"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="999"/>
+        <source>&amp;Paste URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="686"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1000"/>
+        <source>Ctrl+V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="691"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1001"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="694"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1002"/>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="699"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1003"/>
+        <source>&amp;Invert Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="708"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1004"/>
+        <source>&amp;Find ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="711"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1006"/>
+        <source>Find Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="714"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1008"/>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="723"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1009"/>
+        <source>Find &amp;Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="726"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1011"/>
+        <source>Find Next Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="729"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1013"/>
+        <source>F3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="740"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1014"/>
+        <source>&amp;Detail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="751"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1015"/>
+        <source>Drop &amp;Zone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="762"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1016"/>
+        <source>Show Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="767"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1017"/>
+        <source>Buttons ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="772"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1018"/>
+        <source>&amp;Columns ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="783"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1019"/>
+        <source>&amp;Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="794"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1020"/>
+        <source>(None)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="799"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1021"/>
+        <source>Get Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="810"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1022"/>
+        <source>Chinese(&amp;Simple)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="818"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1023"/>
+        <source>&amp;English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="826"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1024"/>
+        <source>Chinese(&amp;Trad)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="835"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1025"/>
+        <source>&amp;Connect/Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="838"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1027"/>
+        <source>Connect/Disconnect The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="843"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1029"/>
+        <source>&amp;Site Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="846"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1030"/>
+        <source>F7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="854"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1031"/>
+        <source>&amp;Shut Down When Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="862"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1032"/>
+        <source>&amp;Hang Up When Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="870"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1033"/>
+        <source>Redial if Disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="875"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1034"/>
+        <source>&amp;Download Rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="884"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1035"/>
+        <source>&amp;Save as default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="893"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1036"/>
+        <source>Default Download &amp;Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="896"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1038"/>
+        <source>Default Download Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="899"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1040"/>
+        <source>Ctrl+Alt+0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="908"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1041"/>
+        <source>&amp;Options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="911"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1043"/>
+        <source>Change Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="914"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1045"/>
+        <source>Alt+0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="925"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1046"/>
+        <source>&amp;Unlimited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="933"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1047"/>
+        <source>&amp;Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="941"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1048"/>
+        <source>&amp;Automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="949"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1049"/>
+        <source>&amp;Remember</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="958"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1050"/>
+        <source>&amp;MP3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="961"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1051"/>
+        <source>F10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="966"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1052"/>
+        <source>&amp;Software</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="971"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1053"/>
+        <source>&amp;Game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="981"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1055"/>
+        <source>&amp;Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="990"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1056"/>
+        <source>C&amp;heck for a new version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="999"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1057"/>
+        <source>&amp;About NullGet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1002"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1059"/>
+        <source>About NullGet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1011"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1061"/>
+        <source>&amp;Go to NullGet Home Page -&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1020"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1062"/>
+        <source>FAQ in Internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1029"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1063"/>
+        <source>&amp;User Manual in Internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1034"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1064"/>
+        <source>&amp;New Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1037"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1065"/>
+        <source>Ctrl+N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1042"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1066"/>
+        <source>&amp;Open Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1045"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1067"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1050"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1068"/>
+        <source>&amp;Merge Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1059"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1069"/>
+        <source>&amp;Save Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1062"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1070"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1071"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1071"/>
+        <source>Save &amp;As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1076"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1072"/>
+        <source>Import &amp;Previous File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1081"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1073"/>
+        <source>Import Previous &amp;Batch File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1086"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1074"/>
+        <source>&amp;Export Information...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1091"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1075"/>
+        <source>&amp;Export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1096"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1076"/>
+        <source>Import Broken D&amp;ownloads...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1101"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1077"/>
+        <source>Import &amp;list...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1104"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1078"/>
+        <source>Ctrl+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1109"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1079"/>
+        <source>&amp;Export list...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1114"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1080"/>
+        <source>Process &amp;Web Page File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1117"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1081"/>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1126"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1082"/>
+        <source>&amp;Recently Downloaded Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1129"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1083"/>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1137"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1084"/>
+        <source>Custom Background...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1145"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1085"/>
+        <source>XP_Luna</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1153"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1086"/>
+        <source>XP_Luna(Gradient)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1161"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1087"/>
+        <source>Skype(Gradient)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1169"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1088"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1177"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1089"/>
+        <source>ImageBk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1186"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1090"/>
+        <source>&amp;New Download...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1189"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1092"/>
+        <source>Create a New Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1192"/>
+        <location filename="../nullget.ui" line="1207"/>
+        <location filename="../nullget.ui" line="1222"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1094"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1099"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1104"/>
+        <source>F4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1201"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1095"/>
+        <source>&amp;New Bittorrent...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1204"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1097"/>
+        <source>Create a New Bittorrent Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1216"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1100"/>
+        <source>&amp;New Metalink...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1219"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1102"/>
+        <source>Create a New Metalink Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1227"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1105"/>
+        <source>Add &amp;batch download...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1236"/>
+        <location filename="../nullget.ui" line="1428"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1106"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1162"/>
+        <source>&amp;Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1239"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1108"/>
+        <source>Start The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1242"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1110"/>
+        <source>F5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1251"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1111"/>
+        <source>&amp;Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1254"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1113"/>
+        <source>Pause The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1257"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1115"/>
+        <source>F6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1262"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1116"/>
+        <source>&amp;Start All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1265"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1117"/>
+        <source>F8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1270"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1118"/>
+        <source>Pause &amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1273"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1119"/>
+        <source>F9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1278"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1120"/>
+        <source>&amp;Schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1281"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1121"/>
+        <source>Alt+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1286"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1122"/>
+        <source>&amp;Move To...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1289"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1123"/>
+        <source>Ctrl+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1301"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1126"/>
+        <source>Delete The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1304"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1128"/>
+        <source>Alt+Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1309"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1129"/>
+        <source>&amp;Rename...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1314"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1130"/>
+        <source>&amp;Comment As Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1323"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1131"/>
+        <source>&amp;Properties...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1326"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1133"/>
+        <source>View The Selected Task&apos;s Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1329"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1135"/>
+        <source>Alt+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1338"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1136"/>
+        <source>Move &amp;Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1341"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1138"/>
+        <source>Move Up The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1344"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1140"/>
+        <source>Alt+Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1353"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1141"/>
+        <source>Move &amp;Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1356"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1143"/>
+        <source>Move Down The Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1359"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1145"/>
+        <source>Alt+Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1364"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1146"/>
+        <source>&amp;Check for update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1369"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1147"/>
+        <source>&amp;Download Again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1378"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1148"/>
+        <source>Open/Exec download &amp;file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1381"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1150"/>
+        <source>Execute Selected Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1384"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1152"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1393"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1153"/>
+        <source>Open de&amp;stination directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1396"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1155"/>
+        <source>Open The Selected Task directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1399"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1157"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1408"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1158"/>
+        <source>About Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1413"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1159"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1418"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1160"/>
+        <source>&amp;Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1423"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1161"/>
+        <source>Save to file ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1433"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1163"/>
+        <source>S&amp;top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1438"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1164"/>
+        <source>&amp;Restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1443"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1165"/>
+        <source>&amp;Increase split parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1448"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1166"/>
+        <source>&amp;Decrease split parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1459"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1167"/>
+        <source>&amp;Show/Hide Main Widow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1470"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1168"/>
+        <source>&amp;Monitor Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1478"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1169"/>
+        <source>&amp;Disable Browser Monitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1483"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1170"/>
+        <source>Move &amp;top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1488"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1171"/>
+        <source>Move &amp;bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1493"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1172"/>
+        <source>Site &amp;Properties...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1498"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1173"/>
+        <source>&amp;Comment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1503"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1174"/>
+        <source>Browse &amp;Referer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1508"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1175"/>
+        <source>Browse With Site &amp;Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1513"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1176"/>
+        <source>&amp;Copy URL To ClipBoard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1518"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1177"/>
+        <source>C&amp;lear Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1523"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1178"/>
+        <source>&amp;Walk Site</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1531"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1179"/>
+        <source>&amp;Cleanlooks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1539"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1180"/>
+        <source>&amp;NorwegianWood</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1550"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1181"/>
+        <source>&amp;Default Palette</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1555"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1182"/>
+        <source>&amp;Plugins...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1560"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1183"/>
+        <source>TestWidgetPlugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1565"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1184"/>
+        <source>File&amp;Splitter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.ui" line="1570"/>
+        <location filename="../GeneratedFiles/ui_nullget.h" line="1185"/>
+        <source>&amp;MediaFileModifier</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2294,541 +2243,692 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>PluginDialogClass</name>
+    <name>PreferencesDialog</name>
     <message>
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="95"/>
-        <source>PluginDialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="96"/>
-        <source>TextLabel</source>
+        <location filename="../preferencesdialog.ui" line="17"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1423"/>
+        <source>Preferences Dialgo</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="97"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;宋体&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../preferencesdialog.ui" line="94"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1428"/>
+        <source>General常用</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="101"/>
-        <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="102"/>
-        <source>&amp;Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../GeneratedFiles/ui_plugindialog.h" line="103"/>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PreferencesDialogClass</name>
-    <message>
-        <location filename="../preferencesdialog.ui" line="1276"/>
-        <location filename="../preferencesdialog.ui" line="1369"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1357"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1361"/>
-        <source>Page 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="1345"/>
-        <location filename="../preferencesdialog.ui" line="1411"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1365"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1370"/>
-        <source>Page 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="1453"/>
-        <location filename="../preferencesdialog.ui" line="1499"/>
-        <location filename="../preferencesdialog.ui" line="1562"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1369"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1377"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1381"/>
-        <source>Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="16"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1264"/>
-        <source>PreferencesDialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="67"/>
-        <location filename="../preferencesdialog.ui" line="160"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1269"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1285"/>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="75"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1271"/>
+        <location filename="../preferencesdialog.ui" line="103"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1430"/>
         <source>Default Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="83"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1273"/>
+        <location filename="../preferencesdialog.ui" line="112"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1432"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="91"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1275"/>
+        <location filename="../preferencesdialog.ui" line="121"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1434"/>
         <source>Monitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="99"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1277"/>
+        <location filename="../preferencesdialog.ui" line="130"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1436"/>
         <source>Graph/Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="107"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1279"/>
+        <location filename="../preferencesdialog.ui" line="139"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1438"/>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="144"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1440"/>
         <source>Virtus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="115"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1281"/>
+        <location filename="../preferencesdialog.ui" line="153"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1442"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1043"/>
-        <location filename="../preferencesdialog.ui" line="1050"/>
-        <location filename="../preferencesdialog.ui" line="1060"/>
-        <location filename="../preferencesdialog.ui" line="1083"/>
-        <location filename="../preferencesdialog.ui" line="1125"/>
-        <location filename="../preferencesdialog.ui" line="1135"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1338"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1339"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1340"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1341"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1344"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1345"/>
-        <source>TextLabel</source>
+        <location filename="../preferencesdialog.ui" line="197"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1446"/>
+        <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="182"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1286"/>
+        <location filename="../preferencesdialog.ui" line="219"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1447"/>
         <source>Start main window minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="197"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1287"/>
+        <location filename="../preferencesdialog.ui" line="234"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1448"/>
         <source>Min segment size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="214"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1288"/>
+        <location filename="../preferencesdialog.ui" line="251"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1449"/>
         <source>  KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="231"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1289"/>
+        <location filename="../preferencesdialog.ui" line="268"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1450"/>
         <source>If error occurs stop download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="253"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1290"/>
+        <location filename="../preferencesdialog.ui" line="290"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1451"/>
         <source>Still download from non-resumable sites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="271"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1291"/>
+        <location filename="../preferencesdialog.ui" line="308"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1452"/>
         <source>Auto save listed file every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="281"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1292"/>
+        <location filename="../preferencesdialog.ui" line="318"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1453"/>
         <source>Write data to disk ervery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="291"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1293"/>
+        <location filename="../preferencesdialog.ui" line="328"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1454"/>
         <source>200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="298"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1294"/>
+        <location filename="../preferencesdialog.ui" line="335"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1455"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="305"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1295"/>
+        <location filename="../preferencesdialog.ui" line="342"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1456"/>
         <source>Minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="312"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1296"/>
+        <location filename="../preferencesdialog.ui" line="349"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1457"/>
         <source> KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="321"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1297"/>
+        <location filename="../preferencesdialog.ui" line="358"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1458"/>
         <source>Get File Date and Time From Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="331"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1298"/>
+        <location filename="../preferencesdialog.ui" line="368"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1459"/>
         <source>Start downloading on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="338"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1299"/>
-        <source>Use &quot;ng!&quot; as file extension till download is finished</source>
+        <location filename="../preferencesdialog.ui" line="375"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1460"/>
+        <source>Use &quot;aria2&quot; as file extension till download is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="348"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1300"/>
+        <location filename="../preferencesdialog.ui" line="385"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1461"/>
         <source>Auto backup download database erery day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="358"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1301"/>
+        <location filename="../preferencesdialog.ui" line="395"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1462"/>
         <source>Write individual *.log file for each download file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="365"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1302"/>
+        <location filename="../preferencesdialog.ui" line="402"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1463"/>
         <source>Move or Delete Log file when moving or deleting downloaded file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="372"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1303"/>
+        <location filename="../preferencesdialog.ui" line="409"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1464"/>
         <source>Play notify audio when done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="413"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1304"/>
+        <location filename="../preferencesdialog.ui" line="450"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1465"/>
         <source>Referenc:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="425"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1305"/>
+        <location filename="../preferencesdialog.ui" line="462"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1466"/>
         <source>Show Reference Page When Create New Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="435"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1306"/>
+        <location filename="../preferencesdialog.ui" line="472"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1467"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="447"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1307"/>
+        <location filename="../preferencesdialog.ui" line="484"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1468"/>
         <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="454"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1308"/>
+        <location filename="../preferencesdialog.ui" line="491"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1469"/>
         <source>Imidiate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="472"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1309"/>
+        <location filename="../preferencesdialog.ui" line="509"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1470"/>
         <source>(1-10)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="479"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1310"/>
+        <location filename="../preferencesdialog.ui" line="516"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1471"/>
         <source>Max Segment Count for Every Task:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="486"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1311"/>
+        <location filename="../preferencesdialog.ui" line="523"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1472"/>
         <source>(1-60)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="499"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1312"/>
+        <location filename="../preferencesdialog.ui" line="536"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1473"/>
         <source>Orginal Url Segment Count:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="508"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1313"/>
+        <location filename="../preferencesdialog.ui" line="545"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1474"/>
         <source>Open File When Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="538"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1314"/>
+        <location filename="../preferencesdialog.ui" line="575"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1475"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="550"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1315"/>
+        <location filename="../preferencesdialog.ui" line="587"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1476"/>
         <source>Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="583"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1316"/>
+        <location filename="../preferencesdialog.ui" line="620"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1477"/>
         <source>Data:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="616"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1317"/>
+        <location filename="../preferencesdialog.ui" line="653"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1478"/>
         <source>Retry Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="639"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1318"/>
+        <location filename="../preferencesdialog.ui" line="676"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1479"/>
         <source>Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="659"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1319"/>
+        <location filename="../preferencesdialog.ui" line="696"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1480"/>
         <source>Max Simultaneous jobs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="702"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1320"/>
+        <location filename="../preferencesdialog.ui" line="739"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1481"/>
         <source>Number of Retry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="722"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1321"/>
+        <location filename="../preferencesdialog.ui" line="759"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1482"/>
         <source>Always Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="750"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1322"/>
+        <location filename="../preferencesdialog.ui" line="787"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1483"/>
         <source>Connection Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="796"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1323"/>
+        <location filename="../preferencesdialog.ui" line="833"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1484"/>
         <source>KB/s (1-9999)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="803"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1324"/>
+        <location filename="../preferencesdialog.ui" line="840"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1485"/>
         <source>Limit Max Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="813"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1325"/>
+        <location filename="../preferencesdialog.ui" line="850"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1486"/>
         <source>Automatical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="854"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1326"/>
+        <location filename="../preferencesdialog.ui" line="891"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1487"/>
         <source>Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="866"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1327"/>
+        <location filename="../preferencesdialog.ui" line="903"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1488"/>
         <source>Monite Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="873"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1328"/>
+        <location filename="../preferencesdialog.ui" line="910"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1489"/>
         <source>Show Download Icon On Flash And Media File.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="886"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1329"/>
+        <location filename="../preferencesdialog.ui" line="923"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1490"/>
         <source>Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="898"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1330"/>
+        <location filename="../preferencesdialog.ui" line="935"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1491"/>
         <source>Monite Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="923"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1332"/>
-        <source>.asf;.avi;.exe;.iso;.mp3;.mpeg;.mpg;.mpga;.ra;.rar;.rm;.rmvb;.tar;.wma;.wmp;.wmv;.zip;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="945"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1334"/>
-        <source>Automatic Page Analyzer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="1012"/>
-        <location filename="../preferencesdialog.ui" line="1101"/>
-        <location filename="../preferencesdialog.ui" line="1108"/>
-        <location filename="../preferencesdialog.ui" line="1288"/>
-        <location filename="../preferencesdialog.ui" line="1295"/>
-        <location filename="../preferencesdialog.ui" line="1302"/>
-        <location filename="../preferencesdialog.ui" line="1309"/>
-        <location filename="../preferencesdialog.ui" line="1316"/>
-        <location filename="../preferencesdialog.ui" line="1511"/>
-        <location filename="../preferencesdialog.ui" line="1518"/>
-        <location filename="../preferencesdialog.ui" line="1525"/>
-        <location filename="../preferencesdialog.ui" line="1532"/>
-        <location filename="../preferencesdialog.ui" line="1539"/>
-        <location filename="../preferencesdialog.ui" line="1546"/>
-        <location filename="../preferencesdialog.ui" line="1574"/>
-        <location filename="../preferencesdialog.ui" line="1581"/>
-        <location filename="../preferencesdialog.ui" line="1588"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1336"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1342"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1343"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1352"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1353"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1354"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1355"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1356"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1371"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1372"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1373"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1374"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1375"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1376"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1378"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1379"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1380"/>
-        <source>CheckBox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferencesdialog.ui" line="911"/>
-        <location filename="../preferencesdialog.ui" line="933"/>
-        <location filename="../preferencesdialog.ui" line="981"/>
-        <location filename="../preferencesdialog.ui" line="1028"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1331"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1333"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1335"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1337"/>
+        <location filename="../preferencesdialog.ui" line="948"/>
+        <location filename="../preferencesdialog.ui" line="970"/>
+        <location filename="../preferencesdialog.ui" line="1018"/>
+        <location filename="../preferencesdialog.ui" line="1065"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1492"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1494"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1496"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1498"/>
         <source>GroupBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1381"/>
-        <location filename="../preferencesdialog.ui" line="1388"/>
-        <location filename="../preferencesdialog.ui" line="1395"/>
-        <location filename="../preferencesdialog.ui" line="1423"/>
-        <location filename="../preferencesdialog.ui" line="1430"/>
-        <location filename="../preferencesdialog.ui" line="1437"/>
-        <location filename="../preferencesdialog.ui" line="1465"/>
-        <location filename="../preferencesdialog.ui" line="1472"/>
-        <location filename="../preferencesdialog.ui" line="1479"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1358"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1359"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1360"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1362"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1363"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1364"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1366"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1367"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1368"/>
-        <source>RadioButton</source>
+        <location filename="../preferencesdialog.ui" line="960"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1493"/>
+        <source>.asf;.avi;.exe;.iso;.mp3;.mpeg;.mpg;.mpga;.ra;.rar;.rm;.rmvb;.tar;.wma;.wmp;.wmv;.zip;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../preferencesdialog.ui" line="982"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1495"/>
+        <source>Automatic Page Analyzer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1049"/>
+        <location filename="../preferencesdialog.ui" line="1138"/>
         <location filename="../preferencesdialog.ui" line="1145"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1346"/>
+        <location filename="../preferencesdialog.ui" line="1475"/>
+        <location filename="../preferencesdialog.ui" line="1482"/>
+        <location filename="../preferencesdialog.ui" line="1489"/>
+        <location filename="../preferencesdialog.ui" line="1496"/>
+        <location filename="../preferencesdialog.ui" line="1503"/>
+        <location filename="../preferencesdialog.ui" line="1698"/>
+        <location filename="../preferencesdialog.ui" line="1705"/>
+        <location filename="../preferencesdialog.ui" line="1712"/>
+        <location filename="../preferencesdialog.ui" line="1719"/>
+        <location filename="../preferencesdialog.ui" line="1726"/>
+        <location filename="../preferencesdialog.ui" line="1733"/>
+        <location filename="../preferencesdialog.ui" line="1761"/>
+        <location filename="../preferencesdialog.ui" line="1768"/>
+        <location filename="../preferencesdialog.ui" line="1775"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1497"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1503"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1504"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1539"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1540"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1541"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1542"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1543"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1558"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1559"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1560"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1561"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1562"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1563"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1565"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1566"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1567"/>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1080"/>
+        <location filename="../preferencesdialog.ui" line="1087"/>
+        <location filename="../preferencesdialog.ui" line="1097"/>
+        <location filename="../preferencesdialog.ui" line="1120"/>
+        <location filename="../preferencesdialog.ui" line="1162"/>
+        <location filename="../preferencesdialog.ui" line="1172"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1499"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1500"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1501"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1502"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1505"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1506"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1182"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1507"/>
         <source>PushButton</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1177"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1347"/>
+        <location filename="../preferencesdialog.ui" line="1208"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1508"/>
+        <source>No Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1220"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1509"/>
+        <source>Custom Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1240"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1510"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1247"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1511"/>
+        <source>Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1254"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1512"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1261"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1513"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1275"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1514"/>
+        <source>HTTP Connection:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1283"/>
+        <location filename="../preferencesdialog.ui" line="1299"/>
+        <location filename="../preferencesdialog.ui" line="1315"/>
+        <location filename="../preferencesdialog.ui" line="1331"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1517"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1522"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1527"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1532"/>
+        <source>Direct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1291"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1519"/>
+        <source>FTP Connection:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1307"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1524"/>
+        <source>BitTorrnt Connection:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1323"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1529"/>
+        <source>Metalink Connection:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1364"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1534"/>
         <source>Virtus scan when done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1195"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1348"/>
+        <location filename="../preferencesdialog.ui" line="1382"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1535"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1212"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1349"/>
+        <location filename="../preferencesdialog.ui" line="1399"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1536"/>
         <source>Files Extension:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1219"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1350"/>
+        <location filename="../preferencesdialog.ui" line="1406"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1537"/>
         <source>.rar;.zip;.exe;.doc;.com;.bin;.gz;.z;.tar;.arj;.lzh;.sit;.hqx;.tgz;.dll;.ocx;.vbx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1229"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1351"/>
+        <location filename="../preferencesdialog.ui" line="1416"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1538"/>
         <source>paramter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1628"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1382"/>
+        <location filename="../preferencesdialog.ui" line="1463"/>
+        <location filename="../preferencesdialog.ui" line="1556"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1544"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1548"/>
+        <source>Page 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1532"/>
+        <location filename="../preferencesdialog.ui" line="1598"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1552"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1557"/>
+        <source>Page 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1568"/>
+        <location filename="../preferencesdialog.ui" line="1575"/>
+        <location filename="../preferencesdialog.ui" line="1582"/>
+        <location filename="../preferencesdialog.ui" line="1610"/>
+        <location filename="../preferencesdialog.ui" line="1617"/>
+        <location filename="../preferencesdialog.ui" line="1624"/>
+        <location filename="../preferencesdialog.ui" line="1652"/>
+        <location filename="../preferencesdialog.ui" line="1659"/>
+        <location filename="../preferencesdialog.ui" line="1666"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1545"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1546"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1547"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1549"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1550"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1551"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1553"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1554"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1555"/>
+        <source>RadioButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1640"/>
+        <location filename="../preferencesdialog.ui" line="1686"/>
+        <location filename="../preferencesdialog.ui" line="1749"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1556"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1564"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1568"/>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1815"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1569"/>
         <source>Restore Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1648"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1383"/>
+        <location filename="../preferencesdialog.ui" line="1855"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1571"/>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1655"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1384"/>
+        <location filename="../preferencesdialog.ui" line="1862"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1572"/>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.ui" line="1869"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1573"/>
+        <source>&amp;Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="136"/>
+        <source>Proxy Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="136"/>
+        <source>Host Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="136"/>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="137"/>
+        <source>Proxy Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="137"/>
+        <source>User Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferencesdialog.cpp" line="137"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyInfoDialog</name>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="14"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="191"/>
+        <source>Proxy Add/Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="22"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="192"/>
+        <source>Proxy Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="36"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="193"/>
+        <source>Server Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="46"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="194"/>
+        <source>Port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="60"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="195"/>
+        <source>Proxy Type:            </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="67"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="196"/>
+        <source>Auth:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="81"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="198"/>
+        <source>HTTP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="88"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="199"/>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="98"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="200"/>
+        <source>SOCKS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="105"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="201"/>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../proxyinfodialog.ui" line="145"/>
+        <location filename="../GeneratedFiles/ui_proxyinfodialog.h" line="202"/>
+        <source>Test Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2931,6 +3031,123 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>SeedFileModel</name>
+    <message>
+        <location filename="../seedfilesdialog.cpp" line="18"/>
+        <source>index, selected, path, length</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SeedFilesDialog</name>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="14"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="298"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="22"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="299"/>
+        <source>File Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="32"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="300"/>
+        <source>Save AS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="47"/>
+        <location filename="../seedfilesdialog.ui" line="155"/>
+        <location filename="../seedfilesdialog.ui" line="162"/>
+        <location filename="../seedfilesdialog.ui" line="169"/>
+        <location filename="../seedfilesdialog.ui" line="176"/>
+        <location filename="../seedfilesdialog.ui" line="183"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="301"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="307"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="308"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="309"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="310"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="311"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="73"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="302"/>
+        <source>Need Space:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="80"/>
+        <location filename="../seedfilesdialog.ui" line="107"/>
+        <location filename="../seedfilesdialog.ui" line="224"/>
+        <location filename="../seedfilesdialog.ui" line="234"/>
+        <location filename="../seedfilesdialog.ui" line="247"/>
+        <location filename="../seedfilesdialog.ui" line="254"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="303"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="305"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="316"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="317"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="319"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="320"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="100"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="304"/>
+        <source>Left Space:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="133"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="312"/>
+        <source>Tab 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="148"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="306"/>
+        <source>Select File Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="193"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="318"/>
+        <source>Tab 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="201"/>
+        <location filename="../seedfilesdialog.ui" line="208"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="313"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="314"/>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="215"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="315"/>
+        <source>PushButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="274"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="321"/>
+        <source>&amp;Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.ui" line="281"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="322"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SegmentLogModel</name>
     <message>
         <location filename="../segmentlogmodel.cpp" line="57"/>
@@ -2950,17 +3167,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SqliteStorage</name>
     <message>
-        <location filename="../sqlitestorage.cpp" line="70"/>
-        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, block_activity, total_block_count, active_block_count, cat_id,comment, place_holder, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
+        <location filename="../sqlitestorage.cpp" line="68"/>
+        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, cat_id,comment, place_holder, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sqlitestorage.cpp" line="71"/>
+        <location filename="../sqlitestorage.cpp" line="69"/>
         <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sqlitestorage.cpp" line="72"/>
+        <location filename="../sqlitestorage.cpp" line="70"/>
         <source>seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty</source>
         <translation type="unfinished"></translation>
     </message>

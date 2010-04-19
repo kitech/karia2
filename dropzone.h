@@ -1,3 +1,12 @@
+// dropzone.h --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-04-19 23:00:46 +0800
+// Version: $Id$
+// 
+
 #ifndef DROPZONE_H
 #define DROPZONE_H
 
@@ -10,8 +19,7 @@
 
 class DropZone : public QWidget
 {
-	Q_OBJECT
-
+	Q_OBJECT;
 public:
 	DropZone(QWidget *parent = 0,Qt::WFlags f = 0 ) ;
     ~DropZone();

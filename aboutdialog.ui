@@ -57,12 +57,12 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>90</x>
          <y>10</y>
-         <width>281</width>
+         <width>101</width>
          <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>NullGet(SwiftGet) 1.2.86</string>
+        <string>NullGet(SwiftGet)</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_4">
@@ -127,6 +127,19 @@ p, li { white-space: pre-wrap; }
          <width>81</width>
          <height>201</height>
         </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>10</y>
+         <width>111</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1.0.0</string>
        </property>
       </widget>
      </widget>
