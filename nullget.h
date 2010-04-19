@@ -288,6 +288,12 @@ private slots:
     void onAriaMultiCallVersionSessionResponse(QVariant &response, QVariant &payload);
     void onAriaMultiCallVersionSessionFault(int code, QString reason, QVariant &payload);
 
+    void onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payload);
+    void onAriaChangeGlobalOptionFault(int code, QString reason, QVariant &payload);
+
+    void onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload);
+    void onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload);
+
 private:	//method
 	int getNextValidTaskId() ;
 

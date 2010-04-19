@@ -2323,6 +2323,43 @@ void NullGet::onAriaMultiCallVersionSessionFault(int code, QString reason, QVari
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
+void NullGet::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payload)
+{
+    // qDebug()<<__FUNCTION__<<response<<payload;
+    QString which = payload.toString();
+    if (which == "max-overall-download-limit") {
+
+    } else if (which == "max-concurrent-downloads") {
+
+    } else if (which == "max-overall-upload-limit") {
+        
+    } else {
+        Q_ASSERT(1 == 2);
+    }
+
+    // for debug, see the change's response result. no use now
+    // QVariantList args;
+    // this->mAriaRpc->call("aria2.getGlobalOption", args, payload,
+    //                      this, SLOT(onAriaGetGlobalOptionResponse(QVariant &, QVariant &)),
+    //                      this, SLOT(onAriaGetGlobalOptionFault(int, QString, QVariant &)));
+}
+
+void NullGet::onAriaChangeGlobalOptionFault(int code, QString reason, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+}
+
+void NullGet::onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<response<<payload;
+}
+
+void NullGet::onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+}
+
+
 void NullGet::showNewBittorrentFileDialog()
 {
     QString url;
@@ -3377,34 +3414,46 @@ void NullGet::onSwitchWindowStyle(QAction * action )
 void NullGet::onSwitchSpeedMode(QAction *action)
 {
 	qDebug()<<__FUNCTION__;
-	if( action == mainUI.action_Unlimited)
-	{
+	if (action == mainUI.action_Unlimited) {
 		this->mSpeedBarSlider->hide() ;
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->hide();
 		GlobalOption::instance()->mIsLimitSpeed = 0 ;
-	}
-	else if ( action == mainUI.action_Manual)
-	{
+        this->onManualSpeedChanged(0);  // set no limit
+	} else if ( action == mainUI.action_Manual) {
 		this->mSpeedBarSlider->show() ;
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->show();
 		GlobalOption::instance()->mIsLimitSpeed = 1 ;
-	}
-	else if ( action == mainUI.action_Automatic )
-	{
+	} else if ( action == mainUI.action_Automatic ) {
 		this->mSpeedBarSlider->hide() ;
 		this->mSpeedProgressBar->show();
 		this->mSpeedManualLabel->show();
 		GlobalOption::instance()->mIsLimitSpeed = 0 ;
+        this->onManualSpeedChanged(0); // no limit now 
 	}
 }
+
+// TODO call many time when drap the speed slider bar
 void NullGet::onManualSpeedChanged(int value) 
 {
 	//qDebug()<<__FUNCTION__;
 	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
 	//this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(value*this->mTaskQueue.size()));
 	GlobalOption::instance()->mMaxLimitSpeed = value * 1024 ;	//the value is KB in unit
+
+    QVariant payload;
+    QVariantList args;
+    QVariantMap options;
+    options["max-overall-download-limit"] = QString("%1K").arg(value); // .arg(value * 1024);
+    payload = QString("max-overall-download-limit");
+
+    args.insert(0, options);
+
+    this->mAriaRpc->call("aria2.changeGlobalOption", args, payload,
+                         this, SLOT(onAriaChangeGlobalOptionResponse(QVariant &, QVariant &)),
+                         this, SLOT(onAriaChangeGlobalOptionFault(int, QString, QVariant &)));
+        
 }
 ////////////
 
