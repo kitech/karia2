@@ -962,12 +962,16 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
 	// update task ball and peer view
     if (this->mTaskMan->isTorrentTask(taskId)) {
         mdl = this->mTaskMan->torrentPeerModel(taskId);
-        this->mSegListView->setModel(0);
-        this->mSegListView->setModel(mdl);
-    } else {
+        this->mainUI.peersView->setModel(0);
+        this->mainUI.peersView->setModel(mdl);
+        mdl = this->mTaskMan->torrentTrackerModel(taskId);
+        this->mainUI.trackersView->setModel(mdl);
+    }
+    {
         mdl = this->mTaskMan->taskServerModel(taskId);
         this->mSegListView->setModel(mdl);
     }
+
     qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl?mdl->rowCount():0);
     TaskBallMapWidget::instance()->onRunTaskCompleteState(taskId, true);
 
@@ -1992,7 +1996,7 @@ void NullGet::testFault(int status, QString response, QVariant &payload)
 
 void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    // qDebug()<<__FUNCTION__<<response<<payload; // why this line cause crash?
 
     QMap<QString, QVariant> mPayload = payload.toMap();
     int taskId = mPayload["taskId"].toString().toInt();
@@ -2005,7 +2009,7 @@ void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
     // if is torrent, add to torrentMap
     if (url.toLower().endsWith(".torrent")) {
         this->mTorrentMap[taskId] = response.toString();
-    }
+     }
     
 }
 void NullGet::onAriaAddUriFault(int code, QString reason, QVariant &payload)
@@ -2038,6 +2042,12 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
     this->mTaskMan->onTaskStatusNeedUpdate(taskId, sts);
 
     // qDebug()<<sts["files"];
+
+    if (sts.contains("bittorrent")) {
+        QVariantMap stsbt = sts.value("bittorrent").toMap();
+        QVariantList stsTrackers = stsbt.value("announceList").toList();
+        this->mTaskMan->setTrackers(taskId, stsTrackers);
+    }
 
     if (sts["status"].toString() == QString("complete")) {
         if (this->mTaskMan->isTorrentTask(taskId)) {

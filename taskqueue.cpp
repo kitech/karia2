@@ -25,11 +25,15 @@ Task::Task(int taskId, QString taskUrl)
     this->mTaskId = taskId; 
     this->mTaskUrl = taskUrl;
     this->btPeerModel = new TorrentPeerModel();
+    this->btTrackerModel = new TorrentTrackerModel();
     this->serverModel = new TaskServerModel();
     this->seedFileModel = NULL;
 }
 Task::~Task()
 {
+    delete this->btPeerModel; this->btPeerModel = 0;
+    delete this->btTrackerModel; this->btTrackerModel = 0;
+    delete this->serverModel; this->serverModel = 0;
 }
 
 /**
@@ -223,6 +227,15 @@ TorrentPeerModel *TaskQueue::torrentPeerModel(int taskId)
     return pm;
 }
 
+TorrentTrackerModel *TaskQueue::torrentTrackerModel(int taskId)
+{
+    TorrentTrackerModel *pm = NULL;
+    if (this->mTasks.contains(taskId)) {
+        pm = this->mTasks[taskId]->btTrackerModel;
+    }
+    return pm;
+}
+
 TaskServerModel *TaskQueue::taskServerModel(int taskId)
 {
     TaskServerModel *sm = NULL;
@@ -279,6 +292,14 @@ bool TaskQueue::setPeers(int taskId, QVariantList &peers)
     // return rv;
     if (this->mTasks.contains(taskId)) {
         this->mTasks[taskId]->btPeerModel->setData(peers);
+    }
+    return true;
+}
+
+bool TaskQueue::setTrackers(int taskId, QVariantList &trackers)
+{
+    if (this->mTasks.contains(taskId)) {
+        this->mTasks[taskId]->btTrackerModel->setData(trackers);
     }
     return true;
 }

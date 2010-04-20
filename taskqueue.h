@@ -22,6 +22,7 @@ class TaskOption;
 class TorrentPeerModel;
 class TaskServerModel;
 class SeedFileModel;
+class TorrentTrackerModel;
 
 class Task  {
 public:
@@ -37,6 +38,7 @@ public:
     TorrentPeerModel *btPeerModel;
     TaskServerModel *serverModel;
     SeedFileModel *seedFileModel;
+    TorrentTrackerModel *btTrackerModel;
 };
 
 //////////////////////////
@@ -69,11 +71,13 @@ public:
 
     // void setUrl(QString url);
     TorrentPeerModel *torrentPeerModel(int taskId);
+    TorrentTrackerModel *torrentTrackerModel(int taskId);
     TaskServerModel *taskServerModel(int taskId);
     bool isTorrentTask(int taskId);
     bool isMagnetTask(int taskId);
     bool isMetalinkTask(int taskId);
     bool setPeers(int taskId, QVariantList &peers);
+    bool setTrackers(int taskId, QVariantList &trackers);
 
 public slots:
 	void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;
