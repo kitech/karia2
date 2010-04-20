@@ -2225,6 +2225,7 @@ void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &paylo
 void NullGet::onAriaParseTorrentFileFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    // onAriaParseTorrentFileFault 1 "We encountered a problem while processing the option '--select-file'."
 }
 
 void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
@@ -2241,6 +2242,7 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
     if (rv == QDialog::Accepted) {
         //remove the unused aria2 task
         mPayload["indexes"] = fileDlg->getSelectedFileIndexes();
+        mPayload["removeConfirm"] = "no";
         QVariantList args;
         args << payload.toMap().value("ariaGid");
 
@@ -2262,6 +2264,51 @@ void NullGet::onAriaGetTorrentFilesFault(int code, QString reason, QVariant &pay
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
+void NullGet::onTorrentRemoveConfirmTimeout()
+{
+    QTimer *timer = (QTimer*)(sender());  
+    QVariant vtimer = QVariant(qVariantFromValue((QObject*)timer));
+    timer = (QTimer*)(vtimer.value<QObject*>());
+    QVariant payload = this->mTorrentWaitRemoveConfirm[timer];
+    QMap<QString, QVariant> mPayload = payload.toMap();
+
+    QString ariaGid = mPayload["ariaGid"].toString();
+
+    QVariantList args;
+    args << ariaGid;
+
+    this->mAriaRpc->call(QString("aria2.tellStatus"), args, payload,
+                         this, SLOT(onAriaRemoveGetTorrentFilesConfirmResponse(QVariant&, QVariant&)),
+                         this, SLOT(onAriaRemoveGetTorrentFilesConfirmFault(int, QString, QVariant &)));
+}
+
+void NullGet::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<response<<payload;
+    QVariantMap msts = response.toMap();
+    QVariantMap mPayload = payload.toMap();
+
+    if (msts.value("status").toString() == "removed") {
+        mPayload["removeConfirm"] = "yes";
+        QVariant response = QString("OK");
+        QVariant aPayload = QVariant(mPayload);
+        this->onAriaRemoveTorrentParseFileTaskResponse(response, aPayload);
+        // delete no used timer and temporary data
+        QTimer *timer = (QTimer*)(mPayload.value("confirmTimer").value<QObject*>());
+        QVariant tPayload = this->mTorrentWaitRemoveConfirm[timer];
+        this->mTorrentWaitRemoveConfirm.remove(timer);
+        delete timer;
+    } else {
+        QTimer *timer = (QTimer*)(mPayload.value("confirmTimer").value<QObject*>());
+        timer->start();
+    }
+}
+
+void NullGet::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+}
+
 void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
@@ -2269,8 +2316,18 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
     // insert new torrent task
     QMap<QString, QVariant> mPayload = payload.toMap();
     QString indexList = mPayload["indexes"].toString();
-        
     QString url = mPayload["url"].toString();
+    QString removeConfirm = mPayload["removeConfirm"].toString();
+
+    if (removeConfirm != "yes") {
+        QTimer *timer = new QTimer(); timer->setSingleShot(true); timer->setInterval(500);
+        QObject::connect(timer, SIGNAL(timeout()), 
+                         this, SLOT(onTorrentRemoveConfirmTimeout()));
+        mPayload["confirmTimer"] = qVariantFromValue((QObject*)timer);
+        this->mTorrentWaitRemoveConfirm[timer] = QVariant(mPayload);
+        timer->start();
+        return;
+    }
 
     this->initXmlRpc();
 
@@ -2301,11 +2358,11 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
         this->mAriaUpdater.start();
     }
         
-    // if (!this->mAriaTorrentUpdater.isActive()) {
-    //     this->mAriaTorrentUpdater.setInterval(4000);
-    //     QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
-    //     this->mAriaTorrentUpdater.start();
-    // }
+    if (!this->mAriaTorrentUpdater.isActive()) {
+        this->mAriaTorrentUpdater.setInterval(4000);
+        QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
+        this->mAriaTorrentUpdater.start();
+    }
     
 }
 
@@ -2313,8 +2370,6 @@ void NullGet::onAriaRemoveTorrentParseFileTaskFault(int code, QString reason, QV
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
-
-
 
 void NullGet::onAriaTorrentUpdaterTimeout()
 {
@@ -2409,10 +2464,11 @@ void NullGet::showNewBittorrentFileDialog()
     } else {
         TaskOption *to = new TaskOption(); // TODO get option from GlobalOption
         to->setDefaultValue();
+        to->mCatId = ng::cats::downloading;
         to->setUrl("file://" + url); //转换成本地文件协议
 
         int taskId = this->createTask(to);
-		qDebug()<<url<<taskId;
+		qDebug()<<__FUNCTION__<<url<<taskId;
         
         this->initXmlRpc();
 
@@ -2434,28 +2490,30 @@ void NullGet::showNewBittorrentFileDialog()
 
         QMap<QString, QVariant> options;
         // options["split"] = QString("1");
-        // options["select-file"] = QString("5888");
+        options["bt-max-peers"] = QString("1");
+        options["all-proxy"] = QString("127.0.0.1:65532"); // use a no usable proxy, let aria2 stop quick
+        options["select-file"] = QString("1");
         args.insert(2, options);
 
-        // this->mAriaRpc->call(QString("aria2.addTorrent"), args, QVariant(payload),
-        //           this, SLOT(onAriaParseTorrentFileResponse(QVariant &, QVariant &)),
-        //           this, SLOT(onAriaParseTorrentFileFault(int, QString, QVariant &)));
-
         this->mAriaRpc->call(QString("aria2.addTorrent"), args, QVariant(payload),
-                  this, SLOT(onAriaAddUriResponse(QVariant &, QVariant &)),
-                  this, SLOT(onAriaAddUriFault(int, QString, QVariant &)));
+                  this, SLOT(onAriaParseTorrentFileResponse(QVariant &, QVariant &)),
+                  this, SLOT(onAriaParseTorrentFileFault(int, QString, QVariant &)));
 
-        if (!this->mAriaUpdater.isActive()) {
-            this->mAriaUpdater.setInterval(3000);
-            QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
-            this->mAriaUpdater.start();
-        }
+        // this->mAriaRpc->call(QString("aria2.addTorrent"), args, QVariant(payload),
+        //           this, SLOT(onAriaAddUriResponse(QVariant &, QVariant &)),
+        //           this, SLOT(onAriaAddUriFault(int, QString, QVariant &)));
+
+        // if (!this->mAriaUpdater.isActive()) {
+        //     this->mAriaUpdater.setInterval(3000);
+        //     QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
+        //     this->mAriaUpdater.start();
+        // }
         
-        if (!this->mAriaTorrentUpdater.isActive()) {
-            this->mAriaTorrentUpdater.setInterval(4000);
-            QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
-            this->mAriaTorrentUpdater.start();
-        }
+        // if (!this->mAriaTorrentUpdater.isActive()) {
+        //     this->mAriaTorrentUpdater.setInterval(4000);
+        //     QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
+        //     this->mAriaTorrentUpdater.start();
+        // }
     }
 }
 

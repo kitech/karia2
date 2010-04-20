@@ -120,7 +120,7 @@
              <item row="1" column="1">
               <widget class="QLabel" name="label_3">
                <property name="text">
-                <string>()</string>
+                <string/>
                </property>
                <property name="textInteractionFlags">
                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
@@ -296,6 +296,11 @@
             <widget class="QTreeView" name="treeView_2"/>
            </item>
           </layout>
+         </widget>
+         <widget class="QWidget" name="tab_6">
+          <attribute name="title">
+           <string>Trackers</string>
+          </attribute>
          </widget>
         </widget>
         <widget class="QTreeView" name="mui_tv_seg_list">

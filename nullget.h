@@ -191,6 +191,7 @@ private:
     QTimer mAriaTorrentUpdater;
     QHash<int, QString> mRunningMap; // <taskId, ariaGID> 
     QHash<int, QString> mTorrentMap; // <taskId, ariaGID>
+    QHash<QTimer*, QVariant> mTorrentWaitRemoveConfirm;  // <timer*, payload>
     MaiaXmlRpcClient *mAriaRpc;
 
 public slots:
@@ -271,6 +272,9 @@ private slots:
     void onAriaRemoveFault(int, QString, QVariant &payload);
     void onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload);
     void onAriaRemoveTorrentParseFileTaskFault(int, QString, QVariant &payload);
+    void onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload);
+    void onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, QVariant &payload);
+    void onTorrentRemoveConfirmTimeout();
 
     void onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payload);
     void onAriaGetTorrentPeersFault(int code, QString reason, QVariant &payload);

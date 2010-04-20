@@ -147,6 +147,7 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
         task = this->mTasks[taskId];
     }
 
+    qDebug()<<__FUNCTION__<<option->mCatId;
 	//将任务信息添加到 task list view 中
 	QModelIndex index;
 	// QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
