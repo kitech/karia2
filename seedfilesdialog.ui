@@ -77,7 +77,7 @@
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>TextLabel</string>
+        <string>      </string>
        </property>
       </widget>
      </item>
@@ -104,7 +104,7 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>TextLabel</string>
+        <string>      </string>
        </property>
       </widget>
      </item>
@@ -130,7 +130,7 @@
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Tab 1</string>
+       <string>File Select</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -152,35 +152,35 @@
          <item>
           <widget class="QToolButton" name="toolButton_2">
            <property name="text">
-            <string>...</string>
+            <string>Auto</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton_3">
            <property name="text">
-            <string>...</string>
+            <string>Select All</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton_4">
            <property name="text">
-            <string>...</string>
+            <string>Revert Select</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton_5">
            <property name="text">
-            <string>...</string>
+            <string>Video</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton_6">
            <property name="text">
-            <string>...</string>
+            <string>Audio</string>
            </property>
           </widget>
          </item>
@@ -190,7 +190,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Tab 2</string>
+       <string>Properties</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -198,21 +198,21 @@
          <item>
           <widget class="QCheckBox" name="checkBox">
            <property name="text">
-            <string>CheckBox</string>
+            <string>Auto run when done</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBox_2">
            <property name="text">
-            <string>CheckBox</string>
+            <string>Download ordered.</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton">
            <property name="text">
-            <string>PushButton</string>
+            <string>&amp;Help</string>
            </property>
           </widget>
          </item>
@@ -221,7 +221,7 @@
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>TextLabel</string>
+          <string>Trackers List:</string>
          </property>
         </widget>
        </item>
@@ -231,7 +231,7 @@
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>TextLabel</string>
+          <string>Note: one tracker per line.</string>
          </property>
         </widget>
        </item>

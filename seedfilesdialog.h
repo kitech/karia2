@@ -60,6 +60,7 @@ public:
     SeedFilesDialog(QWidget *parent = 0);
     ~SeedFilesDialog();
     void setFiles(QVariantList files, bool selectAll);
+    void setTorrentInfo(QVariantMap statusInfo, QVariantMap torrentInfo);
     QString getSelectedFileIndexes();
 
 private:

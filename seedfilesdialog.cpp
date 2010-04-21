@@ -219,6 +219,40 @@ void SeedFilesDialog::setFiles(QVariantList files, bool selectAll)
     this->seedFileModel->setData(files, selectAll);
 }
 
+void SeedFilesDialog::setTorrentInfo(QVariantMap statusInfo, QVariantMap torrentInfo)
+{
+    QString comment;
+    QString creationDate;
+    QString mode;
+    QString name;
+    QString totalLength;
+
+    comment = torrentInfo.value("comment").toString();
+    creationDate = torrentInfo.value("creationDate").toString();
+    mode = torrentInfo.value("mode").toString();
+    name = torrentInfo.value("info").toMap().value("name").toString();
+
+    totalLength = statusInfo.value("totalLength").toString();
+
+    this->uiwin.lineEdit->setText(name);
+    this->uiwin.label_4->setText(totalLength);
+    
+    QVariantList trackers = torrentInfo.value("announceList").toList();
+    QVariantList d2Trackers;
+    QString  tracker;
+
+    QVector<QString> vTrackers;
+    for (int i = 0 ; i < trackers.count(); ++i) {
+        d2Trackers = trackers.at(i).toList();
+        for (int j = 0 ; j < d2Trackers.count(); j++) {
+            tracker = d2Trackers.at(j).toString();
+            vTrackers.append(tracker);
+            this->uiwin.plainTextEdit->appendPlainText(tracker);
+        }
+    }
+    
+}
+
 QString SeedFilesDialog::getSelectedFileIndexes()
 {
     QString selectedList;

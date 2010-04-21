@@ -73,8 +73,6 @@ bool TaskServerModel::setData(QVariantList &servers)
         }
     }
 
-    qDebug()<<tServers<<this->mServers.count();
-
 	if (this->mServers.count() > 0) {
 		this->removeRows(0, this->mServers.count());
 	}

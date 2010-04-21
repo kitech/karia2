@@ -2226,9 +2226,14 @@ void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &paylo
     QVariantList args;
     args.insert(0, ariaGid);
 
-    this->mAriaRpc->call(QString("aria2.getFiles"), args, QVariant(mPayload),
+    // now use tellStatus to get files and torrent file info
+    this->mAriaRpc->call(QString("aria2.tellStatus"), args, QVariant(mPayload),
                          this, SLOT(onAriaGetTorrentFilesResponse(QVariant &, QVariant &)),
                          this, SLOT(onAriaGetTorrentFilesFault(int, QString, QVariant &)));
+
+    // this->mAriaRpc->call(QString("aria2.getFiles"), args, QVariant(mPayload),
+    //                      this, SLOT(onAriaGetTorrentFilesResponse(QVariant &, QVariant &)),
+    //                      this, SLOT(onAriaGetTorrentFilesFault(int, QString, QVariant &)));
     
 }
 
@@ -2247,10 +2252,12 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
     qDebug()<<__FUNCTION__<<response<<payload;
     QMap<QString, QVariant> mPayload = payload.toMap();
     int taskId = payload.toMap().value("taskId").toInt();
-    QVariantList files = response.toList();
+    QMap<QString, QVariant> statusMap = response.toMap();
+    QVariantList files = statusMap["files"].toList(); // response.toList();
 
     SeedFilesDialog *fileDlg = new SeedFilesDialog();
     fileDlg->setFiles(files, true);
+    fileDlg->setTorrentInfo(statusMap, statusMap.value("bittorrent").toMap());
     int rv = fileDlg->exec();
     
     if (rv == QDialog::Accepted) {

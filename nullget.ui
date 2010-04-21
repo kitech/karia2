@@ -312,6 +312,12 @@
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>
+         <property name="toolTip">
+          <string>Current task's connection list</string>
+         </property>
+         <property name="statusTip">
+          <string>Current task's connection list</string>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
