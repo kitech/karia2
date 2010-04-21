@@ -37,6 +37,11 @@ MaiaXmlRpcClient::MaiaXmlRpcClient(QUrl url, QObject* parent) : QObject(parent) 
 	setUrl(url);
 }
 
+MaiaXmlRpcClient::~MaiaXmlRpcClient()
+{
+    // qDebug()<<__FUNCTION__<<"ddddddd";
+}
+
 void MaiaXmlRpcClient::setUrl(QUrl url) {
 	if(!url.isValid())
 		return;

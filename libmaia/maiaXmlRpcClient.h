@@ -40,6 +40,8 @@ class MaiaXmlRpcClient : public QObject {
 public:
     MaiaXmlRpcClient(QObject* parent = 0);
     MaiaXmlRpcClient(QUrl url, QObject* parent = 0);
+    ~MaiaXmlRpcClient();
+
     void setUrl(QUrl url);
     void call(QString method, QList<QVariant> args,
               QObject* responseObject, const char* responseSlot,
@@ -55,6 +57,8 @@ private slots:
 
 private:
     QUrl m_url;
+    // in qt 4.6.2, this class is marked as obsolete. also QFtp. 
+    // Use which class now? QNetworkAccessManager?
     QHttp *http;
     QMap<int, MaiaObject*> callmap;
     QString cookie;

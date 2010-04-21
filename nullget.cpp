@@ -220,6 +220,10 @@ void NullGet::firstShowHandler()
     this->mAriaGlobalUpdater.start();
     QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString, QString, QString)),
                      this->mTaskMan, SLOT(onTaskLogArrived(QString, QString, QString)));
+    QObject::connect(this->mAriaMan, SIGNAL(error(QProcess::ProcessError)),
+                     this, SLOT(onAriaProcError(QProcess::ProcessError)));
+    QObject::connect(this->mAriaMan, SIGNAL(finished(int, QProcess::ExitStatus)),
+                     this, SLOT(onAriaProcFinished(int, QProcess::ExitStatus)));
 
 	///////
 	this->hideUnimplementUiElement();
@@ -1796,37 +1800,28 @@ void NullGet::initXmlRpc()
         // the default port is 6800 on best case, change to 6800+ if any exception.
         this->mAriaRpc = new MaiaXmlRpcClient(QUrl(QString("http://127.0.0.1:%1/rpc").arg(this->mAriaMan->rpcPort())));
 
-        // QList<QVariant> uris;
-        // uris << QString(url);
-        // args.insert(0, uris);
-
-        // QMap<QString, QVariant> options;
-        // options["split"] = QString("2");
-        // args.insert(1, options);
-
-
         // get version and session
-        // use aria2's multicall method
-        QVariantMap  getVersion;
-        QVariantMap getSession;
-        QVariantList gargs;
-        QVariantList args;
-        QVariantMap options;
-        QVariant payload;
+        // use aria2's multicall method. note: has moved to AriaMan
+        // QVariantMap  getVersion;
+        // QVariantMap getSession;
+        // QVariantList gargs;
+        // QVariantList args;
+        // QVariantMap options;
+        // QVariant payload;
         
-        getVersion["methodName"] = QString("aria2.getVersion");
-        getVersion["params"] = QVariant(options);
-        getSession["methodName"] = QString("aria2.getSessionInfo");
-        getSession["params"] = QVariant(options);
+        // getVersion["methodName"] = QString("aria2.getVersion");
+        // getVersion["params"] = QVariant(options);
+        // getSession["methodName"] = QString("aria2.getSessionInfo");
+        // getSession["params"] = QVariant(options);
 
-        args.insert(0, getVersion);
-        args.insert(1, getSession);
+        // args.insert(0, getVersion);
+        // args.insert(1, getSession);
 
-        gargs.insert(0, args);
+        // gargs.insert(0, args);
 
-        this->mAriaRpc->call(QString("system.multicall"), gargs, payload,
-                             this, SLOT(onAriaMultiCallVersionSessionResponse(QVariant&, QVariant&)),
-                             this, SLOT(onAriaMultiCallVersionSessionFault(int, QString, QVariant &)));
+        // this->mAriaRpc->call(QString("system.multicall"), gargs, payload,
+        //                      this, SLOT(onAriaMultiCallVersionSessionResponse(QVariant&, QVariant&)),
+        //                      this, SLOT(onAriaMultiCallVersionSessionFault(int, QString, QVariant &)));
     }
 }
 
@@ -3984,6 +3979,21 @@ void NullGet::onShowWalkSiteWindow()
 		this->mWalkSiteDockWidget->showMinimized();
 
 }
+
+void NullGet::onAriaProcError(QProcess::ProcessError error)
+{
+    if (error == QProcess::FailedToStart) {
+        this->mAriaGlobalUpdater.stop();
+        QMessageBox::warning(this, tr("Aria2 backend error :"), 
+                             tr("Can not start aria2. Are you already installed it properly?"));
+    }
+}
+
+void NullGet::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    
+}
+
 
 void NullGet::handleArguments()
 {

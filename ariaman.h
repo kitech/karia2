@@ -11,6 +11,7 @@
 
 #include <QtCore>
 
+class MaiaXmlRpcClient;
 
 class AriaMan : public QObject
 {
@@ -25,8 +26,20 @@ public:
 
     int rpcPort();
 
+    // 0xFFFFFFFF
+    enum AriaFeature {FeatureBitTorrent = 0x00000001,
+                      FeatureGZip = 0x00000002,
+                      FeatureHTTPS = 0x00000004,
+                      FeatureMessageDigest = 0x00000008,
+                      FeatureMetalink = 0x00000010,
+                      FeatureXMLRPC = 0x00000020,
+    };
+    bool hasFeature(AriaFeature feature);
+
 signals:
     void taskLogReady(QString cuid, QString itime, QString log);
+    void error(QProcess::ProcessError e);
+    void finished(int eixtCode, QProcess::ExitStatus s);
 
 private slots:
     void onAriaProcError(QProcess::ProcessError error);
@@ -38,9 +51,17 @@ private slots:
     
     void onLogChannelReadyRead();
 
+    void onAriaGetFeatureResponse(QVariant &response, QVariant &payload);
+    void onAriaGetFeatureFault(int code, QString reason, QVariant &payload);
+
 private:
     QProcess *mAriaProc;
+    MaiaXmlRpcClient *mAriaRpc;
     Q_PID mAriaPid;
+    QString mSessionId;
+    QString mVersionString;
+    int mIVersion;
+    int mFeatures;
     QStringList mStartArgs;
     int defaultRpcPort;
     int currentRpcPort;

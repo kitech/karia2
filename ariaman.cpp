@@ -19,8 +19,9 @@
 
 #include <QtNetwork>
 
-#include "ariaman.h"
+#include "maiaXmlRpcClient.h"
 
+#include "ariaman.h"
 
 AriaMan::AriaMan(QObject *parent)
     : QObject(parent)
@@ -178,14 +179,22 @@ int AriaMan::rpcPort()
     return this->currentRpcPort;
 }
 
-void AriaMan::onAriaProcError(QProcess::ProcessError error)
+bool AriaMan::hasFeature(AriaFeature feature)
 {
-    qDebug()<<__FUNCTION__<<error;
+    return feature & this->mFeatures;
+    return true;
+}
+
+void AriaMan::onAriaProcError(QProcess::ProcessError err)
+{
+    qDebug()<<__FUNCTION__<<err;
+    emit error(err);
 }
 
 void AriaMan::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qDebug()<<__FUNCTION__<<exitCode<<exitStatus;
+    emit finished(exitCode, exitStatus);
 }
 void AriaMan::onAriaProcReadyReadStdout()
 {
@@ -253,9 +262,36 @@ void AriaMan::onAriaProcReadyReadStderr()
 }
 void AriaMan::onAriaProcStarted()
 {
+    // the default port is 6800 on best case, change to 6800+ if any exception.
+    this->mAriaRpc = new MaiaXmlRpcClient(QUrl(QString("http://127.0.0.1:%1/rpc")
+                                                          .arg(this->rpcPort())));
+
+    // get version and session
+    // use aria2's multicall method
+    QVariantMap  getVersion;
+    QVariantMap getSession;
+    QVariantList gargs;
+    QVariantList args;
+    QVariantMap options;
+    QVariant payload;
+        
+    getVersion["methodName"] = QString("aria2.getVersion");
+    getVersion["params"] = QVariant(options);
+    getSession["methodName"] = QString("aria2.getSessionInfo");
+    getSession["params"] = QVariant(options);
+
+    args.insert(0, getVersion);
+    args.insert(1, getSession);
+
+    gargs.insert(0, args);
+
+    this->mAriaRpc->call(QString("system.multicall"), gargs, payload,
+                         this, SLOT(onAriaGetFeatureResponse(QVariant&, QVariant&)),
+                         this, SLOT(onAriaGetFeatureFault(int, QString, QVariant &)));
 }
 void AriaMan::onAriaProcStateChanged(QProcess::ProcessState newState)
 {
+    Q_UNUSED(newState);
 }
 
 void AriaMan::onLogChannelReadyRead()
@@ -271,4 +307,59 @@ void AriaMan::onLogChannelReadyRead()
 
         qDebug()<<line;
     }
+}
+
+void AriaMan::onAriaGetFeatureResponse(QVariant &response, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<response<<payload;
+    this->mAriaRpc->deleteLater(); // can not delete it on it slot, should use deleteLater;
+    this->mAriaRpc = 0;
+
+    QVariantMap features = response.toList().at(0).toMap();
+    QVariantList sessions = response.toList().at(1).toList();
+
+    this->mVersionString = features.value("version").toString();
+
+    this->mIVersion = 0;
+    QStringList verParts = this->mVersionString.split(".");
+    Q_ASSERT(verParts.count() > 0 && verParts.count() <= 4);
+    for (int i = verParts.count() - 1 ; i >= 0 ; --i) {
+        this->mIVersion |= (verParts.at(i).toInt() << (i * 8));
+    }
+
+    this->mFeatures = 0;    
+    QVariantList enabledFeatures = features.value("enabledFeatures").toList();
+    if (enabledFeatures.contains(QString("BitTorrent"))) {
+        this->mFeatures |= FeatureBitTorrent;
+    }
+
+    if (enabledFeatures.contains(QString("GZip"))) {
+        this->mFeatures |= FeatureGZip;
+    }
+
+    if (enabledFeatures.contains(QString("HTTPS"))) {
+        this->mFeatures |= FeatureHTTPS;
+    }
+
+    if (enabledFeatures.contains(QString("Message Digest"))) {
+        this->mFeatures |= FeatureMessageDigest;
+    }
+
+    if (enabledFeatures.contains(QString("Metalink"))) {
+        this->mFeatures |= FeatureMetalink;
+    }
+
+    if (enabledFeatures.contains(QString("XML-RPC"))) {
+        this->mFeatures |= FeatureXMLRPC;
+    }
+
+    this->mSessionId = sessions.at(0).toMap().value("sessionId").toString();
+
+}
+
+void AriaMan::onAriaGetFeatureFault(int code, QString reason, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    this->mAriaRpc->deleteLater(); // can not delete it on it slot, should use deleteLater;
+    this->mAriaRpc = 0;
 }

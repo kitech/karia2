@@ -247,6 +247,9 @@ public slots:
 	void shootScreen() ;
 	void firstShowHandler();
 
+    void onAriaProcError(QProcess::ProcessError error);
+    void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
 	//object listener
 	void onObjectDestroyed(QObject * object = 0);
 
