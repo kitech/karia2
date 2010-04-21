@@ -128,6 +128,7 @@ HEADERS += aboutdialog.h \
            libng/md5.h \
            torrentpeermodel.h \
            taskservermodel.h \
+           seedfilemodel.h \
            seedfilesdialog.h \  
            getopt4.h \
            qtsingleapplication/qtlocalpeer.h \
@@ -182,6 +183,7 @@ SOURCES += aboutdialog.cpp \
            libng/qtmd5.cpp \
            torrentpeermodel.cpp \
            taskservermodel.cpp \
+           seedfilemodel.cpp \
            seedfilesdialog.cpp \
            getopt4.cpp \
            qtsingleapplication/qtlocalpeer.cpp \

@@ -162,6 +162,8 @@ qtsingleapplication/qtsingleapplication.h -text
 /rulesmandlg.cpp -text
 /rulesmandlg.h -text
 /rulesmandlg.ui -text
+/seedfilemodel.cpp -text
+/seedfilemodel.h -text
 /seedfilesdialog.cpp -text
 /seedfilesdialog.h -text
 /seedfilesdialog.ui -text

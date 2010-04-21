@@ -73,11 +73,13 @@ public:
     TorrentPeerModel *torrentPeerModel(int taskId);
     TorrentTrackerModel *torrentTrackerModel(int taskId);
     TaskServerModel *taskServerModel(int taskId);
+    SeedFileModel *taskSeedFileModel(int taskId);
     bool isTorrentTask(int taskId);
     bool isMagnetTask(int taskId);
     bool isMetalinkTask(int taskId);
     bool setPeers(int taskId, QVariantList &peers);
     bool setTrackers(int taskId, QVariantList &trackers);
+    bool setSeedFiles(int taskId, QVariantList &files);
 
 public slots:
 	void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;

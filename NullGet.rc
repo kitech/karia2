@@ -77,14 +77,14 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "Comments", "http://www.qtchina.net"
-            VALUE "CompanyName", "qtchina.net"
-            VALUE "FileDescription", "Karia2 is a QT4 GUI for aria2 download manager. Supported Protocols: HTTP,HTTPS,FTP,BitTorent,Metalink"
+            VALUE "CompanyName", "Kitsoft INC."
+            VALUE "FileDescription", "A QT4 GUI for aria2 download manager. Supported Protocols: HTTP,HTTPS,FTP,BitTorent,Metalink"
             VALUE "FileVersion", "0, 0, 92, 0"
-            VALUE "InternalName", "NullGet"
+            VALUE "InternalName", "Karia2"
             VALUE "LegalCopyright", "Copyright (C) 2007-2010"
-            VALUE "LegalTrademarks", "NG"
+            VALUE "LegalTrademarks", "KARIA2"
             VALUE "OriginalFilename", "NullGet.rc"
-            VALUE "ProductName", "NullGet"
+            VALUE "ProductName", "Karia2"
             VALUE "ProductVersion", "0.0.92.0"
         END
     END

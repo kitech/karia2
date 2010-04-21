@@ -19,6 +19,7 @@
 
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
+#include "seedfilemodel.h"
 
 Task::Task(int taskId, QString taskUrl)
 {
@@ -27,7 +28,7 @@ Task::Task(int taskId, QString taskUrl)
     this->btPeerModel = new TorrentPeerModel();
     this->btTrackerModel = new TorrentTrackerModel();
     this->serverModel = new TaskServerModel();
-    this->seedFileModel = NULL;
+    this->seedFileModel = new SeedFileModel();
 }
 Task::~Task()
 {
@@ -246,6 +247,15 @@ TaskServerModel *TaskQueue::taskServerModel(int taskId)
     return sm;
 }
 
+SeedFileModel *TaskQueue::taskSeedFileModel(int taskId)
+{
+    SeedFileModel *sm = NULL;
+
+    if (this->mTasks.contains(taskId)) {
+        sm = this->mTasks[taskId]->seedFileModel;
+    }
+    return sm;
+}
 
 bool TaskQueue::isTorrentTask(int taskId)
 {
@@ -303,6 +313,15 @@ bool TaskQueue::setTrackers(int taskId, QVariantList &trackers)
     }
     return true;
 }
+
+bool TaskQueue::setSeedFiles(int taskId, QVariantList &files)
+{
+    if (this->mTasks.contains(taskId)) {
+        this->mTasks[taskId]->seedFileModel->setData(files, true);
+    }
+    return true;
+}
+
 
 void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus ) 
 {

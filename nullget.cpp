@@ -60,6 +60,7 @@
 #include "norwegianwoodstyle.h"
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
+#include "seedfilemodel.h"
 #include "seedfilesdialog.h"
 #include "getopt4.h"
 
@@ -970,6 +971,16 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         this->mainUI.peersView->setModel(mdl);
         mdl = this->mTaskMan->torrentTrackerModel(taskId);
         this->mainUI.trackersView->setModel(mdl);
+        mdl = this->mTaskMan->taskSeedFileModel(taskId);
+        this->mainUI.treeView_2->setModel(mdl);
+    } else {
+        mdl = this->mTaskMan->torrentPeerModel(taskId);
+        this->mainUI.peersView->setModel(0);
+        this->mainUI.peersView->setModel(mdl);
+        mdl = this->mTaskMan->torrentTrackerModel(taskId);
+        this->mainUI.trackersView->setModel(mdl);
+        mdl = this->mTaskMan->taskSeedFileModel(taskId);
+        this->mainUI.treeView_2->setModel(mdl);
     }
     {
         mdl = this->mTaskMan->taskServerModel(taskId);
@@ -2244,7 +2255,7 @@ void NullGet::onAriaParseTorrentFileFault(int code, QString reason, QVariant &pa
 
 void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    // qDebug()<<__FUNCTION__<<response<<payload;
     QMap<QString, QVariant> mPayload = payload.toMap();
     int taskId = payload.toMap().value("taskId").toInt();
     QMap<QString, QVariant> statusMap = response.toMap();
@@ -2300,13 +2311,12 @@ void NullGet::onTorrentRemoveConfirmTimeout()
 
 void NullGet::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    // qDebug()<<__FUNCTION__<<response<<payload;
     QVariantMap msts = response.toMap();
     QVariantMap mPayload = payload.toMap();
 
     if (msts.value("status").toString() == "removed") {
         mPayload["removeConfirm"] = "yes";
-        QVariant response = QString("OK");
         QVariant aPayload = QVariant(mPayload);
         this->onAriaRemoveTorrentParseFileTaskResponse(response, aPayload);
         // delete no used timer and temporary data
@@ -2327,7 +2337,7 @@ void NullGet::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, 
 
 void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    // qDebug()<<__FUNCTION__<<response<<payload;
 
     // insert new torrent task
     QMap<QString, QVariant> mPayload = payload.toMap();
@@ -2379,7 +2389,11 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
         QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
         this->mAriaTorrentUpdater.start();
     }
-    
+
+    // set seed file model data
+    int taskId = mPayload["taskId"].toString().toInt();
+    QVariantList seedFiles = response.toMap().value("files").toList();
+    this->mTaskMan->setSeedFiles(taskId, seedFiles);
 }
 
 void NullGet::onAriaRemoveTorrentParseFileTaskFault(int code, QString reason, QVariant &payload)
