@@ -89,7 +89,7 @@ NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
 {
     QDir().setCurrent(qApp->applicationDirPath()); //修改当前目录
 	mainUI.setupUi(this);	
-	firstShowEvent = true ;
+	firstShowEvent = true;
 
 	/////////////
 	orginalPalette = QApplication::palette();
@@ -165,15 +165,15 @@ void NullGet::firstShowHandler()
 	this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	this->mTaskListView->setAlternatingRowColors(true);
 	QObject::connect(this->mTaskListView->selectionModel(),
-                     SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-                     this, SLOT(onTaskListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
+                     SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+                     this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	this->mSegListView = this->mainUI.mui_tv_seg_list;
 	this->mSegListView->setSelectionMode(QAbstractItemView::SingleSelection );
 	this->mSegListView->setAlternatingRowColors(true);
 	//this->mSegListView ->setModel(mdl);
 
-	this->mSegLogListView = this->mainUI.mui_tv_seg_log_list ;
+	this->mSegLogListView = this->mainUI.mui_tv_seg_log_list;
 	this->mSegLogListView->setSelectionMode(QAbstractItemView::ExtendedSelection );
 
     // 初始化任务队列管理实例
@@ -185,12 +185,12 @@ void NullGet::firstShowHandler()
 	this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
 	//this->mCatViewModel = CategoryModel::instance(0);
 	this->mCatViewModel = SqliteCategoryModel::instance(0);
-	//this->mCatViewModel =  TreeModel::instance(0) ;
-	//QAbstractItemModel *catModel = this->mConfigDatabase->createCatModel() ;
+	//this->mCatViewModel =  TreeModel::instance(0);
+	//QAbstractItemModel *catModel = this->mConfigDatabase->createCatModel();
 	this->mCatView->setModel(this->mCatViewModel);
 
 	this->mCatView->expandAll();
-	//for (int i = 1 ; i < 9 ; i ++)
+	//for (int i = 1; i < 9; i ++)
 	//	this->mCatView->setColumnHidden(i,true);	//隐藏不需要显示的列即可。
 
 	//this->onLoadAllTask();	//loading database 
@@ -201,9 +201,9 @@ void NullGet::firstShowHandler()
 	this->mAverageSpeedTimer.start();
 
 	///////////////一些lazy模式实例化的类指针初始化。
-	this->mWalkSiteWnd = 0 ;
-	this->mWalkSiteDockWidget = 0 ;
-	this->mHWalkSiteWndEx = 0 ;
+	this->mWalkSiteWnd = 0;
+	this->mWalkSiteDockWidget = 0;
+	this->mHWalkSiteWndEx = 0;
 
 	//
 	this->connectAllSignalAndSlog();
@@ -245,7 +245,7 @@ void NullGet::firstShowHandler()
 
 NullGet::~NullGet()
 {
-	if( this->mAverageSpeedTimer.isActive())
+	if (this->mAverageSpeedTimer.isActive())
 		this->mAverageSpeedTimer.stop();
     this->mAriaMan->stop();
     delete this->mAriaMan;
@@ -255,35 +255,35 @@ NullGet::~NullGet()
  */
 void NullGet::initialMainWindow()
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qDebug()<<__FUNCTION__;
 	//set split on humanable postion , but not middle
-	QList<int> splitSize ;
+	QList<int> splitSize;
 	splitSize = this->mainUI.splitter_4->sizes();	
-	splitSize[0] -= 70 ;
-	splitSize[1] += 70 ;	
+	splitSize[0] -= 70;
+	splitSize[1] += 70;	
 	this->mainUI.splitter_4->setSizes(splitSize);
 
 	splitSize = this->mainUI.splitter_3->sizes();	
-	splitSize[0] -= 100 ;
-	splitSize[1] += 100 ;	
+	splitSize[0] -= 100;
+	splitSize[1] += 100;	
 	this->mainUI.splitter_3->setSizes(splitSize);
 
 	splitSize = this->mainUI.splitter_2->sizes();
-	splitSize[0] -= 50 ;
-	splitSize[1] += 50 ;	
+	splitSize[0] -= 50;
+	splitSize[1] += 50;	
 	//this->mainUI.splitter_2->setSizes(splitSize);
 
 
 	splitSize = this->mainUI.splitter->sizes();
-	//qDebug()<<splitSize ;
-	splitSize[0] += 80 ;
-	splitSize[1] -= 80 ;
+	//qDebug()<<splitSize;
+	splitSize[0] += 80;
+	splitSize[1] -= 80;
 	this->mainUI.splitter->setSizes(splitSize);
 
 	//this->onSwitchToWindowsXPStyle(true);	
 }
 
-void NullGet::moveEvent ( QMoveEvent * event )
+void NullGet::moveEvent (QMoveEvent * event )
 {
 	QPoint cp = event->pos();
 	QPoint op = event->oldPos();
@@ -296,7 +296,7 @@ void NullGet::moveEvent ( QMoveEvent * event )
 
 	int dtwidth = QApplication::desktop()->width();
 	int dtheight = QApplication::desktop()->height();
-	//qDebug()<<event->pos()<<event->oldPos()<<"W: "<<dtwidth<<" H:"<<dtheight ;
+	//qDebug()<<event->pos()<<event->oldPos()<<"W: "<<dtwidth<<" H:"<<dtheight;
 
 	//top 
 
@@ -309,8 +309,8 @@ void NullGet::moveEvent ( QMoveEvent * event )
 void NullGet::initPopupMenus()
 {
 	//action groups 
-	QActionGroup *group = new QActionGroup(this) ;
-	QObject::connect(group,SIGNAL(triggered(QAction *)),this,SLOT(onSwitchSpeedMode(QAction*)));
+	QActionGroup *group = new QActionGroup(this);
+	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchSpeedMode(QAction*)));
 	group->addAction(mainUI.action_Unlimited);
 	group->addAction(mainUI.action_Manual);
 	group->addAction(mainUI.action_Automatic);
@@ -318,7 +318,7 @@ void NullGet::initPopupMenus()
     // should dynamic check available styles
 	//window style : "windows", "motif", "cde", "plastique", "windowsxp", or "macintosh" , "cleanlooks" 
 	//NorwegianWood
-	group = new QActionGroup(this) ;
+	group = new QActionGroup(this);
 	// mainUI.action_CDE->setData("cde");
 	// mainUI.actionMo_tif->setData("motif");
 	// mainUI.action_Mac->setData("macintosh");
@@ -340,7 +340,7 @@ void NullGet::initPopupMenus()
     QStringList styleKeys = QStyleFactory::keys();
     QStyle *defaultStyle = QApplication::style();
     // qDebug()<<QApplication::style()<<styleKeys;
-    for (int i = 0 ; i < styleKeys.count() ; ++i) {
+    for (int i = 0; i < styleKeys.count(); ++i) {
         QAction *styleAction = new QAction(styleKeys.at(i), this->mainUI.menuStyle);
         styleAction->setData(styleKeys.at(i));
         styleAction->setCheckable(true);
@@ -353,18 +353,18 @@ void NullGet::initPopupMenus()
 	QObject::connect(group, SIGNAL(triggered(QAction *)), this, SLOT(onSwitchWindowStyle(QAction*)));
 
 	//supported languages: en_US , zh_CN , zh_TW
-	group = new QActionGroup(this) ;
+	group = new QActionGroup(this);
 	mainUI.action_Chinese_simple->setData("zh_CN");
 	mainUI.action_Chinese_trad->setData("zh_TW");
 	mainUI.action_English->setData("en_US");
 	group->addAction(mainUI.action_Chinese_simple);
 	group->addAction(mainUI.action_Chinese_trad);
 	group->addAction(mainUI.action_English);
-	QObject::connect(group,SIGNAL(triggered(QAction *)),this,SLOT(onSwitchLanguage(QAction*)));
+	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchLanguage(QAction*)));
 	//mainUI.action_English->setChecked(true);
 
 	/////skin
-	group = new QActionGroup(this) ;
+	group = new QActionGroup(this);
 	group->addAction(mainUI.actionNone);
 	group->addAction(mainUI.actionNormal);
 	group->addAction(mainUI.actionXP_Luna);
@@ -372,13 +372,13 @@ void NullGet::initPopupMenus()
 	group->addAction(mainUI.actionSkype_Gradient);
 	group->addAction(mainUI.actionCustom_Background);
 	group->addAction(mainUI.actionImageBk);
-	QObject::connect(group,SIGNAL(triggered(QAction *)),this,SLOT(onSwitchSkinType(QAction*)));
+	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchSkinType(QAction*)));
 
 
 	/////// all popups
 	this->mTaskPopupMenu = new QMenu("&Task",this);
 		
-	QList<QAction*> actionList ;
+	QList<QAction*> actionList;
 	actionList.append(this->mainUI.action_Start);
 	actionList.append(this->mainUI.action_Pause);
 	actionList.append(this->mainUI.action_Start_All);
@@ -395,12 +395,12 @@ void NullGet::initPopupMenus()
 	this->mTaskPopupMenu->addAction(this->mainUI.action_Properties);
 	this->mTaskPopupMenu->addAction(this->mainUI.action_Site_Properties);
 	this->mTaskPopupMenu->addAction(this->mainUI.action_Comment);
-	this->mTaskPopupMenu->addAction( this->mainUI.action_Browse_Referer );
-	this->mTaskPopupMenu->addAction( this->mainUI.action_Browse_With_Site_Explorer );
+	this->mTaskPopupMenu->addAction(this->mainUI.action_Browse_Referer );
+	this->mTaskPopupMenu->addAction(this->mainUI.action_Browse_With_Site_Explorer );
 	this->mTaskPopupMenu->addSeparator();
-	this->mTaskPopupMenu->addAction( this->mainUI.action_Download_Again );
+	this->mTaskPopupMenu->addAction(this->mainUI.action_Download_Again );
 	this->mTaskPopupMenu->addSeparator();
-	this->mTaskPopupMenu->addAction( this->mainUI.action_Copy_URL_To_ClipBoard );
+	this->mTaskPopupMenu->addAction(this->mainUI.action_Copy_URL_To_ClipBoard );
 
 	/////////////
 	this->mTaskPopupMenu->addActions(actionList);
@@ -487,8 +487,8 @@ void NullGet::initStatusBar()
 	pbar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 	//bar->addWidget(pbar);
 	bar->addPermanentWidget(pbar);
-	this->mSpeedProgressBar = pbar ;
-	pbar->setRange ( begin , end ) ;
+	this->mSpeedProgressBar = pbar;
+	pbar->setRange (begin , end );
 	pbar->setValue(begin);
 	pbar->setHidden(true);	//初始化为隐藏
 
@@ -497,18 +497,18 @@ void NullGet::initStatusBar()
 	hslider->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 
 	//bar->addWidget(hslider);
-	bar->addPermanentWidget(hslider) ;
-	this->mSpeedBarSlider = hslider ;
-	hslider->setRange( begin , end ) ;
+	bar->addPermanentWidget(hslider);
+	this->mSpeedBarSlider = hslider;
+	hslider->setRange(begin , end );
 	hslider->setValue(begin);
-	hslider->setHidden(true) ;	////初始化为隐藏
+	hslider->setHidden(true);	////初始化为隐藏
 
 	lab = new QLabel(QString("%1 KB/s").arg(hslider->value()) );	//速度显示条
 	lab->setFixedWidth(100);
 	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 	//bar->addWidget(lab);
 	bar->addPermanentWidget(lab);
-	this->mSpeedManualLabel = lab ;
+	this->mSpeedManualLabel = lab;
 	
 	lab->setHidden(true);	//初始化为隐藏
 
@@ -517,7 +517,7 @@ void NullGet::initStatusBar()
 	//lab->setFixedHeight(28);
 	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 	bar->addPermanentWidget(lab);
-	this->mSpeedTotalLable = lab ;
+	this->mSpeedTotalLable = lab;
 
 }
 /**
@@ -533,7 +533,7 @@ void NullGet::initSystemTray()
 	this->mSysTrayIcon->setContextMenu(this->mDropZonePopupMenu);
 
     QString iconname;
-	int index = 0 ;
+	int index = 0;
     switch (index) {
     default:
     case 0:
@@ -580,116 +580,116 @@ void NullGet::initAppIcons()
 
 void NullGet::connectAllSignalAndSlog()
 {
-	QObject::connect(this->mainUI.actionDrop_zone,SIGNAL(triggered(bool)),this->mDropZone,SLOT(setVisible(bool)));
+	QObject::connect(this->mainUI.actionDrop_zone, SIGNAL(triggered(bool)),this->mDropZone,SLOT(setVisible(bool)));
 	
 	//file action
-	//QObject::connect(this->mainUI.action_New_Database,SIGNAL(triggered()),this,SLOT(onNewDatabase()));	
-	//QObject::connect(this->mainUI.action_Open_Database,SIGNAL(triggered()),this,SLOT(onOpenDatabase()));	
-	//QObject::connect(this->mainUI.action_Save_Database,SIGNAL(triggered()),this,SLOT(onSaveAllTask()));	
-	//QObject::connect(this->mainUI.actionSave_As,SIGNAL(triggered()),this,SLOT(onSaveAllTaskAs()));
+	//QObject::connect(this->mainUI.action_New_Database, SIGNAL(triggered()),this, SLOT(onNewDatabase()));	
+	//QObject::connect(this->mainUI.action_Open_Database, SIGNAL(triggered()),this, SLOT(onOpenDatabase()));	
+	//QObject::connect(this->mainUI.action_Save_Database, SIGNAL(triggered()),this, SLOT(onSaveAllTask()));	
+	//QObject::connect(this->mainUI.actionSave_As, SIGNAL(triggered()),this, SLOT(onSaveAllTaskAs()));
 
-	QObject::connect(this->mainUI.actionProcess_Web_Page_File,SIGNAL(triggered()),this,SLOT(showProcessWebPageInputDiglog()));
+	QObject::connect(this->mainUI.actionProcess_Web_Page_File, SIGNAL(triggered()),this, SLOT(showProcessWebPageInputDiglog()));
 
 	//editr
-	QObject::connect(this->mainUI.actionPaste_URL , SIGNAL(triggered()),this,SLOT(showNewDownloadDialog()));
-	QObject::connect(this->mainUI.actionSelect_All,SIGNAL(triggered()),this,SLOT(onEditSelectAll()));
-	QObject::connect(this->mainUI.actionInvert_Select,SIGNAL(triggered()),this,SLOT(onEditInvertSelect()));
+	QObject::connect(this->mainUI.actionPaste_URL , SIGNAL(triggered()),this, SLOT(showNewDownloadDialog()));
+	QObject::connect(this->mainUI.actionSelect_All, SIGNAL(triggered()),this, SLOT(onEditSelectAll()));
+	QObject::connect(this->mainUI.actionInvert_Select, SIGNAL(triggered()),this, SLOT(onEditInvertSelect()));
 	
 	//cat action
-	QObject::connect(this->mainUI.actionNew_Cagegory , SIGNAL(triggered()),this,SLOT(onNewCategory()));
-	QObject::connect(this->mainUI.action_Cat_Property , SIGNAL(triggered()),this,SLOT(onShowCategoryProperty()));
-	QObject::connect(this->mainUI.action_Delete_cat,SIGNAL(triggered()),this,SLOT(onDeleteCategory()));
-	QObject::connect(this->mainUI.action_cat_Move_To , SIGNAL(triggered()),this,SLOT(onCategoryMoveTo()));
+	QObject::connect(this->mainUI.actionNew_Cagegory , SIGNAL(triggered()),this, SLOT(onNewCategory()));
+	QObject::connect(this->mainUI.action_Cat_Property , SIGNAL(triggered()),this, SLOT(onShowCategoryProperty()));
+	QObject::connect(this->mainUI.action_Delete_cat, SIGNAL(triggered()),this, SLOT(onDeleteCategory()));
+	QObject::connect(this->mainUI.action_cat_Move_To , SIGNAL(triggered()),this, SLOT(onCategoryMoveTo()));
 
 	//view
-	QObject::connect(this->mainUI.action_Show_Columns_Editor , SIGNAL(triggered()),this,SLOT(onShowColumnEditor()));
-	QObject::connect(this->mainUI.actionShow_Text,SIGNAL(triggered(bool)),this,SLOT(onShowToolbarText(bool) ) );
+	QObject::connect(this->mainUI.action_Show_Columns_Editor , SIGNAL(triggered()),this, SLOT(onShowColumnEditor()));
+	QObject::connect(this->mainUI.actionShow_Text, SIGNAL(triggered(bool)),this, SLOT(onShowToolbarText(bool) ) );
 	//job action 
-	QObject::connect(this->mainUI.menu_Jobs,SIGNAL(aboutToShow()),this,SLOT(onTaskListMenuPopup()));
-	QObject::connect(this->mainUI.action_New_Download,SIGNAL(triggered()),this,SLOT(showNewDownloadDialog()));
+	QObject::connect(this->mainUI.menu_Jobs, SIGNAL(aboutToShow()),this, SLOT(onTaskListMenuPopup()));
+	QObject::connect(this->mainUI.action_New_Download, SIGNAL(triggered()),this, SLOT(showNewDownloadDialog()));
     QObject::connect(this->mainUI.action_New_Bittorrent, SIGNAL(triggered()), this, SLOT(showNewBittorrentFileDialog())); 
     QObject::connect(this->mainUI.action_New_Metalink, SIGNAL(triggered()), this, SLOT(showNewMetalinkFileDialog()));
-	QObject::connect(this->mainUI.actionAdd_batch_download,SIGNAL(triggered()),this,SLOT(showBatchDownloadDialog()));
+	QObject::connect(this->mainUI.actionAdd_batch_download, SIGNAL(triggered()),this, SLOT(showBatchDownloadDialog()));
 	
-	QObject::connect(this->mainUI.action_Start , SIGNAL(triggered()),this,SLOT(onStartTask()));
-	QObject::connect(this->mainUI.action_Pause , SIGNAL(triggered()),this,SLOT(onPauseTask()));
-	QObject::connect(this->mainUI.action_Start_All , SIGNAL(triggered()),this,SLOT(onStartTaskAll()));
-	QObject::connect(this->mainUI.action_Pause_All , SIGNAL(triggered()),this,SLOT(onPauseTaskAll()));
+	QObject::connect(this->mainUI.action_Start , SIGNAL(triggered()),this, SLOT(onStartTask()));
+	QObject::connect(this->mainUI.action_Pause , SIGNAL(triggered()),this, SLOT(onPauseTask()));
+	QObject::connect(this->mainUI.action_Start_All , SIGNAL(triggered()),this, SLOT(onStartTaskAll()));
+	QObject::connect(this->mainUI.action_Pause_All , SIGNAL(triggered()),this, SLOT(onPauseTaskAll()));
 
-	QObject::connect(this->mainUI.action_Delete_task,SIGNAL(triggered()),this,SLOT(onDeleteTask()));
+	QObject::connect(this->mainUI.action_Delete_task, SIGNAL(triggered()),this, SLOT(onDeleteTask()));
 
-	QObject::connect(this->mainUI.action_Properties,SIGNAL(triggered()),this,SLOT(onShowTaskProperty()));
+	QObject::connect(this->mainUI.action_Properties, SIGNAL(triggered()),this, SLOT(onShowTaskProperty()));
 
-	QObject::connect(this->mainUI.actionOpen_de_stination_directory,SIGNAL(triggered()),this,SLOT(onOpenDistDirector()));
-	QObject::connect(this->mainUI.actionOpen_Exec_download_file,SIGNAL(triggered()),this,SLOT(onOpenExecDownloadedFile()));
+	QObject::connect(this->mainUI.actionOpen_de_stination_directory, SIGNAL(triggered()),this, SLOT(onOpenDistDirector()));
+	QObject::connect(this->mainUI.actionOpen_Exec_download_file, SIGNAL(triggered()),this, SLOT(onOpenExecDownloadedFile()));
 	
 	//tools 
-	QObject::connect(this->mainUI.action_Options,SIGNAL(triggered()),this,SLOT(onShowOptions()));
-	QObject::connect(this->mainUI.action_Connect_Disconnect,SIGNAL(triggered()),this,SLOT(onShowConnectOption()));
+	QObject::connect(this->mainUI.action_Options, SIGNAL(triggered()),this, SLOT(onShowOptions()));
+	QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()),this, SLOT(onShowConnectOption()));
 	
-	QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()),this,SLOT(onShowDefaultDownloadProperty()));
+	QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()),this, SLOT(onShowDefaultDownloadProperty()));
 
 	//statusbar
-	QObject::connect(this->mSpeedBarSlider,SIGNAL(valueChanged(int)),this,SLOT(onManualSpeedChanged(int)));
+	QObject::connect(this->mSpeedBarSlider, SIGNAL(valueChanged(int)),this, SLOT(onManualSpeedChanged(int)));
 
 	//help action 
-	this->connect(this->mainUI.action_Go_to_NullGet_Home_Page,SIGNAL(triggered()),this,SLOT(onGotoHomePage()));
-	this->connect(this->mainUI.action_About_NullGet,SIGNAL(triggered()),this,SLOT(showAboutDialog()));
-	QObject::connect(this->mainUI.actionAbout_Qt,SIGNAL(triggered()),this,SLOT(onAboutQt()));
+	this->connect(this->mainUI.action_Go_to_NullGet_Home_Page, SIGNAL(triggered()),this, SLOT(onGotoHomePage()));
+	this->connect(this->mainUI.action_About_NullGet, SIGNAL(triggered()),this, SLOT(showAboutDialog()));
+	QObject::connect(this->mainUI.actionAbout_Qt, SIGNAL(triggered()),this, SLOT(onAboutQt()));
 
 	//centrol 
-	QObject::connect(this->mainUI.mui_tv_task_list,SIGNAL( customContextMenuRequested ( const QPoint &  )),
-		this,SLOT(onTaskListMenuPopup(/*const QPoint &*/)));
-	QObject::connect(this->mainUI.mui_tv_task_list,SIGNAL( entered( const QModelIndex & )) ,
-		this,SLOT(onShowTaskPropertyDigest( const  QModelIndex & ) ) ) ;
+	QObject::connect(this->mainUI.mui_tv_task_list, SIGNAL(customContextMenuRequested (const QPoint &  )),
+		this, SLOT(onTaskListMenuPopup(/*const QPoint &*/)));
+	QObject::connect(this->mainUI.mui_tv_task_list, SIGNAL(entered(const QModelIndex & )) ,
+		this, SLOT(onShowTaskPropertyDigest(const  QModelIndex & ) ) );
 
-	QObject::connect(this->mainUI.mui_tv_seg_log_list,SIGNAL( customContextMenuRequested ( const QPoint &  )),
-		this,SLOT(onLogListMenuPopup(const QPoint &)));
-	QObject::connect(this->mainUI.mui_tv_seg_list,SIGNAL( customContextMenuRequested ( const QPoint &  )),
-		this,SLOT(onSegListMenuPopup(const QPoint &)));
-	QObject::connect(this->mainUI.mui_tv_category,SIGNAL( customContextMenuRequested ( const QPoint &  )),
-		this,SLOT(onCateMenuPopup(const QPoint &)));
+	QObject::connect(this->mainUI.mui_tv_seg_log_list, SIGNAL(customContextMenuRequested (const QPoint &  )),
+		this, SLOT(onLogListMenuPopup(const QPoint &)));
+	QObject::connect(this->mainUI.mui_tv_seg_list, SIGNAL(customContextMenuRequested (const QPoint &  )),
+		this, SLOT(onSegListMenuPopup(const QPoint &)));
+	QObject::connect(this->mainUI.mui_tv_category, SIGNAL(customContextMenuRequested (const QPoint &  )),
+		this, SLOT(onCateMenuPopup(const QPoint &)));
 
 
-	QObject::connect(this->mDropZone,SIGNAL(doubleclicked()),this,SLOT(onDropZoneDoubleClicked()));
-	QObject::connect(this->mainUI.action_Show_Hide_Main_Widow,SIGNAL(triggered()),this,SLOT(onDropZoneDoubleClicked()));
-	QObject::connect(this->mDropZone,SIGNAL(customContextMenuRequested( const QPoint &)),
-		this,SLOT(onDropZoneCustomMenu(const QPoint &)));
+	QObject::connect(this->mDropZone, SIGNAL(doubleclicked()),this, SLOT(onDropZoneDoubleClicked()));
+	QObject::connect(this->mainUI.action_Show_Hide_Main_Widow, SIGNAL(triggered()),this, SLOT(onDropZoneDoubleClicked()));
+	QObject::connect(this->mDropZone, SIGNAL(customContextMenuRequested(const QPoint &)),
+		this, SLOT(onDropZoneCustomMenu(const QPoint &)));
 	
 
 	//seg view menu
-	QObject::connect(this->mainUI.action_Seg_List_Start,SIGNAL(triggered()),this, SLOT(onStartSegment()));
-	QObject::connect(this->mainUI.action_Seg_List_Stop,SIGNAL(triggered()),this,SLOT(onPauseSegment()));
-	//QObject::connect(this->mainUI.action_Seg_List_Restart,SIGNAL(triggered()),this,SLOT(onRestartSegment()));
+	QObject::connect(this->mainUI.action_Seg_List_Start, SIGNAL(triggered()),this, SLOT(onStartSegment()));
+	QObject::connect(this->mainUI.action_Seg_List_Stop, SIGNAL(triggered()),this, SLOT(onPauseSegment()));
+	//QObject::connect(this->mainUI.action_Seg_List_Restart, SIGNAL(triggered()),this, SLOT(onRestartSegment()));
 
 	//seg log menu
-	QObject::connect(this->mainUI.action_Seg_Log_Copy,SIGNAL(triggered()),this,SLOT(onCopySelectSegLog()));
-	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File,SIGNAL(triggered()),this,SLOT(onSaveSegLog()));
-	QObject::connect(this->mainUI.action_Clear_Seg_Log,SIGNAL(triggered()),this,SLOT(onClearSegLog()));
+	QObject::connect(this->mainUI.action_Seg_Log_Copy, SIGNAL(triggered()),this, SLOT(onCopySelectSegLog()));
+	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File, SIGNAL(triggered()),this, SLOT(onSaveSegLog()));
+	QObject::connect(this->mainUI.action_Clear_Seg_Log, SIGNAL(triggered()),this, SLOT(onClearSegLog()));
 
 	//cat view
-	QObject::connect(this->mCatView->selectionModel(),SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-		this,SLOT(onCatListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
+	QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+		this, SLOT(onCatListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	//toolbar	//在UI设计器中将信号传递到标准菜单中。
-	//QObject::connect(this->mainUI.mui_tb_properties,SIGNAL(triggered()),this,SLOT(onShowTaskProperty()));
-	//QObject::connect(this->mainUI.mui_tb_open_dir,SIGNAL(triggered()),this,SLOT(onOpenDistDirector()));
-	//QObject::connect(this->mainUI.mui_tb_exec_file,SIGNAL(triggered()),this,SLOT(onOpenExecDownloadedFile()));
+	//QObject::connect(this->mainUI.mui_tb_properties, SIGNAL(triggered()),this, SLOT(onShowTaskProperty()));
+	//QObject::connect(this->mainUI.mui_tb_open_dir, SIGNAL(triggered()),this, SLOT(onOpenDistDirector()));
+	//QObject::connect(this->mainUI.mui_tb_exec_file, SIGNAL(triggered()),this, SLOT(onOpenExecDownloadedFile()));
 
 	//other
-	QObject::connect(this->mainUI.action_Copy_URL_To_ClipBoard,SIGNAL(triggered()),this,SLOT(onCopyUrlToClipboard()));
+	QObject::connect(this->mainUI.action_Copy_URL_To_ClipBoard, SIGNAL(triggered()),this, SLOT(onCopyUrlToClipboard()));
 
-	QObject::connect(QApplication::clipboard(),SIGNAL(dataChanged()),this,SLOT(onClipBoardDataChanged()));
+	QObject::connect(QApplication::clipboard(), SIGNAL(dataChanged()),this, SLOT(onClipBoardDataChanged()));
 
-    QObject::connect(&this->mAverageSpeedTimer,SIGNAL(timeout()),this,SLOT(caclAllTaskAverageSpeed()));
+    QObject::connect(&this->mAverageSpeedTimer, SIGNAL(timeout()),this, SLOT(caclAllTaskAverageSpeed()));
 
-	QObject::connect(this->mainUI.actionWalk_Site,SIGNAL(triggered()),this,SLOT(onShowWalkSiteWindow()));
+	QObject::connect(this->mainUI.actionWalk_Site, SIGNAL(triggered()),this, SLOT(onShowWalkSiteWindow()));
 	QObject::connect(this->mSysTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onActiveTrayIcon(QSystemTrayIcon::ActivationReason)));
 	QObject::connect(this->mSysTrayIcon, SIGNAL(messageClicked()),  this, SLOT(onBallonClicked()));
 
 	//test it
-	//this->connect(this->mainUI.pushButton_3,SIGNAL(clicked()),this,SLOT(testFunc()));
-	//QObject::connect(QApplication::instance(),SIGNAL(aboutToQuit () ),this,SLOT(testFunc2()));
+	//this->connect(this->mainUI.pushButton_3, SIGNAL(clicked()),this, SLOT(testFunc()));
+	//QObject::connect(QApplication::instance(), SIGNAL(aboutToQuit () ),this, SLOT(testFunc2()));
 
 }
 //temporary 临时用于隐藏没有实现功能用户界面的代码。
@@ -728,7 +728,7 @@ void NullGet::hideUnimplementUiElement()
 
 	//view
 	this->mainUI.actionDetail->setVisible(false);
-	//delete this->mainUI.menuToolbar; this->mainUI.menuToolbar = 0 ;
+	//delete this->mainUI.menuToolbar; this->mainUI.menuToolbar = 0;
 	this->mainUI.actionGrid->setVisible(false);
 	//this->mainUI.menuSkin->deleteLater();		//这个不能删除，在翻译的时候使用它的指针时就崩溃了。
 	//this->mainUI.actionShow_Text->setVisible(false);
@@ -777,7 +777,7 @@ void NullGet::hideUnneededUiElement()
  */
 int NullGet::getNextValidTaskId() 
 {
-	int taskId = -1 ;
+	int taskId = -1;
 
 	SqliteStorage * storage = SqliteStorage::instance(this);
 	storage->open();
@@ -785,7 +785,7 @@ int NullGet::getNextValidTaskId()
 	taskId = storage->getNextValidTaskID();
 
 
-	return taskId ;
+	return taskId;
 
 }
 
@@ -795,16 +795,16 @@ int NullGet::getNextValidTaskId()
 int NullGet::createTask(TaskOption *option)
 {
 	//precondition: 
-	assert( option != 0 );
+	assert(option != 0 );
 
-	int taskId = -1 ;
+	int taskId = -1;
 	
 	taskId = this->getNextValidTaskId();
 
-	//qDebug()<<this->mTaskQueue << __FUNCTION__ << "in " <<__FILE__ ;
+	//qDebug()<<this->mTaskQueue << __FUNCTION__ << "in " <<__FILE__;
 	if (taskId >= 0) {
 		////将任务信息添加到 task list view 中
-		//QModelIndex index ;
+		//QModelIndex index;
 		//QAbstractItemModel * mdl = 0;	//SqliteTaskModel::instance(ng::cats::downloading,this);
 		// TaskQueue::addTaskModel(taskId, option);
         this->mTaskMan->addTaskModel(taskId, option);
@@ -827,7 +827,7 @@ int NullGet::createTask(int taskId, TaskOption *option)
 int NullGet::createTaskSegment(int pTaskId ,QString purl , long fromPostion , long yourLength )
 {
 	
-	return -1 ;
+	return -1;
 }
 
 
@@ -845,43 +845,43 @@ void NullGet::onAddTaskList(QStringList list)
 	//segcnt = tid->segmentCount();	
 	//to = tid->getOption();	//			
 
-	if(er == QDialog::Accepted)
+	if (er == QDialog::Accepted)
 	{				
 		//this->createTask(url,segcnt);
 		//这里先假设用户使用相同的设置。
-		//delete to ; to = 0 ;
-		for( int t = 0 ; t <list.size() ; ++ t )
+		//delete to; to = 0;
+		for(int t = 0; t <list.size(); ++ t )
 		{
-			taskUrl = list.at(t) ;
+			taskUrl = list.at(t);
 			qDebug()<<taskUrl;
-			tid->setTaskUrl( taskUrl );
+			tid->setTaskUrl(taskUrl );
 			to = tid->getOption();
-			this->createTask( to );
+			this->createTask(to );
 		}
 	}
 	else
 	{
-		//delete to ; to = 0 ;
+		//delete to; to = 0;
 	}
 
-	delete tid ;
+	delete tid;
 }
 
 void NullGet::testFunc()
 {
 	qDebug()<<__FUNCTION__;
-	int count = 7 ;	
+	int count = 7;	
 	this->mTaskPopupMenu->popup(QCursor::pos ());
-	return ;
+	return;
 
 	this->onStartTask();
 	return;
 	
-	return ;
+	return;
 
 	QString url = "http://localhost/mtv.wmv";
-	int nRet = 0 ;
-	qDebug() <<nRet ;
+	int nRet = 0;
+	qDebug() <<nRet;
 
 }
 
@@ -889,26 +889,26 @@ void NullGet::testFunc2()
 {
 	qDebug()<<__FUNCTION__;
 
-	return ;
+	return;
 
-	QStandardItemModel *model = 	mConfigDatabase->createCatModel() ;	
-	this->mCatView->setModel(  model ) ;
+	QStandardItemModel *model = 	mConfigDatabase->createCatModel();	
+	this->mCatView->setModel( model );
 	this->mCatView->expand(model->index(0,0));
 
-	return ;
+	return;
 
 	this->onPauseTask();
 
 }
 
 
-void NullGet::onSegmentListSelectChange( const QItemSelection & selected, const QItemSelection & deselected )
+void NullGet::onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
 {
 	qDebug()<<__FUNCTION__;
 
-	int taskId ;
-	int segId ;
-	QString segName ;
+	int taskId;
+	int segId;
+	QString segName;
 
 	QModelIndexList mil = selected.indexes();
 
@@ -922,7 +922,7 @@ void NullGet::onSegmentListSelectChange( const QItemSelection & selected, const 
 	QAbstractItemModel * mdl = SegmentLogModel::instance(taskId , segId,this);
 
 	this->mSegLogListView->setModel(0);
-	if( mdl != 0 )
+	if (mdl != 0 )
 	{
 		this->mSegLogListView->setModel(mdl);
 		this->mSegLogListView->resizeColumnToContents(2);
@@ -930,18 +930,18 @@ void NullGet::onSegmentListSelectChange( const QItemSelection & selected, const 
 	}
 	else
 	{
-		qDebug()<<__FUNCTION__<<" model mSegLogListView = 0 " ;
+		qDebug()<<__FUNCTION__<<" model mSegLogListView = 0 ";
 	}
 }
 
-void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected)
+void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QItemSelection & deselected)
 {
-	int taskId ;
-	int segId ;
-	QString segName ;
+	int taskId;
+	int segId;
+	QString segName;
 
 	//更新JOB相关菜单enable状态。
-	this->onUpdateJobMenuEnableProperty() ;
+	this->onUpdateJobMenuEnableProperty();
 
 	///
 	QModelIndexList mil = selected.indexes();
@@ -949,14 +949,14 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
 	if (selected.size() == 0 ) {
 		//不能简单的退出，而应该做点什么吧， 看看它的表现 。
 		//在没有任务选中的时候，是否应该清除线程列表及线程日志中的内容。
-		return ;	//no op needed 
+		return;	//no op needed 
 	}
 
 	taskId = mil.at(ng::tasks::task_id).data().toInt();
 
 	qDebug()<<__FUNCTION__<<taskId<<segName;
 
-	QModelIndex index ;
+	QModelIndex index;
 	QAbstractItemModel *mdl = 0;
 
 	// update task ball and peer view
@@ -995,36 +995,36 @@ void NullGet::onTaskListSelectChange( const QItemSelection & selected, const QIt
     }
 }
 
-void NullGet::onCatListSelectChange( const QItemSelection & selected, const QItemSelection & deselected )
+void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
 {
 	qDebug()<<__FUNCTION__<<selected;
 	
 	if (selected.size() == 1) {
-		QModelIndex currentIndex ;
-		currentIndex = selected.at(0).indexes().at(0) ;
-		qDebug()<< currentIndex ;
-		QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id) ;
-		int catID = catIDIndex.model()->data( catIDIndex ).toInt() ;
+		QModelIndex currentIndex;
+		currentIndex = selected.at(0).indexes().at(0);
+		qDebug()<< currentIndex;
+		QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id);
+		int catID = catIDIndex.model()->data(catIDIndex ).toInt();
 
-		qDebug()<< "i cat id is "<< catIDIndex.model()->data( catIDIndex ) .toString() ;
+		qDebug()<< "i cat id is "<< catIDIndex.model()->data(catIDIndex ) .toString();
 
-		this->mTaskListView->setModel( 0 );
+		this->mTaskListView->setModel(0 );
 
-		if( catIDIndex.model()->data( catIDIndex ) .toString() == "0" )
+		if (catIDIndex.model()->data(catIDIndex ) .toString() == "0" )
 		{
 			//this->mCatView->clearSelection();//不让选择树根也不合适啊。
 			QAbstractItemModel * mdl = SqliteTaskModel::instance(catID,this);
-			this->mTaskListView->setModel( mdl );
+			this->mTaskListView->setModel(mdl );
 		}
 		else
 		{
 			QAbstractItemModel * mdl = SqliteTaskModel::instance(catID,this);
 			
-			this->mTaskListView->setModel( mdl );
+			this->mTaskListView->setModel(mdl );
 		}
 
-		QObject::connect(this->mTaskListView->selectionModel(),SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-			this,SLOT(onTaskListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
+		QObject::connect(this->mTaskListView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+			this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	}
 }
@@ -1132,17 +1132,17 @@ void NullGet::onStartTask()
 // 		// TaskQueue::onStartTask(pTaskId);
 // 	} else {
 // 		// TaskQueue * hTask = TaskQueue::instance(pTaskId,0);
-// 		// QObject::connect( hTask , SIGNAL(  onTaskDone(int  ) ), 
+// 		// QObject::connect(hTask , SIGNAL( onTaskDone(int  ) ), 
 // 		// 	this, SLOT(onTaskDone(int ) ) );
-// 		// QObject::connect(hTask,SIGNAL(taskCompletionChanged(int  , int  , QString ) ) ,
-// 		// 	this->mDropZone,SLOT( onRunTaskCompleteState(int  , int  , QString  ) ) ) ;
-// 		// QObject::connect( hTask ,SIGNAL( taskCompletionChanged( TaskQueue *  , bool   ) ) ,
-// 		// 	TaskBallMapWidget::instance(),SLOT(onRunTaskCompleteState(TaskQueue *  , bool  ) ) ) ;
+// 		// QObject::connect(hTask, SIGNAL(taskCompletionChanged(int  , int  , QString ) ) ,
+// 		// 	this->mDropZone,SLOT(onRunTaskCompleteState(int  , int  , QString  ) ) );
+// 		// QObject::connect(hTask , SIGNAL(taskCompletionChanged(TaskQueue *  , bool   ) ) ,
+// 		// 	TaskBallMapWidget::instance(),SLOT(onRunTaskCompleteState(TaskQueue *  , bool  ) ) );
 
 // 		// TaskBallMapWidget::instance()->onRunTaskCompleteState(hTask , true );
 
 // 		// TaskQueue::onStartTask(pTaskId );
-// 		// QObject::connect(hTask,SIGNAL(destroyed(QObject*)),this,SLOT(onObjectDestroyed(QObject*)) );
+// 		// QObject::connect(hTask, SIGNAL(destroyed(QObject*)),this, SLOT(onObjectDestroyed(QObject*)) );
 // 	}
 
 // 	return;
@@ -1153,17 +1153,17 @@ void NullGet::onStartTaskAll()
 	qDebug()<<__FUNCTION__;
 
 	TaskQueue * hTask = 0;
-	int taskCount ;
-	int retrCount ;
+	int taskCount;
+	int retrCount;
 
-	//taskCount = this->mTaskQueue.size() ;
-	//for( int i = 0 ; i < taskCount ; i ++)
+	//taskCount = this->mTaskQueue.size();
+	//for(int i = 0; i < taskCount; i ++)
 	{
-		//hTask = this->mTaskQueue[i] ;
-		if( hTask != 0 )
+		//hTask = this->mTaskQueue[i];
+		if (hTask != 0 )
 		{
 			//this->onStartTask(hTask->mTaskId);
-			//this->onStartTask( hTask );
+			//this->onStartTask(hTask );
 		}
 	}
 }
@@ -1182,7 +1182,7 @@ void NullGet::onPauseTask()
 	qDebug()<<smil.size();
 
 	if (smil.size() > 0) {
-		for (int i = 0 ; i < smil.size() ; i+= step) {
+		for (int i = 0; i < smil.size(); i+= step) {
 			taskId = smil.value(i).data().toInt();
             ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
 			qDebug()<<smil.value(i)<<taskId; 
@@ -1201,29 +1201,29 @@ void NullGet::onPauseTask()
 void NullGet::onPauseTask(int pTaskId ) 
 {
 	qDebug()<<__FUNCTION__;
-	// BaseRetriver * hRetr = 0 ;
-	int retrCount ;
+	// BaseRetriver * hRetr = 0;
+	int retrCount;
 	TaskQueue * hTask = this->mTaskMan;
 	if (hTask == 0)	{
-		return ;
+		return;
 	} else {
 		//this->onPauseTask(hTask);
 	}
 
-	return ;
+	return;
 }
 
 void NullGet::onPauseTaskAll() 
 {
 	qDebug()<<__FUNCTION__;
 	TaskQueue * hTask = 0;
-	int taskCount ;
+	int taskCount;
 
-	//taskCount = this->mTaskQueue.size() ;
-	//for( int i = 0 ; i < taskCount ; i ++)
+	//taskCount = this->mTaskQueue.size();
+	//for(int i = 0; i < taskCount; i ++)
 	{
-	//	hTask = this->mTaskQueue[i] ;
-		if( hTask != 0 )
+	//	hTask = this->mTaskQueue[i];
+		if (hTask != 0 )
 		{
 		//	this->onPauseTask(hTask->mTaskId);
 		}
@@ -1234,18 +1234,18 @@ void NullGet::onPauseTaskAll()
 void NullGet::onStartSegment(int pTaskId,int pSegId)
 {
 	qDebug()<<__FUNCTION__<<pTaskId<<pSegId;
-	int row =0 ;
-	// BaseRetriver *br = 0 ;
+	int row =0;
+	// BaseRetriver *br = 0;
 	QAbstractItemModel * mdl = 0;
 
-	mdl = SegmentLogModel::instance( pTaskId , pSegId , this );
+	mdl = SegmentLogModel::instance(pTaskId , pSegId , this );
 
 	// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// if( br != 0 )
+	// if (br != 0 )
 	// {
-	// 	br->bePauseing = false ;
+	// 	br->bePauseing = false;
 	// 	row = mdl->rowCount();
-	// 	if( row > 0 ) mdl->removeRows(0,row);
+	// 	if (row > 0 ) mdl->removeRows(0,row);
 
 	// 	br->start();
 	// }
@@ -1255,41 +1255,41 @@ void NullGet::onStartSegment(int pTaskId,int pSegId)
  * 触发：用户选择了一个视图中的线程模型，然后点击菜单上启动项
  */
 
-void NullGet::onStartSegment( )
+void NullGet::onStartSegment()
 {
 	qDebug()<<__FUNCTION__;
-	int pTaskId = -1 ;
-	int pSegId = -1 ;
-	// BaseRetriver *br = 0 ;
-	int row =0 ;
+	int pTaskId = -1;
+	int pSegId = -1;
+	// BaseRetriver *br = 0;
+	int row =0;
 	QAbstractItemModel * mdl = 0;
 
-	//if( ! this->findRetriverBySelectedModel(&pTaskId,&pSegId)) return ;
-	int crow ;
+	//if (! this->findRetriverBySelectedModel(&pTaskId,&pSegId)) return;
+	int crow;
 	QItemSelectionModel *sm = this->mSegListView->selectionModel();
-	if( sm == 0 )
+	if (sm == 0 )
 	{
 		qDebug()<<" no segment model selected";
-		return  ;
+		return;
 	}
-	QModelIndex mi = sm->currentIndex() ;
-	qDebug()<<mi ;
-	if(mi.isValid()) 
+	QModelIndex mi = sm->currentIndex();
+	qDebug()<<mi;
+	if (mi.isValid()) 
 	{
 		crow = mi.row();
-		if( pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,(int)ng::segs::task_id).data().toInt();
-		if( pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,(int)ng::segs::seg_id).data().toInt();
+		if (pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,(int)ng::segs::task_id).data().toInt();
+		if (pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,(int)ng::segs::seg_id).data().toInt();
 		qDebug()<<pTaskId<<pSegId;
 
 		//br = this->findRetriverById(pTaskId,pSegId);
 		// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-		// if( br != 0 && br->bePauseing == true )
+		// if (br != 0 && br->bePauseing == true )
 		// {
-		// 	br->bePauseing = false ;
+		// 	br->bePauseing = false;
 		// 	//row = br->mLogModel.rowCount();
-		// 	//if( row > 0 ) br->mLogModel.removeRows(0,row) ;
+		// 	//if (row > 0 ) br->mLogModel.removeRows(0,row);
 		// 	row = mdl->rowCount();
-		// 	if( row > 0 ) mdl->removeRows(0,row);
+		// 	if (row > 0 ) mdl->removeRows(0,row);
 		// 	br->start();
 		// }		
 	}
@@ -1299,12 +1299,12 @@ void NullGet::onPauseSegment(int pTaskId,int pSegId)
 {
 	qDebug()<<__FUNCTION__;
 
-	// BaseRetriver *br = 0 ;
+	// BaseRetriver *br = 0;
 
 	// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// if( br != 0 )
+	// if (br != 0 )
 	// {
-	// 	br->bePauseing = true ;
+	// 	br->bePauseing = true;
 	// 	br->terminate();
 	// }
 }
@@ -1314,28 +1314,28 @@ void NullGet::onPauseSegment()
 	qDebug()<<__FUNCTION__;
 	int pTaskId = -1;
 	int pSegId = -1;
-	// BaseRetriver *br = 0 ;
+	// BaseRetriver *br = 0;
 		
-	int crow ;
+	int crow;
 	QItemSelectionModel *sm = this->mSegListView->selectionModel();
-	if( sm == 0 )
+	if (sm == 0 )
 	{
 		qDebug()<<" no segment model selected";
-		return  ;
+		return;
 	}
-	QModelIndex mi = sm->currentIndex() ;
-	qDebug()<<mi ;
-	// if(mi.isValid()) 
+	QModelIndex mi = sm->currentIndex();
+	qDebug()<<mi;
+	// if (mi.isValid()) 
 	// {
 	// 	crow = mi.row();
-	// 	if( pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,ng::segs::task_id).data().toInt();
-	// 	if( pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,ng::segs::seg_id).data().toInt();
+	// 	if (pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,ng::segs::task_id).data().toInt();
+	// 	if (pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,ng::segs::seg_id).data().toInt();
 	// 	qDebug()<<pTaskId<<pSegId;
 
 	// 	br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// 	if( br != 0 && br->bePauseing == false )
+	// 	if (br != 0 && br->bePauseing == false )
 	// 	{
-	// 		br->bePauseing = true ;	
+	// 		br->bePauseing = true;	
 	// 		br->terminate();
 	// 	}	
 	// }	
@@ -1349,13 +1349,13 @@ void NullGet::onDeleteTask()
 {
 	qDebug()<<__FUNCTION__;
 	
-	SqliteTaskModel * from_model = 0 , * to_model = 0 ;
-	QModelIndex idx ;
-	QItemSelectionModel * sim = 0 ;
-	QModelIndexList mil ;
-	int rowCount = 0 ;
-	int row = -1 ;
-	int colcnt = -1 ;
+	SqliteTaskModel * from_model = 0 , * to_model = 0;
+	QModelIndex idx;
+	QItemSelectionModel * sim = 0;
+	QModelIndexList mil;
+	int rowCount = 0;
+	int row = -1;
+	int colcnt = -1;
 
 	from_model = static_cast<SqliteTaskModel*>(this->mTaskListView->model());
     to_model = static_cast<SqliteTaskModel*>(SqliteTaskModel::instance(ng::cats::deleted, 0));
@@ -1365,7 +1365,7 @@ void NullGet::onDeleteTask()
 	mil = sim->selectedIndexes();
 
     int rowcnt = mil.size() / colcnt;
-	for (int row = rowcnt - 1 ; row >= 0 ; row --) {
+	for (int row = rowcnt - 1; row >= 0; row --) {
 		int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
         int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::cat_id)).toInt();
@@ -1395,45 +1395,45 @@ void NullGet::onDeleteTask()
 // 	qDebug()<<__FUNCTION__;
 
 // 	TaskQueue * tq = this->mTaskMan;
-// 	QAbstractItemModel * from_model = 0 , * to_model = 0 ;
-// 	QModelIndex index ; 
-// 	int row = -1 , colcnt = -1 ;
+// 	QAbstractItemModel * from_model = 0 , * to_model = 0;
+// 	QModelIndex index; 
+// 	int row = -1 , colcnt = -1;
 
-// 	from_model = this->mTaskListView->model() ;
+// 	from_model = this->mTaskListView->model();
 // 	to_model = SqliteTaskModel::instance(ng::cats::deleted, this);
 
 // 	colcnt = from_model->rowCount();
 
-// 	if( tq != 0 )
+// 	if (tq != 0 )
 // 	{
-// 		// if( tq->mGotLength < tq->mTotalLength )
+// 		// if (tq->mGotLength < tq->mTotalLength )
 // 		// {
 // 		// 	int ret = QMessageBox::question(this,tr("Delete task..."),tr("Deleting an unfinished task,are you sure ?") ,QMessageBox::Ok,QMessageBox::Cancel);
-// 		// 	if( ret == QMessageBox::Cancel) return;
+// 		// 	if (ret == QMessageBox::Cancel) return;
 // 		// }
-// 		for( int i = 0 ; i < from_model->rowCount() ;  ++ i)
+// 		for(int i = 0; i < from_model->rowCount();  ++ i)
 // 		{
-// 			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
+// 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
 // 			{
-// 				row = i ;
-// 				break ;
+// 				row = i;
+// 				break;
 // 			}
 // 		}
-// 		if( row >= 0 )	//找到这个任务的数据模型了。
+// 		if (row >= 0 )	//找到这个任务的数据模型了。
 // 		{
 
 // 			//在system tray 显示移动任务消息
 // 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
 			
-// 			tq->onTaskListCellNeedChange( pTaskId , ng::tasks::task_status , 
+// 			tq->onTaskListCellNeedChange(pTaskId , ng::tasks::task_status , 
 //                                           tq->getStatusString(TaskQueue::TS_COMPLETE));
 
 // 			// //将线程数据移动出来。
-// 			// for( int j = 0 ; j < tq->mSegmentThread.size() ; ++j)
+// 			// for(int j = 0; j < tq->mSegmentThread.size(); ++j)
 // 			// {
-// 			// 	tq->mSegmentThread[j]->bePauseing = true ;
+// 			// 	tq->mSegmentThread[j]->bePauseing = true;
 // 			// 	tq->mSegmentThread[j]->terminate();
-// 			// 	//assert( tq->mSegmentThread[j]->isRunning() == false  );
+// 			// 	//assert(tq->mSegmentThread[j]->isRunning() == false  );
 // 			// }
 // 			//清除线程窗口列表
 // 			this->mSegLogListView->setModel(0);
@@ -1446,7 +1446,7 @@ void NullGet::onDeleteTask()
 // 			int torows = to_model->rowCount();
 // 			to_model->insertRows(torows,1);
 			
-// 			for( int j = 0 ; j < colcnt ; j ++)
+// 			for(int j = 0; j < colcnt; j ++)
 // 			{
 // 				index = to_model->index(torows,j);
 // 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -1457,8 +1457,8 @@ void NullGet::onDeleteTask()
 // 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
 // 			to_model->submit();
 
-// 			// tq->mTaskStatus = TaskQueue::TS_COMPLETE ;
-// 			// tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
+// 			// tq->mTaskStatus = TaskQueue::TS_COMPLETE;
+// 			// tq->mCurrSpeed = 0.0;	//画工具栏上的速度指示图使用该值。
 
 // 			qDebug()<<__FUNCTION__<<" delete task done :"<<tq;
 
@@ -1466,10 +1466,10 @@ void NullGet::onDeleteTask()
 // 		else
 // 		{
 // 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-// 			assert ( 1== 2 );
+// 			assert (1== 2 );
 // 		}
-// 	}	//end if( tq != 0 )
-// 	else if( from_model == SqliteTaskModel::instance(ng::cats::deleted,this) )
+// 	}	//end if (tq != 0 )
+// 	else if (from_model == SqliteTaskModel::instance(ng::cats::deleted,this) )
 // 	{
 // 		qDebug()<<"cant delete from deletion model";
 // 	}
@@ -1477,17 +1477,17 @@ void NullGet::onDeleteTask()
 // 	{		
 // 		//可能是上次没下载完成或者出错的任务，所有还没有任务执行对象
 // 		//只需要处理一下模型中数的数据就可以了。
-// 		for( int i = 0 ; i < from_model->rowCount() ;   i ++ )
+// 		for(int i = 0; i < from_model->rowCount();   i ++ )
 // 		{
-// 			if( from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
+// 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
 // 			{				
-// 				row = i ;
-// 				break ;
+// 				row = i;
+// 				break;
 // 			}
 // 		}
-// 		//qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId << " at row:"<<row ;
+// 		//qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId << " at row:"<<row;
 		
-// 		if( row >= 0 )	//找到这个任务的数据模型了。
+// 		if (row >= 0 )	//找到这个任务的数据模型了。
 // 		{
 // 			//在system tray 显示移动任务消息
 // 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
@@ -1502,7 +1502,7 @@ void NullGet::onDeleteTask()
 // 			int torows = to_model->rowCount();
 // 			to_model->insertRows(torows,1);
 
-// 			for( int j = 0 ; j < colcnt ; j ++)
+// 			for(int j = 0; j < colcnt; j ++)
 // 			{
 // 				index = to_model->index(torows,j);
 // 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -1516,15 +1516,15 @@ void NullGet::onDeleteTask()
 
 // 			//this->mTaskQueue.remove(idx);
 // 			//this->mDoneTaskQueue.append(tq);
-// 			//tq->mTaskStatus = TaskQueue::TS_DONE ;
-// 			//tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
+// 			//tq->mTaskStatus = TaskQueue::TS_DONE;
+// 			//tq->mCurrSpeed = 0.0;	//画工具栏上的速度指示图使用该值。
 
-// 			qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId ;
+// 			qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId;
 // 		}
 // 		else
 // 		{
 // 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-// 			assert ( 1== 2 );
+// 			assert (1== 2 );
 // 		}
 // 	}
 
@@ -1533,15 +1533,15 @@ void NullGet::onDeleteTask()
 
 void NullGet::onDeleteTaskAll()
 {
-	qDebug()<<__FUNCTION__ ;
-	QModelIndex index ;
-	QAbstractItemModel *model ;
-	int rowCount = -1 ;
+	qDebug()<<__FUNCTION__;
+	QModelIndex index;
+	QAbstractItemModel *model;
+	int rowCount = -1;
 
-	model = SqliteTaskModel::instance(ng::cats::downloading,this) ;
+	model = SqliteTaskModel::instance(ng::cats::downloading,this);
 
-	for (int i = 0 ; i < model->rowCount() ; ++ i) {
-		index = model->index(i,0) ;
+	for (int i = 0; i < model->rowCount(); ++ i) {
+		index = model->index(i,0);
 		int taskId = model->data(index).toInt();
 		// this->onDeleteTask(taskId);
 	}
@@ -1560,9 +1560,9 @@ void NullGet::onTaskDone(int pTaskId)
 	qDebug()<<__FUNCTION__;
 
     TaskQueue *tq = this->mTaskMan;
-	QAbstractItemModel * from_model = 0 , * to_model = 0 ;
-	QModelIndex index ; 
-	int row = -1 ;
+	QAbstractItemModel * from_model = 0 , * to_model = 0;
+	QModelIndex index; 
+	int row = -1;
 
 	if (tq != 0) {
 
@@ -1571,28 +1571,28 @@ void NullGet::onTaskDone(int pTaskId)
 		from_model = SqliteTaskModel::instance(ng::cats::downloading,this);
 		to_model = SqliteTaskModel::instance(ng::cats::downloaded,this);
 		int colcnt = from_model->columnCount();
-		int from_rowcnt = from_model->rowCount() ;
-		for( int i = 0 ; i < from_rowcnt ; i ++ )
+		int from_rowcnt = from_model->rowCount();
+		for(int i = 0; i < from_rowcnt; i ++ )
 		{
-			if( from_model->data(from_model->index(i,ng::tasks::task_id)).toInt() == pTaskId )
+			if (from_model->data(from_model->index(i,ng::tasks::task_id)).toInt() == pTaskId )
 			{
-				row = i ;
-				break ;
+				row = i;
+				break;
 			}
 		}
-		if( row >= 0 )
+		if (row >= 0 )
 		{
 			//在system tray 显示移动任务消息
 			this->mSysTrayIcon->showMessage(tr("Task Done."),QString(tr("Move It To Done Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
 			
-			tq->onTaskListCellNeedChange( pTaskId , ng::tasks::task_status , tq->getStatusString(TaskQueue::TS_COMPLETE));
+			tq->onTaskListCellNeedChange(pTaskId , ng::tasks::task_status , tq->getStatusString(TaskQueue::TS_COMPLETE));
 
 			//将线程数据移动出来。
-			// for( int j = 0 ; j < tq->mSegmentThread.size() ; ++j)
+			// for(int j = 0; j < tq->mSegmentThread.size(); ++j)
 			// {
-			// 	//tq->mSegmentThread[j]->bePauseing = true ;
+			// 	//tq->mSegmentThread[j]->bePauseing = true;
 			// 	//tq->mSegmentThread[j]->terminate();
-			// 	//assert( tq->mSegmentThread[j]->isRunning() == false  );
+			// 	//assert(tq->mSegmentThread[j]->isRunning() == false  );
 			// }
 			//清除线程窗口列表
 			this->mSegLogListView->setModel(0);
@@ -1605,7 +1605,7 @@ void NullGet::onTaskDone(int pTaskId)
 			int torows = to_model->rowCount();
 			to_model->insertRows(torows,1);
 			
-			for( int j = 0 ; j < colcnt ; j ++)
+			for(int j = 0; j < colcnt; j ++)
 			{
 				index = to_model->index(torows,j);
 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -1616,11 +1616,11 @@ void NullGet::onTaskDone(int pTaskId)
 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::downloaded );
 			to_model->submit();
 
-			// tq->mTaskStatus = TaskQueue::TS_COMPLETE ;
-			// tq->mCurrSpeed = 0.0 ;	//画工具栏上的速度指示图使用该值。
+			// tq->mTaskStatus = TaskQueue::TS_COMPLETE;
+			// tq->mCurrSpeed = 0.0;	//画工具栏上的速度指示图使用该值。
 			
 			qDebug()<<__FUNCTION__<<" cleanup task done :"<<tq;
-		}	//end if( row >= 0 ) 		
+		}	//end if (row >= 0 ) 		
 
 	}
 	
@@ -1630,19 +1630,19 @@ void NullGet::onTaskDone(int pTaskId)
 
 void NullGet::onNewCategory()
 {
-	int er ;
+	int er;
 	CatManDlg * dlg = new CatManDlg (this );
-	QAbstractItemModel * aim ;
-	QItemSelectionModel * ism ;
-	QModelIndexList mil ;
+	QAbstractItemModel * aim;
+	QItemSelectionModel * ism;
+	QModelIndexList mil;
 
-	er = dlg->exec() ;
-	if( er == QDialog::Accepted )
+	er = dlg->exec();
+	if (er == QDialog::Accepted )
 	{
-		QModelIndex idx ;
-		QString dir ;
-		QString catname ;
-		int row ;
+		QModelIndex idx;
+		QString dir;
+		QString catname;
+		int row;
 		
 		dir = dlg->getNewCatDir();
 		catname = dlg->getNewCatName();
@@ -1654,16 +1654,16 @@ void NullGet::onNewCategory()
 		//
 		mil = ism->selectedIndexes();
 		qDebug()<<mil.size();
-		if( mil.size() >  0 )
+		if (mil.size() >  0 )
 		{
-			row = mil.at(0).model()->rowCount(mil.at(0)) ;
+			row = mil.at(0).model()->rowCount(mil.at(0));
 			aim->insertRows(row , 1 , mil.at(0) );
 			idx = aim->index(row,0,mil.at(0));
 			aim->setData(idx,catname);
 			idx = aim->index(row,1,mil.at(0));
 			aim->setData(idx,dir);
 			
-			qDebug()<<"insertt "<<row<<aim->data(idx) ;
+			qDebug()<<"insertt "<<row<<aim->data(idx);
 			
 			//this->mCatView->collapse(mil.at(0));	//打开新建的分类。
 			//this->mCatView->expand(mil.at(0));			
@@ -1675,14 +1675,14 @@ void NullGet::onNewCategory()
 	{
 
 	}
-	if( dlg != NULL ) delete dlg ; dlg = NULL ;
+	if (dlg != NULL ) delete dlg; dlg = NULL;
 }
 void NullGet::onShowCategoryProperty()
 {
-	int er ;
+	int er;
 	
-	QItemSelectionModel * ism = this->mCatView->selectionModel() ;
-	if( ism->selectedIndexes().size() == 0 ) return ;
+	QItemSelectionModel * ism = this->mCatView->selectionModel();
+	if (ism->selectedIndexes().size() == 0 ) return;
 	
 	CatPropDlg * dlg = new CatPropDlg (this );
 
@@ -1697,9 +1697,9 @@ void NullGet::onShowCategoryProperty()
 		storage->getTotalDownloadedLength(cat_id)
 		);
 
-	er = dlg->exec() ;	//显示先
+	er = dlg->exec();	//显示先
 
-	if( er == QDialog::Accepted )
+	if (er == QDialog::Accepted )
 	{
 		//qDebug()<<dlg->getCatModel();
 	}
@@ -1707,27 +1707,27 @@ void NullGet::onShowCategoryProperty()
 	{
 
 	}
-	delete dlg ;	
+	delete dlg;	
 }
 
 void NullGet::onDeleteCategory()
 {	
-	QItemSelectionModel * ism ;
-	QModelIndexList mil ;
-	QModelIndex idx , parent ;
+	QItemSelectionModel * ism;
+	QModelIndexList mil;
+	QModelIndex idx , parent;
 
 	mil = this->mCatView->selectionModel()->selectedIndexes();
 
-	if( mil.size() > 0)
+	if (mil.size() > 0)
 	{
 		idx = mil.at(0);
-		if( idx == this->mCatViewModel->index(0,0)) return ;	//不删除系统默认分类。
-		if( idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return ;
-		if( idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return ;
-		if( idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return ;
+		if (idx == this->mCatViewModel->index(0,0)) return;	//不删除系统默认分类。
+		if (idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return;
 
-		if( QMessageBox::question(this,tr("Delete Category:"),tr("Delete the Category and All sub Category?") ,QMessageBox::Ok,QMessageBox::Cancel ) == QMessageBox::Cancel)
-			return ;
+		if (QMessageBox::question(this,tr("Delete Category:"),tr("Delete the Category and All sub Category?") ,QMessageBox::Ok,QMessageBox::Cancel ) == QMessageBox::Cancel)
+			return;
 
 		parent = idx.parent();
 		this->mCatViewModel->removeRows(idx.row(),1,parent);
@@ -1740,29 +1740,29 @@ void NullGet::onDeleteCategory()
 
 void NullGet::onCategoryMoveTo()
 {
-	QItemSelectionModel * ism ;
+	QItemSelectionModel * ism;
 	QModelIndexList mil , milto;
-	QModelIndex idx , parent ;
+	QModelIndex idx , parent;
 
 	mil = this->mCatView->selectionModel()->selectedIndexes();
 
-	if( mil.size() > 0)
+	if (mil.size() > 0)
 	{
 
 		idx = mil.at(0);
-		if( idx == this->mCatViewModel->index(0,0)) return ;	//不移动系统默认分类。
-		if( idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return ;
-		if( idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return ;
-		if( idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return ;
+		if (idx == this->mCatViewModel->index(0,0)) return;	//不移动系统默认分类。
+		if (idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return;
 
 		CatManDlg * cmd = new CatManDlg(this);
 		cmd ->changeMoveToState(mil);
 
-		if( cmd->exec() == QDialog::Accepted)
+		if (cmd->exec() == QDialog::Accepted)
 		{			
 			milto = cmd->getSelectionModel()->selectedIndexes();
-			if( milto.size() == 0 ) return ; // no cat selected
-			if( milto == mil ) return ;
+			if (milto.size() == 0 ) return; // no cat selected
+			if (milto == mil ) return;
 			//if milto is child of subchild of from , then return; do this	in next line function  .
 
 			//this->mCatViewModel->rowMoveTo(mil.at(0),milto.at(0));
@@ -1776,7 +1776,7 @@ void NullGet::onCategoryMoveTo()
 			this->mCatView->resizeColumnToContents(0);
 
 		}
-		delete cmd ;
+		delete cmd;
 
 	}	
 }
@@ -1786,7 +1786,7 @@ void NullGet::onShowColumnEditor()
 
 	dlg->exec();
 
-	delete dlg ;
+	delete dlg;
 }
 
 
@@ -1931,8 +1931,8 @@ QString decodeEncodeUrl(QString enUrl)
  */
 void NullGet::showNewDownloadDialog()
 {
-	QString url ;
-	int segcnt = 7 ;
+	QString url;
+	int segcnt = 7;
 	TaskOption * to = 0;	//创建任务属性。
 
 	taskinfodlg *tid = new taskinfodlg(this);
@@ -1941,7 +1941,7 @@ void NullGet::showNewDownloadDialog()
 	segcnt = tid->segmentCount();	
 
 	to = tid->getOption();	//
-	delete tid ;
+	delete tid;
 
     QString deUrl = decodeEncodeUrl(url);
 	qDebug()<<segcnt<<url<<deUrl;
@@ -2028,7 +2028,7 @@ void NullGet::onAriaGetUriFault(int code, QString reason, QVariant &payload)
 }
 
 /*
-QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ( "completedLength" ,  QVariant(QString, "1769472") ) ( "connections" ,  QVariant(QString, "2") ) ( "dir" ,  QVariant(QString, "/home/gzleo/nullget-svn") ) ( "downloadSpeed" ,  QVariant(QString, "35243") ) ( "files" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("index", QVariant(QString, "1") ) ( "length" ,  QVariant(QString, "13910775") ) ( "path" ,  QVariant(QString, "/home/gzleo/nullget-svn/postgresql-9.0alpha5.tar.bz2") ) ( "selected" ,  QVariant(QString, "true") ) ( "uris" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ( "uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) ,  QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ( "uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) )  ) ) )  ) )  ) ) ( "gid" ,  QVariant(QString, "1") ) ( "numPieces" ,  QVariant(QString, "14") ) ( "pieceLength" ,  QVariant(QString, "1048576") ) ( "status" ,  QVariant(QString, "active") ) ( "totalLength" ,  QVariant(QString, "13910775") ) ( "uploadLength" ,  QVariant(QString, "0") ) ( "uploadSpeed" ,  QVariant(QString, "0") ) )  )
+QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ("completedLength" ,  QVariant(QString, "1769472") ) ("connections" ,  QVariant(QString, "2") ) ("dir" ,  QVariant(QString, "/home/gzleo/nullget-svn") ) ("downloadSpeed" ,  QVariant(QString, "35243") ) ("files" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("index", QVariant(QString, "1") ) ("length" ,  QVariant(QString, "13910775") ) ("path" ,  QVariant(QString, "/home/gzleo/nullget-svn/postgresql-9.0alpha5.tar.bz2") ) ("selected" ,  QVariant(QString, "true") ) ("uris" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) ,  QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) )  ) ) )  ) )  ) ) ("gid" ,  QVariant(QString, "1") ) ("numPieces" ,  QVariant(QString, "14") ) ("pieceLength" ,  QVariant(QString, "1048576") ) ("status" ,  QVariant(QString, "active") ) ("totalLength" ,  QVariant(QString, "13910775") ) ("uploadLength" ,  QVariant(QString, "0") ) ("uploadSpeed" ,  QVariant(QString, "0") ) )  )
  */
 
 
@@ -2163,13 +2163,13 @@ void NullGet::onAriaGetActiveFault(int code, QString reason, QVariant &payload)
 void NullGet::onAriaGetServersResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
-    // 感觉暂时没有什么用处。
 
     int taskId = payload.toInt();
     TaskServerModel *serverModel = this->mTaskMan->taskServerModel(taskId);
     if (serverModel) {
         QVariantList servers = response.toList();
         serverModel->setData(servers);
+        // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting. 
     } else {
         qDebug()<<"server model not found";
     }
@@ -2197,7 +2197,7 @@ void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &paylo
 {
     qDebug()<<__FUNCTION__<<response<<payload;
     /*
-      onAriaGetTorrentFilesResponse QVariant(QString, "1") QVariant(QVariantMap, QMap(("cmd", QVariant(QString, "torrent_get_files") ) ( "taskId" ,  QVariant(int, 42) ) ( "url" ,  QVariant(QString, "file:///home/gzleo/NGDownload/1CA79A2AD33A0C89157E2BE71A0AF8A1A735A83A.torrent") ) )  ) 
+      onAriaGetTorrentFilesResponse QVariant(QString, "1") QVariant(QVariantMap, QMap(("cmd", QVariant(QString, "torrent_get_files") ) ("taskId" ,  QVariant(int, 42) ) ("url" ,  QVariant(QString, "file:///home/gzleo/NGDownload/1CA79A2AD33A0C89157E2BE71A0AF8A1A735A83A.torrent") ) )  ) 
      */
     QString ariaGid = response.toString();
     QMap<QString, QVariant> mPayload = payload.toMap();
@@ -2236,6 +2236,10 @@ void NullGet::onAriaParseTorrentFileFault(int code, QString reason, QVariant &pa
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
     // onAriaParseTorrentFileFault 1 "We encountered a problem while processing the option '--select-file'."
+    /*
+      2010-04-21 10:44:24.049116 ERROR - Exception caught
+      Exception: [RequestGroup.cc:324] File /home/gzleo/karia2-svn/Kansas - Monolith [1979] exists, but a control file(*.aria2) does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.
+     */
 }
 
 void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
@@ -2585,86 +2589,86 @@ void NullGet::showNewMetalinkFileDialog()
 
 void NullGet::showBatchDownloadDialog()
 {
-	QString url ;
-	int segcnt = 7 ;
+	QString url;
+	int segcnt = 7;
 	TaskOption * to = 0;	//创建任务属性。
-	QStringList sl ;
+	QStringList sl;
 	
 	BatchJobManDlg *bjd = new BatchJobManDlg(this);
 	int er = bjd->exec();
 	sl = bjd->getUrlList();
 
-	delete bjd ;
+	delete bjd;
 
-	if(er == QDialog::Accepted)
+	if (er == QDialog::Accepted)
 	{		
 		qDebug()<<segcnt<<url;
 		taskinfodlg *tid = new taskinfodlg(this);
-		for( int i = 0 ; i < sl.count() ; ++i)
+		for(int i = 0; i < sl.count(); ++i)
 		{
 			tid->setTaskUrl(sl.at(i));
 			to = tid->getOption();
-			this->createTask( to );
+			this->createTask(to );
 		}
-		delete tid ;	
+		delete tid;	
 	}
 	else
 	{
-		delete to ; to = 0 ;
+		delete to; to = 0;
 	}	
 }
 
 void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接并下载
 {
-	QStringList urlList , srcList ,resultList ;
-	QString url ;
-	QUrl u ;
-	QString htmlcode ;
-	int er = QDialog::Rejected ;
-	int ulcount ;
+	QStringList urlList , srcList ,resultList;
+	QString url;
+	QUrl u;
+	QString htmlcode;
+	int er = QDialog::Rejected;
+	int ulcount;
 	int linkCount = 0;
-	char ** linkList = 0 ;
+	char ** linkList = 0;
 
 	WebPageUrlInputDlg * wpid = 0;
-	WebPageLinkDlg * wpld  = 0 ;
+	WebPageLinkDlg * wpld  = 0;
 
 	wpid = new WebPageUrlInputDlg(this);
 	er = wpid->exec();
-	if( er == QDialog::Accepted )
+	if (er == QDialog::Accepted )
 	{
 		url = wpid->getLinkList();
 		urlList = url.split("\"+\"");
 		ulcount = urlList.size();
-		for( int i = 0 ; i < ulcount ; ++i)
+		for(int i = 0; i < ulcount; ++i)
 		{
-			if( i == 0 && urlList.at(0).startsWith("\""))
+			if (i == 0 && urlList.at(0).startsWith("\""))
 			{
 				urlList[0] = urlList.at(0).right(urlList.at(0).length()-1);
 			}
-			if( i == ulcount-1 && urlList.at(i).endsWith("\""))
+			if (i == ulcount-1 && urlList.at(i).endsWith("\""))
 			{
 				urlList[i] = urlList.at(i).left(urlList.at(i).length()-1);
 			}
 		}
-		qDebug()<<urlList ;
+		qDebug()<<urlList;
 
-		if( urlList.size() > 0 )
+		if (urlList.size() > 0 )
 		{
-			for( int i = 0 ; i < ulcount ; ++i)
+			for(int i = 0; i < ulcount; ++i)
 			{
 				u = urlList.at(i);
-				if( u.scheme().toUpper().compare("HTTP") == 0
+				if (u.scheme().toUpper().compare("HTTP") == 0
 					|| u.scheme().toUpper().compare("HTTPS") == 0 )
 				{
 					//是否需要我们自己从HTTP服务器读取文件内容呢。
 					//windows 不需要.UNIX的各资源管理器还不清楚是否支持打开HTTP的功能。
 
 				}
-				else if ( u.scheme().toUpper().length() == 1 )	// C D E and so on	for win , / for unix
+				else if (u.scheme().toUpper().length() == 1 )	// C D E and so on	for win , / for unix
 				{
 					QFile f(urlList.at(0));
 					f.open(QIODevice::ReadOnly);
-					htmlcode = QString(f.readAll().data()) ;
+					htmlcode = QString(f.readAll().data());
 					f.close();
 				}
 				else
@@ -2674,27 +2678,27 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 				//test
 				linkCount = 0;
 				linkList = html_parse_get_all_link(htmlcode.toAscii().data() , &linkCount );
-				qDebug()<<linkCount ;
-				for( int j = 0 ; j < linkCount ; j ++ )
+				qDebug()<<linkCount;
+				for(int j = 0; j < linkCount; j ++ )
 				{
 					srcList.append(QString(linkList[j]));
 				}
 				html_parse_free_link_mt(linkList,linkCount);
-			}	//end for( int i = 0 ; i < ulcount ; ++i)
+			}	//end for(int i = 0; i < ulcount; ++i)
 		}
 
 		//////
-		if( srcList.size() > 0 )
+		if (srcList.size() > 0 )
 		{
 			wpld = new WebPageLinkDlg(this);
 			wpld->setSourceUrlList(srcList);
-			if( wpld->exec() == QDialog::Accepted)
+			if (wpld->exec() == QDialog::Accepted)
 			{
 				resultList = wpld->getResultUrlList();
-				qDebug()<<resultList ;
+				qDebug()<<resultList;
 
 			}
-			delete wpld ; wpld = 0 ;
+			delete wpld; wpld = 0;
 		}
 		else // no url found in user input webpage file
 		{
@@ -2702,7 +2706,7 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 		}
 		
 		///建立新任务。
-		if( resultList.size() > 0 )
+		if (resultList.size() > 0 )
 		{
 			////建立任务
 			QString taskUrl = resultList.at(0);
@@ -2716,35 +2720,35 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 			//segcnt = tid->segmentCount();	
 			//to = tid->getOption();	//			
 
-			if(er == QDialog::Accepted)
+			if (er == QDialog::Accepted)
 			{				
 				//this->createTask(url,segcnt);
 				//这里先假设用户使用相同的设置。
-				//delete to ; to = 0 ;
-				for( int t = 0 ; t < resultList.size() ; ++ t )
+				//delete to; to = 0;
+				for(int t = 0; t < resultList.size(); ++ t )
 				{
-					taskUrl = resultList.at(t) ;
+					taskUrl = resultList.at(t);
 					qDebug()<<taskUrl;
-					tid->setTaskUrl( taskUrl );
+					tid->setTaskUrl(taskUrl );
 					to = tid->getOption();
-					this->createTask( to );
+					this->createTask(to );
 				}
 			}
 			else
 			{
-				//delete to ; to = 0 ;
+				//delete to; to = 0;
 			}
 
-			delete tid ;
-		}	//end if( resultList.size() > 0 )
+			delete tid;
+		}	//end if (resultList.size() > 0 )
 		else
 		{
-			QMessageBox::warning(this,tr("Process Weg Page :"),tr("No URL(s) Selected")) ;
-		}	//end if( resultList.size() > 0 ) else 
+			QMessageBox::warning(this,tr("Process Weg Page :"),tr("No URL(s) Selected"));
+		}	//end if (resultList.size() > 0 ) else 
 	}
 
-	if( wpid != 0 ) delete wpid ;
-	if( wpld != 0 ) delete wpld ;
+	if (wpid != 0 ) delete wpid;
+	if (wpld != 0 ) delete wpld;
 }
 
 void NullGet::onShowOptions()
@@ -2758,7 +2762,7 @@ void NullGet::onShowOptions()
 
 	dlg->exec();
 
-	delete dlg ;
+	delete dlg;
 
 }
 void NullGet::onShowConnectOption()
@@ -2772,23 +2776,23 @@ void NullGet::onShowConnectOption()
 
 void NullGet::onShowDefaultDownloadProperty()
 {
-	taskinfodlg *tid = new taskinfodlg(0,0) ;		
+	taskinfodlg *tid = new taskinfodlg(0,0);		
 	
 	//tid->setRename(fname);			
 	int er = tid->exec();	
 	
-	delete tid ;	
+	delete tid;	
 }
 
 void NullGet::onShowTaskProperty()
 {
 	qDebug()<<__FUNCTION__;
-	QItemSelectionModel * sim ;
-	TaskQueue *tq = NULL ;
-	QModelIndexList mil ;
+	QItemSelectionModel * sim;
+	TaskQueue *tq = NULL;
+	QModelIndexList mil;
 
 	//在运行队列中查找。
-	mil  = this->mTaskListView->selectionModel()->selectedIndexes() ;
+	mil  = this->mTaskListView->selectionModel()->selectedIndexes();
 	if (this->mTaskListView->model() != 0 &&
 		mil.size() == this->mTaskListView->model()->columnCount()) {
 		//only selected one ,可以处理，其他多选的不予处理。
@@ -2801,11 +2805,11 @@ void NullGet::onShowTaskProperty()
 
 	//根据不同的位置显示不同的任务属性。
     if (tq != 0) {
-        // QString url = tq->mTaskUrl ;
-        // int segcnt = tq->mTotalSegmentCount ;
+        // QString url = tq->mTaskUrl;
+        // int segcnt = tq->mTotalSegmentCount;
         QString url;
         int segcnt;
-        QString fname ;//= tq->mTaskOption->mSaveName  ;
+        QString fname;//= tq->mTaskOption->mSaveName;
 		
         taskinfodlg *tid = new taskinfodlg(0,this);
         tid->setTaskUrl(url);
@@ -2814,7 +2818,7 @@ void NullGet::onShowTaskProperty()
 		
         int er = tid->exec();			
 		
-        delete tid ;
+        delete tid;
     }
 }
 void NullGet::onShowTaskProperty(int pTaskId)
@@ -2825,37 +2829,37 @@ void NullGet::onShowTaskProperty(int pTaskId)
 void NullGet::onShowTaskPropertyDigest(const QModelIndex & index )
 {
 	//qDebug()<<__FUNCTION__ << index.data();
-	int taskId ;
+	int taskId;
 	this->mSwapPoint = QCursor::pos();
-	this->mSwapModelIndex = index ;
-	QTimer::singleShot(1000,this,SLOT(onShowTaskPropertyDigest()));
+	this->mSwapModelIndex = index;
+	QTimer::singleShot(1000,this, SLOT(onShowTaskPropertyDigest()));
 }
 
-void NullGet::onShowTaskPropertyDigest(  )
+void NullGet::onShowTaskPropertyDigest( )
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qDebug()<<__FUNCTION__;
 	QString tips = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: %4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>";
-	QPoint np = this->mainUI.mui_tv_task_list->viewport()->mapFromGlobal(QCursor::pos()) ;
+	QPoint np = this->mainUI.mui_tv_task_list->viewport()->mapFromGlobal(QCursor::pos());
 	QModelIndex nidx = this->mainUI.mui_tv_task_list->indexAt(np);
-	QModelIndex tidx ;
-	TaskQueue * tq = 0 ;
+	QModelIndex tidx;
+	TaskQueue * tq = 0;
 	int catId = -1;
 	
-	if( this->mainUI.mui_tv_task_list->viewport()->underMouse()&&
+	if (this->mainUI.mui_tv_task_list->viewport()->underMouse()&&
 		this->mSwapModelIndex.isValid() && nidx.isValid() && nidx == this->mSwapModelIndex )
 	{		
 		int row = nidx.row();
-		QString id , url , ftype, name , path , gotlength , totallength , refferer, comment ,createtime  , fimg ;
+		QString id , url , ftype, name , path , gotlength , totallength , refferer, comment ,createtime  , fimg;
 		tidx = nidx.model()->index(row,0);
 		id = tidx.data().toString();
 		//tq = TaskQueue::findTaskById(id.toInt());
-		//if( tq != 0   )
+		//if (tq != 0   )
 		//{
-		//	//path = tq->mTaskOption->mSavePath ;
+		//	//path = tq->mTaskOption->mSavePath;
 		//}
 		//else
 		//{
-		//	path = "." ;
+		//	path = ".";
 		//}
 		tidx = nidx.model()->index(row,ng::tasks::cat_id);
 		path = SqliteStorage::instance(this)->getSavePathByCatId(tidx.data().toInt());
@@ -2879,9 +2883,9 @@ void NullGet::onShowTaskPropertyDigest(  )
 		//fimg = "cubelogo.png";
 		QPair<QString , QString> guessedFileType = this->getFileTypeByFileName(name);
 		ftype = guessedFileType.first;
-		fimg = guessedFileType.second ;
+		fimg = guessedFileType.second;
 
-		//qDebug()<<"show digest"<<this->mSwapModelIndex.data() ;
+		//qDebug()<<"show digest"<<this->mSwapModelIndex.data();
 		//QToolTip * tt = new QToolTip();
 		tips = tips.arg(fimg);
 		tips = tips.arg(name);
@@ -2894,7 +2898,7 @@ void NullGet::onShowTaskPropertyDigest(  )
 		tips = tips.arg(comment);
 		tips = tips.arg(createtime);
 		QToolTip::showText(QCursor::pos(),tips );
-		//delete tt ;
+		//delete tt;
 	}
 	this->mSwapPoint = QPoint(0,0);
 	this->mSwapModelIndex = QModelIndex();	
@@ -2902,29 +2906,29 @@ void NullGet::onShowTaskPropertyDigest(  )
 
 QPair<QString,QString> NullGet::getFileTypeByFileName(QString fileName)
 {
-	QPair<QString,QString> ftype("unknown", "unknown.png") ;
+	QPair<QString,QString> ftype("unknown", "unknown.png");
 	
 	QString path = "icons/crystalsvg/128x128/mimetypes/";
 	QStringList fileParts = fileName.split(".");
-	if( QFile::exists(path+fileParts.at(fileParts.count()-1) + ".png" ) )
+	if (QFile::exists(path+fileParts.at(fileParts.count()-1) + ".png" ) )
 	{
-		ftype.first = fileParts.at(fileParts.count()-1) ;
-		ftype.second = path+fileParts.at(fileParts.count()-1) + ".png"  ;
+		ftype.first = fileParts.at(fileParts.count()-1);
+		ftype.second = path+fileParts.at(fileParts.count()-1) + ".png";
 	}
-	if( fileName.endsWith(".wmv",Qt::CaseSensitive) 
+	if (fileName.endsWith(".wmv",Qt::CaseSensitive) 
 		|| fileName.endsWith(".asf",Qt::CaseSensitive)
 		|| fileName.endsWith(".rm",Qt::CaseSensitive) 
 		|| fileName.endsWith(".rmvb",Qt::CaseSensitive) )
 	{
-		ftype.first = "video" ;
-		ftype.second = path + "video.png"  ;		
+		ftype.first = "video";
+		ftype.second = path + "video.png";		
 	}
-	else if( fileName.endsWith(".gz",Qt::CaseSensitive) 
+	else if (fileName.endsWith(".gz",Qt::CaseSensitive) 
 		|| fileName.endsWith(".tgz",Qt::CaseSensitive)
 		|| fileName.endsWith(".rar",Qt::CaseSensitive) )
 	{
-		ftype.first = "tar" ;
-		ftype.second = path + "tar.png"  ;
+		ftype.first = "tar";
+		ftype.second = path + "tar.png";
 	}
 
 	return ftype;
@@ -2935,11 +2939,11 @@ void NullGet::onEditSelectAll()
 	qDebug()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
 
-	if( wg == this->mainUI.mui_tv_task_list)
+	if (wg == this->mainUI.mui_tv_task_list)
 	{
 		this->mainUI.mui_tv_task_list->selectAll();
 	}
-	else if ( wg == this->mainUI.mui_tv_seg_log_list )
+	else if (wg == this->mainUI.mui_tv_seg_log_list )
 	{
 		this->mainUI.mui_tv_seg_log_list->selectAll();
 	}
@@ -2950,30 +2954,30 @@ void NullGet::onEditInvertSelect()
 {
 	qDebug()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
-	QModelIndex idx ;
-	QTreeView *tv ;
-	QItemSelectionModel *sm ;
-	if( wg == this->mainUI.mui_tv_task_list)
+	QModelIndex idx;
+	QTreeView *tv;
+	QItemSelectionModel *sm;
+	if (wg == this->mainUI.mui_tv_task_list)
 	{
 		tv = this->mainUI.mui_tv_task_list;
 	}
-	else if ( wg == this->mainUI.mui_tv_seg_log_list )
+	else if (wg == this->mainUI.mui_tv_seg_log_list )
 	{
-		tv = this->mainUI.mui_tv_seg_log_list ;
+		tv = this->mainUI.mui_tv_seg_log_list;
 	}
 	else
 	{
-		return ;
+		return;
 	}
 	sm = tv->selectionModel();
 	QList<int> subrows;
 
 	int rows = tv->model()->rowCount();
 	int cols = tv->model()->columnCount();
-	for( int i = 0 ;i < rows ;  i ++ )
+	for(int i = 0;i < rows;  i ++ )
 	{
 		idx = tv->model()->index(i,0);
-		if( sm->isRowSelected(i,QModelIndex()) )
+		if (sm->isRowSelected(i,QModelIndex()) )
 		{
 		}
 		else
@@ -2982,7 +2986,7 @@ void NullGet::onEditInvertSelect()
 		}
 	}
 	sm->clear();
-	for( int i = 0 ; i < subrows.size() ;i ++)
+	for(int i = 0; i < subrows.size();i ++)
 	{
 		sm->select(tv->model()->index(subrows[i],0),QItemSelectionModel::Select|QItemSelectionModel::Rows);
 	}
@@ -2993,7 +2997,7 @@ void NullGet::onEditInvertSelect()
 
 void NullGet::onShowToolbarText(bool show) 
 {
-	if( show )
+	if (show )
 	{
 		this->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	}
@@ -3005,18 +3009,18 @@ void NullGet::onShowToolbarText(bool show)
 
 void NullGet::onTaskListMenuPopup(/* const QPoint & pos */) 
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qDebug()<<__FUNCTION__;
 
 	//将菜单项进行使合适的变灰
-	QModelIndex idx ;
+	QModelIndex idx;
 	QString assumeCategory = "Download";	
-	if( this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
+	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
 	{
 	}
-	else if( this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
+	else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
 	{
 		idx = this->mCatView->selectionModel()->selectedIndexes().at(0);
-		if( idx.data().toString().compare("Download")!=0
+		if (idx.data().toString().compare("Download")!=0
 			&& idx.data().toString().compare("Downloaded")!=0
 			&& idx.data().toString().compare("Deleted")!=0	)
 		{
@@ -3027,13 +3031,13 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			assumeCategory = idx.data().toString();
 		}
 	}
-	if( assumeCategory.compare("Downloaded") == 0 )
+	if (assumeCategory.compare("Downloaded") == 0 )
 	{
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
@@ -3068,13 +3072,13 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
 	}
-	else if( assumeCategory.compare("Deleted") == 0 )
+	else if (assumeCategory.compare("Deleted") == 0 )
 	{
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
@@ -3109,9 +3113,9 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
 	}
-	else //if( assumeCategory.compare("Download") == 0 )
+	else //if (assumeCategory.compare("Download") == 0 )
 	{
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			this->mainUI.action_Start->setEnabled(true);
 			this->mainUI.action_Pause->setEnabled(true);
@@ -3147,7 +3151,7 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 		}
 	}
 	
-	if( this->mTaskListView == sender() )
+	if (this->mTaskListView == sender() )
 	{
 		this->mTaskPopupMenu->popup(QCursor::pos());
 	}
@@ -3158,20 +3162,20 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 }
 void NullGet::onUpdateJobMenuEnableProperty() 
 {
-	qDebug()<<__FUNCTION__ ;
+	qDebug()<<__FUNCTION__;
 
 	//将菜单项进行使合适的变灰
-	QModelIndex idx ;
+	QModelIndex idx;
 	QString assumeCategory = "Download";	
 	
-	if( this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
+	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
 	{
 
 	}
-	else if( this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
+	else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
 	{
 		idx = this->mCatView->selectionModel()->selectedIndexes().at(0);
-		if( idx.data().toString().compare("Download")!=0
+		if (idx.data().toString().compare("Download")!=0
 			&& idx.data().toString().compare("Downloaded")!=0
 			&& idx.data().toString().compare("Deleted")!=0	)
 		{
@@ -3183,13 +3187,13 @@ void NullGet::onUpdateJobMenuEnableProperty()
 		}
 	}
 
-	if( assumeCategory.compare("Downloaded") == 0 )
+	if (assumeCategory.compare("Downloaded") == 0 )
 	{
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
@@ -3224,13 +3228,13 @@ void NullGet::onUpdateJobMenuEnableProperty()
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
 	}
-	else if( assumeCategory.compare("Deleted") == 0 )
+	else if (assumeCategory.compare("Deleted") == 0 )
 	{
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
@@ -3265,9 +3269,9 @@ void NullGet::onUpdateJobMenuEnableProperty()
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
 	}
-	else //if( assumeCategory.compare("Download") == 0 )
+	else //if (assumeCategory.compare("Download") == 0 )
 	{
-		if( this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
 		{
 			this->mainUI.action_Start->setEnabled(true);
 			this->mainUI.action_Pause->setEnabled(true);
@@ -3305,15 +3309,15 @@ void NullGet::onUpdateJobMenuEnableProperty()
 	
 }
 
-void NullGet::onLogListMenuPopup( const QPoint & pos ) 
+void NullGet::onLogListMenuPopup(const QPoint & pos ) 
 {
 	this->mLogPopupMenu->popup(QCursor::pos());
 }
-void NullGet::onSegListMenuPopup( const QPoint & pos ) 
+void NullGet::onSegListMenuPopup(const QPoint & pos) 
 {
-	this->mSegmentPopupMenu->popup(QCursor::pos());
+	// this->mSegmentPopupMenu->popup(QCursor::pos());
 }
-void NullGet::onCateMenuPopup( const QPoint & pos )
+void NullGet::onCateMenuPopup(const QPoint & pos)
 {
 	this->mCatPopupMenu->popup(QCursor::pos());
 }
@@ -3322,12 +3326,11 @@ void NullGet::onCopyUrlToClipboard()
 {
 	qDebug()<<__FUNCTION__;
 
-	QItemSelectionModel * ism = 0 ;
-	QModelIndexList mil ;
+	QItemSelectionModel * ism = 0;
+	QModelIndexList mil;
 
 	ism = this->mTaskListView->selectionModel();
-	if( ism != 0 )
-	{
+	if (ism != 0) {
 		mil = ism->selectedIndexes();
 		QString url = mil.at(ng::tasks::real_url).data().toString();
 		QClipboard * cb = QApplication::clipboard();
@@ -3341,28 +3344,28 @@ void NullGet::onCopySelectSegLog()
 {
 	qDebug()<<__FUNCTION__;
 	
-	QModelIndex idx ;
-	QTreeView *tv ;
-	QItemSelectionModel *sm ;	
-	QString text ;
-	QModelIndexList mil ;
-	int cols = 0 ;
+	QModelIndex idx;
+	QTreeView *tv;
+	QItemSelectionModel *sm;	
+	QString text;
+	QModelIndexList mil;
+	int cols = 0;
 
-	if( this->mSegLogListView->model() != 0 )
+	if (this->mSegLogListView->model() != 0 )
 	{
 		cols = this->mSegLogListView->model()->columnCount();
 		sm = this->mSegLogListView->selectionModel();
 		mil = sm->selectedIndexes();
-		for( int r = 0 ; r < mil.size()/cols ; r++ )
+		for(int r = 0; r < mil.size()/cols; r++ )
 		{
-			for( int c = 0 ; c < cols ; ++c )
+			for(int c = 0; c < cols; ++c )
 			{
-				text +=   mil.value(r+c*mil.size()/cols).data().toString() ;
+				text +=   mil.value(r+c*mil.size()/cols).data().toString();
 				text += '\t';
 			}
 			text += "\r\n";
 		}
-		if( text.endsWith("\r\n"))
+		if (text.endsWith("\r\n"))
 			text = text.left(text.length()-2);
 		//
 		QClipboard * cb = QApplication::clipboard();
@@ -3375,23 +3378,23 @@ void NullGet::onCopySelectSegLog()
 }
 void NullGet::onSaveSegLog()
 {
-	QModelIndex idx ;
-	QTreeView *tv ;
-	QItemSelectionModel *sm ;	
-	QString text ;
-	QModelIndexList mil ;
+	QModelIndex idx;
+	QTreeView *tv;
+	QItemSelectionModel *sm;	
+	QString text;
+	QModelIndexList mil;
 	QAbstractItemModel * model = 0;
-	int cols = 0 ;
+	int cols = 0;
 
 	model = this->mSegLogListView->model();
-	if( model != 0 )
+	if (model != 0 )
 	{
 
 		cols = model->columnCount();
 		
-		for( int r = 0 ; r < model->rowCount() ; ++r)
+		for(int r = 0; r < model->rowCount(); ++r)
 		{
-			for( int c = 0 ; c < cols ; ++ c)
+			for(int c = 0; c < cols; ++ c)
 			{
 				text += model->data(model->index(r,c)).toString();
 				text += '\t';
@@ -3399,11 +3402,11 @@ void NullGet::onSaveSegLog()
 			text += "\r\n";
 		}
 		
-		if( text.endsWith("\r\n"))
+		if (text.endsWith("\r\n"))
 			text = text.left(text.length()-2);
 		//
 		QString fname = QFileDialog::getSaveFileName(this);
-		if(! fname.isNull() )
+		if (! fname.isNull() )
 		{
 			QFile fi(fname);
 			fi.open(QIODevice::WriteOnly|QIODevice::Unbuffered);			
@@ -3418,19 +3421,19 @@ void NullGet::onSaveSegLog()
  */
 void NullGet::onClearSegLog() 	//
 {
-	QAbstractItemModel * aim = 0 ;
-	int row , col ;
+	QAbstractItemModel * aim = 0;
+	int row , col;
 
 	aim = this->mSegLogListView->model();
-	if( aim == 0 ) return ;	//没有日志，直接返回
+	if (aim == 0 ) return;	//没有日志，直接返回
 	row = aim->rowCount();
-	for( int i = row -1 ; i >=0 ; i --)
+	for(int i = row -1; i >=0; i --)
 	{
 		aim->removeRows(i,1);
 	}
 	// replace or short stmt
 	row = aim->rowCount();
-	if( row > 0 )
+	if (row > 0 )
 		aim->removeRows(0,row);
 }
 
@@ -3443,31 +3446,31 @@ void NullGet::onClearSegLog() 	//
 void NullGet::onSwitchLanguage(QAction* action)
 {
 	QString lang = "en_US";	//默认
-	//if(action == this->mainUI.action_Chinese_simple)
+	//if (action == this->mainUI.action_Chinese_simple)
 	//{
 	//	qDebug()<<"switch lang: zh_CN";
 	//	lang = "zh_CN";
 	//}
 
-	//if(action == this->mainUI.action_English)
+	//if (action == this->mainUI.action_English)
 	//{
 	//	qDebug()<<"switch lang: en_US";
 	//	lang = "en_US";
 	//}
 	lang = action->data().toString();
-	if( lang.isEmpty() )
+	if (lang.isEmpty() )
 		 lang = "en_US";	//默认
 	
 	//QTranslator translator;
 	//translator.load(QString("nullget_")+lang);
 	//qApp->installTranslator(&translator);
 
-	QString langFile  = QString("nullget_")+lang ;
+	QString langFile  = QString("nullget_")+lang;
 	appTranslator.load(langFile , qmPath );
-	//qDebug()<<"Loading file :"<<langFile ;
-	langFile = "qt_"+lang ;
+	//qDebug()<<"Loading file :"<<langFile;
+	langFile = "qt_"+lang;
 	qtTranslator.load(langFile,qmPath);
-	//qDebug()<<"Loading file :"<<langFile ;
+	//qDebug()<<"Loading file :"<<langFile;
 
 	if (! action->isChecked()) {
 		action->setChecked(true);
@@ -3489,13 +3492,13 @@ void NullGet::onSwitchSkinType(QAction* action)
 void NullGet::onSwitchWindowStyle(QAction * action )
 {
 	qDebug()<<__FUNCTION__<<":"<<__LINE__<<" typeL "<< action->data().toString()
-		<< this->sender() ;
+		<< this->sender();
     // QStringList styleKeys = QStyleFactory::keys();
     // qDebug()<<styleKeys;
 
 	if (action->data().toString() == "norwegianwood") {
 		//qDebug()<<"NorwegianWood style";
-		QStyle * nw = new NorwegianWoodStyle() ;
+		QStyle * nw = new NorwegianWoodStyle();
 		QApplication::setStyle(nw);
 	} else {
 		QApplication::setStyle(action->data().toString());
@@ -3515,21 +3518,21 @@ void NullGet::onSwitchSpeedMode(QAction *action)
 {
 	qDebug()<<__FUNCTION__;
 	if (action == mainUI.action_Unlimited) {
-		this->mSpeedBarSlider->hide() ;
+		this->mSpeedBarSlider->hide();
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->hide();
-		GlobalOption::instance()->mIsLimitSpeed = 0 ;
+		GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0);  // set no limit
-	} else if ( action == mainUI.action_Manual) {
-		this->mSpeedBarSlider->show() ;
+	} else if (action == mainUI.action_Manual) {
+		this->mSpeedBarSlider->show();
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->show();
-		GlobalOption::instance()->mIsLimitSpeed = 1 ;
-	} else if ( action == mainUI.action_Automatic ) {
-		this->mSpeedBarSlider->hide() ;
+		GlobalOption::instance()->mIsLimitSpeed = 1;
+	} else if (action == mainUI.action_Automatic ) {
+		this->mSpeedBarSlider->hide();
 		this->mSpeedProgressBar->show();
 		this->mSpeedManualLabel->show();
-		GlobalOption::instance()->mIsLimitSpeed = 0 ;
+		GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0); // no limit now 
 	}
 }
@@ -3540,7 +3543,7 @@ void NullGet::onManualSpeedChanged(int value)
 	//qDebug()<<__FUNCTION__;
 	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
 	//this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(value*this->mTaskQueue.size()));
-	GlobalOption::instance()->mMaxLimitSpeed = value * 1024 ;	//the value is KB in unit
+	GlobalOption::instance()->mMaxLimitSpeed = value * 1024;	//the value is KB in unit
 
     QVariant payload;
     QVariantList args;
@@ -3563,7 +3566,7 @@ void NullGet::showAboutDialog()
 
 	this->mpAboutDialog->exec();
 
-	delete this->mpAboutDialog ;
+	delete this->mpAboutDialog;
 
 }
 void NullGet::onGotoHomePage()
@@ -3579,7 +3582,7 @@ void NullGet::onGotoHomePage()
 void NullGet::onDropZoneDoubleClicked()
 {
 	qDebug()<<__FUNCTION__;
-	if( this->isHidden () )
+	if (this->isHidden () )
 	{
 		this->setHidden(false);
 		this->showNormal();
@@ -3601,23 +3604,23 @@ void NullGet::onDropZoneCustomMenu(const QPoint & pos)
 
 void NullGet::onOpenDistDirector()
 {
-	qDebug()<<__FUNCTION__ ;
-	QString openner ;
-	QString tmp ;
-	QString dir ;
-	TaskQueue * tq = 0 ;
-	int taskId = -1 ;
+	qDebug()<<__FUNCTION__;
+	QString openner;
+	QString tmp;
+	QString dir;
+	TaskQueue * tq = 0;
+	int taskId = -1;
 	int catId = -1; 
-	QAbstractItemModel * atModel = 0 ;
+	QAbstractItemModel * atModel = 0;
 	
-	QItemSelectionModel * ism = 0 ;
-	QModelIndexList mil ;
-	QString durl ;
+	QItemSelectionModel * ism = 0;
+	QModelIndexList mil;
+	QString durl;
 
 	ism = this->mTaskListView->selectionModel();
 	mil = ism->selectedIndexes();
 	if (mil.size() > 0) {
-		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	
+		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
         // taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
 		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
 
@@ -3635,26 +3638,26 @@ void NullGet::onOpenDistDirector()
 
 void NullGet::onOpenExecDownloadedFile()
 {
-	qDebug()<<__FUNCTION__ ;
+	qDebug()<<__FUNCTION__;
 	
-	QString tmp ;
-	QString dir ,fname ;
-	TaskQueue * tq = 0 ;
-	int taskId = -1 ;
+	QString tmp;
+	QString dir ,fname;
+	TaskQueue * tq = 0;
+	int taskId = -1;
 	int catId = -1; 
-	QAbstractItemModel * atModel = 0 ;
+	QAbstractItemModel * atModel = 0;
 
-	QItemSelectionModel * ism = 0 ;
-	QModelIndexList mil ;
-	QString durl ;
+	QItemSelectionModel * ism = 0;
+	QModelIndexList mil;
+	QString durl;
 
 	ism = this->mTaskListView->selectionModel();
 	mil = ism->selectedIndexes();
 	if (mil.size() > 0) {
-		taskId = mil.at(ng::tasks::task_id).data().toString().toInt() ;	
+		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
         //this->mTaskListViewModel->data(mil.at(0)).toInt();	
 		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
-		fname = mil.at(ng::tasks::file_name).data().toString() ;
+		fname = mil.at(ng::tasks::file_name).data().toString();
 
 		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
         if (dir.startsWith("~")) {
@@ -3680,7 +3683,7 @@ void NullGet::onOpenExecDownloadedFile()
 void NullGet::onClipBoardDataChanged()
 {
 	
-	QClipboard *cb = QApplication::clipboard() ;	
+	QClipboard *cb = QApplication::clipboard();	
 	QString text = cb->text();
 
 	qDebug()<<cb->mimeData()->formats();
@@ -3702,8 +3705,8 @@ void NullGet::onClipBoardDataChanged()
 }
 void NullGet::caclAllTaskAverageSpeed() 
 {
-	// double sumSpeed = 0.0 ;
-	// if( sumSpeed >= 0.0)
+	// double sumSpeed = 0.0;
+	// if (sumSpeed >= 0.0)
 	// {
 	// 	this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
 	// 	this->mSpeedProgressBar->setValue((int)sumSpeed);
@@ -3721,44 +3724,44 @@ void NullGet::onAllocateDiskFileSpace(quint64 fileLength , QString fileName )
 	pd.setMinimumDuration(0);
 	pd.setFixedSize(pd.size().width()*1.82,pd.size().height());
 	pd.setWindowFlags(Qt::Tool| Qt::WindowTitleHint);
-	int px = (this->pos().x()+this->size().width()/2-pd.width()/2) ;
-	int py = (this->pos().y()+this->size().height()/2-pd.height()/2) ;
+	int px = (this->pos().x()+this->size().width()/2-pd.width()/2);
+	int py = (this->pos().y()+this->size().height()/2-pd.height()/2);
 	pd.move(px , py );
 	pd.setCancelButton(0);
 	pd.setWindowTitle(tr("Waiting ..."));
 	
 
-	int step = 100 ;
-	int ps = 0 ;
+	int step = 100;
+	int ps = 0;
 	QFile tf(fileName);
 	tf.open(QIODevice::ReadWrite|QIODevice::Unbuffered);
-	while( step > 0 )
+	while(step > 0 )
 	{
-		int sl = fileLength/100 ;
-		if( ps + sl >= fileLength )
+		int sl = fileLength/100;
+		if (ps + sl >= fileLength )
 		{
-			ps = fileLength ;
+			ps = fileLength;
 		}
 		else
 		{
-			ps += sl ;
+			ps += sl;
 		}
 		tf.seek(ps);
 		tf.write("\0",1);
 		pd.setValue(100-step);
 		qApp->processEvents();
-		step -- ;
+		step --;
 	}
 	tf.close();
 	//QFile::remove("haha.wmv");
 }
 
-void NullGet::paintEvent ( QPaintEvent * event )
+void NullGet::paintEvent (QPaintEvent * event )
 {
 	QPainter painter(this);
 	QPoint p(0, 0);
 	if (this->image.isNull()) {
-		this->image =QImage("4422b46f9b7e5389963077_zVzR8Bc2kwIf.jpg") ;
+		this->image =QImage("4422b46f9b7e5389963077_zVzR8Bc2kwIf.jpg");
 		//qDebug()<<this->mCatView->windowOpacity();
 		//this->mCatView->setWindowOpacity(0.5);
 		//qDebug()<<this->mCatView->windowOpacity();
@@ -3778,32 +3781,32 @@ void NullGet::paintEvent ( QPaintEvent * event )
  * 提示用户是否真的退出。可能是用户的误操作
  * 清理数据，保存状态信息。
  */
-void NullGet::closeEvent ( QCloseEvent * event )
+void NullGet::closeEvent (QCloseEvent * event )
 {
-	qDebug()<<__FUNCTION__ << this->sender() ;
+	qDebug()<<__FUNCTION__ << this->sender();
 	//qDebug()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
 	if (this->sender() == 0) { // 点击右上角的X号,将该行为转成窗口最小化，隐藏到系统托盘区域
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		event->setAccepted(false);
 	} else {//通过点击退出菜单，可认为用户是想退出的。
-		//if ( QMessageBox::question(this,"Are you sure?","Exit NullGet Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
+		//if (QMessageBox::question(this,"Are you sure?","Exit NullGet Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
 		{
 		//	event->setAccepted(false);	//不再传递了
-		//	return ;
+		//	return;
 		}
 		if (this->mWalkSiteWnd != 0) { //the other main window , close it here
 			this->mWalkSiteWnd->close();
-			delete this->mWalkSiteWnd ;
-			this->mWalkSiteWnd = 0 ;
+			delete this->mWalkSiteWnd;
+			this->mWalkSiteWnd = 0;
 		}
 		if (this->mHWalkSiteWndEx != 0) { //the other main window , close it here
 			this->mHWalkSiteWndEx->close();
-			delete this->mHWalkSiteWndEx ;
-			this->mHWalkSiteWndEx = 0 ;
+			delete this->mHWalkSiteWndEx;
+			this->mHWalkSiteWndEx = 0;
 		}
 
 		//清理托盘图标
-		delete this->mSysTrayIcon;this->mSysTrayIcon = 0 ;
+		delete this->mSysTrayIcon;this->mSysTrayIcon = 0;
 
 		QApplication::setQuitOnLastWindowClosed(true);
 		event->setAccepted(true );
@@ -3811,7 +3814,7 @@ void NullGet::closeEvent ( QCloseEvent * event )
 	}
 }
 
-void NullGet::showEvent ( QShowEvent * event ) 
+void NullGet::showEvent (QShowEvent * event ) 
 {
 	QWidget::showEvent(event);
 
@@ -3826,7 +3829,7 @@ void NullGet::showEvent ( QShowEvent * event )
 }
 
 #ifdef Q_OS_WIN
-bool NullGet::winEvent ( MSG * msg, long * result )
+bool NullGet::winEvent (MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 	//whereis MOD_CONTROL ???
@@ -3839,7 +3842,7 @@ bool NullGet::winEvent ( MSG * msg, long * result )
 			qDebug()<<msg->message <<"xxx"<<(int)('G')<<":"<<msg->wParam<<" lp:"<< msg->lParam;
 			break;
 		default:
-			break ;
+			break;
 		}
 	}
 	
@@ -3847,20 +3850,20 @@ bool NullGet::winEvent ( MSG * msg, long * result )
 }
 #else
 #ifdef Q_OS_MAC
-bool NullGet::macEvent ( EventHandlerCallRef caller, EventRef event )
+bool NullGet::macEvent (EventHandlerCallRef caller, EventRef event )
 {
     return QMainWindow::macEvent(caller, event);
 }
 #else
-bool NullGet::x11Event ( XEvent * event )
+bool NullGet::x11Event (XEvent * event )
 {
-    //qDebug()<<"XEvent->type:"<< event->type  ;
+    //qDebug()<<"XEvent->type:"<< event->type;
     if (event->type == PropertyNotify) {
         //qDebug()<<"dont push button";
     }
     return QMainWindow::x11Event(event);
 }
-void NullGet::keyReleaseEvent ( QKeyEvent * event )
+void NullGet::keyReleaseEvent (QKeyEvent * event )
 {
     // shortcut: CTRL+G
     if (event->modifiers() == Qt::ControlModifier) {
@@ -3881,7 +3884,7 @@ void NullGet::shootScreen()
 	QPixmap screenSnapShot = QPixmap::grabWindow(QApplication::desktop()->winId());
 	QString format = "png";
 
-	QString fileName =	QString("abcd" ) + "."+format ;
+	QString fileName =	QString("abcd" ) + "."+format;
 	
 	if (! QFile::exists(fileName)) {
 		QFile ff(fileName);
@@ -3889,28 +3892,28 @@ void NullGet::shootScreen()
 		ff.close();
 	}
 	if (! screenSnapShot.save(fileName, format.toAscii())) {
-		qDebug()<< "save screen snap shot error:"<<fileName ;
+		qDebug()<< "save screen snap shot error:"<<fileName;
 	}
 }
 
 //system tray slot handler
 void NullGet::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
 {
-	qDebug()<<__FUNCTION__ << index  ;
-	if( index == QSystemTrayIcon::DoubleClick	)
+	qDebug()<<__FUNCTION__ << index;
+	if (index == QSystemTrayIcon::DoubleClick	)
 	{		
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		this->raise();
 	}
-	else if( index == QSystemTrayIcon::Context )
+	else if (index == QSystemTrayIcon::Context )
 	{
 
 	}
-	else if( index == QSystemTrayIcon::Trigger )
+	else if (index == QSystemTrayIcon::Trigger )
 	{
 
 	}
-	else if( index == QSystemTrayIcon::Unknown )
+	else if (index == QSystemTrayIcon::Unknown )
 	{
 	}
 }
@@ -3919,20 +3922,20 @@ void NullGet::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
  */
 void NullGet::onBallonClicked()
 {
-	qDebug()<<__FUNCTION__ ;
+	qDebug()<<__FUNCTION__;
 }
 
 void NullGet::onShowWalkSiteWindow()
 {
 	//将搜索窗口集成到主窗口中，不再需要显示这个窗口了。将下面到hide几行删除，release编译出来的程序会小60多K。	
-	//if( this->mWalkSiteWnd == 0 )
+	//if (this->mWalkSiteWnd == 0 )
 	//{
 	//	this->mWalkSiteWnd = new WalkSiteWnd(this);
 	//}
 	//this->mWalkSiteWnd->showMinimized();
 	//this->mWalkSiteWnd->hide();
 
-	if( this->mHWalkSiteWndEx == 0 )
+	if (this->mHWalkSiteWndEx == 0 )
 	{
 		this->mHWalkSiteWndEx = new WalkSiteWndEx(this);		
 		//本模块接收音乐下载的信号
@@ -3941,17 +3944,17 @@ void NullGet::onShowWalkSiteWindow()
 	this->mHWalkSiteWndEx->hide();
 
 	//////////停靠窗口重叠属性为可以重叠
-	if( ! this->isDockNestingEnabled() )
+	if (! this->isDockNestingEnabled() )
 	{
 		this->setDockNestingEnabled(true);
 	}
 	//先将窗口最大化，如果不是的话。
-	if( ! this->isMaximized() )
+	if (! this->isMaximized() )
 	{
 		//this->showMaximized();
 	}
 	///next 集成到主窗口的依靠窗口的搜索窗口初始化/显示。
-	if( this->mWalkSiteDockWidget == 0 )
+	if (this->mWalkSiteDockWidget == 0 )
 	{
 		//this->mWalkSiteDockWidget = new QDockWidget(tr(" Site Crawler "),this);	
 		this->mWalkSiteDockWidget = new QDockWidget(this->mHWalkSiteWndEx->windowTitle(),this);	
@@ -3964,13 +3967,13 @@ void NullGet::onShowWalkSiteWindow()
 		//如果检测到有另一个窗口存在，可以浮动起来该窗口，再检测一个合适的位置停靠，估计能实现那种带TAB的浮动窗口效果。
 	}
 
-	if( this->mWalkSiteDockWidget->widget() != this->mHWalkSiteWndEx )
+	if (this->mWalkSiteDockWidget->widget() != this->mHWalkSiteWndEx )
 	{		
 		this->mWalkSiteDockWidget->setWidget(this->mHWalkSiteWndEx);
 	}
 	this->mHWalkSiteWndEx->showMinimized();
-	qDebug()<< this->mWalkSiteDockWidget->isHidden() ;
-	if( this->mWalkSiteDockWidget->isHidden() )
+	qDebug()<< this->mWalkSiteDockWidget->isHidden();
+	if (this->mWalkSiteDockWidget->isHidden() )
 		this->mWalkSiteDockWidget->showMinimized();
 
 }
@@ -3987,7 +3990,7 @@ void NullGet::handleArguments(int argc, char **argv)
 {
     QStringList args;
 
-    for (int i = 0 ; i < argc; ++i) {
+    for (int i = 0; i < argc; ++i) {
         args.append(QString(argv[i]));
     }
 
@@ -4072,9 +4075,9 @@ void NullGet::retranslateUi()
 
 void NullGet::onObjectDestroyed(QObject * obj )
 {
-	qDebug()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName() ;
-	obj->dumpObjectInfo () ;
-	obj->dumpObjectTree () ;
+	qDebug()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName();
+	obj->dumpObjectInfo ();
+	obj->dumpObjectTree ();
 }
 
 

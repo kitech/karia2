@@ -38,12 +38,17 @@ QVariant TorrentPeerModel::headerData(int section, Qt::Orientation orientation, 
 
 bool TorrentPeerModel::setData(QVariantList &peers)
 {
-    this->removeRows(0, this->mPeers.count());
-    // this->insertRows(0, peers.count());
+    if (this->mPeers.count() > 0) {
+        this->removeRows(0, this->mPeers.count());
+    }
 
-    this->beginInsertRows(QModelIndex(), 0, peers.count() - 1);
-    this->mPeers = peers;
-    this->endInsertRows();
+    if (peers.count() > 0) {
+        // if no this if, than below warning will show.
+        // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting. 
+        this->beginInsertRows(QModelIndex(), 0, peers.count());
+        this->mPeers = peers;
+        this->endInsertRows();
+    }
 
     return true;
 }
@@ -115,7 +120,6 @@ bool TorrentPeerModel::removeRows(int row, int count, const QModelIndex & parent
 TorrentTrackerModel::TorrentTrackerModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-
     // Marks the string literal sourceText for dynamic translation in the current context (class),
     this->columnHeaders = QT_TR_NOOP("Id, tracker");
 }
@@ -141,25 +145,30 @@ QVariant TorrentTrackerModel::headerData(int section, Qt::Orientation orientatio
 
 bool TorrentTrackerModel::setData(QVariantList &trackers)
 {
-    QVariantHash d1Trackers;
     QVariantList d2Trackers;
     QString  tracker;
 
+    QVector<QString> vTrackers;
     int row = 0;
     for (int i = 0 ; i < trackers.count(); ++i) {
         d2Trackers = trackers.at(i).toList();
         for (int j = 0 ; j < d2Trackers.count(); j++) {
             tracker = d2Trackers.at(j).toString();
-            d1Trackers[QString("%1").arg(row++)] = tracker;
+            vTrackers.append(tracker);
         }
     }
 
-    this->removeRows(0, this->mTrackers.count());
+    if (this->mTrackers.count() > 0) {
+        this->removeRows(0, this->mTrackers.count());
+    }
 
-    this->beginInsertRows(QModelIndex(), 0, d1Trackers.count() - 1);
-    // this->mPeers = peers;
-    this->mTrackers = d1Trackers;
-    this->endInsertRows();
+    if (vTrackers.count() > 0) {
+        // if no this if, than below warning will show.
+        // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting. 
+        this->beginInsertRows(QModelIndex(), 0, vTrackers.count());
+        this->mTrackers = vTrackers;
+        this->endInsertRows();
+    }
 
     return true;
 }
@@ -191,8 +200,6 @@ QVariant TorrentTrackerModel::data(const QModelIndex &index, int role) const
     int row = index.row();
     int col = index.column();
 
-    // QVariantMap peer = this->mPeers.at(row).toMap();
-    
     QStringList columns = QString(this->columnHeaders).split(",");
 
     QVariant rv;    
@@ -200,8 +207,7 @@ QVariant TorrentTrackerModel::data(const QModelIndex &index, int role) const
         if (col == 0) {
             return row;
         } else {
-            // rv = peer[columns.at(col).trimmed()];
-            rv = this->mTrackers[QString("%1").arg(row)];
+            rv = this->mTrackers.at(row);
         }
     }
 
@@ -213,8 +219,7 @@ bool TorrentTrackerModel::insertRows(int row, int count, const QModelIndex & par
     this->beginInsertRows(QModelIndex(), row, row + count - 1);
     QVariant vv;
     for (int i = row; i < row + count; i ++) {
-        // this->mPeers.insert(i, vv);
-        this->mTrackers[QString("%1").arg(i)] = vv;
+        this->mTrackers.append(QString(""));
     }
     this->endInsertRows();
     return true;
@@ -224,8 +229,7 @@ bool TorrentTrackerModel::removeRows(int row, int count, const QModelIndex & par
 {
     this->beginRemoveRows(QModelIndex(), row, row + count - 1);
     for (int i = row + count - 1; i >= row; i --) {
-        // this->mPeers.removeAt(i);
-        this->mTrackers.remove(QString("%1").arg(i));
+        this->mTrackers.remove(i);
     }
     this->endRemoveRows();
     return true;

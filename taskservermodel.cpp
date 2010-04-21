@@ -44,9 +44,6 @@ bool TaskServerModel::setData(QVariantList &servers)
 	if (servers.count() == 0) {
 		return false;
 	}
-	if (this->mServers.count() > 0) {
-		this->removeRows(0, this->mServers.count());
-	}
 
     this->mRawServers = servers;
     QList<QMap<char, QString> > tServers;
@@ -75,10 +72,20 @@ bool TaskServerModel::setData(QVariantList &servers)
             tServer.clear();
         }
     }
+
+    qDebug()<<tServers<<this->mServers.count();
+
+	if (this->mServers.count() > 0) {
+		this->removeRows(0, this->mServers.count());
+	}
     
-    this->beginInsertRows(QModelIndex(), 0, tServers.count());
-    this->mServers = tServers;
-    this->endInsertRows();
+    if (tServers.count() > 0) { 
+        // if no this if, than below warning will show.
+        // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting. 
+        this->beginInsertRows(QModelIndex(), 0, tServers.count());
+        this->mServers = tServers;
+        this->endInsertRows();
+    }
 
     return true;
 }

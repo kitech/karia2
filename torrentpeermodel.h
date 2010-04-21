@@ -52,7 +52,7 @@ public:
     bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
 
 private:
-    QVariantHash mTrackers;
+    QVector<QString> mTrackers;
     char *columnHeaders;
 };
 

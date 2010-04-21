@@ -500,16 +500,16 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         }
 
         // 处理bt信息
-        if (sts.contains("bittorrent")) {
-            QVariantMap btSts = sts["bittorrent"].toMap();
-            qDebug()<<"announceList:"<<btSts["announceList"]
-                    <<"comment:"<<btSts["comment"]
-                    <<"createDate:"<<btSts["createDate"]
-                    <<"mode:"<<btSts["mode"]
-                    <<"info:"<<btSts["info"];
-        }
+        // if (sts.contains("bittorrent")) {
+        //     QVariantMap btSts = sts["bittorrent"].toMap();
+        //     qDebug()<<"announceList:"<<btSts["announceList"]
+        //             <<"comment:"<<btSts["comment"]
+        //             <<"createDate:"<<btSts["createDate"]
+        //             <<"mode:"<<btSts["mode"]
+        //             <<"info:"<<btSts["info"];
+        // }
     } else {
-        qDebug()<<__FUNCTION__<<" cant found update model";
+        qDebug()<<__FUNCTION__<<"Can not found update model";
     }
 
 	// int taskCount = mdl->rowCount();
