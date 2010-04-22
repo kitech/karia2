@@ -47,6 +47,7 @@ class WalkSiteWndEx ;	//网站遍历窗口类。
 class AriaMan;
 class MaiaXmlRpcClient;
 class SeedFileItemDelegate;
+class TaskItemDelegate;
 
 class NullGet : public QMainWindow
 {
@@ -142,6 +143,7 @@ private:
 	//
 	QAbstractItemModel * mTaskTreeViewModel;
 	QAbstractItemModel * mCatViewModel;
+    TaskItemDelegate *mTaskItemDelegate;
     SeedFileItemDelegate *mSeedFileDelegate;
 
 	//swap buff

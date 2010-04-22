@@ -198,6 +198,8 @@ qtsingleapplication/qtsingleapplication.h -text
 /taskinfodlg.cpp -text
 /taskinfodlg.h -text
 /taskinfodlg.ui -text
+/taskitemdelegate.cpp -text
+/taskitemdelegate.h -text
 /taskqueue.cpp -text
 /taskqueue.h -text
 /taskservermodel.cpp -text

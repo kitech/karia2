@@ -42,6 +42,7 @@
 #include "sqlitetaskmodel.h"
 #include "sqlitesegmentmodel.h"
 #include "segmentlogmodel.h"
+#include "taskitemdelegate.h"
 
 #include "catmandlg.h"
 #include "catpropdlg.h"
@@ -154,7 +155,9 @@ void NullGet::firstShowHandler()
 	this->mStorage->open();
 
 	this->mTaskListView = this->mainUI.mui_tv_task_list;
-	this->mTaskTreeViewModel = SqliteTaskModel::instance(1,this);
+    this->mTaskItemDelegate = new TaskItemDelegate();
+    this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
+	this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
 
 	//this->mTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
 	//this->mDoneTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
@@ -2896,7 +2899,7 @@ void NullGet::onShowTaskPropertyDigest(const QModelIndex & index )
 void NullGet::onShowTaskPropertyDigest( )
 {
 	//qDebug()<<__FUNCTION__;
-	QString tips = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: %4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>";
+	QString tips = tr("<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: %4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>");
 	QPoint np = this->mainUI.mui_tv_task_list->viewport()->mapFromGlobal(QCursor::pos());
 	QModelIndex nidx = this->mainUI.mui_tv_task_list->indexAt(np);
 	QModelIndex tidx;
