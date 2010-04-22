@@ -91,7 +91,7 @@ AriaMan::AriaMan(QObject *parent)
 //                      << "--log=/tmp/aria2c.log"
 // #endif
                      << "--log-level=info"
-                     << "--human-readable=false"
+        // << "--human-readable=false"   # aria2 1.8.0 can't support this argument
                      << "--check-certificate=false"
                      << "--user-agent=nullget/0.3"
                      << "--continue"
@@ -316,7 +316,6 @@ void AriaMan::onAriaGetFeatureResponse(QVariant &response, QVariant &payload)
     this->mAriaRpc = 0;
 
     QVariantMap features = response.toList().at(0).toMap();
-    QVariantList sessions = response.toList().at(1).toList();
 
     this->mVersionString = features.value("version").toString();
 
@@ -353,8 +352,23 @@ void AriaMan::onAriaGetFeatureResponse(QVariant &response, QVariant &payload)
         this->mFeatures |= FeatureXMLRPC;
     }
 
-    this->mSessionId = sessions.at(0).toMap().value("sessionId").toString();
+    if (enabledFeatures.contains(QString("Async DNS"))) {
+        this->mFeatures |= FeatureAsyncDNS;
+    }
 
+    if (enabledFeatures.contains(QString("Firefox3 Cookie"))) {
+        this->mFeatures |= FeatureFirefox3Cookie;
+    }
+
+    // session parser
+    if (response.toList().at(1).type() == QVariant::List) {
+        QVariantList sessions = response.toList().at(1).toList();
+        this->mSessionId = sessions.at(0).toMap().value("sessionId").toString();
+    } else {
+        // aria2 == 1.8.0, now getSession method. this is the error info.
+        QVariantMap sessions = response.toList().at(1).toMap();
+        qDebug()<<sessions;
+    }
 }
 
 void AriaMan::onAriaGetFeatureFault(int code, QString reason, QVariant &payload)

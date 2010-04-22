@@ -194,6 +194,10 @@ void NullGet::firstShowHandler()
 	//for (int i = 1; i < 9; i ++)
 	//	this->mCatView->setColumnHidden(i,true);	//隐藏不需要显示的列即可。
 
+    this->mSeedFileDelegate = new SeedFileItemDelegate();
+    this->mSeedFileView = this->mainUI.treeView_2;
+    this->mSeedFileView->setItemDelegate(this->mSeedFileDelegate);
+
 	//this->onLoadAllTask();	//loading database 
 	
 	//非UI成员
@@ -972,7 +976,7 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         mdl = this->mTaskMan->torrentTrackerModel(taskId);
         this->mainUI.trackersView->setModel(mdl);
         mdl = this->mTaskMan->taskSeedFileModel(taskId);
-        this->mainUI.treeView_2->setModel(mdl);
+        this->mSeedFileView->setModel(mdl);
     } else {
         mdl = this->mTaskMan->torrentPeerModel(taskId);
         this->mainUI.peersView->setModel(0);
@@ -980,14 +984,14 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         mdl = this->mTaskMan->torrentTrackerModel(taskId);
         this->mainUI.trackersView->setModel(mdl);
         mdl = this->mTaskMan->taskSeedFileModel(taskId);
-        this->mainUI.treeView_2->setModel(mdl);
+        this->mSeedFileView->setModel(mdl);
     }
     {
         mdl = this->mTaskMan->taskServerModel(taskId);
         this->mSegListView->setModel(mdl);
     }
 
-    qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl?mdl->rowCount():0);
+    qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl ? mdl->rowCount() : 0);
     TaskBallMapWidget::instance()->onRunTaskCompleteState(taskId, true);
 
     {
@@ -1004,9 +1008,10 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         this->mainUI.label_3->setText(fileSize);
         this->mainUI.label_5->setText(speed);
         this->mainUI.label_7->setText(blocks);
-        this->mainUI.label_9->setText(savePath);
-        this->mainUI.label_11->setText(refer);
-        this->mainUI.label_11->setToolTip(refer);
+        this->mainUI.label_9->setText(QString("<a href=\"%1\">%1</a>").arg(savePath));
+        this->mainUI.label_9->setToolTip(QString(tr("Location: %1")).arg(savePath));
+        this->mainUI.label_11->setText(QString("<a href=\"%1\">%1</a>").arg(refer));
+        this->mainUI.label_11->setToolTip(QString(tr("Location: %1")).arg(refer));
     }
 }
 
@@ -1412,6 +1417,7 @@ void NullGet::onDeleteTask()
         // }
 	}
 
+    // because current order depend user's select order, we reorder it here
     qSort(deleteModelRows);
     for (int i = deleteModelRows.count() - 1; i >= 0; --i) {
         int mrow = deleteModelRows.at(i);

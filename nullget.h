@@ -46,6 +46,7 @@ class InstantSpeedHistogramWnd;
 class WalkSiteWndEx ;	//网站遍历窗口类。
 class AriaMan;
 class MaiaXmlRpcClient;
+class SeedFileItemDelegate;
 
 class NullGet : public QMainWindow
 {
@@ -136,9 +137,12 @@ private:
 	QTreeView * mSegListView;
 	QTreeView * mSegLogListView;
 	QTreeView * mCatView;
+    QTreeView *mSeedFileView;
+
 	//
 	QAbstractItemModel * mTaskTreeViewModel;
 	QAbstractItemModel * mCatViewModel;
+    SeedFileItemDelegate *mSeedFileDelegate;
 
 	//swap buff
 	char mSwapBuff[1024];

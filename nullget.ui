@@ -113,7 +113,16 @@
              <item row="1" column="0">
               <widget class="QLabel" name="label_12">
                <property name="text">
-                <string>TextLabel</string>
+                <string>File Size:</string>
+               </property>
+               <property name="scaledContents">
+                <bool>false</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>false</bool>
+               </property>
+               <property name="openExternalLinks">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -181,6 +190,9 @@
                <property name="text">
                 <string/>
                </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
                <property name="textInteractionFlags">
                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
                </property>
@@ -197,7 +209,7 @@
               <widget class="QLabel" name="label_11">
                <property name="maximumSize">
                 <size>
-                 <width>185</width>
+                 <width>850</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -213,7 +225,16 @@
                 <string/>
                </property>
                <property name="textFormat">
-                <enum>Qt::AutoText</enum>
+                <enum>Qt::RichText</enum>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="openExternalLinks">
+                <bool>false</bool>
                </property>
                <property name="textInteractionFlags">
                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
@@ -298,6 +319,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QTreeView" name="treeView_2">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>

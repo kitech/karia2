@@ -14,6 +14,52 @@
 
 
 
+SeedFileItemDelegate::SeedFileItemDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+{
+    
+}
+
+SeedFileItemDelegate::~SeedFileItemDelegate()
+{
+}
+QWidget *SeedFileItemDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+    qDebug()<<parent<<option<<index;
+    if (index.column() == 1) {
+        QCheckBox *cb = new QCheckBox(parent);
+        return cb;
+    } else {
+        return NULL;
+    }
+}
+
+void SeedFileItemDelegate::setEditorData(QWidget * editor, const QModelIndex & index ) const
+{
+    if (index.column() == 1) {
+        QCheckBox *cb = static_cast<QCheckBox*>(editor);
+        cb->setChecked( index.data().toString() == "true" ? true : false);
+    }
+}
+
+void SeedFileItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+    if (index.column() == 1) {
+        QString seleted = index.data().toString();
+
+        QStyleOptionButton checkBoxOption;
+        checkBoxOption.rect = option.rect;
+        checkBoxOption.state = (seleted == "true"  ? QStyle::State_On : QStyle::State_Off)
+            | QStyle::State_Enabled | QStyle::State_Editing 
+            ;
+        checkBoxOption.text = seleted;
+
+        QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkBoxOption, painter);
+    } else {
+        QStyledItemDelegate::paint(painter, option, index);
+    }
+}
+
 /////////////////////////////////
 ////////////////////////////////
 

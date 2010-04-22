@@ -33,6 +33,8 @@ public:
                       FeatureMessageDigest = 0x00000008,
                       FeatureMetalink = 0x00000010,
                       FeatureXMLRPC = 0x00000020,
+                      FeatureAsyncDNS = 0x00000040,
+                      FeatureFirefox3Cookie = 0x00000080
     };
     bool hasFeature(AriaFeature feature);
 

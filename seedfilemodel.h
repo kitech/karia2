@@ -11,7 +11,6 @@
 #define _SEEDFILEMODEL_H_
 
 #include <QtCore>
-#include <QtGui>
 
 class SeedFileModel : public QAbstractTableModel
 {
@@ -35,19 +34,6 @@ public:
 private:
     QVariantList mFiles;
     char *columnHeaders;
-};
-
-class SeedFileItemDelegate : public QStyledItemDelegate
-{
-    Q_OBJECT;
-public:
-    SeedFileItemDelegate(QObject *parent = 0);
-    ~SeedFileItemDelegate();
-
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void 	setEditorData ( QWidget * editor, const QModelIndex & index ) const;
-    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-    
 };
 
 
