@@ -297,8 +297,8 @@ bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent 
 	for (int i = delete_end; i >= delete_begin ; i --) {
 		int taskID = this->mModelData.at(i).value("task_id").toInt();
 		this->mModelData.remove(row);
-		this->mStorage->deleteTask(taskID);
-		emit layoutChanged () ;	//这是必须，否则视图不能正常画出模型。
+        this->mStorage->deleteTask(taskID);
+        emit layoutChanged () ;	//这是必须，否则视图不能正常画出模型。
 	}
 
 	endRemoveRows ();

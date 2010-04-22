@@ -1371,6 +1371,7 @@ void NullGet::onDeleteTask()
 	int rowCount = 0;
 	int row = -1;
 	int colcnt = -1;
+    QList<int> deleteModelRows;
 
 	from_model = static_cast<SqliteTaskModel*>(this->mTaskListView->model());
     to_model = static_cast<SqliteTaskModel*>(SqliteTaskModel::instance(ng::cats::deleted, 0));
@@ -1379,20 +1380,52 @@ void NullGet::onDeleteTask()
 	sim = this->mTaskListView->selectionModel();
 	mil = sim->selectedIndexes();
 
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
     int rowcnt = mil.size() / colcnt;
 	for (int row = rowcnt - 1; row >= 0; row --) {
+        int mrow = mil.value(row  * colcnt + ng::tasks::task_id).row();
+        // qDebug()<<"prepare delete ROW:"<<mrow<<" All ROW:"<<rowcnt;
 		int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
         int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::cat_id)).toInt();
 
-        qDebug()<<"DDDD:"<<taskId<<ariaGid;
+        // qDebug()<<"DDDD:"<<taskId<<ariaGid<<srcCatId;
+        deleteModelRows<<mrow;
+        continue;
+        
+        // QModelIndexList rmil;
+        // for (int col = 0; col < colcnt; col ++) {
+        //     rmil.append(mil.at(row * colcnt + col));
+        // }
+        // if (srcCatId == ng::cats::deleted) {
+        //     // delete it directly
+        //     from_model->removeRows(mil.value(row * colcnt).row(), 1);
+		// 	//在system tray 显示移动任务消息
+		// 	this->mSysTrayIcon->showMessage(tr("Delete Task ."), QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
+        //                                     QSystemTrayIcon::Information, 5000);
+        // } else {
+        //     int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil);
+		// 	//在system tray 显示移动任务消息
+		// 	this->mSysTrayIcon->showMessage(tr("Move Task ."), QString(tr("Move To Trash Now. TaskId: %1")).arg(taskId),
+        //                                     QSystemTrayIcon::Information, 5000);
+        // }
+	}
+
+    qSort(deleteModelRows);
+    for (int i = deleteModelRows.count() - 1; i >= 0; --i) {
+        int mrow = deleteModelRows.at(i);
+        int taskId = from_model->data(from_model->index(mrow, ng::tasks::task_id)).toInt();
+        QString ariaGid = from_model->data(from_model->index(mrow, ng::tasks::aria_gid)).toString();
+        int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::cat_id)).toInt();
+        qDebug()<<"DDDD:"<<mrow<<taskId<<ariaGid<<srcCatId;
         QModelIndexList rmil;
         for (int col = 0; col < colcnt; col ++) {
-            rmil.append(mil.at(row * colcnt + col));
+            rmil.append(from_model->index(mrow, col));
         }
         if (srcCatId == ng::cats::deleted) {
             // delete it directly
-            from_model->removeRows(mil.value(row * colcnt).row(), 1);
+            from_model->removeRows(mrow, 1);
 			//在system tray 显示移动任务消息
 			this->mSysTrayIcon->showMessage(tr("Delete Task ."), QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
                                             QSystemTrayIcon::Information, 5000);
@@ -1402,7 +1435,10 @@ void NullGet::onDeleteTask()
 			this->mSysTrayIcon->showMessage(tr("Move Task ."), QString(tr("Move To Trash Now. TaskId: %1")).arg(taskId),
                                             QSystemTrayIcon::Information, 5000);
         }
-	}
+        
+    }
+
+    QApplication::restoreOverrideCursor();
 }
 
 // void NullGet::onDeleteTask(int pTaskId)
@@ -3646,7 +3682,10 @@ void NullGet::onOpenDistDirector()
         }
 		durl = dir;
 
-		QDesktopServices::openUrl(durl);	//only qt >= 4.2
+		bool opened = QDesktopServices::openUrl(durl);	//only qt >= 4.2
+        if (!opened) {
+            opened = QDesktopServices::openUrl(QUrl("file://" + durl));
+        }
 	} else {
 		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
 	}
@@ -3686,7 +3725,10 @@ void NullGet::onOpenExecDownloadedFile()
                                  QString(tr("File <b>%1</b> not found,has it downloaded already?")).arg(fullUrl));
 		} else {
 			//QProcess::execute(openner);
-			QDesktopServices::openUrl(fullUrl );	//only qt >= 4.2
+            bool opened = QDesktopServices::openUrl(fullUrl);	//only qt >= 4.2
+            if (!opened) {
+                opened = QDesktopServices::openUrl(QUrl("file://" + fullUrl));
+            }
 		}
 	} else {
 		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
