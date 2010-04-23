@@ -126,6 +126,7 @@ libng/md5.h -text
 libng/qtmd5.cpp -text
 libng/qtmd5.h -text
 /main.cpp -text
+/mimetypeshash.cpp -text
 /mmex.cpp -text
 /mmex.h -text
 /norwegianwoodstyle.cpp -text

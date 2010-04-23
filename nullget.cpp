@@ -81,6 +81,9 @@
 #include "ariaman.h"
 #include "maiaXmlRpcClient.h"
 
+
+extern QHash<QString, QString> gMimeHash;
+
 ////////////////////////////////////////////////
 //主窗口类。
 ////////////////////////////////////////////////
@@ -588,6 +591,7 @@ void NullGet::initAppIcons()
     this->mainUI.actionDefault_Download_Properties->setIcon(QIcon(dir + "/configure.png"));
     this->mainUI.action_Options->setIcon(QIcon(dir + "/preferences-system.png"));
     this->mainUI.actionQuit->setIcon(QIcon(dir + "/system-shutdown.png"));
+    this->mainUI.label->setPixmap(QPixmap(dir + "/status/unknown.png"));
 }
 
 void NullGet::connectAllSignalAndSlog()
@@ -1005,6 +1009,7 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         QString blocks = mil.at(ng::tasks::block_activity).data().toString();
         QString savePath = mil.at(ng::tasks::save_path).data().toString();
         QString refer = mil.at(ng::tasks::org_url).data().toString();
+        QPair<QString, QString> mimeIconPosition = this->getFileTypeByFileName(fileName);
 
         this->mainUI.label_2->setText(fileName);
         this->mainUI.label_2->setToolTip(fileName);
@@ -1015,6 +1020,8 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         this->mainUI.label_9->setToolTip(QString(tr("Location: %1")).arg(savePath));
         this->mainUI.label_11->setText(QString("<a href=\"%1\">%1</a>").arg(refer));
         this->mainUI.label_11->setToolTip(QString(tr("Location: %1")).arg(refer));
+
+        this->mainUI.label->setPixmap(QPixmap(mimeIconPosition.second).scaled(32, 32));
     }
 }
 
@@ -2907,8 +2914,7 @@ void NullGet::onShowTaskPropertyDigest( )
 	int catId = -1;
 	
 	if (this->mainUI.mui_tv_task_list->viewport()->underMouse()&&
-		this->mSwapModelIndex.isValid() && nidx.isValid() && nidx == this->mSwapModelIndex )
-	{		
+		this->mSwapModelIndex.isValid() && nidx.isValid() && nidx == this->mSwapModelIndex ) {
 		int row = nidx.row();
 		QString id , url , ftype, name , path , gotlength , totallength , refferer, comment ,createtime  , fimg;
 		tidx = nidx.model()->index(row,0);
@@ -2925,19 +2931,19 @@ void NullGet::onShowTaskPropertyDigest( )
 		tidx = nidx.model()->index(row,ng::tasks::cat_id);
 		path = SqliteStorage::instance(this)->getSavePathByCatId(tidx.data().toInt());
 
-		tidx = nidx.model()->index(row,ng::tasks::real_url);
+		tidx = nidx.model()->index(row, ng::tasks::real_url);
 		url = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::file_name);
+		tidx = nidx.model()->index(row, ng::tasks::file_name);
 		name = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::abtained_length);
+		tidx = nidx.model()->index(row, ng::tasks::abtained_length);
 		gotlength = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::file_size);
+		tidx = nidx.model()->index(row, ng::tasks::file_size);
 		totallength = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::org_url);
+		tidx = nidx.model()->index(row, ng::tasks::org_url);
 		refferer = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::comment);
+		tidx = nidx.model()->index(row, ng::tasks::comment);
 		comment = tidx.data().toString();
-		tidx = nidx.model()->index(row,ng::tasks::create_time);
+		tidx = nidx.model()->index(row, ng::tasks::create_time);
 		createtime = tidx.data().toString();
 
 		//ftype = "unknown";
@@ -2965,33 +2971,56 @@ void NullGet::onShowTaskPropertyDigest( )
 	this->mSwapModelIndex = QModelIndex();	
 }
 
-QPair<QString,QString> NullGet::getFileTypeByFileName(QString fileName)
+QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
 {
 	QPair<QString,QString> ftype("unknown", "unknown.png");
 	
+#if defined(Q_OS_WIN)
 	QString path = "icons/crystalsvg/128x128/mimetypes/";
-	QStringList fileParts = fileName.split(".");
-	if (QFile::exists(path+fileParts.at(fileParts.count()-1) + ".png" ) )
-	{
+#elif defined(Q_OS_MAC)
+    QString path = "icons/crystalsvg/128x128/mimetypes/";
+#else // *nix
+    QString path = QString("/usr/share/icons/%1/128x128/mimetypes/").arg(QIcon::themeName());
+#endif
+	QStringList fileParts = fileName.toLower().split(".");
+    QString fileExtName = fileParts.at(fileParts.count() - 1);
+    
+    ftype.first = fileExtName;
+    if (gMimeHash.contains(fileExtName)) {
+        ftype.second = path + gMimeHash.value(fileExtName) + ".png";
+    } else {
+        ftype.second = path + ftype.second;
+    }
+    
+    return ftype;
+
+    // raw seach
+	if (QFile::exists(path+fileParts.at(fileParts.count()-1) + ".png" ) ) {
 		ftype.first = fileParts.at(fileParts.count()-1);
 		ftype.second = path+fileParts.at(fileParts.count()-1) + ".png";
 	}
-	if (fileName.endsWith(".wmv",Qt::CaseSensitive) 
-		|| fileName.endsWith(".asf",Qt::CaseSensitive)
-		|| fileName.endsWith(".rm",Qt::CaseSensitive) 
-		|| fileName.endsWith(".rmvb",Qt::CaseSensitive) )
-	{
+	if (fileName.toLower().endsWith(".wmv",Qt::CaseSensitive) 
+		|| fileName.toLower().endsWith(".asf",Qt::CaseSensitive)
+		|| fileName.toLower().endsWith(".rm",Qt::CaseSensitive) 
+		|| fileName.toLower().endsWith(".rmvb",Qt::CaseSensitive) ) {
 		ftype.first = "video";
 		ftype.second = path + "video.png";		
-	}
-	else if (fileName.endsWith(".gz",Qt::CaseSensitive) 
-		|| fileName.endsWith(".tgz",Qt::CaseSensitive)
-		|| fileName.endsWith(".rar",Qt::CaseSensitive) )
-	{
+	} else if (fileName.toLower().endsWith(".gz", Qt::CaseSensitive) 
+		|| fileName.toLower().endsWith(".tgz", Qt::CaseSensitive)
+		|| fileName.toLower().endsWith(".rar", Qt::CaseSensitive) ) {
 		ftype.first = "tar";
 		ftype.second = path + "tar.png";
-	}
+	} else if (fileName.toLower().endsWith(".iso", Qt::CaseInsensitive)) {
+        ftype.first = "iso";
+        ftype.second = path + "cd-image.png";
+    } else if (fileName.endsWith(".bz2", Qt::CaseInsensitive)) {
+        ftype.first = "bz2";
+        ftype.second = path + "bzip.png";
+    } else if (fileName.endsWith(".torrent", Qt::CaseInsensitive)) {
+        ftype.second = path + "bittorrent.png";
+    }
 
+    // qDebug()<<"FN:"<<fileName<<ftype;
 	return ftype;
 }
 
@@ -3000,12 +3029,9 @@ void NullGet::onEditSelectAll()
 	qDebug()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
 
-	if (wg == this->mainUI.mui_tv_task_list)
-	{
+	if (wg == this->mainUI.mui_tv_task_list) {
 		this->mainUI.mui_tv_task_list->selectAll();
-	}
-	else if (wg == this->mainUI.mui_tv_seg_log_list )
-	{
+	} else if (wg == this->mainUI.mui_tv_seg_log_list ) {
 		this->mainUI.mui_tv_seg_log_list->selectAll();
 	}
 	qDebug()<<wg;

@@ -187,6 +187,7 @@ SOURCES += aboutdialog.cpp \
            seedfilemodel.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
+           mimetypeshash.cpp \
            getopt4.cpp \
            qtsingleapplication/qtlocalpeer.cpp \
            qtsingleapplication/qtsingleapplication.cpp
