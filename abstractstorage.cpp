@@ -73,11 +73,12 @@ AbstractStorage::AbstractStorage(QObject *parent)
 		"cat_id=3,display_name=software,raw_name=software,folder=no,path="SAVE_PREFIX_STR"/NGDownload/software,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false",
 		"cat_id=4,display_name=game,raw_name=game,folder=no,path="SAVE_PREFIX_STR"/NGDownload/game,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"            ,
 		"cat_id=5,display_name=music,raw_name=music,folder=no,path="SAVE_PREFIX_STR"/NGDownload/music,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"         ,
-		"cat_id=6,display_name=movie,raw_name=movie,folder=no,path="SAVE_PREFIX_STR"/NGDownload/movie,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"         ,
-		"cat_id=7,display_name=deleted,raw_name=deleted,folder=no,path="SAVE_PREFIX_STR"/NGDownload/deleted,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false"
+		"cat_id=6,display_name=movie,raw_name=movie,folder=no,path="SAVE_PREFIX_STR"/NGDownload/movie,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"    ,
+		"cat_id=8,display_name=documents,raw_name=documents,folder=no,path="SAVE_PREFIX_STR"/NGDownload/documents,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"   ,
+		"cat_id=7,display_name=deleted,raw_name=deleted,folder=no,path="SAVE_PREFIX_STR"/NGDownload/deleted,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false" 
 	};
 	
-	for (int line = 0 ; line < 8; line ++) {
+	for (int line = 0 ; line < 9; line ++) {
 		QStringList cat = QString(rawcat[line]).split(",");
 		QMap<QString , QString> catmap ;
 		for (int fieldCount = 0 ; fieldCount < cat.size() ; fieldCount ++) {
@@ -87,7 +88,7 @@ AbstractStorage::AbstractStorage(QObject *parent)
 		this->defaultCategorys.append(catmap);
 	}
 	
-	this->mTaskColumnStr = 
+	this->mTaskColumnStr = QT_TR_NOOP( 
 			"task_id             ,"
 			"file_size           ,"
 			"retry_times         ,"
@@ -101,9 +102,9 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"block_activity      ,"
 			"total_block_count   ,"
 			"active_block_count  ,"
-			"cat_id              ,"
+			"user_cat_id              ,"
 			"comment             ,"
-			"place_holder        ,"
+			"sys_cat_id        ,"
         "save_path,"
 			"file_name           ,"
 			"abtained_percent    ,"
@@ -120,9 +121,10 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"left_timestamp     ,"
 			"file_length_abtained,"
 			"dirty               ,"
-            "aria_gid            ";
+            "aria_gid            "
+                                       );
 
-	this->mSegColumnStr = 
+	this->mSegColumnStr = QT_TR_NOOP(
 			"seg_id           ,"  
 			"task_id          ,"
 			"start_offset     ,"
@@ -140,19 +142,19 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"total_timestamp  ,"
 			"finish_timestamp,"
 			"left_timestamp  ,"
-			"dirty            "
+			"dirty            ")
 		;
-	this->mCatColumnStr = 
-			"cat_id       ,"
+	this->mCatColumnStr = QT_TR_NOOP(
 			"display_name ,"
+			"path         ,"
+			"cat_id       ,"
 			"raw_name     ,"
 			"folder       ,"
-			"path         ,"
 			"can_child    ,"
 			"parent_cat_id,"
 			"create_time  ,"
 			"delete_flag  ,"
-			"dirty         "
+			"dirty         ")
 		;
 
 }

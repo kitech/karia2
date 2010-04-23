@@ -155,8 +155,7 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
     qDebug()<<__FUNCTION__<<option->mCatId;
 	//将任务信息添加到 task list view 中
 	QModelIndex index;
-	// QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
-    QAbstractItemModel *mdl = SqliteTaskModel::instance(option->mCatId, 0);
+    QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
     QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole, 
                                      QString("%1").arg(taskId), 1, Qt::MatchExactly | Qt::MatchWrap);
     if (mil.count() == 0) {
@@ -180,9 +179,11 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
         mdl->setData(index, option->mTaskUrl);	
         index = mdl->index(modelRows, ng::tasks::org_url);
         mdl->setData(index, option->mTaskUrl);		
-        index = mdl->index(modelRows, ng::tasks::cat_id );
+        index = mdl->index(modelRows, ng::tasks::user_cat_id );
         // mdl->setData(index ,ng::cats::downloading);
         mdl->setData(index, option->mCatId);
+        index = mdl->index(modelRows, ng::tasks::sys_cat_id);
+        mdl->setData(index, ng::cats::downloading);
         index = mdl->index(modelRows, ng::tasks::create_time );
         mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
         index = mdl->index(modelRows, ng::tasks::file_length_abtained);
@@ -338,8 +339,6 @@ void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus )
 	bool doneTask = false ;	//標識是否执行了完成任务的移动工作。
 	SqliteSegmentModel * mdl = SqliteSegmentModel::instance(taskId,this);
 
-
-	
 }
 	
 void TaskQueue::onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive)
@@ -512,7 +511,6 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
             QStringList bitList;
             for (int i = 0 ; i < blockCount; i ++) bitList << "1";
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), bitList.join(","));
-                
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), 
                          this->fromBitArray(this->fromHexBitString(sts["bitfield"].toString())));

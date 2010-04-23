@@ -1754,7 +1754,7 @@ TaskId: %1</source>
         <location filename="../GeneratedFiles/ui_nullget.h" line="1078"/>
         <location filename="../GeneratedFiles/ui_nullget.h" line="1246"/>
         <source>&amp;File</source>
-        <translation type="unfinished">文件文件</translation>
+        <translation type="unfinished">文件</translation>
     </message>
     <message>
         <location filename="../nullget.cpp" line="1439"/>

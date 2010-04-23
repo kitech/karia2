@@ -157,23 +157,32 @@ void NullGet::firstShowHandler()
 	this->mStorage = new SqliteStorage(this);
 	this->mStorage->open();
 
+    //
+	this->mCatView = this->mainUI.mui_tv_category;
+	this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
+	//this->mCatViewModel = CategoryModel::instance(0);
+	this->mCatViewModel = SqliteCategoryModel::instance(0);
+	//this->mCatViewModel =  TreeModel::instance(0);
+	//QAbstractItemModel *catModel = this->mConfigDatabase->createCatModel();
+	this->mCatView->setModel(this->mCatViewModel);
+
+	this->mCatView->expandAll();
+
+    this->update();
+
+    ////
 	this->mTaskListView = this->mainUI.mui_tv_task_list;
     this->mTaskItemDelegate = new TaskItemDelegate();
     this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
-	this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
+	// this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
 
-	//this->mTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
-	//this->mDoneTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
-	//this->mDeletedTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
-	//this->mEmptyTaskListViewModel = new QStandardItemModel(0,this->mTaskViewTitle.size(),this);
-
-	this->mTaskListView->setModel(this->mTaskTreeViewModel);
+	// this->mTaskListView->setModel(this->mTaskTreeViewModel);
 	this->mTaskListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	this->mTaskListView->setAlternatingRowColors(true);
-	QObject::connect(this->mTaskListView->selectionModel(),
-                     SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
-                     this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
+	// QObject::connect(this->mTaskListView->selectionModel(),
+    //                  SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+    //                  this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	this->mSegListView = this->mainUI.mui_tv_seg_list;
 	this->mSegListView->setSelectionMode(QAbstractItemView::SingleSelection );
@@ -188,17 +197,8 @@ void NullGet::firstShowHandler()
 
 	this->update();
 
-	this->mCatView = this->mainUI.mui_tv_category;
-	this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
-	//this->mCatViewModel = CategoryModel::instance(0);
-	this->mCatViewModel = SqliteCategoryModel::instance(0);
-	//this->mCatViewModel =  TreeModel::instance(0);
-	//QAbstractItemModel *catModel = this->mConfigDatabase->createCatModel();
-	this->mCatView->setModel(this->mCatViewModel);
-
-	this->mCatView->expandAll();
-	//for (int i = 1; i < 9; i ++)
-	//	this->mCatView->setColumnHidden(i,true);	//隐藏不需要显示的列即可。
+    // select the downloading cat Automaticly
+    
 
     this->mSeedFileDelegate = new SeedFileItemDelegate();
     this->mSeedFileView = this->mainUI.treeView_2;
@@ -218,7 +218,32 @@ void NullGet::firstShowHandler()
 
 	//
 	this->connectAllSignalAndSlog();
-	this->onUpdateJobMenuEnableProperty();
+
+    // select the default cat model
+    {
+        // cacl the downloading model index
+        QItemSelection readySelect, readDeselect;
+        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
+        qDebug()<<topCatIdx.data();
+        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
+        qDebug()<<l2RowCount;
+        for (int r = 0 ; r < l2RowCount ; r ++) {
+            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
+            qDebug()<<currCatIdx;
+            if (currCatIdx.data().toInt() == ng::cats::downloading) {
+                // for (int c = 0; c <= ng::cats::dirty; c ++) {
+                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
+                //     readySelect.select(readyIndex, readyIndex);
+                // }
+                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx), 
+                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
+                break;
+            }
+        }
+        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
+    }
+
+    // this->onUpdateJobMenuEnableProperty();
 	
 	//this->showMaximized();
 
@@ -819,6 +844,27 @@ int NullGet::createTask(TaskOption *option)
 
 	//qDebug()<<this->mTaskQueue << __FUNCTION__ << "in " <<__FILE__;
 	if (taskId >= 0) {
+        // cacl the downloading model index
+        QItemSelection readySelect, readDeselect;
+        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
+        qDebug()<<topCatIdx.data();
+        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
+        qDebug()<<l2RowCount;
+        for (int r = 0 ; r < l2RowCount ; r ++) {
+            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
+            qDebug()<<currCatIdx;
+            if (currCatIdx.data().toInt() == ng::cats::downloading) {
+                // for (int c = 0; c <= ng::cats::dirty; c ++) {
+                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
+                //     readySelect.select(readyIndex, readyIndex);
+                // }
+                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx), 
+                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
+                break;
+            }
+        }
+        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::ClearAndSelect);
+        
 		////将任务信息添加到 task list view 中
 		//QModelIndex index;
 		//QAbstractItemModel * mdl = 0;	//SqliteTaskModel::instance(ng::cats::downloading,this);
@@ -1032,30 +1078,39 @@ void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItem
 	if (selected.size() == 1) {
 		QModelIndex currentIndex;
 		currentIndex = selected.at(0).indexes().at(0);
-		qDebug()<< currentIndex;
+		qDebug()<<currentIndex;
 		QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id);
 		int catID = catIDIndex.model()->data(catIDIndex ).toInt();
 
-		qDebug()<< "i cat id is "<< catIDIndex.model()->data(catIDIndex ) .toString();
+		qDebug()<<"My cat id is: "<<catIDIndex.model()->data(catIDIndex).toString();
 
-		this->mTaskListView->setModel(0 );
+		this->mTaskListView->setModel(0);
 
-		if (catIDIndex.model()->data(catIDIndex ) .toString() == "0" )
-		{
+		if (catIDIndex.model()->data(catIDIndex).toString() == "0") {
 			//this->mCatView->clearSelection();//不让选择树根也不合适啊。
-			QAbstractItemModel * mdl = SqliteTaskModel::instance(catID,this);
-			this->mTaskListView->setModel(mdl );
-		}
-		else
-		{
-			QAbstractItemModel * mdl = SqliteTaskModel::instance(catID,this);
-			
-			this->mTaskListView->setModel(mdl );
+			QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
+			this->mTaskListView->setModel(mdl);
+		} else {
+			QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
+			this->mTaskListView->setModel(mdl);
 		}
 
-		QObject::connect(this->mTaskListView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
-			this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
-
+		QObject::connect(this->mTaskListView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+			this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
+        
+        // clean up
+        qDebug()<<deselected;
+        qDebug()<<deselected.count();
+        // qDebug<<deselected.at(0); //.indexes();
+        if (deselected.count() > 0) {
+            QModelIndex deCatIdIndex = deselected.at(0).indexes().at(ng::cats::cat_id);
+            if (deCatIdIndex.data().toInt() == ng::cats::downloading
+                || deCatIdIndex.data().toInt() == ng::cats::deleted) {
+            } else {
+                int deCatId = deCatIdIndex.model()->data(deCatIdIndex).toInt();
+                SqliteTaskModel::removeInstance(deCatId);
+            }
+        }
 	}
 }
 
@@ -1063,7 +1118,6 @@ void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItem
 void NullGet::onStartTask() 
 {
 	qDebug()<<__FUNCTION__<<__LINE__;	
-	// QAbstractItemModel *model = SqliteTaskModel::instance(ng::cats::downloading, this);
 	QAbstractItemView *view = this->mTaskListView;
     QAbstractItemModel *model = view->model();
 	int step = model->columnCount();
@@ -1203,8 +1257,8 @@ void NullGet::onPauseTask()
 {
 	qDebug()<<__FUNCTION__;
 	
-	QAbstractItemModel *model = SqliteTaskModel::instance(ng::cats::downloading, this);
 	QAbstractItemView *view = this->mTaskListView;
+	QAbstractItemModel *model = view->model(); // SqliteTaskModel::instance(ng::cats::downloading, this);
 	int step = model->columnCount();
 	int taskId = -1;
     QString ariaGid;
@@ -1403,7 +1457,7 @@ void NullGet::onDeleteTask()
         // qDebug()<<"prepare delete ROW:"<<mrow<<" All ROW:"<<rowcnt;
 		int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
-        int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::cat_id)).toInt();
+        int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::user_cat_id)).toInt();
 
         // qDebug()<<"DDDD:"<<taskId<<ariaGid<<srcCatId;
         deleteModelRows<<mrow;
@@ -1433,7 +1487,7 @@ void NullGet::onDeleteTask()
         int mrow = deleteModelRows.at(i);
         int taskId = from_model->data(from_model->index(mrow, ng::tasks::task_id)).toInt();
         QString ariaGid = from_model->data(from_model->index(mrow, ng::tasks::aria_gid)).toString();
-        int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::cat_id)).toInt();
+        int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::user_cat_id)).toInt();
         qDebug()<<"DDDD:"<<mrow<<taskId<<ariaGid<<srcCatId;
         QModelIndexList rmil;
         for (int col = 0; col < colcnt; col ++) {
@@ -1622,10 +1676,68 @@ void NullGet::onDeleteSegment(int pTaskId,int pSegId)
 
 }
 
+QModelIndex findCatModelIndexByCatId(QAbstractItemModel *mdl, QModelIndex parent, int catId)
+{
+    QModelIndex idx;
+    
+    if (parent.isValid()) {
+        QModelIndex catIdx = mdl->index(parent.row(), ng::cats::cat_id, parent.parent());
+        if (catIdx.data().toInt() == catId) {
+            return parent;
+        } else {
+            int childRowCount = mdl->rowCount(parent);
+            QModelIndex childIdx;
+            for (int i = 0 ; i < childRowCount; i ++) {
+                childIdx = mdl->index(i, 0, parent);
+                idx = findCatModelIndexByCatId(mdl, childIdx, catId);
+                if (idx.isValid()) {
+                    return idx;
+                }
+            }
+        }
+    } else {
+        QModelIndex topCatIdx = mdl->index(0, 0);
+        return findCatModelIndexByCatId(mdl, topCatIdx, catId);
+    }
+    return idx;
+}
+
 void NullGet::onTaskDone(int pTaskId)
 {
 	qDebug()<<__FUNCTION__;
 
+	SqliteTaskModel *mdl = SqliteTaskModel::instance(ng::cats::downloading);
+
+	//QDateTime bTime , eTime ; 
+	//bTime = QDateTime::currentDateTime();
+    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole,
+                                     QVariant(QString("%1").arg(pTaskId)), 1, Qt::MatchExactly | Qt::MatchWrap);
+
+    QModelIndex idx;
+    int destCatId = 0;
+    if (mil.count() == 1) {
+        idx = mil.at(0);
+
+        QModelIndexList moveModels;
+        for (int i = 0 ; i < mdl->columnCount(); ++i) {
+            moveModels << mdl->index(idx.row(), i);
+        }
+
+        destCatId = mdl->data(mdl->index(idx.row(), ng::tasks::user_cat_id)).toInt();
+        mdl->moveTasks(ng::cats::downloading, destCatId, moveModels);
+
+        // cacl the downloading model index
+        QItemSelection readySelect, readDeselect;
+        QModelIndex readyIdx = findCatModelIndexByCatId(this->mCatViewModel, QModelIndex(), destCatId);
+        qDebug()<<"find cat recursive:"<<destCatId<<readyIdx;
+        readySelect.select(this->mCatViewModel->index(readyIdx.row(), 0, readyIdx.parent()), 
+                           this->mCatViewModel->index(readyIdx.row(), ng::cats::dirty, readyIdx.parent()));
+        
+        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::ClearAndSelect);
+    }
+    
+    return;
+    /////////// 
     TaskQueue *tq = this->mTaskMan;
 	QAbstractItemModel * from_model = 0 , * to_model = 0;
 	QModelIndex index; 
@@ -1680,7 +1792,7 @@ void NullGet::onTaskDone(int pTaskId)
 			from_model->removeRows(row,1);
 			from_model->submit();
 
-			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::downloaded );
+			to_model->setData(to_model->index(torows,ng::tasks::user_cat_id),(int)ng::cats::downloaded );
 			to_model->submit();
 
 			// tq->mTaskStatus = TaskQueue::TS_COMPLETE;
@@ -2112,6 +2224,8 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
             this->mTorrentMap.remove(taskId);
         }
         this->mRunningMap.remove(taskId);
+
+        this->onTaskDone(taskId);
     }
 
     if (sts["status"].toString() == "error") {
@@ -2928,7 +3042,7 @@ void NullGet::onShowTaskPropertyDigest( )
 		//{
 		//	path = ".";
 		//}
-		tidx = nidx.model()->index(row,ng::tasks::cat_id);
+		tidx = nidx.model()->index(row,ng::tasks::user_cat_id);
 		path = SqliteStorage::instance(this)->getSavePathByCatId(tidx.data().toInt());
 
 		tidx = nidx.model()->index(row, ng::tasks::real_url);
@@ -3709,7 +3823,7 @@ void NullGet::onOpenDistDirector()
 	if (mil.size() > 0) {
 		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
         // taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
-		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
+		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 
 		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
         if (dir.startsWith("~")) {
@@ -3746,7 +3860,7 @@ void NullGet::onOpenExecDownloadedFile()
 	if (mil.size() > 0) {
 		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
         //this->mTaskListViewModel->data(mil.at(0)).toInt();	
-		catId = mil.at(ng::tasks::cat_id).data().toString().toInt();
+		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 		fname = mil.at(ng::tasks::file_name).data().toString();
 
 		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);

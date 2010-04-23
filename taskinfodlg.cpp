@@ -138,7 +138,7 @@ TaskOption *TaskOption::fromModelRow(QAbstractItemModel *model, int row)
     option->mTaskUrl = model->data(model->index(row, ng::tasks::org_url)).toString();
     option->mReferrer = model->data(model->index(row, ng::tasks::org_url)).toString();
     // option->mCategory = 
-    option->mCatId = model->data(model->index(row, ng::tasks::cat_id)).toInt();
+    option->mCatId = model->data(model->index(row, ng::tasks::user_cat_id)).toInt();
     option->mSaveName = model->data(model->index(row, ng::tasks::file_name)).toString();
     option->mSavePath = model->data(model->index(row, ng::tasks::save_path)).toString();
     option->mSplitCount = model->data(model->index(row, ng::tasks::split_count)).toInt();

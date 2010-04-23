@@ -10,7 +10,7 @@
 #include "sqlitetaskmodel.h"
 
 //static
-QMap<int , SqliteTaskModel*> SqliteTaskModel::mHandle;
+QHash<int, SqliteTaskModel*> SqliteTaskModel::mHandle;
 
 //static 
 SqliteTaskModel *SqliteTaskModel::instance(int cat_id, QObject *parent)
@@ -32,7 +32,10 @@ SqliteTaskModel *SqliteTaskModel::instance(int cat_id, QObject *parent)
 bool SqliteTaskModel::removeInstance(int cat_id)
 {
 	if (SqliteTaskModel::mHandle.contains(cat_id)) {
+        SqliteTaskModel *model = SqliteTaskModel::mHandle.value(cat_id);
 		SqliteTaskModel::mHandle.remove(cat_id);
+        model->submit();
+        delete model;
 		return true;
 	} else {
 		return false;
@@ -353,9 +356,9 @@ bool SqliteTaskModel::submit ()
 			QString  block_activity = rec.value("block_activity").toString();
 			QString  total_block_count = rec.value("total_block_count").toString();
 			QString  active_block_count = rec.value("active_block_count").toString();
-			QString  cat_id = rec.value("cat_id").toString();
+			QString  user_cat_id = rec.value("user_cat_id").toString();
 			QString  comment = rec.value("comment").toString();
-			QString  place_holder = rec.value("place_holder").toString();
+			QString  sys_cat_id = rec.value("sys_cat_id").toString();
             QString  save_path = rec.value("save_path").toString();
 			QString  file_name = rec.value("file_name").toString();
 			QString  abtained_percent = rec.value("abtained_percent").toString();
@@ -378,7 +381,7 @@ bool SqliteTaskModel::submit ()
 				//update 
 				this->mStorage->updateTask(taskID, file_size, retry_times, create_time, current_speed, average_speed,
                                            eclapsed_time, abtained_length, left_length, split_count, block_activity,
-                                           total_block_count, active_block_count, cat_id, comment, place_holder,
+                                           total_block_count, active_block_count, user_cat_id, comment, sys_cat_id,
                                            save_path, file_name, abtained_percent, org_url, real_url, redirect_times,
                                            finish_time,
                                            task_status, total_packet, abtained_packet, left_packet, total_timestamp,
@@ -387,8 +390,8 @@ bool SqliteTaskModel::submit ()
 				//insert
 				this->mStorage->addTask(taskID, file_size, retry_times, create_time, current_speed,
                                         average_speed, eclapsed_time, abtained_length, left_length, 
-                                        split_count, block_activity, total_block_count, active_block_count, cat_id,
-                                        comment, place_holder, save_path, file_name, abtained_percent, org_url, real_url,
+                                        split_count, block_activity, total_block_count, active_block_count, user_cat_id,
+                                        comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url,
                                         redirect_times, finish_time, task_status, total_packet, abtained_packet,
                                         left_packet, total_timestamp, abtained_time_stamp, left_timestamp,
                                         file_length_abtained, dirty);
@@ -441,7 +444,7 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
         destModel->insertRows(0, 1);
         for (int col = 0 ; col < columnCount; col ++) {
             QMap<int, QVariant> itemData = rowItemData.at(col);
-            if (col == ng::tasks::cat_id) {
+            if (col == ng::tasks::sys_cat_id) {
                 itemData[Qt::DisplayRole] = QString("%1").arg(destCatId);
             }
             if (col == ng::tasks::dirty) {

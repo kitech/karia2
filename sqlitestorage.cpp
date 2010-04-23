@@ -61,18 +61,21 @@ SqliteStorage::SqliteStorage(QObject *parent)
 	segInsSql = "INSERT INTO segments (seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty) "
 		" VALUES ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18')";
 	//19
-	taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, cat_id, comment, place_holder, save_path, file_name, abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
+	taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
 		"values ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', '%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '%32', '%33')";
 
     // Marks the string literal sourceText for dynamic translation in the current context (class),
-	tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, cat_id,comment, place_holder, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
-	catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
-	segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
+	// tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
+	// catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
+	// segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
 
-	this->tasksModelColumnsOrder = tasksModelColumnsOrderShow ;
-	this->catsModelColumnsOrder = catsModelColumnsOrderShow;
-	this->segsModelColumnsOrder = segsModelColumnsOrderShow; 
+	// this->tasksModelColumnsOrder = tasksModelColumnsOrderShow ;
+	// this->catsModelColumnsOrder = catsModelColumnsOrderShow;
+	// this->segsModelColumnsOrder = segsModelColumnsOrderShow; 
 
+    this->tasksModelColumnsOrder = this->mTaskColumnStr;
+    this->catsModelColumnsOrder = this->mCatColumnStr;
+    this->segsModelColumnsOrder = this->mSegColumnStr;
 }
 
 SqliteStorage::~SqliteStorage()
@@ -435,9 +438,9 @@ bool SqliteStorage::addTask( int task_id ,
 			QString block_activity         ,
 			QString total_block_count    ,
 			QString active_block_count   ,
-			QString cat_id               ,
+			QString user_cat_id               ,
 			QString comment              ,
-			QString place_holder         ,
+			QString sys_cat_id         ,
                              QString save_path,
 			QString file_name            ,
 			QString abtained_percent          ,
@@ -456,29 +459,29 @@ bool SqliteStorage::addTask( int task_id ,
 			QString dirty                									
 							)
 {
-	QString sql = this->taskInsSql.arg(task_id).arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(split_count).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(cat_id).arg(comment).arg(place_holder).arg(save_path).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg(dirty).arg("0") ;
+	QString sql = this->taskInsSql.arg(task_id).arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(split_count).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id).arg(comment).arg(sys_cat_id).arg(save_path).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg(dirty).arg("0") ;
     this->mTasksDB.transaction();
 	QSqlQuery q (this->mTasksDB);
 	q.exec(sql );
     this->mTasksDB.commit();
 
-	//qDebug()<< q.lastError()<<": " << sql ;
+	qDebug()<<__FUNCTION__<<q.lastError()<<": " << sql ;
 	return true ;
 }
 bool SqliteStorage::updateTask(int task_id,
-                               QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString cat_id, QString comment, QString place_holder, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
+                               QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
 							   )
 {
-	QString sql = "UPDATE tasks SET file_size='%1',retry_times='%2',create_time='%3',current_speed='%4',average_speed='%5',eclapsed_time='%6',abtained_length='%7',left_length='%8', block_activity='%9',total_block_count='%10',active_block_count='%11',cat_id='%12',comment='%13',place_holder='%14',file_name='%15',abtained_percent='%16',org_url='%17',real_url='%18',redirect_times='%19',finish_time='%20',task_status='%21',total_packet='%22',abtained_packet='%23',left_packet='%24',total_timestamp='%25',abtained_timestamp='%26',left_timestamp='%27',file_length_abtained='%28',dirty='%29', aria_gid='%30' WHERE task_id='%31' ";
+	QString sql = "UPDATE tasks SET file_size='%1',retry_times='%2',create_time='%3',current_speed='%4',average_speed='%5',eclapsed_time='%6',abtained_length='%7',left_length='%8', block_activity='%9',total_block_count='%10',active_block_count='%11',user_cat_id='%12',comment='%13', sys_cat_id='%14',file_name='%15',abtained_percent='%16',org_url='%17',real_url='%18',redirect_times='%19',finish_time='%20',task_status='%21',total_packet='%22',abtained_packet='%23',left_packet='%24',total_timestamp='%25',abtained_timestamp='%26',left_timestamp='%27',file_length_abtained='%28',dirty='%29', aria_gid='%30' WHERE task_id='%31' ";
 
-	sql = sql.arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(cat_id).arg(comment).arg(place_holder).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg("false").arg(aria_gid).arg(task_id) ;
+	sql = sql.arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id).arg(comment).arg(sys_cat_id).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg("false").arg(aria_gid).arg(task_id) ;
 
     this->mTasksDB.transaction();
 	QSqlQuery q(this->mTasksDB);
 	q.exec(sql );
     this->mTasksDB.commit();
 
-	//qDebug()<< q.lastError()<<": " << sql ;
+	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql ;
 	return true ;
 
 }
@@ -615,7 +618,7 @@ QVector<QSqlRecord> SqliteStorage::getTaskSet( int cat_id )
 	//
 	//视图中显示的顺序与这里的顺序有直接的关系，可以说是一样的
 	//还有排序的问题。
-	QString sql = QString("SELECT " + QString(this->tasksModelColumnsOrderShow) +" FROM tasks WHERE cat_id='%1' ORDER BY task_id DESC").arg(cat_id);
+	QString sql = QString("SELECT " + QString(this->tasksModelColumnsOrder) +" FROM tasks WHERE sys_cat_id='%1' OR sys_cat_id IN (SELECT cat_id FROM categorys WHERE parent_cat_id='%1') ORDER BY task_id DESC").arg(cat_id);
 	
 	q.exec(sql );
 
@@ -677,7 +680,7 @@ QVector<QString> SqliteStorage::getCatsColumns()
 {
 	QVector<QString>  result ;
 	QStringList ll;
-	ll = QString(tr(this->catsModelColumnsOrderShow)).split(',');
+	ll = QString(tr(this->mCatColumnStr)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
@@ -693,7 +696,7 @@ QVector<QString> SqliteStorage::getTasksColumns()
 
     QStringList ll;
 
-	ll = QString(tr(this->tasksModelColumnsOrderShow)).split(',');
+	ll = QString(tr(this->mTaskColumnStr)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
@@ -708,7 +711,7 @@ QVector<QString> SqliteStorage::getSegmentsColumns()
 	QVector<QString>  result ;
 
 	QStringList ll ;
-	ll = QString(tr(this->segsModelColumnsOrderShow)).split(',');
+	ll = QString(tr(this->mSegColumnStr)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
@@ -723,7 +726,7 @@ QVector<QString> SqliteStorage::getInternalCatsColumns()
 {
 	QVector<QString>  result ;
 	QStringList ll;
-	ll = QString((this->catsModelColumnsOrderShow)).split(',');
+	ll = QString((this->mCatColumnStr)).split(',');
 	result.clear();
 	for( int i = 0 ; i < ll.count() ; i ++ )
 	{		
@@ -740,7 +743,7 @@ QVector<QString> SqliteStorage::getInternalTasksColumns()
 
 	QStringList ll  ;
 
-	ll = QString((this->tasksModelColumnsOrderShow)).split(',');
+	ll = QString((this->tasksModelColumnsOrder)).split(',');
 	result.clear();
 	for( int i = 0 ; i < ll.count() ; i ++ )
 	{		
@@ -756,7 +759,7 @@ QVector<QString> SqliteStorage::getInternalSegmentsColumns()
 	QVector<QString>  result ;
 
 	QStringList ll ;
-	ll = QString((this->segsModelColumnsOrderShow)).split(',');
+	ll = QString((this->segsModelColumnsOrder)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed() );
@@ -846,7 +849,7 @@ int SqliteStorage::getSubCatCountById(int cat_id)
 int SqliteStorage::getTotalFileCountById(int cat_id)
 {
 	int result = 0 ;
-	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE cat_id = '%1'" )
+	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE sys_cat_id = '%1'" )
 		.arg(cat_id)  ;
 	
 	QSqlQuery q ( this->mTasksDB );
@@ -865,7 +868,7 @@ int SqliteStorage::getTotalFileCountById(int cat_id)
 int SqliteStorage::getDownloadedFileCountById( int cat_id )
 {
 	int result = 0 ;
-	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE cat_id = '%1'"  )
+	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE sys_cat_id = '%1'"  )
 		.arg(cat_id)  ;
 	
 	QSqlQuery q ( this->mTasksDB );
@@ -884,7 +887,7 @@ int SqliteStorage::getDownloadedFileCountById( int cat_id )
 long SqliteStorage::getTotalDownloadedLength( int cat_id)
 {
 	long result = 0 ;
-	QString sql = QString("SELECT file_size FROM tasks WHERE cat_id = '%1'").arg(cat_id);
+	QString sql = QString("SELECT file_size FROM tasks WHERE sys_cat_id = '%1'").arg(cat_id);
 	
 	QSqlQuery q(this->mTasksDB);
 	q.exec(sql);

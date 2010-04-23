@@ -26,7 +26,7 @@ public:
 	static bool removeInstance(int cat_id);
 
 	//static SqliteTaskModel * mHandle ;
-	static QMap<int , SqliteTaskModel*> mHandle ;
+	static QHash<int , SqliteTaskModel*> mHandle ;
 
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
