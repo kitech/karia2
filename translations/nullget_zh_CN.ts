@@ -88,6 +88,17 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>AbstractStorage</name>
+    <message>
+        <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
+        <translation type="obsolete">分类名, 路径, 分类ID, 父分类ID, 是否可有子分类, 内部名, 是否折叠, 删除标记, 创建日期, 修改标记</translation>
+    </message>
+    <message>
+        <source>display_name ,path         ,cat_id       ,parent_cat_id,can_child    ,raw_name     ,folder       ,delete_flag  ,create_time  ,dirty         </source>
+        <translation type="obsolete">分类名, 路径, 分类ID, 父分类ID, 是否可有子分类, 内部名, 是否折叠, 删除标记, 创建日期, 修改标记</translation>
+    </message>
+</context>
+<context>
     <name>BatchJobManDlgClass</name>
     <message>
         <location filename="../batchjobmandlg.ui" line="16"/>
@@ -169,58 +180,58 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CatManDlgClass</name>
     <message>
-        <location filename="../catmandlg.ui" line="13"/>
+        <location filename="../catmandlg.ui" line="14"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="138"/>
         <source>CatManDlg</source>
         <translation>类别编辑框</translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="33"/>
+        <location filename="../catmandlg.ui" line="34"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="139"/>
         <source>Category Name:</source>
         <translation>类别名称：</translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="40"/>
+        <location filename="../catmandlg.ui" line="41"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="140"/>
         <source>newcat</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="47"/>
+        <location filename="../catmandlg.ui" line="48"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="141"/>
         <source>Default Directory:</source>
         <translation>默认保存目录：</translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="69"/>
+        <location filename="../catmandlg.ui" line="63"/>
+        <location filename="../GeneratedFiles/ui_catmandlg.h" line="142"/>
+        <source>C:/NGDownloads/ OR ~/.nullget/NGDownload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../catmandlg.ui" line="70"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="143"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="78"/>
+        <location filename="../catmandlg.ui" line="79"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="144"/>
         <source>Select the category in which the new category</source>
         <translation>请选择新类别所在的类别：</translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="102"/>
+        <location filename="../catmandlg.ui" line="103"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="145"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../catmandlg.ui" line="109"/>
+        <location filename="../catmandlg.ui" line="110"/>
         <location filename="../GeneratedFiles/ui_catmandlg.h" line="146"/>
         <source>Cancel</source>
         <translation>取消</translation>
-    </message>
-    <message>
-        <location filename="../catmandlg.ui" line="62"/>
-        <location filename="../GeneratedFiles/ui_catmandlg.h" line="142"/>
-        <source>C:\NGDownloads\ OR ~/.nullget/NGDownload</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -472,7 +483,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NullGet</name>
     <message>
-        <location filename="../nullget.cpp" line="543"/>
+        <location filename="../nullget.cpp" line="571"/>
         <source>NullGet Icon Tray Control</source>
         <translation>NullGet 控制图标</translation>
     </message>
@@ -1691,7 +1702,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">确认删除未完成的任务吗?</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1646"/>
+        <location filename="../nullget.cpp" line="1765"/>
         <source>Task Done.</source>
         <translation>任务完成。</translation>
     </message>
@@ -1702,12 +1713,12 @@ TaskId: %1</source>
 任务ID：%1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1789"/>
+        <location filename="../nullget.cpp" line="1905"/>
         <source>Delete Category:</source>
         <translation>删除类别：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1789"/>
+        <location filename="../nullget.cpp" line="1905"/>
         <source>Delete the Category and All sub Category?</source>
         <translation>确认要删除该类另及其所有子类别吗？</translation>
     </message>
@@ -1716,35 +1727,35 @@ TaskId: %1</source>
         <translation type="obsolete">音乐搜索</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2158"/>
+        <location filename="../nullget.cpp" line="2276"/>
         <source>pause</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2766"/>
-        <location filename="../nullget.cpp" line="2807"/>
+        <location filename="../nullget.cpp" line="2884"/>
+        <location filename="../nullget.cpp" line="2925"/>
         <source>Process Weg Page :</source>
         <translation>处理网页文件：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2766"/>
+        <location filename="../nullget.cpp" line="2884"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
         <translation>在所给的网页文件中没有发现URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2807"/>
+        <location filename="../nullget.cpp" line="2925"/>
         <source>No URL(s) Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3699"/>
-        <location filename="../nullget.cpp" line="3743"/>
+        <location filename="../nullget.cpp" line="3837"/>
+        <location filename="../nullget.cpp" line="3881"/>
         <source>No Task Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3699"/>
-        <location filename="../nullget.cpp" line="3743"/>
+        <location filename="../nullget.cpp" line="3837"/>
+        <location filename="../nullget.cpp" line="3881"/>
         <source>Please Select a Task For Operation</source>
         <translation>请选择一个要执行的任务。</translation>
     </message>
@@ -1757,7 +1768,7 @@ TaskId: %1</source>
         <translation type="unfinished">文件</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1439"/>
+        <location filename="../nullget.cpp" line="1500"/>
         <source>Delete Task .</source>
         <translation>删除任务</translation>
     </message>
@@ -1766,83 +1777,83 @@ TaskId: %1</source>
         <translation type="obsolete">移动到删除列表。任务ID： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1015"/>
-        <location filename="../nullget.cpp" line="1017"/>
+        <location filename="../nullget.cpp" line="1066"/>
+        <location filename="../nullget.cpp" line="1068"/>
         <source>Location: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1439"/>
+        <location filename="../nullget.cpp" line="1500"/>
         <source>Delete permanently. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1444"/>
+        <location filename="../nullget.cpp" line="1505"/>
         <source>Move Task .</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1444"/>
+        <location filename="../nullget.cpp" line="1505"/>
         <source>Move To Trash Now. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1646"/>
+        <location filename="../nullget.cpp" line="1765"/>
         <source>Move It To Done Table Now. TaskId: %1</source>
         <translation>移动到完成列表。任务ID： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2532"/>
+        <location filename="../nullget.cpp" line="2650"/>
         <source>Open a .torrent file...</source>
         <translation type="unfinished">打开 .torrent 文件...</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2533"/>
+        <location filename="../nullget.cpp" line="2651"/>
         <source>Torrent File (*.torrent)</source>
         <translation type="unfinished">Torrent 文件(*.torrent)</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2599"/>
+        <location filename="../nullget.cpp" line="2717"/>
         <source>Open a .metalink file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2600"/>
+        <location filename="../nullget.cpp" line="2718"/>
         <source>Metalink File (*.metalink)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2902"/>
+        <location filename="../nullget.cpp" line="3020"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: %4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;文件大小： %3&lt;br&gt;文件类型： %4&lt;br&gt;完成比例：: %5&lt;br&gt;-------------------------------&lt;br&gt;保存位置： %6&lt;br&gt;超链接： %7&lt;br&gt;引用页： %8&lt;br&gt;注释： %9&lt;br&gt;-------------------------------&lt;br&gt;创建时间： %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3733"/>
+        <location filename="../nullget.cpp" line="3871"/>
         <source>Notice:</source>
         <translation>注意!</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3734"/>
+        <location filename="../nullget.cpp" line="3872"/>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found,has it downloaded already?</source>
         <translation type="unfinished">没有找到文件 &lt;b&gt;%1&lt;/b&gt; ，是否已经下载了？</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3789"/>
+        <location filename="../nullget.cpp" line="3927"/>
         <source>Allocating File Space: %1</source>
         <translation>正在分配文件空间： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3798"/>
+        <location filename="../nullget.cpp" line="3936"/>
         <source>Waiting ...</source>
         <translation>请稍后...</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4052"/>
+        <location filename="../nullget.cpp" line="4190"/>
         <source>Aria2 backend error :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4053"/>
+        <location filename="../nullget.cpp" line="4191"/>
         <source>Can not start aria2. Are you already installed it properly?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3016,589 +3027,589 @@ TaskId: %1</source>
     <name>PreferencesDialog</name>
     <message>
         <location filename="../preferencesdialog.ui" line="17"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1423"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1418"/>
         <source>Preferences Dialgo</source>
         <translation type="unfinished">系统选项</translation>
     </message>
     <message utf8="true">
-        <location filename="../preferencesdialog.ui" line="94"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1428"/>
+        <location filename="../preferencesdialog.ui" line="89"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1423"/>
         <source>General常用</source>
         <translation type="unfinished">常用设置</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="103"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1430"/>
+        <location filename="../preferencesdialog.ui" line="98"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1425"/>
         <source>Default Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="112"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1432"/>
+        <location filename="../preferencesdialog.ui" line="107"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1427"/>
         <source>Connection</source>
         <translation type="unfinished">网络连接</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="121"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1434"/>
+        <location filename="../preferencesdialog.ui" line="116"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1429"/>
         <source>Monitor</source>
         <translation type="unfinished">监视器</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="130"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1436"/>
+        <location filename="../preferencesdialog.ui" line="125"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1431"/>
         <source>Graph/Log</source>
         <translation type="unfinished">图形/日志</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="139"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1438"/>
+        <location filename="../preferencesdialog.ui" line="134"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1433"/>
         <source>Proxy</source>
         <translation type="unfinished">代理服务器</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="144"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1440"/>
+        <location filename="../preferencesdialog.ui" line="139"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1435"/>
         <source>Virtus</source>
         <translation type="unfinished">安全设置</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="153"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1442"/>
+        <location filename="../preferencesdialog.ui" line="148"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1437"/>
         <source>Advanced</source>
         <translation type="unfinished">高级</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="197"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1446"/>
+        <location filename="../preferencesdialog.ui" line="192"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1441"/>
         <source>General</source>
         <translation type="unfinished">常规</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="219"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1447"/>
+        <location filename="../preferencesdialog.ui" line="214"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1442"/>
         <source>Start main window minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="234"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1448"/>
+        <location filename="../preferencesdialog.ui" line="229"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1443"/>
         <source>Min segment size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="251"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1449"/>
+        <location filename="../preferencesdialog.ui" line="246"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1444"/>
         <source>  KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="268"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1450"/>
+        <location filename="../preferencesdialog.ui" line="263"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1445"/>
         <source>If error occurs stop download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="290"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1451"/>
+        <location filename="../preferencesdialog.ui" line="285"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1446"/>
         <source>Still download from non-resumable sites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="308"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1452"/>
+        <location filename="../preferencesdialog.ui" line="303"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1447"/>
         <source>Auto save listed file every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="318"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1453"/>
+        <location filename="../preferencesdialog.ui" line="313"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1448"/>
         <source>Write data to disk ervery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="328"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1454"/>
+        <location filename="../preferencesdialog.ui" line="323"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1449"/>
         <source>200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="335"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1455"/>
+        <location filename="../preferencesdialog.ui" line="330"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1450"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="342"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1456"/>
+        <location filename="../preferencesdialog.ui" line="337"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1451"/>
         <source>Minutes</source>
         <translation type="unfinished">分钟</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="349"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1457"/>
+        <location filename="../preferencesdialog.ui" line="344"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1452"/>
         <source> KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="358"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1458"/>
+        <location filename="../preferencesdialog.ui" line="353"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1453"/>
         <source>Get File Date and Time From Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="368"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1459"/>
+        <location filename="../preferencesdialog.ui" line="363"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1454"/>
         <source>Start downloading on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="375"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1460"/>
+        <location filename="../preferencesdialog.ui" line="370"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1455"/>
         <source>Use &quot;aria2&quot; as file extension till download is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="385"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1461"/>
+        <location filename="../preferencesdialog.ui" line="380"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1456"/>
         <source>Auto backup download database erery day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="395"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1462"/>
+        <location filename="../preferencesdialog.ui" line="390"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1457"/>
         <source>Write individual *.log file for each download file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="402"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1463"/>
+        <location filename="../preferencesdialog.ui" line="397"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1458"/>
         <source>Move or Delete Log file when moving or deleting downloaded file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="409"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1464"/>
+        <location filename="../preferencesdialog.ui" line="404"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1459"/>
         <source>Play notify audio when done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="450"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1465"/>
+        <location filename="../preferencesdialog.ui" line="445"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1460"/>
         <source>Referenc:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="462"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1466"/>
+        <location filename="../preferencesdialog.ui" line="457"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1461"/>
         <source>Show Reference Page When Create New Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="472"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1467"/>
+        <location filename="../preferencesdialog.ui" line="467"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1462"/>
         <source>Start</source>
         <translation type="unfinished">开始</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="484"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1468"/>
+        <location filename="../preferencesdialog.ui" line="479"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1463"/>
         <source>Manual</source>
         <translation type="unfinished">手动(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="491"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1469"/>
+        <location filename="../preferencesdialog.ui" line="486"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1464"/>
         <source>Imidiate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="509"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1470"/>
+        <location filename="../preferencesdialog.ui" line="504"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1465"/>
         <source>(1-10)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="516"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1471"/>
+        <location filename="../preferencesdialog.ui" line="511"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1466"/>
         <source>Max Segment Count for Every Task:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="523"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1472"/>
+        <location filename="../preferencesdialog.ui" line="518"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1467"/>
         <source>(1-60)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="536"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1473"/>
+        <location filename="../preferencesdialog.ui" line="531"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1468"/>
         <source>Orginal Url Segment Count:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="545"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1474"/>
+        <location filename="../preferencesdialog.ui" line="540"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1469"/>
         <source>Open File When Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="575"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1475"/>
+        <location filename="../preferencesdialog.ui" line="570"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1470"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="587"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1476"/>
+        <location filename="../preferencesdialog.ui" line="582"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1471"/>
         <source>Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="620"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1477"/>
+        <location filename="../preferencesdialog.ui" line="615"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1472"/>
         <source>Data:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="653"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1478"/>
+        <location filename="../preferencesdialog.ui" line="648"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1473"/>
         <source>Retry Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="676"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1479"/>
+        <location filename="../preferencesdialog.ui" line="671"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1474"/>
         <source>Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="696"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1480"/>
+        <location filename="../preferencesdialog.ui" line="691"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1475"/>
         <source>Max Simultaneous jobs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="739"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1481"/>
+        <location filename="../preferencesdialog.ui" line="734"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1476"/>
         <source>Number of Retry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="759"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1482"/>
+        <location filename="../preferencesdialog.ui" line="754"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1477"/>
         <source>Always Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="787"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1483"/>
+        <location filename="../preferencesdialog.ui" line="782"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1478"/>
         <source>Connection Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="833"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1484"/>
+        <location filename="../preferencesdialog.ui" line="828"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1479"/>
         <source>KB/s (1-9999)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="840"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1485"/>
+        <location filename="../preferencesdialog.ui" line="835"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1480"/>
         <source>Limit Max Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="850"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1486"/>
+        <location filename="../preferencesdialog.ui" line="845"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1481"/>
         <source>Automatical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="891"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1487"/>
+        <location filename="../preferencesdialog.ui" line="886"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1482"/>
         <source>Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="903"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1488"/>
+        <location filename="../preferencesdialog.ui" line="898"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1483"/>
         <source>Monite Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="910"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1489"/>
+        <location filename="../preferencesdialog.ui" line="905"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1484"/>
         <source>Show Download Icon On Flash And Media File.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="923"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1490"/>
+        <location filename="../preferencesdialog.ui" line="918"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1485"/>
         <source>Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="935"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1491"/>
+        <location filename="../preferencesdialog.ui" line="930"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1486"/>
         <source>Monite Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="948"/>
-        <location filename="../preferencesdialog.ui" line="970"/>
-        <location filename="../preferencesdialog.ui" line="1018"/>
-        <location filename="../preferencesdialog.ui" line="1065"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1492"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1494"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1496"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1498"/>
+        <location filename="../preferencesdialog.ui" line="943"/>
+        <location filename="../preferencesdialog.ui" line="965"/>
+        <location filename="../preferencesdialog.ui" line="1013"/>
+        <location filename="../preferencesdialog.ui" line="1060"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1487"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1489"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1491"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1493"/>
         <source>GroupBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="960"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1493"/>
+        <location filename="../preferencesdialog.ui" line="955"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1488"/>
         <source>.asf;.avi;.exe;.iso;.mp3;.mpeg;.mpg;.mpga;.ra;.rar;.rm;.rmvb;.tar;.wma;.wmp;.wmv;.zip;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="982"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1495"/>
+        <location filename="../preferencesdialog.ui" line="977"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1490"/>
         <source>Automatic Page Analyzer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1049"/>
-        <location filename="../preferencesdialog.ui" line="1138"/>
-        <location filename="../preferencesdialog.ui" line="1145"/>
-        <location filename="../preferencesdialog.ui" line="1475"/>
-        <location filename="../preferencesdialog.ui" line="1482"/>
-        <location filename="../preferencesdialog.ui" line="1489"/>
-        <location filename="../preferencesdialog.ui" line="1496"/>
-        <location filename="../preferencesdialog.ui" line="1503"/>
-        <location filename="../preferencesdialog.ui" line="1698"/>
-        <location filename="../preferencesdialog.ui" line="1705"/>
-        <location filename="../preferencesdialog.ui" line="1712"/>
-        <location filename="../preferencesdialog.ui" line="1719"/>
-        <location filename="../preferencesdialog.ui" line="1726"/>
-        <location filename="../preferencesdialog.ui" line="1733"/>
-        <location filename="../preferencesdialog.ui" line="1761"/>
-        <location filename="../preferencesdialog.ui" line="1768"/>
-        <location filename="../preferencesdialog.ui" line="1775"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1497"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1503"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1504"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1539"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1540"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1541"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1542"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1543"/>
+        <location filename="../preferencesdialog.ui" line="1044"/>
+        <location filename="../preferencesdialog.ui" line="1133"/>
+        <location filename="../preferencesdialog.ui" line="1140"/>
+        <location filename="../preferencesdialog.ui" line="1470"/>
+        <location filename="../preferencesdialog.ui" line="1477"/>
+        <location filename="../preferencesdialog.ui" line="1484"/>
+        <location filename="../preferencesdialog.ui" line="1491"/>
+        <location filename="../preferencesdialog.ui" line="1498"/>
+        <location filename="../preferencesdialog.ui" line="1693"/>
+        <location filename="../preferencesdialog.ui" line="1700"/>
+        <location filename="../preferencesdialog.ui" line="1707"/>
+        <location filename="../preferencesdialog.ui" line="1714"/>
+        <location filename="../preferencesdialog.ui" line="1721"/>
+        <location filename="../preferencesdialog.ui" line="1728"/>
+        <location filename="../preferencesdialog.ui" line="1756"/>
+        <location filename="../preferencesdialog.ui" line="1763"/>
+        <location filename="../preferencesdialog.ui" line="1770"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1492"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1498"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1499"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1534"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1535"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1536"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1537"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1538"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1553"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1554"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1555"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1556"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1557"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1558"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1559"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1560"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1561"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1562"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1563"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1565"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1566"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1567"/>
         <source>CheckBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1080"/>
-        <location filename="../preferencesdialog.ui" line="1087"/>
-        <location filename="../preferencesdialog.ui" line="1097"/>
-        <location filename="../preferencesdialog.ui" line="1120"/>
-        <location filename="../preferencesdialog.ui" line="1162"/>
-        <location filename="../preferencesdialog.ui" line="1172"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1499"/>
+        <location filename="../preferencesdialog.ui" line="1075"/>
+        <location filename="../preferencesdialog.ui" line="1082"/>
+        <location filename="../preferencesdialog.ui" line="1092"/>
+        <location filename="../preferencesdialog.ui" line="1115"/>
+        <location filename="../preferencesdialog.ui" line="1157"/>
+        <location filename="../preferencesdialog.ui" line="1167"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1494"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1495"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1496"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1497"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1500"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1501"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1502"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1505"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1506"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1182"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1507"/>
+        <location filename="../preferencesdialog.ui" line="1177"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1502"/>
         <source>PushButton</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1208"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1508"/>
+        <location filename="../preferencesdialog.ui" line="1203"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1503"/>
         <source>No Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1220"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1509"/>
+        <location filename="../preferencesdialog.ui" line="1215"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1504"/>
         <source>Custom Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1240"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1510"/>
+        <location filename="../preferencesdialog.ui" line="1235"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1505"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1247"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1511"/>
+        <location filename="../preferencesdialog.ui" line="1242"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1506"/>
         <source>Modify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1254"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1512"/>
+        <location filename="../preferencesdialog.ui" line="1249"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1507"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1261"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1513"/>
+        <location filename="../preferencesdialog.ui" line="1256"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1508"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1275"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1514"/>
+        <location filename="../preferencesdialog.ui" line="1270"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1509"/>
         <source>HTTP Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1283"/>
-        <location filename="../preferencesdialog.ui" line="1299"/>
-        <location filename="../preferencesdialog.ui" line="1315"/>
-        <location filename="../preferencesdialog.ui" line="1331"/>
+        <location filename="../preferencesdialog.ui" line="1278"/>
+        <location filename="../preferencesdialog.ui" line="1294"/>
+        <location filename="../preferencesdialog.ui" line="1310"/>
+        <location filename="../preferencesdialog.ui" line="1326"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1512"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1517"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1522"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1527"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1532"/>
         <source>Direct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1291"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1519"/>
+        <location filename="../preferencesdialog.ui" line="1286"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1514"/>
         <source>FTP Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1307"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1524"/>
+        <location filename="../preferencesdialog.ui" line="1302"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1519"/>
         <source>BitTorrnt Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1323"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1529"/>
+        <location filename="../preferencesdialog.ui" line="1318"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1524"/>
         <source>Metalink Connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1364"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1534"/>
+        <location filename="../preferencesdialog.ui" line="1359"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1529"/>
         <source>Virtus scan when done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1382"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1535"/>
+        <location filename="../preferencesdialog.ui" line="1377"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1530"/>
         <source>...</source>
         <translation type="unfinished">打开</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1399"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1536"/>
+        <location filename="../preferencesdialog.ui" line="1394"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1531"/>
         <source>Files Extension:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1406"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1537"/>
+        <location filename="../preferencesdialog.ui" line="1401"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1532"/>
         <source>.rar;.zip;.exe;.doc;.com;.bin;.gz;.z;.tar;.arj;.lzh;.sit;.hqx;.tgz;.dll;.ocx;.vbx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1416"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1538"/>
+        <location filename="../preferencesdialog.ui" line="1411"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1533"/>
         <source>paramter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1463"/>
-        <location filename="../preferencesdialog.ui" line="1556"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1544"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1548"/>
+        <location filename="../preferencesdialog.ui" line="1458"/>
+        <location filename="../preferencesdialog.ui" line="1551"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1539"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1543"/>
         <source>Page 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1532"/>
-        <location filename="../preferencesdialog.ui" line="1598"/>
+        <location filename="../preferencesdialog.ui" line="1527"/>
+        <location filename="../preferencesdialog.ui" line="1593"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1547"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1552"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1557"/>
         <source>Page 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1568"/>
-        <location filename="../preferencesdialog.ui" line="1575"/>
-        <location filename="../preferencesdialog.ui" line="1582"/>
-        <location filename="../preferencesdialog.ui" line="1610"/>
-        <location filename="../preferencesdialog.ui" line="1617"/>
-        <location filename="../preferencesdialog.ui" line="1624"/>
-        <location filename="../preferencesdialog.ui" line="1652"/>
-        <location filename="../preferencesdialog.ui" line="1659"/>
-        <location filename="../preferencesdialog.ui" line="1666"/>
+        <location filename="../preferencesdialog.ui" line="1563"/>
+        <location filename="../preferencesdialog.ui" line="1570"/>
+        <location filename="../preferencesdialog.ui" line="1577"/>
+        <location filename="../preferencesdialog.ui" line="1605"/>
+        <location filename="../preferencesdialog.ui" line="1612"/>
+        <location filename="../preferencesdialog.ui" line="1619"/>
+        <location filename="../preferencesdialog.ui" line="1647"/>
+        <location filename="../preferencesdialog.ui" line="1654"/>
+        <location filename="../preferencesdialog.ui" line="1661"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1540"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1541"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1542"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1544"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1545"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1546"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1547"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1548"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1549"/>
         <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1550"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1551"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1553"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1554"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1555"/>
         <source>RadioButton</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1640"/>
-        <location filename="../preferencesdialog.ui" line="1686"/>
-        <location filename="../preferencesdialog.ui" line="1749"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1556"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1564"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1568"/>
+        <location filename="../preferencesdialog.ui" line="1635"/>
+        <location filename="../preferencesdialog.ui" line="1681"/>
+        <location filename="../preferencesdialog.ui" line="1744"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1551"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1559"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1563"/>
         <source>Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1815"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1569"/>
+        <location filename="../preferencesdialog.ui" line="1810"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1564"/>
         <source>Restore Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1855"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1571"/>
+        <location filename="../preferencesdialog.ui" line="1850"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1566"/>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1862"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1572"/>
+        <location filename="../preferencesdialog.ui" line="1857"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1567"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.ui" line="1869"/>
-        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1573"/>
+        <location filename="../preferencesdialog.ui" line="1864"/>
+        <location filename="../GeneratedFiles/ui_preferencesdialog.h" line="1568"/>
         <source>&amp;Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4020,19 +4031,23 @@ TaskId: %1</source>
         <translation type="obsolete">任务ID,文件大小,重试次数,创建时间,当前速度,平均速度,用时,下载长度,剩余长度,活动块数,总块数,活动块数,分类ID,注释,Null,文件名,下载百分数,原始URL,实现URL,重定向次数,结束时间,任务状态,总包数,下载包数,剩余包数,总时间长度,下载时间长度,剩余时间长度,是否得到文件长度,修改标志,Aria2 GID</translation>
     </message>
     <message>
-        <location filename="../sqlitestorage.cpp" line="68"/>
         <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, cat_id,comment, place_holder, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
-        <translation type="unfinished">任务ID, 文件大小, 重试次数, 创建时间, 当前速度, 平均速度,用时,下载长度,剩余长度, 下载线程数, 活动块数, 总块数, 活动块数, 分类ID, 注释, Null, 存储位置, 文件名,下载百分数,原始URL,实现URL,重定向次数,结束时间,任务状态,总包数,下载包数,剩余包数,总时间长度,下载时间长度,剩余时间长度,是否得到文件长度,修改标志, Aria2 GID</translation>
+        <translation type="obsolete">任务ID, 文件大小, 重试次数, 创建时间, 当前速度, 平均速度,用时,下载长度,剩余长度, 下载线程数, 活动块数, 总块数, 活动块数, 分类ID, 注释, Null, 存储位置, 文件名,下载百分数,原始URL,实现URL,重定向次数,结束时间,任务状态,总包数,下载包数,剩余包数,总时间长度,下载时间长度,剩余时间长度,是否得到文件长度,修改标志, Aria2 GID</translation>
     </message>
     <message>
         <location filename="../sqlitestorage.cpp" line="69"/>
-        <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
-        <translation>分类名, 路径, 分类ID, 父分类ID, 是否可有子分类, 内部名, 是否折叠, 删除标记, 创建日期, 修改标记</translation>
+        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
+        <translation type="unfinished">任务ID, 文件大小, 重试次数, 创建时间, 当前速度, 平均速度,用时,下载长度,剩余长度, 下载线程数, 活动块数, 总块数, 活动块数, 分类ID, 注释, 调度分类, 存储位置, 文件名,下载百分数,原始URL,实现URL,重定向次数,结束时间,任务状态,总包数,下载包数,剩余包数,总时间长度,下载时间长度,剩余时间长度,是否得到文件长度,修改标志, Aria2 GID</translation>
     </message>
     <message>
         <location filename="../sqlitestorage.cpp" line="70"/>
+        <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
+        <translation type="unfinished">分类名, 路径, 分类ID, 父分类ID, 是否可有子分类, 内部名, 是否折叠, 删除标记, 创建日期, 修改标记</translation>
+    </message>
+    <message>
+        <location filename="../sqlitestorage.cpp" line="71"/>
         <source>seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty</source>
-        <translation>块ID, 任务ID, 开始位移, 创建时间, 结束时间, 总长度, 下载长度, 当前速度, 平均速度, 下载百分数, 块状态, 总包数, 下载包数, 剩余包数, 总时间长度, 完成时间长度, 剩余时间长度, 修改标志</translation>
+        <translation type="unfinished">块ID, 任务ID, 开始位移, 创建时间, 结束时间, 总长度, 下载长度, 当前速度, 平均速度, 下载百分数, 块状态, 总包数, 下载包数, 剩余包数, 总时间长度, 完成时间长度, 剩余时间长度, 修改标志</translation>
     </message>
 </context>
 <context>

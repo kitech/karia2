@@ -64,8 +64,8 @@ namespace ng
 	};
 	namespace cats
 	{
-		enum {downloading = 1, downloaded = 2, deleted= 7};
-		enum {display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty};
+		enum {cat_root = 0, downloading = 1, downloaded = 2, deleted= 7};
+		enum {display_name = 0, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty};
 	};
 	namespace options
 	{
@@ -249,9 +249,9 @@ private:
 	QString catsModelColumnsOrder ;
 	QString segsModelColumnsOrder ;
 
-	// char * tasksModelColumnsOrderShow  ;
-	// char * catsModelColumnsOrderShow ;
-	// char * segsModelColumnsOrderShow ;
+    char *tasksModelColumnsOrderShow;
+    char *catsModelColumnsOrderShow;
+    char *segsModelColumnsOrderShow;
 
 };
 

@@ -22,6 +22,7 @@
 #include "taskinfodlg.h"
 #include "viewmodel.h"
 #include "catmandlg.h"
+#include "sqlitestorage.h"
 #include "sqlitecategorymodel.h"
 #include "dircompletermodel.h"
 
@@ -75,7 +76,7 @@ void TaskOption::setDefaultValue()
 	mFindUrlByMirror = 1 ;
 	//QString mReferrer ;
 	//QString mCategory ;
-    this->mCatId = -1;
+    this->mCatId = 2; // downloaded
 	mSavePath = "." ;
 	//QString mSaveName ;
 	mSplitCount = 5 ; 
@@ -155,13 +156,14 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	ui.setupUi(this);
 
 	//signals
-	QObject::connect(ui.tid_g_le_url , SIGNAL(textChanged(QString )),this,SLOT(onUrlBoxChange(QString )));
+	QObject::connect(ui.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
 	//QObject::connect(ui.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int))) ;
-	QObject::connect(ui.tid_g_le_cb_category,SIGNAL( editTextChanged(const QString &)),this,SLOT(onCategoryBoxChange(const QString &))) ;
-	QObject::connect(ui.tid_au_pb_add,SIGNAL(clicked()),this,SLOT(onAddAlterUrl()));
-	QObject::connect(ui.tid_au_pb_delete,SIGNAL(clicked()),this,SLOT(onDeleteAlterUrl()));
-	QObject::connect(ui.tid_g_le_pb_show_dir,SIGNAL(clicked()),this,SLOT(onChangeSaveDirectory()));
-	QObject::connect(ui.tid_g_le_pb_category_info,SIGNAL(clicked()),this,SLOT(onShowCategoryInfo()));
+	QObject::connect(ui.tid_g_le_cb_category, SIGNAL(editTextChanged(const QString &)),
+                     this, SLOT(onCategoryBoxChange(const QString &))) ;
+	QObject::connect(ui.tid_au_pb_add, SIGNAL(clicked()), this, SLOT(onAddAlterUrl()));
+	QObject::connect(ui.tid_au_pb_delete, SIGNAL(clicked()), this, SLOT(onDeleteAlterUrl()));
+	QObject::connect(ui.tid_g_le_pb_show_dir, SIGNAL(clicked()), this, SLOT(onChangeSaveDirectory()));
+	QObject::connect(ui.tid_g_le_pb_category_info, SIGNAL(clicked()), this, SLOT(onShowCategoryInfo()));
 
 	//如果剪贴板上是有效的URL，则认为这就是要添加的任务，直填写到任务URL栏中。
 	QClipboard * cb = QApplication::clipboard();
@@ -193,15 +195,17 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 
 	this->mCatView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	this->ui.tid_g_le_cb_category->setView(this->mCatView);
-	
-	this->ui.tid_g_le_cb_category->setRootModelIndex(this->mCatModel->index(0,0));	//very important
-	this->expandAll(this->mCatModel->index(0,0));
+
+    this->ui.tid_g_le_cb_category->setRootModelIndex(this->mCatModel->index(0, 0));	//very important
+
+	this->expandAll(this->mCatModel->index(0, 0));
 	//this->mCatView->header()->setHidden(true);		//隐藏Tree Header
 	//this->mCatView->setColumnHidden(1,true);
 	
-    this->mCatId = this->mCatModel->index(0, 0, this->mCatModel->index(0, 0)).internalId();
+    this->mCatId = 2; //  this->mCatModel->index(0, 0, this->mCatModel->index(0, 0)).internalId();
 	this->mSwapValue = this->mCatModel->index(0, 0, this->mCatModel->index(0,0)).data().toString();
 	this->ui.tid_g_le_cb_category->setEditText(this->mSwapValue);
+    this->ui.tid_g_le_cb_category->setEditText(tr("downloaded"));
 	this->ui.tid_g_cb_save_to->clear();	
 	this->ui.tid_g_cb_save_to->addItem(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 	this->ui.tid_g_cb_save_to->addItem(this->mCatModel->index(1,1,this->mCatModel->index(0,0) ).data().toString());
@@ -236,8 +240,8 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 	ui.setupUi(this);
 
 	//signals
-	QObject::connect(ui.tid_g_le_url , SIGNAL(textChanged(QString )),this,SLOT(onUrlBoxChange(QString )));
-	QObject::connect(ui.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int))) ;
+	QObject::connect(ui.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
+	QObject::connect(ui.tid_g_le_cb_category, SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int))) ;
 	QObject::connect(ui.tid_au_pb_add,SIGNAL(clicked()),this,SLOT(onAddAlterUrl()));
 	QObject::connect(ui.tid_au_pb_delete,SIGNAL(clicked()),this,SLOT(onDeleteAlterUrl()));
 
@@ -323,7 +327,7 @@ void taskinfodlg::onCategoryBoxChange(int index)
 	cat = ui.tid_g_le_cb_category->itemText(index);
 
 	cat = QString("C:\\") + cat ;
-	ui.tid_g_cb_save_to->setItemText(index,cat);
+	ui.tid_g_cb_save_to->setItemText(index, cat);
 	ui.tid_g_cb_save_to->setCurrentIndex(index);
 
 }
@@ -462,8 +466,8 @@ void taskinfodlg::onCatListClicked( const QModelIndex & index )
 {
 	qDebug()<<__FUNCTION__ << index.data();
 	QModelIndex idx0 , idx ;
-	idx0 = index.model()->index(index.row(),0,index.parent());
-	idx = index.model()->index(index.row(),1,index.parent());
+	idx0 = index.model()->index(index.row(), 0, index.parent());
+	idx = index.model()->index(index.row(), 1, index.parent());
 	qDebug()<<this->ui.tid_g_le_cb_category->currentText();
 	this->ui.tid_g_le_cb_category->setEditText(idx0.data().toString());
 	qDebug()<<this->ui.tid_g_le_cb_category->currentText();

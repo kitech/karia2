@@ -1816,8 +1816,7 @@ void NullGet::onNewCategory()
 	QModelIndexList mil;
 
 	er = dlg->exec();
-	if (er == QDialog::Accepted )
-	{
+	if (er == QDialog::Accepted) {
 		QModelIndex idx;
 		QString dir;
 		QString catname;
@@ -1833,25 +1832,23 @@ void NullGet::onNewCategory()
 		//
 		mil = ism->selectedIndexes();
 		qDebug()<<mil.size();
-		if (mil.size() >  0 )
-		{
+		if (mil.size() >  0 ) {
 			row = mil.at(0).model()->rowCount(mil.at(0));
-			aim->insertRows(row , 1 , mil.at(0) );
-			idx = aim->index(row,0,mil.at(0));
-			aim->setData(idx,catname);
-			idx = aim->index(row,1,mil.at(0));
-			aim->setData(idx,dir);
+			aim->insertRows(row, 1, mil.at(0));
+			idx = aim->index(row, ng::cats::display_name, mil.at(0));
+			aim->setData(idx, catname);
+			idx = aim->index(row, ng::cats::path, mil.at(0));
+			aim->setData(idx, dir);
 			
 			qDebug()<<"insertt "<<row<<aim->data(idx);
 			
-			//this->mCatView->collapse(mil.at(0));	//打开新建的分类。
+			//this->mCatView->collapse(mil.at(0));	// open the new cate
 			//this->mCatView->expand(mil.at(0));			
 			this->mCatView->expandAll();
 			this->mCatView->resizeColumnToContents(0);
+            aim->submit();
 		}
-	}
-	else
-	{
+	} else {
 
 	}
 	if (dlg != NULL ) delete dlg; dlg = NULL;
@@ -3105,6 +3102,8 @@ QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
     } else {
         ftype.second = path + ftype.second;
     }
+
+    qDebug()<<QIcon::themeSearchPaths();
     
     return ftype;
 
@@ -3809,10 +3808,8 @@ void NullGet::onOpenDistDirector()
 	QString openner;
 	QString tmp;
 	QString dir;
-	TaskQueue * tq = 0;
 	int taskId = -1;
 	int catId = -1; 
-	QAbstractItemModel * atModel = 0;
 	
 	QItemSelectionModel * ism = 0;
 	QModelIndexList mil;
@@ -3825,7 +3822,8 @@ void NullGet::onOpenDistDirector()
         // taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
 		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 
-		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
+		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
+        dir = mil.at(ng::tasks::save_path).data().toString();
         if (dir.startsWith("~")) {
             dir = QDir::homePath() + dir.right(dir.length() - 1);
         }
@@ -3845,11 +3843,9 @@ void NullGet::onOpenExecDownloadedFile()
 	qDebug()<<__FUNCTION__;
 	
 	QString tmp;
-	QString dir ,fname;
-	TaskQueue * tq = 0;
+	QString dir, fname;
 	int taskId = -1;
 	int catId = -1; 
-	QAbstractItemModel * atModel = 0;
 
 	QItemSelectionModel * ism = 0;
 	QModelIndexList mil;
@@ -3863,7 +3859,9 @@ void NullGet::onOpenExecDownloadedFile()
 		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 		fname = mil.at(ng::tasks::file_name).data().toString();
 
-		dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
+		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
+        dir = mil.at(ng::tasks::save_path).data().toString();
+
         if (dir.startsWith("~")) {
             dir = QDir::homePath() + dir.right(dir.length() - 1);
         }

@@ -10,10 +10,11 @@
 #ifndef SQLITECATEGORYMODEL_H
 #define SQLITECATEGORYMODEL_H
 
+#include <QtCore>
+#include <QtSql>
 #include <QAbstractItemModel>
 
-#include "sqlitestorage.h"
-
+class SqliteStorage;
 
 /////category model , like QDirModol , but the item source is not file system directorys
 class SqliteCategoryModel : public QAbstractItemModel   

@@ -7,6 +7,8 @@
 // Version: $Id$
 // 
 
+#include "sqlitestorage.h"
+
 #include "sqlitecategorymodel.h"
 
 /////////////////////////////////////
@@ -31,6 +33,7 @@ SqliteCategoryModel::SqliteCategoryModel( QObject *parent)
 	this->mStorage->open();
 	mModelData = mStorage->getCatSet();
 	mCatsTableColumns = mStorage->getCatsColumns();
+
 }
 
 
@@ -126,7 +129,7 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 				QVariant rv = QVariant();
 				if (col == 0) {
 					rv = rec.value("display_name");
-				} else if( col == 1 ) {
+				} else if (col == 1 ) {
 					rv = rec.value("cat_id");
 				}
 				//else if ( col == 2 )
@@ -143,7 +146,7 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 				//rec.clear():
 			}
 		} // end for
-	}  // end if( ! pmi.isValid() )
+	}  // end if (! pmi.isValid() )
 	else {
 		for (int i = 0 ; i < this->mModelData.count() ; i ++) {
 			if (this->mModelData.at(i).value("cat_id").toInt() == catID) {
@@ -218,12 +221,12 @@ QModelIndex SqliteCategoryModel::index(int row, int column, const QModelIndex &p
 	int childCatID = -1 ;
 	int counter = 0 ;
 	//查找在第row行的子类
-	for( int i = 0 ; i < this->mModelData.count() ;i ++ )
+	for (int i = 0 ; i < this->mModelData.count() ;i ++ )
 	{
 		QSqlRecord rec = this->mModelData.at(i);
-		if( rec.value("parent_cat_id").toInt() == parentCatID )
+		if (rec.value("parent_cat_id").toInt() == parentCatID )
 		{			
-			if( row == counter )
+			if (row == counter )
 			{
 				childCatID = rec.value("cat_id").toInt();
 				//qDebug()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
@@ -254,9 +257,9 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 	int parentCatID = -1 ;
 	int ppCatID = -1 ;	// parent's parent cat ID
 	int atrow = 0 ;
-	for( int i = 0 ; i < this->mModelData.count() ; i ++ )
+	for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 	{
-		if( this->mModelData.at(i).value("cat_id").toInt() == childCatID )
+		if (this->mModelData.at(i).value("cat_id").toInt() == childCatID )
 		{
 			//parentCatID = this->mModelData.at(i).value("cat_id").toInt() ;
 			parentCatID = this->mModelData.at(i).value("parent_cat_id").toInt() ;
@@ -271,7 +274,7 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 	//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID<<" is parent of "<< childCatID ;
 
 	int parentRow = 0 ;
-	if( parentCatID == -1 )
+	if (parentCatID == -1 )
 	{
 		parentRow = 0 ;
 		return QModelIndex();
@@ -280,9 +283,9 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 	{		
 		//查找ppCatID 的值
 		//找　parent 的 parent 的ID
-		for( int i = 0 ; i < this->mModelData.count() ; i ++ )
+		for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 		{
-			if( this->mModelData.at(i).value("cat_id").toInt() == parentCatID )
+			if (this->mModelData.at(i).value("cat_id").toInt() == parentCatID )
 			{				
 				ppCatID = this->mModelData.at(i).value("parent_cat_id").toInt() ;
 			}
@@ -290,11 +293,11 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 
 		//////////
 		atrow = 0 ;
-		for( int i = 0 ; i < this->mModelData.count() ; i ++ )
+		for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 		{			
-			if( this->mModelData.at(i).value("parent_cat_id").toInt() == ppCatID  )
+			if (this->mModelData.at(i).value("parent_cat_id").toInt() == ppCatID  )
 			{				
-				if( this->mModelData.at(i).value("cat_id").toInt() == parentCatID )
+				if (this->mModelData.at(i).value("cat_id").toInt() == parentCatID )
 				{					
 					break ;	// counter 就是 parentCatID 在 ppCatID 分类中的行号
 				}
@@ -326,7 +329,7 @@ int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 	//return parentItem->node().childNodes().count();
 
 	int count = 0 ;
-	if( ! parent.isValid() )
+	if (! parent.isValid() )
 	{
 		count =  1 ;
 	}
@@ -334,21 +337,21 @@ int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 	{
 		int parentCatID = -1;
 		parentCatID = parent.internalId() ;
-		for( int i = 0 ; i < this->mModelData.count() ; i ++ )
+		for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 		{
-			if( this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
+			if (this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
 			{
 				count += 1; 
 				//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID <<this->mModelData.at(i).value("parent_cat_id").toInt()  ;
 			}
 		}
 		//QModelIndex mi = this->index(parent.row(),2,parent.parent());
-		//if( mi.data() == "0" )
+		//if (mi.data() == "0" )
 		//{
-		//	for( int i = 0 ; i < this->mModelData.count() ; i ++ )
+		//	for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 		//	{
 		//		qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<count <<":data:"<< mi.data().toString() ;
-		//		if( this->mModelData.at(i).value("cat_id") == "0" )
+		//		if (this->mModelData.at(i).value("cat_id") == "0" )
 		//		{
 		//			count ++ ;
 		//		}
@@ -390,70 +393,61 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 	QSqlRecord r0 = this->mModelData.at(0);
 	int colcnt = r0.count();
 
+    qDebug()<<r0;
+
 	beginInsertRows( parent , row , row+count -1 );//////////
 
-	for( int c = 0 ; c < count ; c ++ )
-	{
+	for (int c = 0 ; c < count ; c ++ ) {
 		QSqlRecord rec ;
-		for( int n = 0 ; n < colcnt ; n ++ )
-		{
+		for (int n = 0 ; n < colcnt ; n ++ ) {
 			QSqlField currField;
 			currField.setName( r0.fieldName(n) );
 			currField.setType( r0.field(n).type() ) ;
 			currField.setValue(QVariant());
 
-			if( r0.fieldName(n) == "cat_id" )
-			{
+			if (r0.fieldName(n) == "cat_id") {
 				int maxid = -1 ;
 				int rowcnt = this->mModelData.count();
-				for( int i = 0 ; i < rowcnt ; i ++ )	//查找最大的cat id 号。
-				{
+				for (int i = 0 ; i < rowcnt ; i ++ ) { //查找最大的cat id 号。
 					//qDebug()<<"already existed rows:"<<this->mModelData.at(i);
-					if( this->mModelData.at(i).value("cat_id").toInt() > maxid )
-					{
+					if (this->mModelData.at(i).value("cat_id").toInt() > maxid ) {
 						maxid = this->mModelData.at(i).value("cat_id").toInt() ;
 					}
 				}
 				maxid += 1 ;
 				currField.setValue(QVariant(maxid));
-			}
-			else if( r0.fieldName(n) == "parent_cat_id" )
-			{				
+			} else if (r0.fieldName(n) == "parent_cat_id" ) {				
 				currField.setValue(QVariant(parentCatID));
-			}
-			else
-			{
+			} else {
 				//currField.setValue(QVariant());
-				switch ( n )
-				{
-				case 0:
-					//this->mModelData[i].setValue(0,value);
-					break;
-				case 1:
-					//this->mModelData[i].setValue(1,value);
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
+				switch (n) {
+                    // case 0:
+                    // 	//this->mModelData[i].setValue(0,value);
+                    // 	break;
+                    // case 1:
+                    // 	//this->mModelData[i].setValue(1,value);
+                    // 	break;
+                    // case 2:
+                    // 	break;
+                    // case 3:
+                    // 	break;
+				case ng::cats::can_child:
 					currField.setValue("true");
 					break;
-				//case 5:
+                    //case 5:
 					//currField.setValue(currField.value(1) );
 					break;
-				case 6:
+				case ng::cats::folder:
 					currField.setValue("no");
 					break;
-				case 7:
+				case ng::cats::delete_flag:
 					currField.setValue("false");
 					break;
-				case 8:
+				case ng::cats::create_time:
 					currField.setValue(QDateTime::currentDateTime().toString(Qt::SystemLocaleDate));
 					break;
-				case 9:	//表示修改属性					
+				case ng::cats::dirty:	//表示修改属性					
 					currField.setValue(QVariant("true"));
-					
 					break ;
 				default:
 					//assert( 1== 2);
@@ -462,7 +456,8 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 			}
 			rec.append( currField );
 		}
-		
+
+        qDebug()<<rec;
 		this->mModelData.append(rec);		
 	}
 	endInsertRows();//////////
@@ -498,12 +493,12 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 	beginRemoveRows  ( parent, delete_begin, delete_end ) ;	
 
 	//因为使用了递归，这个从小到大遍历的方式也是必须的。
-	for( int i = 0 ; i < this->mModelData.count()  ; i ++ )
+	for (int i = 0 ; i < this->mModelData.count()  ; i ++ )
 	{
-		if( this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
+		if (this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
 		{	
 			qDebug()<<"atrow="<<atrow;
-			if( atrow >= delete_begin && atrow <= delete_end )
+			if (atrow >= delete_begin && atrow <= delete_end )
 			{
 				this->mModelData[i].setValue("delete_flag","true");
 				this->mModelData[i].setValue("dirty","true");
@@ -513,7 +508,7 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 
 				QModelIndex tempParentModel = this->index(atrow,0,parent);
 				qDebug()<<" last "<<(tempParentModel.model()->rowCount());
-				if( tempParentModel.model()->rowCount() > 0 )
+				if (tempParentModel.model()->rowCount() > 0 )
 				{
 					this->removeRows(0,tempParentModel.model()->rowCount() ,tempParentModel );
 				}
@@ -561,51 +556,47 @@ bool SqliteCategoryModel::setData ( const QModelIndex & index , const QVariant &
 	QModelIndex catModelIndexAtCurrentRow = this->index( index.row() , 2 , index.parent() );
 	int currentCatID = catModelIndexAtCurrentRow.data().toInt();
 
-	for( int i = 0 ; i < rowcnt ;i ++ )
-	{
-		if( this->mModelData.at(i).value("cat_id").toInt() == currentCatID )
+	for (int i = 0 ; i < rowcnt ;i ++ ) {
+		if (this->mModelData.at(i).value("cat_id").toInt() == currentCatID )
 		{
-			switch ( index.column() )
-			{
-			case 0:
-				this->mModelData[i].setValue(0,value);
-				this->mModelData[i].setValue(5,this->mModelData[i].value(0) );
+			switch (index.column()) {
+			case ng::cats::display_name:
+				this->mModelData[i].setValue(0, value);
+				this->mModelData[i].setValue(5, this->mModelData[i].value(0) );
 				break;
-			case 1:
+			case ng::cats::path:
 				this->mModelData[i].setValue(1,value);
 				break;
 			case 2:
 				break;
 			case 3:
 				break;
-			case 4:
-				this->mModelData[i].setValue(4,"true");
+			case ng::cats::can_child:
+				this->mModelData[i].setValue(4, "true");
 				break;
 			case 5:
 				//this->mModelData[i].setValue(5,this->mModelData[i].value(1) );
 				break;
-			case 6:
+			case ng::cats::folder:
 				this->mModelData[i].setValue(6,"no");
 				break;
-			case 7:
+			case ng::cats::delete_flag:
 				this->mModelData[i].setValue(7,"false");
 				break;
-			case 8:
-				this->mModelData[i].setValue(8,QDateTime::currentDateTime().toString(Qt::SystemLocaleDate));
+			case ng::cats::create_time:
+				this->mModelData[i].setValue(8, QDateTime::currentDateTime().toString(Qt::SystemLocaleDate));
 				break;
-			case 9:	//表示修改属性
+			case ng::cats::dirty:	//modify flag
 				this->mModelData[i].setValue(9,"true");
 				break;
 			default:
-				qDebug()<< " SqliteCategoryModel::setData " << index.column() ;
+				qDebug()<< "SqliteCategoryModel::setData " << index.column() ;
 				assert( 1== 2);
 			}
 
 			emit dataChanged(index,index);
-
 		}
 	}
-
 
 	return true ;
 }
@@ -624,10 +615,10 @@ bool SqliteCategoryModel::rowMoveTo( const QModelIndex & from , const QModelInde
 	//	while( mil.count() > 0 )
 	//	{
 	//		idx = mil.takeFirst();
-	//		for( int i = 0 ;i < idx.model()->rowCount(idx) ; i ++ )
+	//		for (int i = 0 ;i < idx.model()->rowCount(idx) ; i ++ )
 	//		{
 	//			cidx = idx.child(i,0);
-	//			if( cidx == to ) 
+	//			if (cidx == to ) 
 	//			{
 	//				isChild = true ; break ;
 	//			}
@@ -640,7 +631,7 @@ bool SqliteCategoryModel::rowMoveTo( const QModelIndex & from , const QModelInde
 	//}
 
 	//qDebug()<<isChild;
-	//if( isChild ) 
+	//if (isChild ) 
 	//{
 	//	qDebug()<<"Can't move parent to child cat";
 	//	return false ;
@@ -666,11 +657,9 @@ bool SqliteCategoryModel::submit ()
 	//把已经修改或者添加了的数据写入到数据库中。
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
-	for( int i = rowcnt - 1 ; i >=0 ; i -- )
-	{
-		if( this->mModelData.at(i).value("delete_flag").toString() == "false" 
-			&& this->mModelData.at(i).value("dirty").toString() == "true")
-		{
+	for (int i = rowcnt - 1 ; i >=0 ; i -- ) {
+		if (this->mModelData.at(i).value("delete_flag").toString() == "false" 
+			&& this->mModelData.at(i).value("dirty").toString() == "true") {
 			QSqlRecord rec = this->mModelData.at(i);
 
 			dirtycnt ++;
@@ -689,10 +678,8 @@ bool SqliteCategoryModel::submit ()
 				parent_cat_id,create_time,delete_flag);
 
 			this->mModelData[i].setValue("dirty","false");	//清除dirty 标记
-		}
-		else if( this->mModelData.at(i).value("delete_flag").toString() == "true" 
-			&& this->mModelData.at(i).value("dirty").toString() == "true")
-		{
+		} else if (this->mModelData.at(i).value("delete_flag").toString() == "true" 
+			&& this->mModelData.at(i).value("dirty").toString() == "true") {
 			QSqlRecord rec = this->mModelData.at(i);
 			dirtycnt ++;
 			//int cat_id = rec.value("cat_id").toInt();
@@ -702,7 +689,7 @@ bool SqliteCategoryModel::submit ()
 			//emit layoutChanged () ;
 		}
 	}
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count() ;
+	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count();
 
 	return true ;
 }
@@ -711,10 +698,8 @@ void SqliteCategoryModel::revert()
 {
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
-	for( int i = 0 ; i < rowcnt ; i ++ )
-	{
-		if( this->mModelData.at(i).contains("dirty") && this->mModelData.at(i).value("dirty").toString() == "true")
-		{
+	for (int i = 0 ; i < rowcnt ; i ++ ) {
+		if (this->mModelData.at(i).contains("dirty") && this->mModelData.at(i).value("dirty").toString() == "true") {
 			dirtycnt ++;
 		}
 	}

@@ -47,13 +47,8 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>13</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-         <kerning>true</kerning>
+         <family>Andale Mono</family>
+         <pointsize>10</pointsize>
         </font>
        </property>
        <property name="editTriggers">

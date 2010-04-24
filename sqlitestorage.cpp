@@ -64,15 +64,17 @@ SqliteStorage::SqliteStorage(QObject *parent)
 	taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
 		"values ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', '%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '%32', '%33')";
 
+    // this is from AbstractStorage.cpp
     // Marks the string literal sourceText for dynamic translation in the current context (class),
-	// tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
-	// catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
-	// segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
+    tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
+	this->catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
+    segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
 
 	// this->tasksModelColumnsOrder = tasksModelColumnsOrderShow ;
 	// this->catsModelColumnsOrder = catsModelColumnsOrderShow;
 	// this->segsModelColumnsOrder = segsModelColumnsOrderShow; 
 
+    
     this->tasksModelColumnsOrder = this->mTaskColumnStr;
     this->catsModelColumnsOrder = this->mCatColumnStr;
     this->segsModelColumnsOrder = this->mSegColumnStr;
@@ -555,7 +557,7 @@ bool SqliteStorage::addCategory( int cat_id , QString display_name , QString raw
 	QSqlQuery q ( this->mTasksDB );
 	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
+	qDebug()<< q.lastError()<<": " << sql ;
 	return true ;
 }
 bool SqliteStorage::deleteTask( int task_id )
@@ -593,8 +595,8 @@ QVector<QSqlRecord> SqliteStorage::getCatSet()
 {
 	QVector<QSqlRecord> dataSet ;
 
-	//视图中显示的顺序与这里的顺序有直接的关系，可以说是一样的
-	//还有排序的问题。
+	// 视图中显示的顺序与这里的顺序有直接的关系，可以说是一样的
+	// 还有排序的问题。
 	QString sql = "SELECT " + this->catsModelColumnsOrder+ " FROM categorys ORDER BY parent_cat_id, cat_id ";
 	
 	QSqlQuery q ( this->mTasksDB );
@@ -680,7 +682,7 @@ QVector<QString> SqliteStorage::getCatsColumns()
 {
 	QVector<QString>  result ;
 	QStringList ll;
-	ll = QString(tr(this->mCatColumnStr)).split(',');
+	ll = QString(tr(this->catsModelColumnsOrderShow)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
@@ -696,7 +698,7 @@ QVector<QString> SqliteStorage::getTasksColumns()
 
     QStringList ll;
 
-	ll = QString(tr(this->mTaskColumnStr)).split(',');
+	ll = QString(tr(this->tasksModelColumnsOrderShow)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
@@ -711,7 +713,7 @@ QVector<QString> SqliteStorage::getSegmentsColumns()
 	QVector<QString>  result ;
 
 	QStringList ll ;
-	ll = QString(tr(this->mSegColumnStr)).split(',');
+	ll = QString(tr(this->segsModelColumnsOrderShow)).split(',');
 	result.clear();
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());

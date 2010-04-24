@@ -88,7 +88,7 @@ AbstractStorage::AbstractStorage(QObject *parent)
 		this->defaultCategorys.append(catmap);
 	}
 	
-	this->mTaskColumnStr = QT_TR_NOOP( 
+	this->mTaskColumnStr =  
 			"task_id             ,"
 			"file_size           ,"
 			"retry_times         ,"
@@ -122,9 +122,9 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"file_length_abtained,"
 			"dirty               ,"
             "aria_gid            "
-                                       );
+            ;
 
-	this->mSegColumnStr = QT_TR_NOOP(
+	this->mSegColumnStr = 
 			"seg_id           ,"  
 			"task_id          ,"
 			"start_offset     ,"
@@ -142,20 +142,10 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"total_timestamp  ,"
 			"finish_timestamp,"
 			"left_timestamp  ,"
-			"dirty            ")
+			"dirty            "
 		;
-	this->mCatColumnStr = QT_TR_NOOP(
-			"display_name ,"
-			"path         ,"
-			"cat_id       ,"
-			"raw_name     ,"
-			"folder       ,"
-			"can_child    ,"
-			"parent_cat_id,"
-			"create_time  ,"
-			"delete_flag  ,"
-			"dirty         ")
-		;
+
+	this->mCatColumnStr = "display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty";
 
 }
 
