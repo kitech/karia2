@@ -64,7 +64,8 @@ namespace ng
 	};
 	namespace cats
 	{
-		enum {cat_root = 0, downloading = 1, downloaded = 2, deleted= 7};
+		enum {cat_root = 0, downloading = 1, downloaded = 2, software = 3, 
+              game = 4, music = 5, movie = 6, deleted= 7, documents = 8};
 		enum {display_name = 0, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty};
 	};
 	namespace options

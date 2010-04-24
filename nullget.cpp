@@ -1087,7 +1087,7 @@ void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItem
 		this->mTaskListView->setModel(0);
 
 		if (catIDIndex.model()->data(catIDIndex).toString() == "0") {
-			//this->mCatView->clearSelection();//不让选择树根也不合适啊。
+			//this->mCatView->clearSelection(); // 不让选择树根也不合适啊。
 			QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
 			this->mTaskListView->setModel(mdl);
 		} else {
@@ -1095,12 +1095,13 @@ void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItem
 			this->mTaskListView->setModel(mdl);
 		}
 
-		QObject::connect(this->mTaskListView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-			this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
+		QObject::connect(this->mTaskListView->selectionModel(), 
+                         SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection &)),
+                         this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
         
         // clean up
-        qDebug()<<deselected;
-        qDebug()<<deselected.count();
+        // qDebug()<<deselected;
+        // qDebug()<<deselected.count();
         // qDebug<<deselected.at(0); //.indexes();
         if (deselected.count() > 0) {
             QModelIndex deCatIdIndex = deselected.at(0).indexes().at(ng::cats::cat_id);
@@ -3366,35 +3367,65 @@ void NullGet::onUpdateJobMenuEnableProperty()
 
 	//将菜单项进行使合适的变灰
 	QModelIndex idx;
-	QString assumeCategory = "Download";	
+	// QString assumeCategory = "Download";
+    int catId = ng::cats::downloading;
 	
-	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
-	{
+	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0) {
 
-	}
-	else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
-	{
-		idx = this->mCatView->selectionModel()->selectedIndexes().at(0);
-		if (idx.data().toString().compare("Download")!=0
-			&& idx.data().toString().compare("Downloaded")!=0
-			&& idx.data().toString().compare("Deleted")!=0	)
-		{
+	} else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0) {
+		idx = this->mCatView->selectionModel()->selectedIndexes().at(ng::cats::cat_id);
+        catId = idx.data().toInt();
+		// if (idx.data().toString().compare("Download")!=0
+		// 	&& idx.data().toString().compare("Downloaded")!=0
+		// 	&& idx.data().toString().compare("Deleted")!=0	) {
 			
-		}
-		else
-		{
-			assumeCategory = idx.data().toString();
-		}
+		// } else {
+		// 	assumeCategory = idx.data().toString();
+		// }
 	}
 
-	if (assumeCategory.compare("Downloaded") == 0 )
-	{
+	if (catId == ng::cats::downloaded) { // (assumeCategory.compare("Downloaded") == 0 ) {
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0) {
+			//this->mainUI.action_Start->setEnabled(true);
+			//this->mainUI.action_Pause->setEnabled(true);
+			//this->mainUI.action_Schedule->setEnabled(true);
+			this->mainUI.action_Delete_task->setEnabled(true);
+			this->mainUI.action_Properties->setEnabled(true);
+			this->mainUI.action_Comment->setEnabled(true);
+			this->mainUI.action_Copy_URL_To_ClipBoard->setEnabled(true);
+			this->mainUI.action_Browse_Referer->setEnabled(true);
+			this->mainUI.action_Browse_With_Site_Explorer->setEnabled(true);
+			this->mainUI.actionMove_Down->setEnabled(true);
+			this->mainUI.actionMove_Up->setEnabled(true);
+			this->mainUI.action_Move_bottom->setEnabled(true);
+			this->mainUI.action_Move_top->setEnabled(true);
+			this->mainUI.action_Site_Properties->setEnabled(true);
+		} else {
+			//this->mainUI.action_Start->setEnabled(false);
+			//this->mainUI.action_Pause->setEnabled(false);
+			//this->mainUI.action_Schedule->setEnabled(false);
+			//this->mainUI.action_Delete_task->setEnabled(false);
+			this->mainUI.action_Properties->setEnabled(false);
+			this->mainUI.action_Comment->setEnabled(false);
+			this->mainUI.action_Copy_URL_To_ClipBoard->setEnabled(false);
+			this->mainUI.action_Browse_Referer->setEnabled(false);
+			this->mainUI.action_Browse_With_Site_Explorer->setEnabled(false);
+			this->mainUI.actionMove_Down->setEnabled(false);
+			this->mainUI.actionMove_Up->setEnabled(false);
+			this->mainUI.action_Move_bottom->setEnabled(false);
+			this->mainUI.action_Move_top->setEnabled(false);
+			this->mainUI.action_Site_Properties->setEnabled(false);
+		}
+	} else if (catId == ng::cats::deleted) { // (assumeCategory.compare("Deleted") == 0 )
+		this->mainUI.action_Start->setEnabled(false);
+		this->mainUI.action_Pause->setEnabled(false);
+		this->mainUI.action_Schedule->setEnabled(false);
+		this->mainUI.action_Delete_task->setEnabled(false);
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0) {
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
 			//this->mainUI.action_Schedule->setEnabled(true);
@@ -3409,9 +3440,7 @@ void NullGet::onUpdateJobMenuEnableProperty()
 			this->mainUI.action_Move_bottom->setEnabled(true);
 			this->mainUI.action_Move_top->setEnabled(true);
 			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
+		} else {
 			//this->mainUI.action_Start->setEnabled(false);
 			//this->mainUI.action_Pause->setEnabled(false);
 			//this->mainUI.action_Schedule->setEnabled(false);
@@ -3428,51 +3457,9 @@ void NullGet::onUpdateJobMenuEnableProperty()
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
 	}
-	else if (assumeCategory.compare("Deleted") == 0 )
+	else //if (assumeCategory.compare("Downloading") == 0 )
 	{
-		this->mainUI.action_Start->setEnabled(false);
-		this->mainUI.action_Pause->setEnabled(false);
-		this->mainUI.action_Schedule->setEnabled(false);
-		this->mainUI.action_Delete_task->setEnabled(false);
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
-			//this->mainUI.action_Start->setEnabled(true);
-			//this->mainUI.action_Pause->setEnabled(true);
-			//this->mainUI.action_Schedule->setEnabled(true);
-			//this->mainUI.action_Delete_task->setEnabled(true);
-			this->mainUI.action_Properties->setEnabled(true);
-			this->mainUI.action_Comment->setEnabled(true);
-			this->mainUI.action_Copy_URL_To_ClipBoard->setEnabled(true);
-			this->mainUI.action_Browse_Referer->setEnabled(true);
-			this->mainUI.action_Browse_With_Site_Explorer->setEnabled(true);
-			this->mainUI.actionMove_Down->setEnabled(true);
-			this->mainUI.actionMove_Up->setEnabled(true);
-			this->mainUI.action_Move_bottom->setEnabled(true);
-			this->mainUI.action_Move_top->setEnabled(true);
-			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
-			//this->mainUI.action_Start->setEnabled(false);
-			//this->mainUI.action_Pause->setEnabled(false);
-			//this->mainUI.action_Schedule->setEnabled(false);
-			//this->mainUI.action_Delete_task->setEnabled(false);
-			this->mainUI.action_Properties->setEnabled(false);
-			this->mainUI.action_Comment->setEnabled(false);
-			this->mainUI.action_Copy_URL_To_ClipBoard->setEnabled(false);
-			this->mainUI.action_Browse_Referer->setEnabled(false);
-			this->mainUI.action_Browse_With_Site_Explorer->setEnabled(false);
-			this->mainUI.actionMove_Down->setEnabled(false);
-			this->mainUI.actionMove_Up->setEnabled(false);
-			this->mainUI.action_Move_bottom->setEnabled(false);
-			this->mainUI.action_Move_top->setEnabled(false);
-			this->mainUI.action_Site_Properties->setEnabled(false);
-		}
-	}
-	else //if (assumeCategory.compare("Download") == 0 )
-	{
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0) {
 			this->mainUI.action_Start->setEnabled(true);
 			this->mainUI.action_Pause->setEnabled(true);
 			this->mainUI.action_Schedule->setEnabled(true);
@@ -3487,9 +3474,7 @@ void NullGet::onUpdateJobMenuEnableProperty()
 			this->mainUI.action_Move_bottom->setEnabled(true);
 			this->mainUI.action_Move_top->setEnabled(true);
 			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
+		} else {
 			this->mainUI.action_Start->setEnabled(false);
 			this->mainUI.action_Pause->setEnabled(false);
 			this->mainUI.action_Schedule->setEnabled(false);
@@ -3963,6 +3948,7 @@ void NullGet::onAllocateDiskFileSpace(quint64 fileLength , QString fileName )
 
 void NullGet::paintEvent (QPaintEvent * event )
 {
+    Q_UNUSED(event);
 	QPainter painter(this);
 	QPoint p(0, 0);
 	if (this->image.isNull()) {
@@ -4194,7 +4180,8 @@ void NullGet::onAriaProcError(QProcess::ProcessError error)
 
 void NullGet::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    
+    Q_UNUSED(exitCode);
+    Q_UNUSED(exitStatus);
 }
 
 

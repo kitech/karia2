@@ -82,8 +82,30 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 	//qDebug()<<__FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
-	if (role == Qt::DecorationRole && index.column() == 0 ) { //只有第一列显示图片就可以了。
-		return QImage(qApp->applicationDirPath()+"/"+"icons/crystalsvg/16x16/filesystems/folder_violet_open.png");
+	if (role == Qt::DecorationRole && index.column() == 0 ) { // 只有第一列显示图片就可以了。
+        int catId = this->data(this->index(index.row(), ng::cats::cat_id, index.parent()), Qt::DisplayRole).toInt();
+        if (catId == 0) {
+            return QImage(qApp->applicationDirPath() + "/icons/document-multiple.png").scaled(22, 22);
+        } else if (catId == ng::cats::downloading) {
+            return QImage(qApp->applicationDirPath() + "/icons/go-down-search.png").scaled(22, 22);
+        } else if (catId == ng::cats::downloaded) {
+            return QImage(qApp->applicationDirPath() + "/icons/status/task-complete.png").scaled(22, 22);
+        } else if (catId == ng::cats::software) {
+            return QImage(qApp->applicationDirPath() + "/icons/folder-tar.png").scaled(22, 22);
+        } else if (catId == ng::cats::music) {
+            return QImage(qApp->applicationDirPath() + "/icons/folder-sound.png").scaled(22, 22);
+        } else if (catId == ng::cats::game) {
+            return QImage(qApp->applicationDirPath() + "/icons/applications-games.png").scaled(22, 22);
+        } else if (catId == ng::cats::movie) {
+            return QImage(qApp->applicationDirPath() + "/icons/folder-video.png").scaled(22, 22);
+        } else if (catId == ng::cats::documents) {
+            return QImage(qApp->applicationDirPath() + "/icons/folder-documents.png").scaled(22, 22);
+        } else if (catId == ng::cats::deleted) {
+            return QImage(qApp->applicationDirPath() + "/icons/user-trash.png").scaled(22, 22);
+        } else {
+            return QImage(qApp->applicationDirPath() + "/icons/folder.png").scaled(22, 22);
+            return QImage(qApp->applicationDirPath() + "/" + "icons/crystalsvg/16x16/filesystems/folder_violet_open.png");
+        }
 	}
 
 	if (role != Qt::DisplayRole)
