@@ -32,9 +32,9 @@ private:
 
 };
 
-class TaskOption : public QObject
+class TaskOption
 {
-	Q_OBJECT;
+    //	Q_OBJECT;
 public:
 	TaskOption(QObject *parent=0);
 	~TaskOption();
@@ -50,13 +50,18 @@ public:
 
     static TaskOption *fromModelRow(QAbstractItemModel *model, int row);
 
+    QByteArray toRawData();
+    QString toBase64Data();
+    static TaskOption fromRawData(QByteArray ba);
+    static TaskOption fromBase64Data(QString data);
+
 //private:
 
 	//general
 	QString mTaskUrl;
     QString mOldUrl;
 	int mFindUrlByMirror;
-	QString mReferrer;
+	QString mReferer;
 	QString mCategory;
     int mCatId;
 	QString mSavePath;

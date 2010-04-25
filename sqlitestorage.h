@@ -58,7 +58,7 @@ namespace ng
 		enum {task_id, file_size, retry_times, create_time, current_speed, average_speed,
               eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count,
               active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent,
-              org_url, real_url, redirect_times, finish_time, task_status, total_packet,
+              org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet,
               abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp,
               file_length_abtained, dirty, aria_gid
         };
@@ -147,6 +147,7 @@ public:
                  QString got_percent          ,
                  QString org_url              ,
                  QString real_url             ,
+                 QString referer              ,
                  QString redirect_times       ,
                  QString finish_time          ,
                  QString task_status          ,
@@ -160,7 +161,7 @@ public:
                  QString dirty
                  );
 	bool updateTask(int task_id , 
-                    QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
+                    QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
                     );
 	bool addSegment(int seg_id, int task_id, 
                     QString start_offset      ,

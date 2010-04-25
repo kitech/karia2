@@ -61,14 +61,13 @@ QSize CategoryComboBoxItemDelegate::sizeHint(const QStyleOptionViewItem & option
 
 ///////////////////////////
 TaskOption::TaskOption(QObject *parent)
- : QObject(parent)
 {
-	
 }
+
 TaskOption::~TaskOption()
 {
-	
 }
+
 void TaskOption::setDefaultValue()
 {
 	//general
@@ -104,7 +103,7 @@ void TaskOption::dump()
 	//general
 	qDebug()<<"mTaskUrl:"<<mTaskUrl;
 	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror ;
-	qDebug()<<"mReferrer:"<<mReferrer;
+	qDebug()<<"mReferrer:"<<mReferer;
 	qDebug()<<"mCategory:"<<mCategory;
     qDebug()<<"mCatId:"<<mCatId;
 	qDebug()<<"mSavePath:"<<mSavePath ;
@@ -129,6 +128,48 @@ void TaskOption::dump()
 	qDebug()<<"mProxyTypeMedia:"<<mProxyTypeMedia;		
 }
 
+QByteArray TaskOption::toRawData()
+{
+    QByteArray ba;
+
+    ba = "TaskOption";
+    ba += '|' + this->mTaskUrl.toAscii().toHex();
+    ba += '|' + this->mReferer.toAscii().toHex();
+
+    return ba;
+}
+QString TaskOption::toBase64Data()
+{
+    QByteArray ba = this->toRawData();
+
+    return ba.toBase64();
+}
+
+// static 
+TaskOption TaskOption::fromRawData(QByteArray ba)
+{
+    TaskOption option;
+
+    QList<QByteArray> elts = ba.split('|');
+    if (elts.count() != 3 || elts.at(0) != "TaskOption") {
+        qDebug()<<"Invalid TaskOption package";
+        return TaskOption();
+    }
+
+    option.mTaskUrl = QString(QByteArray::fromHex(elts.at(1)));
+    option.mReferer = QString(QByteArray::fromHex(elts.at(2)));
+
+    return option;
+}
+
+// static 
+TaskOption TaskOption::fromBase64Data(QString data)
+{
+    QByteArray ba = QByteArray::fromBase64(data.toAscii());
+    return TaskOption::fromRawData(ba);
+}
+
+
 // static
 TaskOption *TaskOption::fromModelRow(QAbstractItemModel *model, int row)
 {
@@ -137,7 +178,7 @@ TaskOption *TaskOption::fromModelRow(QAbstractItemModel *model, int row)
 
     option = new TaskOption();
     option->mTaskUrl = model->data(model->index(row, ng::tasks::org_url)).toString();
-    option->mReferrer = model->data(model->index(row, ng::tasks::org_url)).toString();
+    option->mReferer = model->data(model->index(row, ng::tasks::org_url)).toString();
     // option->mCategory = 
     option->mCatId = model->data(model->index(row, ng::tasks::user_cat_id)).toInt();
     option->mSaveName = model->data(model->index(row, ng::tasks::file_name)).toString();
@@ -166,17 +207,24 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	QObject::connect(ui.tid_g_le_pb_category_info, SIGNAL(clicked()), this, SLOT(onShowCategoryInfo()));
 
 	//如果剪贴板上是有效的URL，则认为这就是要添加的任务，直填写到任务URL栏中。
-	QClipboard * cb = QApplication::clipboard();
+	QClipboard *cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
 
-	QUrl u(cbstr);
-    qDebug()<<__FUNCTION__<<cbstr<<u<<u.isValid()<<u.scheme();   
-	if (u.isValid() && u.scheme().length() > 0) {
-		this->ui.tid_g_le_url->setText(cbstr);
-    } if (cbstr.toLower().startsWith("magnet:?")) {
-        this->ui.tid_g_le_url->setText(cbstr);
+    if (cbstr.startsWith("nget://")) {
+        qDebug()<<__FUNCTION__<<cbstr;   
+        TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 7));
+        this->ui.tid_g_le_url->setText(options.mTaskUrl);
+        this->ui.tid_g_le_referrer->setText(options.mReferer);
     } else {
-		this->ui.tid_g_le_url->setText(this->ui.tid_g_le_url->text());
+        QUrl u(cbstr);
+        qDebug()<<__FUNCTION__<<cbstr<<u<<u.isValid()<<u.scheme();   
+        if (u.isValid() && u.scheme().length() > 0) {
+            this->ui.tid_g_le_url->setText(cbstr);
+        } if (cbstr.toLower().startsWith("magnet:?")) {
+            this->ui.tid_g_le_url->setText(cbstr);
+        } else {
+            this->ui.tid_g_le_url->setText(this->ui.tid_g_le_url->text());
+        }
     }
 
 	this->ui.tid_g_le_url->selectAll();
@@ -262,7 +310,7 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		//general
 		ui.tid_g_le_url->setText(prm->mTaskUrl);
 		ui.tid_g_cb_seache_mirror->setChecked(param->mFindUrlByMirror==1?true:false);
-		ui.tid_g_le_referrer->setText(prm->mReferrer);
+		ui.tid_g_le_referrer->setText(prm->mReferer);
 		ui.tid_g_le_cb_category->setEditText(prm->mCategory);
 
 		ui.tid_g_cb_save_to->setEditText(prm->mSavePath);
@@ -276,24 +324,18 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		ui.tid_g_le_le_user_name->setText(prm->mLoginUserName);
 		ui.tid_g_le_le_password->setText(prm->mLoginPassword);
 		ui.tid_g_le_te_comment->setPlainText(prm->mComment);
-		if (prm->mStartState == 0 )
-		{
+		if (prm->mStartState == 0 ) {
 			ui.tid_g_le_rb_manual->setChecked(true);
-		}
-		else if ( prm->mStartState == 2 )
-		{
+		} else if ( prm->mStartState == 2 ) {
 			ui.tid_g_le_rb_schedule->setChecked(true);
-		}
-		else
-		{
+		} else {
 			ui.tid_g_le_rb_immediately->setChecked(true);
 		}
 		
 		////////
 		
 		int row = prm->mAlterUrls.count();
-		for (int i = 0; i < row; ++i)
-		{
+		for (int i = 0; i < row; ++i) {
 			ui.tid_au_lw_alter_urls->addItem(prm->mAlterUrls.at(i));
 		}
 		
@@ -352,7 +394,7 @@ TaskOption * taskinfodlg::getOption()
 	//general
 	param->mTaskUrl = ui.tid_g_le_url->text();
 	param->mFindUrlByMirror = ui.tid_g_cb_seache_mirror->isChecked()?1:0;
-	param->mReferrer = ui.tid_g_le_referrer->text();
+	param->mReferer = ui.tid_g_le_referrer->text();
     param->mCatId = this->mCatId;
 	param->mCategory = ui.tid_g_le_cb_category->currentText();
 
@@ -361,9 +403,9 @@ TaskOption * taskinfodlg::getOption()
 #else
     param->mSavePath = ui.tid_g_cb_save_to->currentText();
 
-    // if (param->mSavePath.startsWith("~")) {
-    //     param->mSavePath = QDir::homePath() + ui.tid_g_cb_save_to->currentText().right(param->mSavePath.length()-1);
-    // }
+    if (param->mSavePath.startsWith("~")) {
+        param->mSavePath = QDir::homePath() + ui.tid_g_cb_save_to->currentText().right(param->mSavePath.length()-1);
+    }
 	qDebug()<<__FUNCTION__<<param->mSavePath<<QDir::isAbsolutePath(param->mSavePath);
 #endif
 	

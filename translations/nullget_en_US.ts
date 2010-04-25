@@ -457,141 +457,141 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NullGet</name>
     <message>
-        <location filename="../nullget.cpp" line="571"/>
+        <location filename="../nullget.cpp" line="573"/>
         <source>NullGet Icon Tray Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1066"/>
         <location filename="../nullget.cpp" line="1068"/>
+        <location filename="../nullget.cpp" line="1070"/>
         <source>Location: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1500"/>
+        <location filename="../nullget.cpp" line="1503"/>
         <source>Delete permanently. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1505"/>
+        <location filename="../nullget.cpp" line="1508"/>
         <source>Move Task .</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1505"/>
+        <location filename="../nullget.cpp" line="1508"/>
         <source>Move To Trash Now. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1765"/>
+        <location filename="../nullget.cpp" line="1768"/>
         <source>Task Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1905"/>
+        <location filename="../nullget.cpp" line="1908"/>
         <source>Delete Category:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1905"/>
+        <location filename="../nullget.cpp" line="1908"/>
         <source>Delete the Category and All sub Category?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2276"/>
+        <location filename="../nullget.cpp" line="2279"/>
         <source>pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2717"/>
+        <location filename="../nullget.cpp" line="2720"/>
         <source>Open a .metalink file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2718"/>
+        <location filename="../nullget.cpp" line="2721"/>
         <source>Metalink File (*.metalink)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2884"/>
-        <location filename="../nullget.cpp" line="2925"/>
+        <location filename="../nullget.cpp" line="2887"/>
+        <location filename="../nullget.cpp" line="2928"/>
         <source>Process Weg Page :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2884"/>
+        <location filename="../nullget.cpp" line="2887"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2925"/>
+        <location filename="../nullget.cpp" line="2928"/>
         <source>No URL(s) Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3020"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: %4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="3837"/>
-        <location filename="../nullget.cpp" line="3881"/>
+        <location filename="../nullget.cpp" line="3821"/>
+        <location filename="../nullget.cpp" line="3865"/>
         <source>No Task Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3837"/>
-        <location filename="../nullget.cpp" line="3881"/>
+        <location filename="../nullget.cpp" line="3821"/>
+        <location filename="../nullget.cpp" line="3865"/>
         <source>Please Select a Task For Operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4190"/>
+        <location filename="../nullget.cpp" line="3856"/>
+        <source>File &lt;b&gt;%1&lt;/b&gt; not found, has it downloaded already?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.cpp" line="4175"/>
         <source>Aria2 backend error :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4191"/>
+        <location filename="../nullget.cpp" line="4176"/>
         <source>Can not start aria2. Are you already installed it properly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1500"/>
+        <location filename="../nullget.cpp" line="1503"/>
         <source>Delete Task .</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1765"/>
+        <location filename="../nullget.cpp" line="1768"/>
         <source>Move It To Done Table Now. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2650"/>
+        <location filename="../nullget.cpp" line="2653"/>
         <source>Open a .torrent file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2651"/>
+        <location filename="../nullget.cpp" line="2654"/>
         <source>Torrent File (*.torrent)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3871"/>
+        <location filename="../nullget.cpp" line="3023"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: .%4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nullget.cpp" line="3855"/>
         <source>Notice:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3872"/>
-        <source>File &lt;b&gt;%1&lt;/b&gt; not found,has it downloaded already?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="3927"/>
+        <location filename="../nullget.cpp" line="3911"/>
         <source>Allocating File Space: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3936"/>
+        <location filename="../nullget.cpp" line="3920"/>
         <source>Waiting ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3225,7 +3225,7 @@ p, li { white-space: pre-wrap; }
     <name>SqliteStorage</name>
     <message>
         <location filename="../sqlitestorage.cpp" line="69"/>
-        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
+        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3949,6 +3949,24 @@ p, li { white-space: pre-wrap; }
         <location filename="../webpageurlinputdlg.ui" line="141"/>
         <location filename="../GeneratedFiles/ui_webpageurlinputdlg.h" line="161"/>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>taskinfodlg</name>
+    <message>
+        <location filename="../taskinfodlg.cpp" line="256"/>
+        <source>downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../taskinfodlg.cpp" line="454"/>
+        <source>Input mirror URL:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../taskinfodlg.cpp" line="454"/>
+        <source>URL:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

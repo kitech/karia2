@@ -110,6 +110,7 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"abtained_percent    ,"
 			"org_url             ,"
 			"real_url            ,"
+        "referer,"
 			"redirect_times      ,"
 			"finish_time         ,"
 			"task_status         ,"

@@ -178,7 +178,9 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
         index = mdl->index(modelRows, ng::tasks::real_url);
         mdl->setData(index, option->mTaskUrl);	
         index = mdl->index(modelRows, ng::tasks::org_url);
-        mdl->setData(index, option->mTaskUrl);		
+        mdl->setData(index, option->mTaskUrl);
+        index = mdl->index(modelRows, ng::tasks::referer);
+        mdl->setData(index, option->mReferer);
         index = mdl->index(modelRows, ng::tasks::user_cat_id );
         // mdl->setData(index ,ng::cats::downloading);
         mdl->setData(index, option->mCatId);
@@ -489,6 +491,8 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), 
                          (sts["totalLength"].toLongLong() - sts["completedLength"].toLongLong()));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1 %").arg(100));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
+                         QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), sts["totalLength"]);
             mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), sts["downloadSpeed"]);

@@ -352,7 +352,7 @@ void NullGet::initPopupMenus()
 {
 	//action groups 
 	QActionGroup *group = new QActionGroup(this);
-	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchSpeedMode(QAction*)));
+	QObject::connect(group, SIGNAL(triggered(QAction *)), this, SLOT(onSwitchSpeedMode(QAction*)));
 	group->addAction(mainUI.action_Unlimited);
 	group->addAction(mainUI.action_Manual);
 	group->addAction(mainUI.action_Automatic);
@@ -402,7 +402,7 @@ void NullGet::initPopupMenus()
 	group->addAction(mainUI.action_Chinese_simple);
 	group->addAction(mainUI.action_Chinese_trad);
 	group->addAction(mainUI.action_English);
-	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchLanguage(QAction*)));
+	QObject::connect(group, SIGNAL(triggered(QAction *)), this, SLOT(onSwitchLanguage(QAction*)));
 	//mainUI.action_English->setChecked(true);
 
 	/////skin
@@ -414,11 +414,11 @@ void NullGet::initPopupMenus()
 	group->addAction(mainUI.actionSkype_Gradient);
 	group->addAction(mainUI.actionCustom_Background);
 	group->addAction(mainUI.actionImageBk);
-	QObject::connect(group, SIGNAL(triggered(QAction *)),this, SLOT(onSwitchSkinType(QAction*)));
+	QObject::connect(group, SIGNAL(triggered(QAction *)), this, SLOT(onSwitchSkinType(QAction*)));
 
 
 	/////// all popups
-	this->mTaskPopupMenu = new QMenu("&Task",this);
+	this->mTaskPopupMenu = new QMenu("&Task", this);
 		
 	QList<QAction*> actionList;
 	actionList.append(this->mainUI.action_Start);
@@ -453,7 +453,7 @@ void NullGet::initPopupMenus()
 	actionList.append(this->mainUI.action_Seg_Log_Save_To_File);
 	actionList.append(this->mainUI.action_Clear_Seg_Log);
 
-	this->mLogPopupMenu = new QMenu("&SegLog",this);
+	this->mLogPopupMenu = new QMenu("&SegLog", this);
 	this->mLogPopupMenu->addActions(actionList);
 
 	actionList.clear();
@@ -463,10 +463,10 @@ void NullGet::initPopupMenus()
 	actionList.append(this->mainUI.action_Increase_split_parts);
 	actionList.append(this->mainUI.action_Decrease_split_parts);
 
-	this->mSegmentPopupMenu = new QMenu("&SegList",this);
+	this->mSegmentPopupMenu = new QMenu("&SegList", this);
 	this->mSegmentPopupMenu->addActions(actionList);	
 
-	this->mCatPopupMenu = new QMenu("&Category",this);
+	this->mCatPopupMenu = new QMenu("&Category", this);
 	actionList.clear();
 	actionList.append(this->mainUI.actionNew_Cagegory);
 	actionList.append(this->mainUI.action_Delete_cat);
@@ -476,7 +476,7 @@ void NullGet::initPopupMenus()
 
 
 	//drop zone
-	this->mDropZonePopupMenu = new QMenu("&DropZone",this);
+	this->mDropZonePopupMenu = new QMenu("&DropZone", this);
 	this->mDropZonePopupMenu->addAction(this->mainUI.action_Show_Hide_Main_Widow);
 	this->mDropZonePopupMenu->addSeparator ();
 	this->mDropZonePopupMenu->addAction(this->mainUI.action_Monitor_Clipboard);
@@ -501,7 +501,7 @@ void NullGet::initPopupMenus()
 	this->mDropZonePopupMenu->addAction(this->mainUI.actionQuit);
 
 	//mSysTrayMenu
-	this->mSysTrayMenu = new QMenu("NullTray",this);
+	this->mSysTrayMenu = new QMenu("NullTray", this);
 	this->mSysTrayMenu->addAction(this->mainUI.action_Show_Hide_Main_Widow);
 	this->mSysTrayMenu->addSeparator();
 	this->mSysTrayMenu->addAction(this->mainUI.actionQuit);
@@ -623,62 +623,63 @@ void NullGet::initAppIcons()
 
 void NullGet::connectAllSignalAndSlog()
 {
-	QObject::connect(this->mainUI.actionDrop_zone, SIGNAL(triggered(bool)),this->mDropZone,SLOT(setVisible(bool)));
+	QObject::connect(this->mainUI.actionDrop_zone, SIGNAL(triggered(bool)), this->mDropZone,SLOT(setVisible(bool)));
 	
 	//file action
-	//QObject::connect(this->mainUI.action_New_Database, SIGNAL(triggered()),this, SLOT(onNewDatabase()));	
-	//QObject::connect(this->mainUI.action_Open_Database, SIGNAL(triggered()),this, SLOT(onOpenDatabase()));	
-	//QObject::connect(this->mainUI.action_Save_Database, SIGNAL(triggered()),this, SLOT(onSaveAllTask()));	
-	//QObject::connect(this->mainUI.actionSave_As, SIGNAL(triggered()),this, SLOT(onSaveAllTaskAs()));
+	//QObject::connect(this->mainUI.action_New_Database, SIGNAL(triggered()), this, SLOT(onNewDatabase()));	
+	//QObject::connect(this->mainUI.action_Open_Database, SIGNAL(triggered()), this, SLOT(onOpenDatabase()));	
+	//QObject::connect(this->mainUI.action_Save_Database, SIGNAL(triggered()), this, SLOT(onSaveAllTask()));	
+	//QObject::connect(this->mainUI.actionSave_As, SIGNAL(triggered()), this, SLOT(onSaveAllTaskAs()));
 
-	QObject::connect(this->mainUI.actionProcess_Web_Page_File, SIGNAL(triggered()),this, SLOT(showProcessWebPageInputDiglog()));
+	QObject::connect(this->mainUI.actionProcess_Web_Page_File, SIGNAL(triggered()), this, SLOT(showProcessWebPageInputDiglog()));
 
 	//editr
-	QObject::connect(this->mainUI.actionPaste_URL , SIGNAL(triggered()),this, SLOT(showNewDownloadDialog()));
-	QObject::connect(this->mainUI.actionSelect_All, SIGNAL(triggered()),this, SLOT(onEditSelectAll()));
-	QObject::connect(this->mainUI.actionInvert_Select, SIGNAL(triggered()),this, SLOT(onEditInvertSelect()));
+	QObject::connect(this->mainUI.actionPaste_URL , SIGNAL(triggered()), this, SLOT(showNewDownloadDialog()));
+	QObject::connect(this->mainUI.actionSelect_All, SIGNAL(triggered()), this, SLOT(onEditSelectAll()));
+	QObject::connect(this->mainUI.actionInvert_Select, SIGNAL(triggered()), this, SLOT(onEditInvertSelect()));
 	
 	//cat action
-	QObject::connect(this->mainUI.actionNew_Cagegory , SIGNAL(triggered()),this, SLOT(onNewCategory()));
-	QObject::connect(this->mainUI.action_Cat_Property , SIGNAL(triggered()),this, SLOT(onShowCategoryProperty()));
-	QObject::connect(this->mainUI.action_Delete_cat, SIGNAL(triggered()),this, SLOT(onDeleteCategory()));
-	QObject::connect(this->mainUI.action_cat_Move_To , SIGNAL(triggered()),this, SLOT(onCategoryMoveTo()));
+	QObject::connect(this->mainUI.actionNew_Cagegory , SIGNAL(triggered()), this, SLOT(onNewCategory()));
+	QObject::connect(this->mainUI.action_Cat_Property , SIGNAL(triggered()), this, SLOT(onShowCategoryProperty()));
+	QObject::connect(this->mainUI.action_Delete_cat, SIGNAL(triggered()), this, SLOT(onDeleteCategory()));
+	QObject::connect(this->mainUI.action_cat_Move_To , SIGNAL(triggered()), this, SLOT(onCategoryMoveTo()));
 
 	//view
-	QObject::connect(this->mainUI.action_Show_Columns_Editor , SIGNAL(triggered()),this, SLOT(onShowColumnEditor()));
-	QObject::connect(this->mainUI.actionShow_Text, SIGNAL(triggered(bool)),this, SLOT(onShowToolbarText(bool) ) );
+	QObject::connect(this->mainUI.action_Show_Columns_Editor , SIGNAL(triggered()), this, SLOT(onShowColumnEditor()));
+	QObject::connect(this->mainUI.actionShow_Text, SIGNAL(triggered(bool)), this, SLOT(onShowToolbarText(bool) ) );
 	//job action 
-	QObject::connect(this->mainUI.menu_Jobs, SIGNAL(aboutToShow()),this, SLOT(onTaskListMenuPopup()));
-	QObject::connect(this->mainUI.action_New_Download, SIGNAL(triggered()),this, SLOT(showNewDownloadDialog()));
+	QObject::connect(this->mainUI.menu_Jobs, SIGNAL(aboutToShow()), this, SLOT(onTaskListMenuPopup()));
+	QObject::connect(this->mainUI.action_New_Download, SIGNAL(triggered()), this, SLOT(showNewDownloadDialog()));
     QObject::connect(this->mainUI.action_New_Bittorrent, SIGNAL(triggered()), this, SLOT(showNewBittorrentFileDialog())); 
     QObject::connect(this->mainUI.action_New_Metalink, SIGNAL(triggered()), this, SLOT(showNewMetalinkFileDialog()));
-	QObject::connect(this->mainUI.actionAdd_batch_download, SIGNAL(triggered()),this, SLOT(showBatchDownloadDialog()));
+	QObject::connect(this->mainUI.actionAdd_batch_download, SIGNAL(triggered()), this, SLOT(showBatchDownloadDialog()));
 	
-	QObject::connect(this->mainUI.action_Start , SIGNAL(triggered()),this, SLOT(onStartTask()));
-	QObject::connect(this->mainUI.action_Pause , SIGNAL(triggered()),this, SLOT(onPauseTask()));
-	QObject::connect(this->mainUI.action_Start_All , SIGNAL(triggered()),this, SLOT(onStartTaskAll()));
-	QObject::connect(this->mainUI.action_Pause_All , SIGNAL(triggered()),this, SLOT(onPauseTaskAll()));
+	QObject::connect(this->mainUI.action_Start , SIGNAL(triggered()), this, SLOT(onStartTask()));
+	QObject::connect(this->mainUI.action_Pause , SIGNAL(triggered()), this, SLOT(onPauseTask()));
+	QObject::connect(this->mainUI.action_Start_All , SIGNAL(triggered()), this, SLOT(onStartTaskAll()));
+	QObject::connect(this->mainUI.action_Pause_All , SIGNAL(triggered()), this, SLOT(onPauseTaskAll()));
 
-	QObject::connect(this->mainUI.action_Delete_task, SIGNAL(triggered()),this, SLOT(onDeleteTask()));
+	QObject::connect(this->mainUI.action_Delete_task, SIGNAL(triggered()), this, SLOT(onDeleteTask()));
 
-	QObject::connect(this->mainUI.action_Properties, SIGNAL(triggered()),this, SLOT(onShowTaskProperty()));
+	QObject::connect(this->mainUI.action_Properties, SIGNAL(triggered()), this, SLOT(onShowTaskProperty()));
 
-	QObject::connect(this->mainUI.actionOpen_de_stination_directory, SIGNAL(triggered()),this, SLOT(onOpenDistDirector()));
-	QObject::connect(this->mainUI.actionOpen_Exec_download_file, SIGNAL(triggered()),this, SLOT(onOpenExecDownloadedFile()));
+	QObject::connect(this->mainUI.actionOpen_de_stination_directory, SIGNAL(triggered()), this, SLOT(onOpenDistDirector()));
+	QObject::connect(this->mainUI.actionOpen_Exec_download_file, SIGNAL(triggered()), this, SLOT(onOpenExecDownloadedFile()));
+	QObject::connect(this->mainUI.action_Browse_Referer, SIGNAL(triggered()), this, SLOT(onOpenRefererUrl()));
 	
 	//tools 
-	QObject::connect(this->mainUI.action_Options, SIGNAL(triggered()),this, SLOT(onShowOptions()));
-	QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()),this, SLOT(onShowConnectOption()));
+	QObject::connect(this->mainUI.action_Options, SIGNAL(triggered()), this, SLOT(onShowOptions()));
+	QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()), this, SLOT(onShowConnectOption()));
 	
-	QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()),this, SLOT(onShowDefaultDownloadProperty()));
+	QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()), this, SLOT(onShowDefaultDownloadProperty()));
 
 	//statusbar
-	QObject::connect(this->mSpeedBarSlider, SIGNAL(valueChanged(int)),this, SLOT(onManualSpeedChanged(int)));
+	QObject::connect(this->mSpeedBarSlider, SIGNAL(valueChanged(int)), this, SLOT(onManualSpeedChanged(int)));
 
 	//help action 
-	this->connect(this->mainUI.action_Go_to_NullGet_Home_Page, SIGNAL(triggered()),this, SLOT(onGotoHomePage()));
-	this->connect(this->mainUI.action_About_NullGet, SIGNAL(triggered()),this, SLOT(showAboutDialog()));
-	QObject::connect(this->mainUI.actionAbout_Qt, SIGNAL(triggered()),this, SLOT(onAboutQt()));
+	this->connect(this->mainUI.action_Go_to_NullGet_Home_Page, SIGNAL(triggered()), this, SLOT(onGotoHomePage()));
+	this->connect(this->mainUI.action_About_NullGet, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
+	QObject::connect(this->mainUI.actionAbout_Qt, SIGNAL(triggered()), this, SLOT(onAboutQt()));
 
 	//centrol 
 	QObject::connect(this->mainUI.mui_tv_task_list, SIGNAL(customContextMenuRequested (const QPoint &  )),
@@ -694,45 +695,45 @@ void NullGet::connectAllSignalAndSlog()
 		this, SLOT(onCateMenuPopup(const QPoint &)));
 
 
-	QObject::connect(this->mDropZone, SIGNAL(doubleclicked()),this, SLOT(onDropZoneDoubleClicked()));
-	QObject::connect(this->mainUI.action_Show_Hide_Main_Widow, SIGNAL(triggered()),this, SLOT(onDropZoneDoubleClicked()));
+	QObject::connect(this->mDropZone, SIGNAL(doubleclicked()), this, SLOT(onDropZoneDoubleClicked()));
+	QObject::connect(this->mainUI.action_Show_Hide_Main_Widow, SIGNAL(triggered()), this, SLOT(onDropZoneDoubleClicked()));
 	QObject::connect(this->mDropZone, SIGNAL(customContextMenuRequested(const QPoint &)),
 		this, SLOT(onDropZoneCustomMenu(const QPoint &)));
 	
 
 	//seg view menu
-	QObject::connect(this->mainUI.action_Seg_List_Start, SIGNAL(triggered()),this, SLOT(onStartSegment()));
-	QObject::connect(this->mainUI.action_Seg_List_Stop, SIGNAL(triggered()),this, SLOT(onPauseSegment()));
-	//QObject::connect(this->mainUI.action_Seg_List_Restart, SIGNAL(triggered()),this, SLOT(onRestartSegment()));
+	QObject::connect(this->mainUI.action_Seg_List_Start, SIGNAL(triggered()), this, SLOT(onStartSegment()));
+	QObject::connect(this->mainUI.action_Seg_List_Stop, SIGNAL(triggered()), this, SLOT(onPauseSegment()));
+	//QObject::connect(this->mainUI.action_Seg_List_Restart, SIGNAL(triggered()), this, SLOT(onRestartSegment()));
 
 	//seg log menu
-	QObject::connect(this->mainUI.action_Seg_Log_Copy, SIGNAL(triggered()),this, SLOT(onCopySelectSegLog()));
-	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File, SIGNAL(triggered()),this, SLOT(onSaveSegLog()));
-	QObject::connect(this->mainUI.action_Clear_Seg_Log, SIGNAL(triggered()),this, SLOT(onClearSegLog()));
+	QObject::connect(this->mainUI.action_Seg_Log_Copy, SIGNAL(triggered()), this, SLOT(onCopySelectSegLog()));
+	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File, SIGNAL(triggered()), this, SLOT(onSaveSegLog()));
+	QObject::connect(this->mainUI.action_Clear_Seg_Log, SIGNAL(triggered()), this, SLOT(onClearSegLog()));
 
 	//cat view
 	QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
 		this, SLOT(onCatListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	//toolbar	//在UI设计器中将信号传递到标准菜单中。
-	//QObject::connect(this->mainUI.mui_tb_properties, SIGNAL(triggered()),this, SLOT(onShowTaskProperty()));
-	//QObject::connect(this->mainUI.mui_tb_open_dir, SIGNAL(triggered()),this, SLOT(onOpenDistDirector()));
-	//QObject::connect(this->mainUI.mui_tb_exec_file, SIGNAL(triggered()),this, SLOT(onOpenExecDownloadedFile()));
+	//QObject::connect(this->mainUI.mui_tb_properties, SIGNAL(triggered()), this, SLOT(onShowTaskProperty()));
+	//QObject::connect(this->mainUI.mui_tb_open_dir, SIGNAL(triggered()), this, SLOT(onOpenDistDirector()));
+	//QObject::connect(this->mainUI.mui_tb_exec_file, SIGNAL(triggered()), this, SLOT(onOpenExecDownloadedFile()));
 
 	//other
-	QObject::connect(this->mainUI.action_Copy_URL_To_ClipBoard, SIGNAL(triggered()),this, SLOT(onCopyUrlToClipboard()));
+	QObject::connect(this->mainUI.action_Copy_URL_To_ClipBoard, SIGNAL(triggered()), this, SLOT(onCopyUrlToClipboard()));
 
-	QObject::connect(QApplication::clipboard(), SIGNAL(dataChanged()),this, SLOT(onClipBoardDataChanged()));
+	QObject::connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(onClipBoardDataChanged()));
 
-    QObject::connect(&this->mAverageSpeedTimer, SIGNAL(timeout()),this, SLOT(caclAllTaskAverageSpeed()));
+    QObject::connect(&this->mAverageSpeedTimer, SIGNAL(timeout()), this, SLOT(caclAllTaskAverageSpeed()));
 
-	QObject::connect(this->mainUI.actionWalk_Site, SIGNAL(triggered()),this, SLOT(onShowWalkSiteWindow()));
+	QObject::connect(this->mainUI.actionWalk_Site, SIGNAL(triggered()), this, SLOT(onShowWalkSiteWindow()));
 	QObject::connect(this->mSysTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onActiveTrayIcon(QSystemTrayIcon::ActivationReason)));
 	QObject::connect(this->mSysTrayIcon, SIGNAL(messageClicked()),  this, SLOT(onBallonClicked()));
 
 	//test it
-	//this->connect(this->mainUI.pushButton_3, SIGNAL(clicked()),this, SLOT(testFunc()));
-	//QObject::connect(QApplication::instance(), SIGNAL(aboutToQuit () ),this, SLOT(testFunc2()));
+	//this->connect(this->mainUI.pushButton_3, SIGNAL(clicked()), this, SLOT(testFunc()));
+	//QObject::connect(QApplication::instance(), SIGNAL(aboutToQuit () ), this, SLOT(testFunc2()));
 
 }
 //temporary 临时用于隐藏没有实现功能用户界面的代码。
@@ -869,7 +870,7 @@ int NullGet::createTask(TaskOption *option)
         
 		////将任务信息添加到 task list view 中
 		//QModelIndex index;
-		//QAbstractItemModel * mdl = 0;	//SqliteTaskModel::instance(ng::cats::downloading,this);
+		//QAbstractItemModel * mdl = 0;	//SqliteTaskModel::instance(ng::cats::downloading, this);
 		// TaskQueue::addTaskModel(taskId, option);
         this->mTaskMan->addTaskModel(taskId, option);
 		//在这里可以查看当前活动的任务数，并看是否需要启动该任务。
@@ -983,7 +984,7 @@ void NullGet::onSegmentListSelectChange(const QItemSelection & selected, const Q
 
 	//seach log model by taskid and seg id 
 
-	QAbstractItemModel * mdl = SegmentLogModel::instance(taskId , segId,this);
+	QAbstractItemModel * mdl = SegmentLogModel::instance(taskId , segId, this);
 
 	this->mSegLogListView->setModel(0);
 	if (mdl != 0 )
@@ -1056,7 +1057,7 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         QString speed = mil.at(ng::tasks::average_speed).data().toString();
         QString blocks = mil.at(ng::tasks::block_activity).data().toString();
         QString savePath = mil.at(ng::tasks::save_path).data().toString();
-        QString refer = mil.at(ng::tasks::org_url).data().toString();
+        QString refer = mil.at(ng::tasks::referer).data().toString();
         QPair<QString, QString> mimeIconPosition = this->getFileTypeByFileName(fileName);
 
         this->mainUI.label_2->setText(fileName);
@@ -1229,7 +1230,7 @@ void NullGet::onStartTask()
 // 		// TaskBallMapWidget::instance()->onRunTaskCompleteState(hTask , true );
 
 // 		// TaskQueue::onStartTask(pTaskId );
-// 		// QObject::connect(hTask, SIGNAL(destroyed(QObject*)),this, SLOT(onObjectDestroyed(QObject*)) );
+// 		// QObject::connect(hTask, SIGNAL(destroyed(QObject*)), this, SLOT(onObjectDestroyed(QObject*)) );
 // 	}
 
 // 	return;
@@ -1460,7 +1461,7 @@ void NullGet::onDeleteTask()
         // qDebug()<<"prepare delete ROW:"<<mrow<<" All ROW:"<<rowcnt;
 		int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
-        int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::user_cat_id)).toInt();
+        int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::sys_cat_id)).toInt();
 
         // qDebug()<<"DDDD:"<<taskId<<ariaGid<<srcCatId;
         deleteModelRows<<mrow;
@@ -1490,7 +1491,7 @@ void NullGet::onDeleteTask()
         int mrow = deleteModelRows.at(i);
         int taskId = from_model->data(from_model->index(mrow, ng::tasks::task_id)).toInt();
         QString ariaGid = from_model->data(from_model->index(mrow, ng::tasks::aria_gid)).toString();
-        int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::user_cat_id)).toInt();
+        int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::sys_cat_id)).toInt();
         qDebug()<<"DDDD:"<<mrow<<taskId<<ariaGid<<srcCatId;
         QModelIndexList rmil;
         for (int col = 0; col < colcnt; col ++) {
@@ -1500,7 +1501,8 @@ void NullGet::onDeleteTask()
             // delete it directly
             from_model->removeRows(mrow, 1);
 			//在system tray 显示移动任务消息
-			this->mSysTrayIcon->showMessage(tr("Delete Task ."), QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
+			this->mSysTrayIcon->showMessage(tr("Delete Task ."),
+                                            QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
                                             QSystemTrayIcon::Information, 5000);
         } else {
             int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil);
@@ -1562,8 +1564,8 @@ void NullGet::onDeleteTask()
 // 			//清除线程窗口列表
 // 			this->mSegLogListView->setModel(0);
 // 			this->mSegListView->setModel(0);
-// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
-// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
+// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1, this));
+// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1, this) );
 
 // 			//int idx = this->mTaskQueue.indexOf(tq);
 
@@ -1593,7 +1595,7 @@ void NullGet::onDeleteTask()
 // 			assert (1== 2 );
 // 		}
 // 	}	//end if (tq != 0 )
-// 	else if (from_model == SqliteTaskModel::instance(ng::cats::deleted,this) )
+// 	else if (from_model == SqliteTaskModel::instance(ng::cats::deleted, this) )
 // 	{
 // 		qDebug()<<"cant delete from deletion model";
 // 	}
@@ -1619,9 +1621,9 @@ void NullGet::onDeleteTask()
 // 			//清除线程窗口列表
 // 			this->mSegLogListView->setModel(0);
 // 			this->mSegListView->setModel(0);
-// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
+// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1, this));
 			
-// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
+// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1, this) );
 			
 // 			int torows = to_model->rowCount();
 // 			to_model->insertRows(torows,1);
@@ -1662,7 +1664,7 @@ void NullGet::onDeleteTaskAll()
 	QAbstractItemModel *model;
 	int rowCount = -1;
 
-	model = SqliteTaskModel::instance(ng::cats::downloading,this);
+	model = SqliteTaskModel::instance(ng::cats::downloading, this);
 
 	for (int i = 0; i < model->rowCount(); ++ i) {
 		index = model->index(i,0);
@@ -1750,8 +1752,8 @@ void NullGet::onTaskDone(int pTaskId)
 
 		//如果是RTSP、MMS的，需要合并文件操作，这个操作是否应该放在这里完成?		
 
-		from_model = SqliteTaskModel::instance(ng::cats::downloading,this);
-		to_model = SqliteTaskModel::instance(ng::cats::downloaded,this);
+		from_model = SqliteTaskModel::instance(ng::cats::downloading, this);
+		to_model = SqliteTaskModel::instance(ng::cats::downloaded, this);
 		int colcnt = from_model->columnCount();
 		int from_rowcnt = from_model->rowCount();
 		for(int i = 0; i < from_rowcnt; i ++ )
@@ -1779,8 +1781,8 @@ void NullGet::onTaskDone(int pTaskId)
 			//清除线程窗口列表
 			this->mSegLogListView->setModel(0);
 			this->mSegListView->setModel(0);
-			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1,this));
-			this->mSegListView->setModel(SqliteSegmentModel::instance(-1,this) );
+			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1, this));
+			this->mSegListView->setModel(SqliteSegmentModel::instance(-1, this) );
 
 			//int idx = this->mTaskQueue.indexOf(tq);
 
@@ -1901,9 +1903,9 @@ void NullGet::onDeleteCategory()
 	{
 		idx = mil.at(0);
 		if (idx == this->mCatViewModel->index(0,0)) return;	//不删除系统默认分类。
-		if (idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return;
-		if (idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return;
-		if (idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(0,0, this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(1,0, this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(2,0, this->mCatViewModel->index(0,0))) return;
 
 		if (QMessageBox::question(this,tr("Delete Category:"),tr("Delete the Category and All sub Category?") ,QMessageBox::Ok,QMessageBox::Cancel ) == QMessageBox::Cancel)
 			return;
@@ -1930,9 +1932,9 @@ void NullGet::onCategoryMoveTo()
 
 		idx = mil.at(0);
 		if (idx == this->mCatViewModel->index(0,0)) return;	//不移动系统默认分类。
-		if (idx == this->mCatViewModel->index(0,0,this->mCatViewModel->index(0,0))) return;
-		if (idx == this->mCatViewModel->index(1,0,this->mCatViewModel->index(0,0))) return;
-		if (idx == this->mCatViewModel->index(2,0,this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(0,0, this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(1,0, this->mCatViewModel->index(0,0))) return;
+		if (idx == this->mCatViewModel->index(2,0, this->mCatViewModel->index(0,0))) return;
 
 		CatManDlg * cmd = new CatManDlg(this);
 		cmd ->changeMoveToState(mil);
@@ -2005,8 +2007,8 @@ QMap<QString, QVariant> NullGet::taskOptionToAria2RpcOption(TaskOption *to)
     Q_ASSERT(to != NULL);
     QMap<QString, QVariant> aopts;
 
-    if (!to->mReferrer.isEmpty()) {
-        aopts["referer"] = to->mReferrer;
+    if (!to->mReferer.isEmpty()) {
+        aopts["referer"] = to->mReferer;
     } else {
         aopts["referer"] = to->mTaskUrl;
     }
@@ -2993,7 +2995,7 @@ void NullGet::onShowTaskProperty()
         int segcnt;
         QString fname;//= tq->mTaskOption->mSaveName;
 		
-        taskinfodlg *tid = new taskinfodlg(0,this);
+        taskinfodlg *tid = new taskinfodlg(0, this);
         tid->setTaskUrl(url);
         tid->setSegmentCount(segcnt);
         tid->setRename(fname);
@@ -3014,13 +3016,13 @@ void NullGet::onShowTaskPropertyDigest(const QModelIndex & index )
 	int taskId;
 	this->mSwapPoint = QCursor::pos();
 	this->mSwapModelIndex = index;
-	QTimer::singleShot(1000,this, SLOT(onShowTaskPropertyDigest()));
+	QTimer::singleShot(1000, this, SLOT(onShowTaskPropertyDigest()));
 }
 
 void NullGet::onShowTaskPropertyDigest( )
 {
 	//qDebug()<<__FUNCTION__;
-	QString tips = tr("<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: %4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>");
+	QString tips = tr("<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: .%4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>");
 	QPoint np = this->mainUI.mui_tv_task_list->viewport()->mapFromGlobal(QCursor::pos());
 	QModelIndex nidx = this->mainUI.mui_tv_task_list->indexAt(np);
 	QModelIndex tidx;
@@ -3045,7 +3047,7 @@ void NullGet::onShowTaskPropertyDigest( )
 		tidx = nidx.model()->index(row,ng::tasks::user_cat_id);
 		path = SqliteStorage::instance(this)->getSavePathByCatId(tidx.data().toInt());
 
-		tidx = nidx.model()->index(row, ng::tasks::real_url);
+		tidx = nidx.model()->index(row, ng::tasks::org_url);
 		url = tidx.data().toString();
 		tidx = nidx.model()->index(row, ng::tasks::file_name);
 		name = tidx.data().toString();
@@ -3053,7 +3055,7 @@ void NullGet::onShowTaskPropertyDigest( )
 		gotlength = tidx.data().toString();
 		tidx = nidx.model()->index(row, ng::tasks::file_size);
 		totallength = tidx.data().toString();
-		tidx = nidx.model()->index(row, ng::tasks::org_url);
+		tidx = nidx.model()->index(row, ng::tasks::referer);
 		refferer = tidx.data().toString();
 		tidx = nidx.model()->index(row, ng::tasks::comment);
 		comment = tidx.data().toString();
@@ -3354,12 +3356,9 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 		}
 	}
 	
-	if (this->mTaskListView == sender() )
-	{
+	if (this->mTaskListView == sender() ) {
 		this->mTaskPopupMenu->popup(QCursor::pos());
-	}
-	else
-	{
+	} else {
 		//不是任务视图控件发送来的。
 	}
 }
@@ -3856,7 +3855,7 @@ void NullGet::onOpenExecDownloadedFile()
         QString fullUrl = QDir().absoluteFilePath(durl);
 		if (fname .length() == 0 || ! QDir().exists(fullUrl)) {
 			QMessageBox::warning(this, tr("Notice:"),
-                                 QString(tr("File <b>%1</b> not found,has it downloaded already?")).arg(fullUrl));
+                                 QString(tr("File <b>%1</b> not found, has it downloaded already?")).arg(fullUrl));
 		} else {
 			//QProcess::execute(openner);
             bool opened = QDesktopServices::openUrl(fullUrl);	//only qt >= 4.2
@@ -3867,6 +3866,51 @@ void NullGet::onOpenExecDownloadedFile()
 	} else {
 		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
 	}
+}
+
+
+void NullGet::onOpenRefererUrl()
+{
+	QString tmp;
+	QString dir, fname, referer;
+	int taskId = -1;
+	int catId = -1; 
+
+	QItemSelectionModel * ism = 0;
+	QModelIndexList mil;
+	QString durl;
+
+	ism = this->mTaskListView->selectionModel();
+	mil = ism->selectedIndexes();
+	if (mil.size() > 0) {
+		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
+		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
+		fname = mil.at(ng::tasks::file_name).data().toString();
+        referer = mil.at(ng::tasks::referer).data().toString();
+
+        QDesktopServices::openUrl(QUrl(referer));
+		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
+        // dir = mil.at(ng::tasks::save_path).data().toString();
+
+        // if (dir.startsWith("~")) {
+        //     dir = QDir::homePath() + dir.right(dir.length() - 1);
+        // }
+		// durl = dir + QString("/") + fname;
+        // QString fullUrl = QDir().absoluteFilePath(durl);
+		// if (fname .length() == 0 || ! QDir().exists(fullUrl)) {
+		// 	QMessageBox::warning(this, tr("Notice:"),
+        //                          QString(tr("File <b>%1</b> not found, has it downloaded already?")).arg(fullUrl));
+		// } else {
+		// 	//QProcess::execute(openner);
+        //     bool opened = QDesktopServices::openUrl(fullUrl);	//only qt >= 4.2
+        //     if (!opened) {
+        //         opened = QDesktopServices::openUrl(QUrl("file://" + fullUrl));
+        //     }
+		// }
+	} else {
+		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
+	}
+    
 }
 
 //////////private
@@ -3911,7 +3955,7 @@ void NullGet::caclAllTaskAverageSpeed()
 void NullGet::onAllocateDiskFileSpace(quint64 fileLength , QString fileName )
 {
 	//做磁盘预分配
-	QProgressDialog pd (QString(tr("Allocating File Space: %1")).arg(fileName),"Cancel",0,100,this);
+	QProgressDialog pd (QString(tr("Allocating File Space: %1")).arg(fileName),"Cancel",0,100, this);
 	pd.setWindowModality(Qt::WindowModal);
 	pd.setMinimumDuration(0);
 	pd.setFixedSize(pd.size().width()*1.82,pd.size().height());
@@ -4149,12 +4193,12 @@ void NullGet::onShowWalkSiteWindow()
 	///next 集成到主窗口的依靠窗口的搜索窗口初始化/显示。
 	if (this->mWalkSiteDockWidget == 0 )
 	{
-		//this->mWalkSiteDockWidget = new QDockWidget(tr(" Site Crawler "),this);	
-		this->mWalkSiteDockWidget = new QDockWidget(this->mHWalkSiteWndEx->windowTitle(),this);	
+		//this->mWalkSiteDockWidget = new QDockWidget(tr(" Site Crawler "), this);	
+		this->mWalkSiteDockWidget = new QDockWidget(this->mHWalkSiteWndEx->windowTitle(), this);	
 		this->mWalkSiteDockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
 		this->mWalkSiteDockWidget->setFeatures(QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
 		this->mWalkSiteDockWidget->setFloating(false);
-		this->addDockWidget(Qt::BottomDockWidgetArea,this->mWalkSiteDockWidget,Qt::Horizontal);
+		this->addDockWidget(Qt::BottomDockWidgetArea, this->mWalkSiteDockWidget,Qt::Horizontal);
 		this->mWalkSiteDockWidget->showMinimized();
 		this->mWalkSiteDockWidget->showNormal();
 		//如果检测到有另一个窗口存在，可以浮动起来该窗口，再检测一个合适的位置停靠，估计能实现那种带TAB的浮动窗口效果。
@@ -4251,9 +4295,25 @@ void NullGet::handleArguments(QStringList args)
         uri = uri.replace("ftp:/", "ftp://");
     }
 
+    refer = (refer == QString::null) ? refer2 : refer;
+    // fix for opera %l or %u give the error url
+    if (refer.startsWith("http:/", Qt::CaseInsensitive)
+        && !refer.startsWith("http://", Qt::CaseInsensitive)) {
+        refer = refer.replace("http:/", "http://");
+    } else if (refer.startsWith("ftp:/", Qt::CaseInsensitive)
+               && !refer.startsWith("ftp://", Qt::CaseInsensitive)) {
+        refer = refer.replace("ftp:/", "ftp://");
+    }
+
+    // convect to TaskOption raw data formats, for passive more data
+    TaskOption options;
+    options.mTaskUrl = uri;
+    options.mReferer = refer;
+
+    QString ngetUri = "nget://" + options.toBase64Data();
     QClipboard *cb = QApplication::clipboard();
-    cb->setText(uri);
-    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text();
+    cb->setText(ngetUri);
+    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
 
     this->mainUI.action_New_Download->trigger();
     qApp->setActiveWindow(this);

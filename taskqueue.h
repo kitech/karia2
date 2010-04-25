@@ -31,6 +31,7 @@ public:
 
     int mTaskId;
     QString mTaskUrl;
+    QString mReferer;
     int mCatId;
 
     QVector<QPair<QString, QString> > mLogs;  // itime, log

@@ -240,6 +240,7 @@ public slots:
 
 	void onOpenDistDirector();
 	void onOpenExecDownloadedFile();
+    void onOpenRefererUrl();
 
 	//other
 	void onClipBoardDataChanged();
