@@ -27,9 +27,9 @@ DropZone::DropZone(QWidget *parent,Qt::WFlags f )
 : QWidget(parent,Qt::ToolTip|Qt::WindowStaysOnTopHint ) , mParentMainWindow(parent)
 {
 	this->mOpque = 0.6;
-	this->mPostion = QPoint(800,20);
-	this->mHeight = 100 ;
-	this->mWidth = 100 ;
+	this->mPostion = QPoint(800, 20);
+	this->mHeight = 60 ;
+	this->mWidth = 60 ;
 
 	this->setWindowOpacity(this->mOpque);	
 	this->move(this->mPostion);
@@ -107,8 +107,7 @@ void DropZone::mouseReleaseEvent ( QMouseEvent * event )
 void DropZone::dragEnterEvent(QDragEnterEvent *event) 
 {
 	qDebug()<<event->mimeData()->formats()<<event->mimeData()->text() ;
-	if( event->mimeData()->hasFormat("text/uri-list") || event->mimeData()->hasUrls() )
-	{
+	if (event->mimeData()->hasFormat("text/uri-list") || event->mimeData()->hasUrls()) {
 		event->acceptProposedAction();		
 	}
 }
@@ -119,8 +118,7 @@ void DropZone::dropEvent(QDropEvent *event)
 
 	qDebug()<<__FUNCTION__<<text;
 	NullGet * ng = static_cast<NullGet*>(this->mParentMainWindow);
-	if( ng != 0 )
-	{
+	if (ng != 0) {
 		QApplication::clipboard()->setText(event->mimeData()->text());
 		
 	}
@@ -133,51 +131,47 @@ void DropZone::onRunTaskCompleteState(int pTaskId , int pCompletion , QString pF
 
 	QPair<int , QString > tm(pCompletion,pFileName) ;
 	int taskId = pTaskId  ;
-	if( this->mRunTaskCompleteState.contains(taskId) )
-	{
+	if (this->mRunTaskCompleteState.contains(taskId)) {
 		this->mRunTaskCompleteState[taskId] = tm ;
-	}
-	else
-	{
+	} else {
 		this->mRunTaskCompleteState[taskId] = tm ;
 	}
 
-	if( pCompletion == 100 )
-	{
+	if (pCompletion == 100) {
 		this->mRunTaskCompleteState.erase(this->mRunTaskCompleteState.find(taskId) ) ;
 	}
 
 	this->mToolTip.clear();
 	QMapIterator<int , QPair< int ,QString> > it(this->mRunTaskCompleteState);
 	//更新tooltip 字符串。
-	while( it.hasNext() )
-	{
-		it.next( ) ;
+	while (it.hasNext()) {
+		it.next();
 		this->mToolTip += QString("%1: %2% %3\n").arg(it.key()).arg(it.value().first).arg(it.value().second ) ;
 	}
 	//for( int i = 0 ; i < this->mRunTaskCompleteState.count() ; i ++ )
 	{
 		
 	}
-	if( this->mToolTip.endsWith("\n") ) this->mToolTip = this->mToolTip.left(this->mToolTip.length()-1);
-	this->setToolTip(this->mToolTip);
-
+	if (this->mToolTip.endsWith("\n")) {
+        this->mToolTip = this->mToolTip.left(this->mToolTip.length()-1);
+    }
+    if (this->mToolTip.length() > 0) {
+        this->setToolTip(this->mToolTip);
+    }
 }
 
 void DropZone::onSwitchState() 
 {
 	int id = 0 ; 
 	QList<int> keys ;
-	if( this->mRunTaskCompleteState.count() == 0 )
-	{
-		mStateText = QString("no %1").arg(::rand()) ;
-	}
-	else
-	{
+	if (this->mRunTaskCompleteState.count() == 0) {
+		mStateText = QString("No %1").arg(::rand());
+        this->setToolTip(mStateText);
+	} else {
 		keys = this->mRunTaskCompleteState.keys();
 		id = this->mStateId % ( keys.count()) ;
 		mStateText = QString("%1% %2").arg( this->mRunTaskCompleteState[keys[id]].first).arg(this->mRunTaskCompleteState[keys[id]].second) ;
-		if( this->mStateId ++  > 50000 ) this->mStateId = 0 ;
+		if (this->mStateId ++  > 50000 ) this->mStateId = 0 ;
 	}
 	
 	this->update();

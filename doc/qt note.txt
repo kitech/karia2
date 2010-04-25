@@ -2,3 +2,14 @@ Qt 的socket实例一般是可重用的，在disconnect之后可心不销毁而�
 qt 编译中static和shared是无法同时配置并且编译的，必须在两个不同的目录里面编译这两种目标。
 Qt 中的信号多次连接将多次都生效。
 qmake -t vcapp -o hehe.vcproj 在windows上可从.pro文件生成vc 工程文件
+
+    //set widget image Background 
+    /*
+      b、for Qt4：
+      QListWidget* lv = new QListWidget( 0 );
+      QPalette palette;
+      palette.setBrush(QPalette::Base, QBrush(QPixmap("logo.png")));
+      lv->setPalette(palette);
+
+      基本上，图片作为背景后，都是平铺的。Qt3、Qt4对于背景图片有不同的处理方式，比较而言，Qt4对于背景图片处理要好的多。
+     */

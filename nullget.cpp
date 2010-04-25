@@ -163,9 +163,8 @@ void NullGet::firstShowHandler()
 	//this->mCatViewModel = CategoryModel::instance(0);
 	this->mCatViewModel = SqliteCategoryModel::instance(0);
 	//this->mCatViewModel =  TreeModel::instance(0);
-	//QAbstractItemModel *catModel = this->mConfigDatabase->createCatModel();
 	this->mCatView->setModel(this->mCatViewModel);
-
+    this->mCatView->setRootIndex(this->mCatViewModel->index(0, 0)); // root is the topest node
 	this->mCatView->expandAll();
 
     this->update();
@@ -243,6 +242,9 @@ void NullGet::firstShowHandler()
         this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
     }
 
+    this->mainUI.action_Pause->setEnabled(false);
+    this->mainUI.action_Start->setEnabled(false);
+    this->mainUI.action_Delete_task->setEnabled(false);
     // this->onUpdateJobMenuEnableProperty();
 	
 	//this->showMaximized();

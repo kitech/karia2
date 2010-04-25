@@ -29,7 +29,7 @@
 CategoryComboBoxItemDelegate::CategoryComboBoxItemDelegate(QObject * parent )
  : QAbstractItemDelegate(parent)
 {
-	mCatView = 0 ;	
+	mCatView = 0;	
 	this->mCatView = new QTreeView(0);
 }
 
@@ -40,7 +40,7 @@ CategoryComboBoxItemDelegate::~CategoryComboBoxItemDelegate()
 QWidget * CategoryComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
 	qDebug()<<__FUNCTION__;
-	return this->mCatView ;
+	return this->mCatView;
 }
 
 void CategoryComboBoxItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
@@ -53,10 +53,10 @@ void CategoryComboBoxItemDelegate::paint ( QPainter * painter, const QStyleOptio
 QSize CategoryComboBoxItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const 
 {
 	qDebug()<<__FUNCTION__;
-	QSize s ;
+	QSize s;
 	s.setHeight(100);
 	//s.setWidth(30);
-	return s ;
+	return s;
 }
 
 ///////////////////////////
@@ -72,18 +72,18 @@ TaskOption::~TaskOption()
 void TaskOption::setDefaultValue()
 {
 	//general
-	//QString mTaskUrl ;
-	mFindUrlByMirror = 1 ;
-	//QString mReferrer ;
-	//QString mCategory ;
+	//QString mTaskUrl;
+	mFindUrlByMirror = 1;
+	//QString mReferrer;
+	//QString mCategory;
     this->mCatId = 2; // downloaded
-	mSavePath = "." ;
-	//QString mSaveName ;
-	mSplitCount = 5 ; 
-	mNeedLogin = 0 ;
+	mSavePath = ".";
+	//QString mSaveName;
+	mSplitCount = 5; 
+	mNeedLogin = 0;
 	mLoginUserName = "";
 	mLoginPassword = "";
-	mComment = "" ;
+	mComment = "";
 	mStartState = 1;	//0,1,2
 
 	////////
@@ -94,25 +94,25 @@ void TaskOption::setDefaultValue()
 	mAutoCreateSubdirLocally = 1; 
 	mAutoCreateCategory  = 1;
 	
-	mProxyTypeHttp = 0 ;
+	mProxyTypeHttp = 0;
 	mProxyTypeFtp = 0;
-	mProxyTypeMedia = 0 ;	
+	mProxyTypeMedia = 0;	
 }
 
 void TaskOption::dump()
 {
 	//general
-	qDebug()<<"mTaskUrl:"<<mTaskUrl ;
-	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror  ;
-	qDebug()<<"mReferrer:"<<mReferrer ;
-	qDebug()<<"mCategory:"<<mCategory ;
+	qDebug()<<"mTaskUrl:"<<mTaskUrl;
+	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror ;
+	qDebug()<<"mReferrer:"<<mReferrer;
+	qDebug()<<"mCategory:"<<mCategory;
     qDebug()<<"mCatId:"<<mCatId;
-	qDebug()<<"mSavePath:"<<mSavePath  ;
-	qDebug()<<"mSaveName:"<<mSaveName ;
-	qDebug()<<"mSplitCount:"<<mSplitCount  ; 
-	qDebug()<<"mNeedLogin:"<<mNeedLogin  ;
-	qDebug()<<"mLoginUserName:"<<mLoginUserName  ;
-	qDebug()<<"mLoginPassword:"<<mLoginPassword  ;
+	qDebug()<<"mSavePath:"<<mSavePath ;
+	qDebug()<<"mSaveName:"<<mSaveName;
+	qDebug()<<"mSplitCount:"<<mSplitCount ; 
+	qDebug()<<"mNeedLogin:"<<mNeedLogin ;
+	qDebug()<<"mLoginUserName:"<<mLoginUserName ;
+	qDebug()<<"mLoginPassword:"<<mLoginPassword ;
 	qDebug()<<"mComment:"<<mComment;
 	qDebug()<<"mStartState:"<<mStartState;	//0,1,2
 
@@ -157,9 +157,9 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 
 	//signals
 	QObject::connect(ui.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
-	//QObject::connect(ui.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int))) ;
+	//QObject::connect(ui.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int)));
 	QObject::connect(ui.tid_g_le_cb_category, SIGNAL(editTextChanged(const QString &)),
-                     this, SLOT(onCategoryBoxChange(const QString &))) ;
+                     this, SLOT(onCategoryBoxChange(const QString &)));
 	QObject::connect(ui.tid_au_pb_add, SIGNAL(clicked()), this, SLOT(onAddAlterUrl()));
 	QObject::connect(ui.tid_au_pb_delete, SIGNAL(clicked()), this, SLOT(onDeleteAlterUrl()));
 	QObject::connect(ui.tid_g_le_pb_show_dir, SIGNAL(clicked()), this, SLOT(onChangeSaveDirectory()));
@@ -214,7 +214,7 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	QObject::connect(this->mCatView, SIGNAL(pressed(const QModelIndex & )), 
                      this, SLOT(onCatListClicked(const QModelIndex &)));
 	//QObject::connect(this->mCatView->selectionModel(),SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-	//	this,SLOT(onCatListSelectChange( const QItemSelection & , const QItemSelection &   ) ) ) ;
+	//	this,SLOT(onCatListSelectChange( const QItemSelection & , const QItemSelection &   ) ) );
 
 #ifdef WIN32
 	this->ui.tid_g_cb_save_to->setEditText("C:/NGDownload");
@@ -241,7 +241,7 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 
 	//signals
 	QObject::connect(ui.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
-	QObject::connect(ui.tid_g_le_cb_category, SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int))) ;
+	QObject::connect(ui.tid_g_le_cb_category, SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int)));
 	QObject::connect(ui.tid_au_pb_add,SIGNAL(clicked()),this,SLOT(onAddAlterUrl()));
 	QObject::connect(ui.tid_au_pb_delete,SIGNAL(clicked()),this,SLOT(onDeleteAlterUrl()));
 
@@ -250,14 +250,14 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 	QString cbstr = cb->text();	
     qDebug()<<__FUNCTION__<<cbstr;
 
-	QUrl u(cbstr) ;
+	QUrl u(cbstr);
 	if (u.isValid()) {
 		this->ui.tid_g_le_url->setText(cbstr);
     }
 	this->ui.tid_g_le_url->selectAll();
 
 	//
-	TaskOption * prm = param ;
+	TaskOption * prm = param;
 	if (prm != 0) {
 		//general
 		ui.tid_g_le_url->setText(prm->mTaskUrl);
@@ -271,12 +271,12 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		
 		ui.tid_g_sb_split_file->setValue(prm->mSplitCount);
 
-		ui.tid_g_le_cb_login_to_server->setChecked(prm->mNeedLogin==1?true:false) ;
+		ui.tid_g_le_cb_login_to_server->setChecked(prm->mNeedLogin==1?true:false);
 		
 		ui.tid_g_le_le_user_name->setText(prm->mLoginUserName);
 		ui.tid_g_le_le_password->setText(prm->mLoginPassword);
 		ui.tid_g_le_te_comment->setPlainText(prm->mComment);
-		if( prm->mStartState == 0 )
+		if (prm->mStartState == 0 )
 		{
 			ui.tid_g_le_rb_manual->setChecked(true);
 		}
@@ -292,7 +292,7 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		////////
 		
 		int row = prm->mAlterUrls.count();
-		for( int i = 0 ; i < row ; ++i)
+		for (int i = 0; i < row; ++i)
 		{
 			ui.tid_au_lw_alter_urls->addItem(prm->mAlterUrls.at(i));
 		}
@@ -314,19 +314,19 @@ void taskinfodlg::onUrlBoxChange(QString text)
 	QUrl u(text);
 	QFileInfo fi(u.path());
 	QString fname = fi.fileName();
-	if(fname.isEmpty()) fname = "index.html" ;
+	if(fname.isEmpty()) fname = "index.html";
 	this->ui.tid_g_le_le_rename->setText( fname );
 	ui.tid_au_lb_url->setText(text);
 }
 
 void taskinfodlg::onCategoryBoxChange(int index)
 {
-	qDebug()<<__FUNCTION__  ;
-	QString cat ;
+	qDebug()<<__FUNCTION__ ;
+	QString cat;
 
 	cat = ui.tid_g_le_cb_category->itemText(index);
 
-	cat = QString("C:\\") + cat ;
+	cat = QString("C:\\") + cat;
 	ui.tid_g_cb_save_to->setItemText(index, cat);
 	ui.tid_g_cb_save_to->setCurrentIndex(index);
 
@@ -343,80 +343,80 @@ void taskinfodlg::onCategoryBoxChange(const QString & text)
 
 TaskOption * taskinfodlg::getOption()
 {
-	TaskOption * param = 0 ;
+	TaskOption * param = 0;
 
 	param = new TaskOption();
 	param->setDefaultValue();
 
 	//
 	//general
-	param->mTaskUrl = ui.tid_g_le_url->text() ;
-	param->mFindUrlByMirror = ui.tid_g_cb_seache_mirror->isChecked()?1:0 ;
-	param->mReferrer = ui.tid_g_le_referrer->text() ;
+	param->mTaskUrl = ui.tid_g_le_url->text();
+	param->mFindUrlByMirror = ui.tid_g_cb_seache_mirror->isChecked()?1:0;
+	param->mReferrer = ui.tid_g_le_referrer->text();
     param->mCatId = this->mCatId;
 	param->mCategory = ui.tid_g_le_cb_category->currentText();
 
 #ifdef WIN32
-	param->mSavePath = QDir(ui.tid_g_cb_save_to->currentText()).absolutePath () ;
+	param->mSavePath = QDir(ui.tid_g_cb_save_to->currentText()).absolutePath ();
 #else
-	param->mSavePath = QDir::homePath() + ui.tid_g_cb_save_to->currentText().right(ui.tid_g_cb_save_to->currentText().length()-1);
-	qDebug()<< param->mSavePath ;
+    param->mSavePath = ui.tid_g_cb_save_to->currentText();
 
+    // if (param->mSavePath.startsWith("~")) {
+    //     param->mSavePath = QDir::homePath() + ui.tid_g_cb_save_to->currentText().right(param->mSavePath.length()-1);
+    // }
+	qDebug()<<__FUNCTION__<<param->mSavePath<<QDir::isAbsolutePath(param->mSavePath);
 #endif
 	
 	param->mSaveName = ui.tid_g_le_le_rename->text();
-	if( param->mSaveName.isEmpty() )
-	{		
+	if (param->mSaveName.isEmpty() ) {		
 		param->mSaveName = QFileInfo(QUrl(param->mTaskUrl).path()).fileName();
 	}
 
-	param->mSplitCount = ui.tid_g_sb_split_file->value() ; 
-	param->mNeedLogin = ui.tid_g_le_cb_login_to_server->isChecked()?1:0 ;
-	param->mLoginUserName = ui.tid_g_le_le_user_name->text() ;
-	param->mLoginPassword = ui.tid_g_le_le_password->text()  ;
-	param->mComment = ui.tid_g_le_te_comment->toPlainText() ;
-	if( ui.tid_g_le_rb_manual->isChecked())
+	param->mSplitCount = ui.tid_g_sb_split_file->value(); 
+	param->mNeedLogin = ui.tid_g_le_cb_login_to_server->isChecked()?1:0;
+	param->mLoginUserName = ui.tid_g_le_le_user_name->text();
+	param->mLoginPassword = ui.tid_g_le_le_password->text() ;
+	param->mComment = ui.tid_g_le_te_comment->toPlainText();
+	if (ui.tid_g_le_rb_manual->isChecked())
 		param->mStartState = 0	;	//0,1,2
 	else if ( ui.tid_g_le_rb_schedule->isChecked() )
-		param->mStartState = 2 ;
+		param->mStartState = 2;
 	else 
-		param->mStartState = 1 ;
+		param->mStartState = 1;
 
 	////////
 	param->mAlterUrls.clear();
 	int row = ui.tid_au_lw_alter_urls->count();
-	for( int i = 0 ; i < row ; ++i)
-	{
+	for (int i = 0; i < row; ++i) {
 		param->mAlterUrls.append(ui.tid_au_lw_alter_urls->item(i)->text());
 	}
 	
 	//
-	param->mAutoDownSubdirFromFtp = ui.tid_ad_cb_down_subdir_from_ftp->isChecked()?1:0 ;
-	param->mAutoCreateSubdirLocally = ui.tid_ad_cb_create_subdir_locally->isChecked()?1:0 ; 
-	param->mAutoCreateCategory  = ui.tid_ad_cb_create_category->isChecked() ? 1:0 ;
+	param->mAutoDownSubdirFromFtp = ui.tid_ad_cb_down_subdir_from_ftp->isChecked()?1:0;
+	param->mAutoCreateSubdirLocally = ui.tid_ad_cb_create_subdir_locally->isChecked()?1:0; 
+	param->mAutoCreateCategory  = ui.tid_ad_cb_create_category->isChecked() ? 1:0;
 	
-	param->mProxyTypeHttp = ui.tid_ad_cb_proxy_type_http->currentIndex() ;
+	param->mProxyTypeHttp = ui.tid_ad_cb_proxy_type_http->currentIndex();
 	param->mProxyTypeFtp = ui.tid_ad_cb_proxy_type_ftp->currentIndex();
-	param->mProxyTypeMedia = ui.tid_ad_cb_proxy_type_media->currentIndex( ) ;	
+	param->mProxyTypeMedia = ui.tid_ad_cb_proxy_type_media->currentIndex( );	
 
-	return param ;
+    // param->dump();
+
+	return param;
 
 }
 
 
 void taskinfodlg::onAddAlterUrl()
 {
-	QString surl = QInputDialog::getText(this,"Input URL:","URL:");
-	if( ! surl.isEmpty() )
-	{
+	QString surl = QInputDialog::getText(this, tr("Input mirror URL:"), tr("URL:"));
+	if (! surl.isEmpty()) {
 		
-		int row = ui.tid_au_lw_alter_urls->count() ;
-		for( int i = 0 ; i < row ; ++ i )
-		{
-			if( ui.tid_au_lw_alter_urls->item(i)->text().compare(surl) == 0 ) 
-			{
+		int row = ui.tid_au_lw_alter_urls->count();
+		for (int i = 0; i < row; ++ i ) {
+			if (ui.tid_au_lw_alter_urls->item(i)->text().compare(surl) == 0 ) {
 				QMessageBox::information(this,"hehe","existed");
-				return ;
+				return;
 			}
 		}
 		ui.tid_au_lw_alter_urls->addItem(surl);
@@ -425,19 +425,17 @@ void taskinfodlg::onAddAlterUrl()
 }
 void taskinfodlg::onDeleteAlterUrl() 
 {
-		int row = ui.tid_au_lw_alter_urls->count() ;
-		QList<QListWidgetItem*> si ;
-		QList<int> sii ;
+		int row = ui.tid_au_lw_alter_urls->count();
+		QList<QListWidgetItem*> si;
+		QList<int> sii;
 
-		for( int r = 0 ; r < row ; r ++)
+		for (int r = 0; r < row; r ++)
 		{
-			if( ui.tid_au_lw_alter_urls->isItemSelected(ui.tid_au_lw_alter_urls->item(r)))
-			{
-				sii.append(r) ;
+			if (ui.tid_au_lw_alter_urls->isItemSelected(ui.tid_au_lw_alter_urls->item(r))) {
+				sii.append(r);
 			}
 		}
-		for( int i = sii.size()-1 ; i >=0 ; i --)
-		{
+		for (int i = sii.size()-1; i >=0; i --) {
 			delete ui.tid_au_lw_alter_urls->takeItem(sii.at(i));			
 		}
 }
@@ -447,7 +445,7 @@ void taskinfodlg::onShowCategoryInfo()
 
 	cmd->exec();
 
-	delete cmd ;
+	delete cmd;
 }
 
 void taskinfodlg::onChangeSaveDirectory()
@@ -465,52 +463,48 @@ void taskinfodlg::onChangeSaveDirectory()
 void taskinfodlg::onCatListClicked( const QModelIndex & index )
 {
 	qDebug()<<__FUNCTION__ << index.data();
-	QModelIndex idx0 , idx ;
+	QModelIndex idx0 , idx;
 	idx0 = index.model()->index(index.row(), 0, index.parent());
 	idx = index.model()->index(index.row(), 1, index.parent());
 	qDebug()<<this->ui.tid_g_le_cb_category->currentText();
 	this->ui.tid_g_le_cb_category->setEditText(idx0.data().toString());
 	qDebug()<<this->ui.tid_g_le_cb_category->currentText();
 
-	mSwapValue = idx0.data().toString() ;
+	mSwapValue = idx0.data().toString();
     this->mCatId = idx0.internalId();
 
 	//this->mCatLineEdit->setText(index.model()->index(index.row(),0).data().toString());
 	this->ui.tid_g_cb_save_to->setEditText(idx.data().toString());
-	qDebug()<<this->ui.tid_g_le_cb_category->currentIndex()<<this->ui.tid_g_le_cb_category->count()<<this->ui.tid_g_le_cb_category->modelColumn () ;
+	qDebug()<<this->ui.tid_g_le_cb_category->currentIndex()<<this->ui.tid_g_le_cb_category->count()<<this->ui.tid_g_le_cb_category->modelColumn ();
 }
 
 void taskinfodlg::onCatListSelectChange( const QItemSelection & curr , const QItemSelection & prev  ) 
 {
-	qDebug()<<__FUNCTION__ ;
+	qDebug()<<__FUNCTION__;
 
 }
 
 void taskinfodlg::expandAll(QModelIndex  index )
 {
-	QModelIndexList mil ;
-	QModelIndex idx ,parent ;
-	const QAbstractItemModel * model = 0 ;
-	int row , col ;
-	if( ! index.isValid()  )
-	{
-		model = this->mCatModel ;
+	QModelIndexList mil;
+	QModelIndex idx ,parent;
+	const QAbstractItemModel * model = 0;
+	int row , col;
+	if (! index.isValid()) {
+		model = this->mCatModel;
 		index = model->index(0,0);
-	}
-	else 
-	{
+	} else {
 		model = index.model();
 	}
-	row = model->rowCount(index) ;
+	row = model->rowCount(index);
 
 	//qDebug()<<index.isValid()<<row<<model->data(index);	
 
 	this->mCatView->expand(index);
 	this->mCatView->resizeColumnToContents(0);
 
-	for( int i = row-1 ; i >=0 ; i-- )
-	{
-		idx = model->index(i,0,index);
+	for (int i = row-1; i >=0; i-- ) {
+		idx = model->index(i, 0, index);
 
 		this->expandAll(idx);
 	}

@@ -39,7 +39,7 @@ protected:
 	virtual void dropEvent(QDropEvent *event) ;
 
 private:
-	QWidget * mParentMainWindow ;
+	QWidget *mParentMainWindow;
 
     double mOpque;
 	QPoint mPostion;
@@ -52,7 +52,7 @@ private:
 
 	QImage  mWndGround ;	//窗口背景图
 
-	QMap<int , QPair<int , QString> >	mRunTaskCompleteState ;	//任务完成数数据结构
+	QMap<int, QPair<int , QString> >	mRunTaskCompleteState ;	//任务完成数数据结构
 	QString mToolTip ;	//tooltip string字符串。
 
 	QTimer mTaskStateSwithTimer ;	//显示任务定时开关。
@@ -62,7 +62,6 @@ private:
 
 signals:
 	void doubleclicked() ;
-
 };
 
 #endif // DROPZONE_H

@@ -27,6 +27,7 @@ CatManDlg::CatManDlg(QWidget *parent)
 	this->mCatModel = SqliteCategoryModel::instance(0);
 
 	this->uiwin.cmd_tv_cat_tree->setModel(this->mCatModel);
+    this->uiwin.cmd_tv_cat_tree->setRootIndex(this->mCatModel->index(0, 0));
 	
 	//this->expandAll();
 	this->uiwin.cmd_tv_cat_tree->expandAll();
