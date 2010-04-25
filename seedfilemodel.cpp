@@ -118,8 +118,8 @@ bool SeedFileModel::removeRows(int row, int count, const QModelIndex & parent)
 
 bool SeedFileModel::setData ( const QModelIndex & index, const QVariant & value, int role)
 {
-
-    if (index.column() == 1) {
+    // qDebug()<<__FUNCTION__<<index<<value;
+    if (index.column() == ng::seedfile::selected) {
         QMap<QString, QVariant> file = this->mFiles.at(index.row()).toMap();
         file.insert(QString("selected"), (value.toBool()) ? "true" : "false");
         this->mFiles.replace(index.row(), file);

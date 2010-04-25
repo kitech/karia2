@@ -73,12 +73,24 @@ SeedFilesDialog::SeedFilesDialog(QWidget *parent)
     QObject::connect(this->uiwin.pushButton_3, SIGNAL(clicked()),
                      this, SLOT(reject()));
 
+
     this->itemDelegate = new SeedFileItemDelegate();
     this->uiwin.tableView->setItemDelegate(this->itemDelegate);
 
     this->seedFileModel = new SeedFileModel();
     this->uiwin.tableView->setModel(this->seedFileModel);
 
+    QObject::connect(this->uiwin.toolButton_2, SIGNAL(clicked()),
+                     this, SLOT(onAutoSelectFiles()));
+    QObject::connect(this->uiwin.toolButton_3, SIGNAL(clicked()),
+                     this, SLOT(onSelectAllFiles()));
+    QObject::connect(this->uiwin.toolButton_4, SIGNAL(clicked()),
+                     this, SLOT(onRevertSelectFiles()));
+    QObject::connect(this->uiwin.toolButton_5, SIGNAL(clicked()),
+                     this, SLOT(onSelectVideoFiles()));
+    QObject::connect(this->uiwin.toolButton_6, SIGNAL(clicked()),
+                     this, SLOT(onSelectAudioFiles()));
+    
 }
 
 SeedFilesDialog::~SeedFilesDialog()
@@ -142,5 +154,71 @@ QString SeedFilesDialog::getSelectedFileIndexes()
 
     qDebug()<<"selectedList: "<< selectedList;
     return selectedList;
+}
+
+void SeedFilesDialog::onAutoSelectFiles()
+{
+    this->onSelectAllFiles();
+}
+
+void SeedFilesDialog::onRevertSelectFiles()
+{
+    QModelIndex idx;
+    int rowCount = this->seedFileModel->rowCount(QModelIndex());
+    for (int row = rowCount - 1; row >= 0; row --) {
+        idx = this->seedFileModel->index(row, ng::seedfile::selected);
+        this->seedFileModel->setData(idx, QVariant(idx.data().toString() == "true" ? false : true));
+    }
+}
+
+void SeedFilesDialog::onSelectAllFiles()
+{
+    QModelIndex idx;
+    int rowCount = this->seedFileModel->rowCount(QModelIndex());
+    for (int row = rowCount - 1; row >= 0; row --) {
+        idx = this->seedFileModel->index(row, ng::seedfile::selected);
+        this->seedFileModel->setData(idx, QVariant(true));
+    }
+}
+
+void SeedFilesDialog::onSelectVideoFiles()
+{
+    QString ext;
+    QStringList np;
+    QModelIndex idx, idx2;
+    int rowCount = this->seedFileModel->rowCount(QModelIndex());
+    for (int row = rowCount - 1; row >= 0; row --) {
+        idx = this->seedFileModel->index(row, ng::seedfile::selected);
+        idx2 = this->seedFileModel->index(row, ng::seedfile::path);
+        np =  idx2.data().toString().split(".");
+        ext = np.at(np.count() - 1).toLower();
+        if (ext == "rm" || ext == "rmvb" || ext == "mp4" || ext == "flv"
+            || ext == "asf" || ext == "avi" || ext == "mpeg" || ext == "mpg"
+            || ext == "mov" || ext == "ogg" || ext == "swf") {
+            this->seedFileModel->setData(idx, QVariant(true));
+        } else {
+            this->seedFileModel->setData(idx, QVariant(false));
+        }
+    }
+}
+
+void SeedFilesDialog::onSelectAudioFiles()
+{
+    QString ext;
+    QStringList np;
+    QModelIndex idx,idx2;
+    int rowCount = this->seedFileModel->rowCount(QModelIndex());
+    for (int row = rowCount - 1; row >= 0; row --) {
+        idx =  this->seedFileModel->index(row, ng::seedfile::selected);
+        idx2 = this->seedFileModel->index(row, ng::seedfile::path);
+        np =  idx2.data().toString().split(".");
+        ext = np.at(np.count() - 1).toLower();
+        if (ext == "rm" || ext == "wma" || ext == "mp3" || ext == "midi"
+            || ext == "wav" || ext == "mpeg" || ext == "mpg") {
+            this->seedFileModel->setData(idx, QVariant(true));
+        } else {
+            this->seedFileModel->setData(idx, QVariant(false));
+        }
+    }
 }
 

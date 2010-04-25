@@ -43,6 +43,13 @@ public:
     void setTorrentInfo(QVariantMap statusInfo, QVariantMap torrentInfo);
     QString getSelectedFileIndexes();
 
+private slots:
+    void onAutoSelectFiles();
+    void onRevertSelectFiles();
+    void onSelectAllFiles();
+    void onSelectVideoFiles();
+    void onSelectAudioFiles();
+
 private:
     Ui::SeedFilesDialog uiwin;
 

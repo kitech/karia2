@@ -12,6 +12,12 @@
 
 #include <QtCore>
 
+namespace ng {
+    namespace seedfile {
+        enum {index = 0, selected, path, length };
+    };
+};
+
 class SeedFileModel : public QAbstractTableModel
 {
     Q_OBJECT;
