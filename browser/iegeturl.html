@@ -1,4 +1,183 @@
 <script language="javascript" defer>
+
+function hexEncode(str)
+{
+    var hexStr= '';
+    var ch = '';
+    for (i = 0; i < str.length; i++) {
+         ch = str.charCodeAt(i);
+         hexStr += parseInt(ch, 10).toString(16);
+    }
+    return hexStr;
+}
+
+function base64_encode (data) {
+    var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var o1, o2, o3, h1, h2, h3, h4, bits, i = 0, ac = 0, enc="", tmp_arr = [];
+
+    if (!data) {
+        return data;
+    }
+
+    data = this.utf8_encode(data+'');
+    
+    do { // pack three octets into four hexets
+        o1 = data.charCodeAt(i++);
+        o2 = data.charCodeAt(i++);
+        o3 = data.charCodeAt(i++);
+
+        bits = o1<<16 | o2<<8 | o3;
+
+        h1 = bits>>18 & 0x3f;
+        h2 = bits>>12 & 0x3f;
+        h3 = bits>>6 & 0x3f;
+        h4 = bits & 0x3f;
+
+        // use hexets to index into b64, and append result to encoded string
+        tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
+    } while (i < data.length);
+    
+    enc = tmp_arr.join('');
+    
+    switch (data.length % 3) {
+        case 1:
+            enc = enc.slice(0, -2) + '==';
+        break;
+        case 2:
+            enc = enc.slice(0, -1) + '=';
+        break;
+    }
+
+    return enc;
+}
+
+function AddLink(Url,Info,Location,strCID,strStatUrl,strCookie)
+{
+    var agent;
+    var encoding;
+    var ent;
+    var top = 'TaskOption';
+    top += "|" + hexEncode(Url);
+    top += "|" + hexEncode(Location);
+    top += "|" + hexEncode(strCookie);
+
+    ent = "nullget://" + base64_encode(top);
+    clipboardData.setData('text/uri', ent);
+}
+
+
+function OnContextMenu()
+{
+	var srcEvent = external.menuArguments.event;
+	var EventElement;
+	
+	if(typeof(srcEvent.clientX) == "undefined")
+	{
+		EventElement = external.menuArguments.document.elementFromPoint (srcEvent.pointerX, srcEvent.pointerY);
+	}
+	else
+	{
+		EventElement = external.menuArguments.document.elementFromPoint (srcEvent.clientX, srcEvent.clientY);
+	}
+	
+	var strDownloadPage = external.menuArguments.location;
+	var theDownloadPage = external.menuArguments.document.getElementById("FlashGet_down_pageurl");
+	
+	if (theDownloadPage != null)
+	{
+		strDownloadPage = theDownloadPage.value;
+	}
+	
+	var strStatPage = "";
+	var theStatPage = external.menuArguments.document.getElementById("FlashGet_stat_pageurl");
+	if (theStatPage != null)
+	{
+		strStatPage = theStatPage.value;
+	}
+
+	var strCID = ""
+	var theCID = external.menuArguments.document.getElementById("FlashGet_cid");
+	if (theCID != null)
+	{
+		strCID = theCID.value;
+	}
+	var srcAnchor;
+
+	if (srcEvent.type == "MenuExtAnchor")
+	{
+
+		srcAnchor = EventElement;
+
+		do
+		{ 
+			srcAnchor=srcAnchor.parentElement;
+		}
+		while(typeof(srcAnchor)=="HTMLAnchorElement");
+		
+		AddLink(srcAnchor.href,srcAnchor.innerText,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+	}
+	else if (srcEvent.type == "MenuExtImage")
+	{
+		if (typeof(EventElement) == "HTMLAreaElement")
+		{
+			AddLink(EventElement.href,EventElement.Alt,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+		}
+		else 
+		{
+			var srcImage = EventElement;
+			var srcAnchor = srcImage.parentElement;
+			do
+			{ 
+				srcAnchor=srcAnchor.parentElement;
+				if (typeof(srcAnchor) == "undefined")
+				{
+					AddLink(srcImage.href,srcImage.Alt,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+					return;
+				}
+			}
+			while(typeof(srcAnchor) == "HTMLAnchorElement");
+			
+			AddLink(srcAnchor.href,srcImage.Alt,strDownloadPage, strCID, strStatPage);
+		}
+	}	
+	else if (srcEvent.type == "MenuExtUnknown")
+	{
+	srcAnchor = EventElement;
+	if(srcAnchor != null && srcAnchor.tagName != null && srcAnchor.tagName.toLowerCase() == "a")
+	    {
+	        AddLink(srcAnchor.href,srcAnchor.innerText,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+	    }
+	    else
+	    {
+	        while(srcAnchor != null && srcAnchor.tagName != null && srcAnchor.tagName.toLowerCase() != "a")
+	        {
+	            srcAnchor = srcAnchor.parentElement;
+	            if(srcAnchor != null && srcAnchor.tagName != null && srcAnchor.tagName.toLowerCase() == "a")
+	            {
+	                AddLink(srcAnchor.href,srcAnchor.innerText,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+	                return;
+	            }
+	        }
+			
+	        if(EventElement != null && EventElement.tagName != null)
+	        {
+	            AddLink(EventElement.href,EventElement.innerText,strDownloadPage, strCID, strStatPage,external.menuArguments.document.cookie);
+	        }
+	        else
+	        {
+	            alert("Invalid url");
+	        }
+	    }
+	}
+	else
+	{
+		
+	}
+}
+
+OnContextMenu();
+
+/* simple example
 var Elem=external.menuArguments.event.srcElement;
 var imgUrl='';
 if(Elem.tagName=='IMG') imgUrl=Elem.src;
@@ -13,4 +192,5 @@ else if(Elem.tagName=='A'){
 }
 if(imgUrl) clipboardData.setData('text',imgUrl)
 alert(imgUrl + document.cookie);
+*/
 </script>

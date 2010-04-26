@@ -317,21 +317,26 @@ void PreferencesDialog::saveAllOptions()
 
 }
 
+// need user open this program before click ie Download menu
 void PreferencesDialog::onMonitorIE(bool checked)
 {
     QSettings winreg("HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt",
                      QSettings::NativeFormat);
 
     if (checked) {
-        winreg.setValue("Download by NullGet/@", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
+        winreg.setValue("Download by NullGet/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
         winreg.setValue("Download by NullGet/contexts", 0x00000002);
     } else {
-        winreg.remove("Download by NullGet/@");
+        winreg.remove("Download by NullGet/.");
         winreg.remove("Download by NullGet/contexts");
-        winreg.remove("Download by NullGet");
     }
 
     winreg.sync();
+}
+
+void onMonitorOperaWin(bool checked)
+{
+    
 }
 
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
@@ -339,9 +344,27 @@ void PreferencesDialog::onMonitorOpera(bool checked)
 {
     qDebug()<<__FUNCTION__<<checked;
 
-
+#if defined(Q_OS_WIN)
+    QSettings winreg("HKEY_CURRENT_USER\\Software\\Opera Software", QSettings::NativeFormat);
+    QString operaExecFile = winreg.value("Last CommandLine");
+    int exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    if (exeNamePos == -1) {
+        qDebug()<<"Can not checking opera installation.";
+        return;
+    }
+    QString operaDir = operaExecFile.left(exeNamePos);
+    QString operaPersonalDir = QDir::homePath() + "/Application Data/Opera/Opera";
+    if (!QDir().exists(operaPersonalDir)) {
+        qDebug()<<"Can not find opera personal directory.";
+        return;
+    }
+    QString execProgramValue = QString("Execute program,%1Z:\\cross\karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+#else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
+    QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+#endif
+    QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
 
     QString appPath = QApplication::applicationFilePath();
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -366,7 +389,6 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         menuInis = pcDir.entryList(nameFilters);
     }
     if (menuInis.count() > 0) {
-        QString value = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
         QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
         QByteArray line;
         QList<QByteArray> popMenus;
@@ -419,15 +441,13 @@ void PreferencesDialog::onMonitorOpera(bool checked)
             }
             if (checked) {
                 mfile.write(codec->fromUnicode(key));
-                mfile.write(QString("=%1\n").arg(value).toAscii());
+                mfile.write(QString("=%1\n").arg(execProgramValue).toAscii());
             } 
 
         }
     }
 
     // 
-    QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
-
     // [User Prefs]
     // Menu Configuration=$OPERA_PERSONALDIR/menu/standard_menu_1.ini
     if (newIni) {

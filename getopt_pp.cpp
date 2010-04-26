@@ -18,7 +18,7 @@ GetOpt_pp:	Yet another C++ version of getopt.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <unistd.h>
+// #include <unistd.h>
 #include "getopt_pp.h"
 
 #if __APPLE__
