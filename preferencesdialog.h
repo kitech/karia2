@@ -69,8 +69,11 @@ private slots:
     void loadGeneralOptions();
     void loadDefaultProperties();
     void loadConnectionOptions();
+    void loadMonitorOptions();
     void loadProxyOptions();
     void saveAllOptions();
+
+    void onMonitorOpera(bool checked);
 
     void onNoProxyChecked(bool checked);
     void onCustomProxyChecked();

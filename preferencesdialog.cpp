@@ -73,6 +73,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
                      this, SLOT(onDeleteProxy()));
     QObject::connect(this->uiwin.toolButton_5, SIGNAL(clicked()),
                      this, SLOT(onApplyProxy()));
+    QObject::connect(this->uiwin.checkBox_21, SIGNAL(toggled(bool)),
+                     this, SLOT(onMonitorOpera(bool)));
 
     this->show();
 
@@ -86,8 +88,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     this->advancedLoaded = false;
 
     this->loadGeneralOptions();
-
-
 
 }
 
@@ -126,6 +126,9 @@ void PreferencesDialog::onPreferencesSelectChanged(int index)
         }
         break;
     case 3:
+        if (!this->monitorLoaded) {
+            this->loadMonitorOptions();
+        }
         break;
     case 4:
         break;
@@ -244,6 +247,20 @@ void PreferencesDialog::loadConnectionOptions()
     this->connectionLoaded = true;
 }
 
+void PreferencesDialog::loadMonitorOptions()
+{
+    QString optionName;
+    QString optionValue;
+
+    optionValue = this->loadKey("monitoropera", "false");
+
+    if (optionValue == "true") {
+        this->uiwin.checkBox_21->setChecked(true);
+    } else {
+        this->uiwin.checkBox_21->setChecked(false);        
+    }
+}
+
 void PreferencesDialog::loadProxyOptions()
 {
     QString optionName;
@@ -293,6 +310,161 @@ void PreferencesDialog::saveAllOptions()
 {
 
 }
+
+// modify opera's operaprefs.ini and menu/xxxmenu.ini
+void PreferencesDialog::onMonitorOpera(bool checked)
+{
+    qDebug()<<__FUNCTION__<<checked;
+
+    QString operaDir = "/usr/share/opera";
+    QString operaPersonalDir = QDir::homePath() + "/.opera";
+
+    QString appPath = QApplication::applicationFilePath();
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    Q_ASSERT(codec != NULL);
+    QStringList menuInis, nameFilters;
+    // QSettings setting;
+    bool newIni = false;
+
+    nameFilters << "*.ini";
+
+    QDir pcDir(operaPersonalDir);
+    if (!pcDir.exists("menu")) {
+        pcDir.mkdir("menu"); 
+    } 
+    
+    pcDir.cd("menu");
+    menuInis = pcDir.entryList(nameFilters);
+
+    if (menuInis.count() == 0) {
+        newIni = true;
+        QFile::copy(operaDir + "/ui/standard_menu.ini", operaPersonalDir + "/menu/standard_menu.ini");
+        menuInis = pcDir.entryList(nameFilters);
+    }
+    if (menuInis.count() > 0) {
+        QString value = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri=%l --refer=%u%1,,%1nullget%1").arg(QString("\""));
+        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
+        QByteArray line;
+        QList<QByteArray> popMenus;
+        qint64 overrideBegin = -1, overrideEnd = -1;
+
+        for (int i = 0; i < menuInis.count() ; i ++) {
+            QString curmenu = operaPersonalDir + "/menu/" + menuInis.at(i);
+            QFile mfile(curmenu);
+            mfile.open(QIODevice::ReadWrite);
+            while (!mfile.atEnd()) {
+                line = mfile.readLine();
+                if (line.trimmed() == "[Link Popup Menu]") {
+                    overrideBegin = mfile.pos() - line.length();
+                    popMenus << line;
+                    while (!mfile.atEnd()) {
+                        line = mfile.readLine();
+                        if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                            continue;
+                        } else if (line.startsWith("[")) {
+                            overrideEnd = mfile.pos() - line.length();
+                            break;
+                        } else {
+                            popMenus << line;
+                        }
+                    }
+                    break;
+                }
+            }
+            // qDebug()<<overrideBegin<<overrideEnd;
+            // Q_ASSERT(overrideEnd > overrideBegin && overrideBegin >= 0);
+            
+            QByteArray spaceArray;
+            if (overrideEnd > overrideBegin && overrideBegin >=0) {
+                spaceArray = line;
+            }
+            spaceArray += mfile.readAll();
+
+            if (overrideBegin >= 0 && overrideEnd == -1) {
+                overrideEnd = mfile.size();
+            }
+
+            mfile.resize(overrideBegin);
+            mfile.seek(overrideBegin);
+            mfile.write(spaceArray);
+
+            // mfile.seek(mfile.size());
+            // mfile.write(QByteArray("\n"));
+            for (int i = 0 ; i < popMenus.count() ; i++) {
+                mfile.write(popMenus.at(i));
+            }
+            if (checked) {
+                mfile.write(codec->fromUnicode(key));
+                mfile.write(QString("=%1\n").arg(value).toAscii());
+            } 
+
+        }
+    }
+
+    // 
+    QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
+
+    // [User Prefs]
+    // Menu Configuration=$OPERA_PERSONALDIR/menu/standard_menu_1.ini
+    if (newIni) {
+        QString value = QString("$OPERA_PERSONALDIR/menu/standard_menu.ini");
+        QString key = QString("Menu Configuration");
+        QByteArray line;
+        QList<QByteArray> popMenus;
+        qint64 overrideBegin = -1, overrideEnd = -1;
+
+        QFile mfile(operaPrefs);
+        mfile.open(QIODevice::ReadWrite);
+        while (!mfile.atEnd()) {
+            line = mfile.readLine();
+            if (line.trimmed() == "[User Prefs]") {
+                overrideBegin = mfile.pos() - line.length();
+                popMenus << line;
+                while (!mfile.atEnd()) {
+                    line = mfile.readLine();
+                    if (line.trimmed().startsWith(key.toAscii())) {
+                    } else if (line.startsWith("[")) {
+                        overrideEnd = mfile.pos() - line.length();
+                        break;
+                    } else {
+                        popMenus << line;
+                    }
+                }
+                break;
+            }
+        }
+        if (overrideBegin >= 0 && overrideEnd == -1) {
+            overrideEnd = mfile.size();
+        }
+        // Q_ASSERT(overrideEnd > overrideBegin && overrideBegin >= 0);
+
+        QByteArray spaceArray;
+        if (overrideEnd > overrideBegin && overrideBegin >=0) {
+            spaceArray = line;
+        }
+        spaceArray += mfile.readAll();
+
+        if (overrideBegin >= 0 && overrideEnd == -1) {
+            overrideEnd = mfile.size();
+        }
+
+
+        mfile.resize(overrideBegin);
+        mfile.seek(overrideBegin);
+        mfile.write(spaceArray);
+
+        // mfile.seek(mfile.size());
+        mfile.write(QByteArray("\n"));
+        for (int i = 0 ; i < popMenus.count() ; i++) {
+            mfile.write(popMenus.at(i));
+        }
+        mfile.write(codec->fromUnicode(key));
+        mfile.write(QString("=%1\n").arg(value).toAscii());
+            
+    }
+
+}
+
 
 void PreferencesDialog::onNoProxyChecked(bool checked)
 {
