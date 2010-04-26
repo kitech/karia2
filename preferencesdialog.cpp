@@ -76,6 +76,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     QObject::connect(this->uiwin.checkBox_21, SIGNAL(toggled(bool)),
                      this, SLOT(onMonitorOpera(bool)));
 
+    QObject::connect(this->uiwin.checkBox_18, SIGNAL(toggled(bool)),
+                     this, SLOT(onMonitorIE(bool)));
+
     this->show();
 
     this->generalLoaded = false;;
@@ -89,6 +92,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 
     this->loadGeneralOptions();
 
+#if !defined(Q_OS_WIN)
+    this->uiwin.checkBox_18->setEnabled(false);
+#endif
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -311,10 +317,28 @@ void PreferencesDialog::saveAllOptions()
 
 }
 
+void PreferencesDialog::onMonitorIE(bool checked)
+{
+    QSettings winreg("HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt",
+                     QSettings::NativeFormat);
+
+    if (checked) {
+        winreg.setValue("Download by NullGet/@", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
+        winreg.setValue("Download by NullGet/contexts", 0x00000002);
+    } else {
+        winreg.remove("Download by NullGet/@");
+        winreg.remove("Download by NullGet/contexts");
+        winreg.remove("Download by NullGet");
+    }
+
+    winreg.sync();
+}
+
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
 void PreferencesDialog::onMonitorOpera(bool checked)
 {
     qDebug()<<__FUNCTION__<<checked;
+
 
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
@@ -342,7 +366,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         menuInis = pcDir.entryList(nameFilters);
     }
     if (menuInis.count() > 0) {
-        QString value = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri=%l --refer=%u%1,,%1nullget%1").arg(QString("\""));
+        QString value = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
         QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
         QByteArray line;
         QList<QByteArray> popMenus;

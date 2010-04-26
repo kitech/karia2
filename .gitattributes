@@ -25,6 +25,7 @@ Resources/nullget-1.png -text
 /batchjobmandlg.cpp -text
 /batchjobmandlg.h -text
 /batchjobmandlg.ui -text
+browser/iegeturl.html -text
 /catmandlg.cpp -text
 /catmandlg.h -text
 /catmandlg.ui -text
@@ -58,6 +59,9 @@ doc/thunder.txt -text
 /gents.sh -text
 /getopt4.cpp -text
 /getopt4.h -text
+/getopt_pp.cpp -text
+/getopt_pp.h -text
+/getopt_pp_standalone.h -text
 /globalpreferences.cpp -text
 /globalpreferences.h -text
 /hash.cpp -text

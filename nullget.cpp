@@ -4239,15 +4239,69 @@ void NullGet::handleArguments()
     this->handleArguments(argc, argv);
 }
 
+#include "getopt_pp_standalone.h"
+
 void NullGet::handleArguments(int argc, char **argv)
 {
-    QStringList args;
 
-    for (int i = 0; i < argc; ++i) {
-        args.append(QString(argv[i]));
+    for (int i = 0 ; i < argc ; i ++) {
+        qDebug()<<"no: "<<i<<argv[i];
     }
 
-    this->handleArguments(args);
+    std::string std_uri, std_refer;
+
+    GetOpt::GetOpt_pp args(argc, argv);
+    args >> GetOpt::Option('u', "uri", std_uri);
+    args >> GetOpt::Option('r', "refer", std_refer);
+
+    QString uri, refer;
+    uri = QString::fromStdString(std_uri);
+    refer = QString::fromStdString(std_refer);
+
+    if (uri.length() == 0) {
+        qDebug()<<__FUNCTION__<<"No uri specified.";
+        return;
+    }
+
+    // fix for opera %l or %u give the error url
+    if (uri.startsWith("http:/", Qt::CaseInsensitive)
+        && !uri.startsWith("http://", Qt::CaseInsensitive)) {
+        uri = uri.replace("http:/", "http://");
+    } else if (uri.startsWith("ftp:/", Qt::CaseInsensitive)
+               && !uri.startsWith("ftp://", Qt::CaseInsensitive)) {
+        uri = uri.replace("ftp:/", "ftp://");
+    }
+
+    // fix for opera %l or %u give the error url
+    if (refer.startsWith("http:/", Qt::CaseInsensitive)
+        && !refer.startsWith("http://", Qt::CaseInsensitive)) {
+        refer = refer.replace("http:/", "http://");
+    } else if (refer.startsWith("ftp:/", Qt::CaseInsensitive)
+               && !refer.startsWith("ftp://", Qt::CaseInsensitive)) {
+        refer = refer.replace("ftp:/", "ftp://");
+    }
+
+    // convect to TaskOption raw data formats, for passive more data
+    TaskOption options;
+    options.mTaskUrl = uri;
+    options.mReferer = refer;
+
+    QString ngetUri = "nget://" + options.toBase64Data();
+    QClipboard *cb = QApplication::clipboard();
+    cb->setText(ngetUri);
+    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
+
+    this->mainUI.action_New_Download->trigger();
+    qApp->setActiveWindow(this);
+    this->setFocus(Qt::MouseFocusReason);
+
+    // QStringList args;
+
+    // for (int i = 0; i < argc; ++i) {
+    //     args.append(QString(argv[i]));
+    // }
+
+    // this->handleArguments(args);
 }
 
 void NullGet::handleArguments(QStringList args)
@@ -4258,18 +4312,33 @@ void NullGet::handleArguments(QStringList args)
     QString longArgName;
     QString defaultArgValue = QString::null;
     
-    args.takeFirst(); // it is app name
-    GetOpt  go(args);
+    // args.takeFirst(); // it is app name
+
+    int argc = args.count();
+    char *argv[100] = {0};
+    
+    for (int i = 0; i < argc; i ++) {
+        argv[i] = strdup(args.at(i).toAscii().data());
+    }
+    this->handleArguments(argc, argv);
+
+    for (int i = 0; i < argc; i++) {
+        free(argv[i]);
+    }
+    // 
+    return;
+
+    GetOpt4  go(args);
     
     shortArgName = "u";
     longArgName = "uri";
-    go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case:  -uabcd.zip
-    // go.addOptionalArgument(shortArgName, &uri2); //  deal with case:    -u abcd.zip
+    go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case: --uri=abcd.zip -uabcd.zip
+    // go.addOptionalOption(longArgName, &uri, defaultArgValue); // maybe case: --uri abcd.zip
 
     QString referShortArgName = "r";
     QString referLongArgName = "refer";
     go.addOptionalOption('r', referLongArgName, &refer, defaultArgValue);
-    // go.addOptionalArgument(referShortArgName, &refer2);
+    // go.addOptionalOption(referLongArgName, &refer, defaultArgValue);
 
     if (!go.parse()) {
         // qDebug()<<__FUNCTION__<<"Arg parse faild.";

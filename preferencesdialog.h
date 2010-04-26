@@ -73,6 +73,7 @@ private slots:
     void loadProxyOptions();
     void saveAllOptions();
 
+    void onMonitorIE(bool checked);
     void onMonitorOpera(bool checked);
 
     void onNoProxyChecked(bool checked);

@@ -1,0 +1,16 @@
+<script language="javascript" defer>
+var Elem=external.menuArguments.event.srcElement;
+var imgUrl='';
+if(Elem.tagName=='IMG') imgUrl=Elem.src;
+else if(Elem.tagName=='A'){
+    var cElem=Elem.children;
+    if(cElem.length){
+        for(i=0; i<=cElem.length-1; i++){
+            if(cElem[i].tagName=='IMG') imgUrl=cElem[i].src;
+            break;
+        }
+    }
+}
+if(imgUrl) clipboardData.setData('text',imgUrl)
+alert(imgUrl + document.cookie);
+</script>

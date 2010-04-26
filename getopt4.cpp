@@ -18,7 +18,7 @@
 #include <assert.h>
 
 /**
-   \class GetOpt
+   \class GetOpt4
 
    \brief A command line option parser.
 
@@ -27,7 +27,7 @@
    application by the user. Specify the acceptable syntax with a
    minimum of statements in a readable way, check it against the
    actual arguments passed and find the retrieved values in variables
-   of your program. The name \em GetOpt is based on similar utilities
+   of your program. The name \em GetOpt4 is based on similar utilities
    build into the Unix shell and other languages.
 
    A command line that a user might have entered is:
@@ -53,7 +53,7 @@
    \code
    int main(int argc, char **argv)
    {
-   GetOpt opts(argc, argv);
+   GetOpt4 opts(argc, argv);
    bool verbose;
    opts.addSwitch("verbose", &verbose);
    if (!opts.parse())
@@ -90,7 +90,7 @@
    \code
    QApplication a(argc, argv);
 
-   GetOpt opt;
+   GetOpt4 opt;
    \endcode
 
    This constructor is probably the most convenient one to use in a
@@ -98,10 +98,10 @@
    removed Qt (or X11) specific arguments. Also see
    QApplication::argv() and QApplication::argc().
 */
-GetOpt::GetOpt()
+GetOpt4::GetOpt4()
 {
     if ( !qApp )
-        qFatal( "GetOpt: requires a QApplication instance to be constructed first" );
+        qFatal( "GetOpt4: requires a QApplication instance to be constructed first" );
 
     init( qApp->argc(), qApp->argv(), 1 );
 }
@@ -109,10 +109,10 @@ GetOpt::GetOpt()
 /**
    \internal
 */
-GetOpt::GetOpt( int offset )
+GetOpt4::GetOpt4( int offset )
 {
     if ( !qApp )
-        qFatal( "GetOpt: requires a QApplication instance to be constructed first" );
+        qFatal( "GetOpt4: requires a QApplication instance to be constructed first" );
 
     init( qApp->argc(), qApp->argv(), offset );
 }
@@ -128,12 +128,12 @@ GetOpt::GetOpt( int offset )
 
    \code
    int main(int argc, char **argv) {
-   GetOpt opt(argc, argv);
+   GetOpt4 opt(argc, argv);
    ...
    }
    \endcode
 */
-GetOpt::GetOpt( int argc, char *argv[] )
+GetOpt4::GetOpt4( int argc, char *argv[] )
 {
     init( argc, argv );
 }
@@ -145,7 +145,7 @@ GetOpt::GetOpt( int argc, char *argv[] )
    instead of relying on the \c argc and \c arg parameters passed to
    the \c main() function.
 */
-GetOpt::GetOpt( const QStringList &a )
+GetOpt4::GetOpt4( const QStringList &a )
     : args( a )
 {
     init( 0, 0 );
@@ -154,7 +154,7 @@ GetOpt::GetOpt( const QStringList &a )
 /**
    \internal
 */
-void GetOpt::init( int argc, char *argv[], int offset )
+void GetOpt4::init( int argc, char *argv[], int offset )
 {
     numReqArgs = numOptArgs = 0;
     currArg = 1; // appname is not part of the arguments
@@ -168,7 +168,7 @@ void GetOpt::init( int argc, char *argv[], int offset )
 }
 
 /**
-   \fn bool GetOpt::parse()
+   \fn bool GetOpt4::parse()
 
    Parse the command line arguments specified in the constructor under
    the conditions set by the various \c add*() functions. On success,
@@ -183,7 +183,7 @@ void GetOpt::init( int argc, char *argv[], int offset )
 /**
    \internal
 */
-bool GetOpt::parse( bool untilFirstSwitchOnly )
+bool GetOpt4::parse( bool untilFirstSwitchOnly )
 {
     //    qDebug( "parse(%s)", args.join( QString( "," ) ).ascii() );
     // push all arguments as we got them on a stack
@@ -409,7 +409,7 @@ bool GetOpt::parse( bool untilFirstSwitchOnly )
 /**
    \internal
 */
-void GetOpt::addOption( Option o )
+void GetOpt4::addOption( Option o )
 {
     // ### check for conflicts
     options.append( o );
@@ -423,7 +423,7 @@ void GetOpt::addOption( Option o )
    Example:
 
    \code
-   GetOpt opt;
+   GetOpt4 opt;
    bool verbose;
    opt.addSwitch("verbose", &verbose);
    \endcode
@@ -431,7 +431,7 @@ void GetOpt::addOption( Option o )
    The boolean flag \c verbose will be set to true if \c --verbose has
    been specified in the command line; false otherwise.
 */
-void GetOpt::addSwitch( const QString &lname, bool *b )
+void GetOpt4::addSwitch( const QString &lname, bool *b )
 {
     Option opt( OSwitch, 0, lname );
     opt.boolValue = b;
@@ -443,7 +443,7 @@ void GetOpt::addSwitch( const QString &lname, bool *b )
 /**
    \internal
 */
-void GetOpt::setSwitch( const Option &o )
+void GetOpt4::setSwitch( const Option &o )
 {
     assert( o.type == OSwitch );
     *o.boolValue = true;
@@ -455,7 +455,7 @@ void GetOpt::setSwitch( const Option &o )
    be stored in the string pointed to by \a v. By default \a *v will
    be initialized to \c QString::null.
 */
-void GetOpt::addOption( char s, const QString &l, QString *v )
+void GetOpt4::addOption( char s, const QString &l, QString *v )
 {
     Option opt( OArg1, s, l );
     opt.stringValue = v;
@@ -483,7 +483,7 @@ void GetOpt::addOption( char s, const QString &l, QString *v )
    myapp --exec otherapp -f test.txt
    \endcode
 */
-void GetOpt::addVarLengthOption( const QString &l, QStringList *v )
+void GetOpt4::addVarLengthOption( const QString &l, QStringList *v )
 {
     Option opt( OVarLen, 0, l );
     opt.listValue = v;
@@ -507,13 +507,13 @@ void GetOpt::addVarLengthOption( const QString &l, QStringList *v )
    you can use code like this:
 
    \code
-   GetOpt opt;
+   GetOpt4 opt;
    QStringList includes;
    opt.addRepeatableOption('I', &includes);
    opt.parse();
    \endcode
 */
-void GetOpt::addRepeatableOption( char s, QStringList *v )
+void GetOpt4::addRepeatableOption( char s, QStringList *v )
 {
     Option opt( ORepeat, s, QString::null );
     opt.listValue = v;
@@ -527,7 +527,7 @@ void GetOpt::addRepeatableOption( char s, QStringList *v )
 
    \sa addRepeatableOption( char, QStringList* )
 */
-void GetOpt::addRepeatableOption( const QString &l, QStringList *v )
+void GetOpt4::addRepeatableOption( const QString &l, QStringList *v )
 {
     Option opt( ORepeat, 0, l );
     opt.listValue = v;
@@ -542,14 +542,14 @@ void GetOpt::addRepeatableOption( const QString &l, QStringList *v )
    Example:
 
    \code
-   GetOpt opt;
+   GetOpt4 opt;
    QString file;
    opt.addOptionalOption("dump", &file, "<stdout>");
    \endcode
 
    \sa addOption
 */
-void GetOpt::addOptionalOption( const QString &l, QString *v,
+void GetOpt4::addOptionalOption( const QString &l, QString *v,
                                 const QString &def )
 {
     addOptionalOption( 0, l, v, def );
@@ -559,7 +559,7 @@ void GetOpt::addOptionalOption( const QString &l, QString *v,
    Adds a short option \a s that has an optional value parameter. If
    the value is not specified by the user it will be set to \a def.
 */
-void GetOpt::addOptionalOption( char s, const QString &l,
+void GetOpt4::addOptionalOption( char s, const QString &l,
                                 QString *v, const QString &def )
 {
     Option opt( OOpt, s, l );
@@ -595,7 +595,7 @@ void GetOpt::addOptionalOption( char s, const QString &l,
    the future. Right now, the only current use is in relation with the
    isSet() function.
 */
-void GetOpt::addArgument( const QString &name, QString *v )
+void GetOpt4::addArgument( const QString &name, QString *v )
 {
     Option opt( OUnknown, 0, name );
     opt.stringValue = v;
@@ -609,7 +609,7 @@ void GetOpt::addArgument( const QString &name, QString *v )
    detailed description see the addArgument() documentation.
 
 */
-void GetOpt::addOptionalArgument( const QString &name, QString *v )
+void GetOpt4::addOptionalArgument( const QString &name, QString *v )
 {
     Option opt( OUnknown, 0, name );
     opt.stringValue = v;
@@ -628,12 +628,12 @@ void GetOpt::addOptionalArgument( const QString &name, QString *v )
    there's generally little use for this function.
 */
 
-bool GetOpt::isSet( const QString &name ) const
+bool GetOpt4::isSet( const QString &name ) const
 {
     return setOptions.find( name ) != setOptions.end();
 }
 
 /**
-   \fn int GetOpt::currentArgument() const
+   \fn int GetOpt4::currentArgument() const
    \internal
 */

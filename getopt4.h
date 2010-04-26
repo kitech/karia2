@@ -53,12 +53,12 @@
 #include <qstringlist.h>
 #include <qmap.h>
 
-class GetOpt {
+class GetOpt4 {
 public:
-    GetOpt();
-    GetOpt( int offset );
-    GetOpt( int argc, char *argv[] );
-    GetOpt( const QStringList &a );
+    GetOpt4();
+    GetOpt4( int offset );
+    GetOpt4( int argc, char *argv[] );
+    GetOpt4( const QStringList &a );
 
     QString appName() const { return aname; }
 
