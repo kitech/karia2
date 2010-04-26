@@ -325,7 +325,8 @@ void PreferencesDialog::onMonitorIE(bool checked)
 
     if (checked) {
         winreg.setValue("Download by NullGet/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
-        winreg.setValue("Download by NullGet/contexts", 0x00000002);
+        // winreg.setValue("Download by NullGet/contexts", 0x00000002); // is img
+        winreg.setValue("Download by NullGet/contexts", 0x00000022); // is link
     } else {
         winreg.remove("Download by NullGet/.");
         winreg.remove("Download by NullGet/contexts");
@@ -346,7 +347,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
 
 #if defined(Q_OS_WIN)
     QSettings winreg("HKEY_CURRENT_USER\\Software\\Opera Software", QSettings::NativeFormat);
-    QString operaExecFile = winreg.value("Last CommandLine");
+    QString operaExecFile = winreg.value("Last CommandLine").toString();
     int exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
     if (exeNamePos == -1) {
         qDebug()<<"Can not checking opera installation.";
@@ -358,7 +359,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         qDebug()<<"Can not find opera personal directory.";
         return;
     }
-    QString execProgramValue = QString("Execute program,%1Z:\\cross\karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
 #else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
