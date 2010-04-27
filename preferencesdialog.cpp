@@ -350,9 +350,18 @@ void PreferencesDialog::onMonitorOpera(bool checked)
     QString operaExecFile = winreg.value("Last CommandLine").toString();
     int exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
     if (exeNamePos == -1) {
+        operaExecFile = winreg.value("Last CommandLine v2").toString();
+        exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    }
+    if (exeNamePos == -1) {
+        operaExecFile = winreg.value("Last CommandLine v3").toString();
+        exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    }
+    if (exeNamePos == -1) {
         qDebug()<<"Can not checking opera installation.";
         return;
     }
+
     QString operaDir = operaExecFile.left(exeNamePos);
     QString operaPersonalDir = QDir::homePath() + "/Application Data/Opera/Opera";
     if (!QDir().exists(operaPersonalDir)) {
