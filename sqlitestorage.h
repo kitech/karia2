@@ -54,7 +54,7 @@ namespace ng
 {
 	namespace tasks
 	{
-        // todo, refer and cookie field
+        // todo, bt-select-file and cookie field, drop no used 
 		enum {task_id, file_size, retry_times, create_time, current_speed, average_speed,
               eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count,
               active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent,

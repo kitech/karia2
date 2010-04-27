@@ -210,9 +210,9 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	QClipboard *cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
 
-    if (cbstr.startsWith("nget://")) {
+    if (cbstr.startsWith("nullget://")) {
         qDebug()<<__FUNCTION__<<cbstr;   
-        TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 7));
+        TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 10));
         this->ui.tid_g_le_url->setText(options.mTaskUrl);
         this->ui.tid_g_le_referrer->setText(options.mReferer);
     } else {
@@ -353,11 +353,13 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 void taskinfodlg::onUrlBoxChange(QString text)
 {
 	//this->ui.tid_g_le_le_rename->setText(ui.tid_g_le_url->text());	
-	QUrl u(text);
-	QFileInfo fi(u.path());
-	QString fname = fi.fileName();
-	if(fname.isEmpty()) fname = "index.html";
-	this->ui.tid_g_le_le_rename->setText( fname );
+	QUrl url(text);
+	QFileInfo fi(url.path());
+	QString fname = url.hasQuery() ?
+        fi.fileName().left(fi.fileName().lastIndexOf('?')) 
+        : fi.fileName();
+	if (fname.isEmpty()) fname = "index.html";
+	this->ui.tid_g_le_le_rename->setText(fname);
 	ui.tid_au_lb_url->setText(text);
 }
 

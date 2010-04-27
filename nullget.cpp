@@ -63,7 +63,6 @@
 #include "taskservermodel.h"
 #include "seedfilemodel.h"
 #include "seedfilesdialog.h"
-#include "getopt4.h"
 
 //////
 #include "libng/html-parse.h"
@@ -4286,7 +4285,7 @@ void NullGet::handleArguments(int argc, char **argv)
     options.mTaskUrl = uri;
     options.mReferer = refer;
 
-    QString ngetUri = "nget://" + options.toBase64Data();
+    QString ngetUri = "nullget://" + options.toBase64Data();
     QClipboard *cb = QApplication::clipboard();
     cb->setText(ngetUri);
     qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
@@ -4328,65 +4327,65 @@ void NullGet::handleArguments(QStringList args)
     // 
     return;
 
-    GetOpt4  go(args);
+    // GetOpt4  go(args);
     
-    shortArgName = "u";
-    longArgName = "uri";
-    go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case: --uri=abcd.zip -uabcd.zip
-    // go.addOptionalOption(longArgName, &uri, defaultArgValue); // maybe case: --uri abcd.zip
+    // shortArgName = "u";
+    // longArgName = "uri";
+    // go.addOptionalOption('u', longArgName, &uri, defaultArgValue); // deal with case: --uri=abcd.zip -uabcd.zip
+    // // go.addOptionalOption(longArgName, &uri, defaultArgValue); // maybe case: --uri abcd.zip
 
-    QString referShortArgName = "r";
-    QString referLongArgName = "refer";
-    go.addOptionalOption('r', referLongArgName, &refer, defaultArgValue);
-    // go.addOptionalOption(referLongArgName, &refer, defaultArgValue);
+    // QString referShortArgName = "r";
+    // QString referLongArgName = "refer";
+    // go.addOptionalOption('r', referLongArgName, &refer, defaultArgValue);
+    // // go.addOptionalOption(referLongArgName, &refer, defaultArgValue);
 
-    if (!go.parse()) {
-        // qDebug()<<__FUNCTION__<<"Arg parse faild.";
-        return;
-    }
+    // if (!go.parse()) {
+    //     // qDebug()<<__FUNCTION__<<"Arg parse faild.";
+    //     return;
+    // }
 
-    qDebug()<<uri<<uri2;
-    qDebug()<<refer<<refer2;
+    // qDebug()<<uri<<uri2;
+    // qDebug()<<refer<<refer2;
 
-    if (uri == QString::null && uri2 == QString::null) {
-        qDebug()<<__FUNCTION__<<"No uri specified.";
-        return;
-    }
+    // if (uri == QString::null && uri2 == QString::null) {
+    //     qDebug()<<__FUNCTION__<<"No uri specified.";
+    //     return;
+    // }
 
-    uri = (uri == QString::null) ? uri2 : uri;
+    // uri = (uri == QString::null) ? uri2 : uri;
 
-    // fix for opera %l or %u give the error url
-    if (uri.startsWith("http:/", Qt::CaseInsensitive)
-        && !uri.startsWith("http://", Qt::CaseInsensitive)) {
-        uri = uri.replace("http:/", "http://");
-    } else if (uri.startsWith("ftp:/", Qt::CaseInsensitive)
-               && !uri.startsWith("ftp://", Qt::CaseInsensitive)) {
-        uri = uri.replace("ftp:/", "ftp://");
-    }
+    // // fix for opera %l or %u give the error url
+    // if (uri.startsWith("http:/", Qt::CaseInsensitive)
+    //     && !uri.startsWith("http://", Qt::CaseInsensitive)) {
+    //     uri = uri.replace("http:/", "http://");
+    // } else if (uri.startsWith("ftp:/", Qt::CaseInsensitive)
+    //            && !uri.startsWith("ftp://", Qt::CaseInsensitive)) {
+    //     uri = uri.replace("ftp:/", "ftp://");
+    // }
 
-    refer = (refer == QString::null) ? refer2 : refer;
-    // fix for opera %l or %u give the error url
-    if (refer.startsWith("http:/", Qt::CaseInsensitive)
-        && !refer.startsWith("http://", Qt::CaseInsensitive)) {
-        refer = refer.replace("http:/", "http://");
-    } else if (refer.startsWith("ftp:/", Qt::CaseInsensitive)
-               && !refer.startsWith("ftp://", Qt::CaseInsensitive)) {
-        refer = refer.replace("ftp:/", "ftp://");
-    }
+    // refer = (refer == QString::null) ? refer2 : refer;
+    // // fix for opera %l or %u give the error url
+    // if (refer.startsWith("http:/", Qt::CaseInsensitive)
+    //     && !refer.startsWith("http://", Qt::CaseInsensitive)) {
+    //     refer = refer.replace("http:/", "http://");
+    // } else if (refer.startsWith("ftp:/", Qt::CaseInsensitive)
+    //            && !refer.startsWith("ftp://", Qt::CaseInsensitive)) {
+    //     refer = refer.replace("ftp:/", "ftp://");
+    // }
 
-    // convect to TaskOption raw data formats, for passive more data
-    TaskOption options;
-    options.mTaskUrl = uri;
-    options.mReferer = refer;
+    // // convect to TaskOption raw data formats, for passive more data
+    // TaskOption options;
+    // options.mTaskUrl = uri;
+    // options.mReferer = refer;
 
-    QString ngetUri = "nget://" + options.toBase64Data();
-    QClipboard *cb = QApplication::clipboard();
-    cb->setText(ngetUri);
-    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
+    // QString ngetUri = "nget://" + options.toBase64Data();
+    // QClipboard *cb = QApplication::clipboard();
+    // cb->setText(ngetUri);
+    // qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
 
-    this->mainUI.action_New_Download->trigger();
-    qApp->setActiveWindow(this);
-    this->setFocus(Qt::MouseFocusReason);
+    // this->mainUI.action_New_Download->trigger();
+    // qApp->setActiveWindow(this);
+    // this->setFocus(Qt::MouseFocusReason);
 }
 
 void NullGet::onOtherKaria2MessageRecived(const QString &msg)

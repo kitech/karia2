@@ -131,7 +131,6 @@ HEADERS += aboutdialog.h \
            seedfilemodel.h \
            seedfilesdialog.h \  
            taskitemdelegate.h \
-           getopt4.h \
            qtsingleapplication/qtlocalpeer.h \
            qtsingleapplication/qtsingleapplication.h
 
@@ -188,7 +187,6 @@ SOURCES += aboutdialog.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
            mimetypeshash.cpp \
-           getopt4.cpp \
            qtsingleapplication/qtlocalpeer.cpp \
            qtsingleapplication/qtsingleapplication.cpp
 

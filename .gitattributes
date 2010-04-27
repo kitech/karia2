@@ -57,8 +57,6 @@ doc/thunder.txt -text
 /genqm.sh -text
 /gents.bat -text
 /gents.sh -text
-/getopt4.cpp -text
-/getopt4.h -text
 /getopt_pp.cpp -text
 /getopt_pp.h -text
 /getopt_pp_standalone.h -text

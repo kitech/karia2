@@ -14,19 +14,19 @@ LabSpace::LabSpace(QWidget *parent)
 	mSysMon->addPath("d:/temp/aa.txt");	
 	mSysMon->addPath("d:/temp/");	//好象对文件管用，对目录不管用。windows平台是这样的。Linux下是可用的。
 #else
-	mSysMon->addPath(QDir::homePath()+"/aa.txt");	
-	mSysMon->addPath(QDir::homePath());	//好象对文件管用，对目录不管用。windows平台是这样的。
+	// mSysMon->addPath(QDir::homePath() + "/aa.txt");	
+	// mSysMon->addPath(QDir::homePath());	//好象对文件管用，对目录不管用。windows平台是这样的。
+    mSysMon->addPath(QDir::homePath() + "/.opera/cookies4.dat");
 #endif
 
-	QObject::connect(mSysMon,SIGNAL(directoryChanged ( const QString &  )) ,
-		this,SLOT( onDirectoryChanged ( const QString &  ) ) );
-	QObject::connect(mSysMon,SIGNAL(fileChanged ( const QString &  ) ),
-		this,SLOT( onFileChanged ( const QString & ) ) ) ;
+	QObject::connect(mSysMon, SIGNAL(directoryChanged ( const QString &  )) ,
+		this, SLOT(onDirectoryChanged ( const QString &  ) ) );
+	QObject::connect(mSysMon, SIGNAL(fileChanged ( const QString &  ) ),
+		this, SLOT(onFileChanged ( const QString & ) ) ) ;
 	qDebug()<<__FUNCTION__<<__LINE__;
 
 	QObject::connect(this->ui.pushButton,SIGNAL(clicked()),
 		this,SLOT(getDiskRawData()) );
-
 }
 
 LabSpace::~LabSpace()
@@ -38,11 +38,19 @@ void LabSpace::onDirectoryChanged ( const QString & path )
 {
 	qDebug()<<__FUNCTION__<<__LINE__;
 	qDebug()<< path ;
+    // sometimes disappear readd
+    if (!this->mSysMon->directories().contains(path)) {
+        this->mSysMon->addPath(path);
+    }
 }
 void LabSpace::onFileChanged ( const QString & path ) 
 {
 	qDebug()<<__FUNCTION__<<__LINE__;
-	qDebug()<< path ;
+	qDebug()<< path << this->mSysMon->files();
+    // sometimes disappear readd
+    if (!this->mSysMon->files().contains(path)) {
+        this->mSysMon->addPath(path);
+    }
 }
 
 void LabSpace::getDiskRawData()
