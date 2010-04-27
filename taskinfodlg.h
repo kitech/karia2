@@ -106,7 +106,7 @@ public :
 	TaskOption * getOption();
 
 private:
-    Ui::taskinfodlgClass ui;
+    Ui::taskinfodlg ui;
 
 	CategoryComboBoxItemDelegate * mCCID;
 
@@ -133,6 +133,8 @@ private slots:
 
 	void onCatListClicked( const QModelIndex & index );
 	void onCatListSelectChange( const QItemSelection & curr , const QItemSelection & prev  ) ;
+
+    void onShowMoreInfo();
 };
 
 

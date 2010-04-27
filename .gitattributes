@@ -14,6 +14,7 @@ Resources/favicon.ico -text
 Resources/icon_16x16.png -text
 Resources/icon_22x22.png -text
 Resources/icon_32x32.png -text
+Resources/karia2.png -text
 Resources/nullget-1.png -text
 /aboutdialog.cpp -text
 /aboutdialog.h -text

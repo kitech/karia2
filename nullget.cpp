@@ -70,9 +70,7 @@
 //labspace
 #include "labspace.h"
 
-#ifdef Q_OS_WIN32
-
-#else
+#if !defined(Q_OS_WIN32)
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
 #endif
@@ -217,30 +215,6 @@ void NullGet::firstShowHandler()
 	//
 	this->connectAllSignalAndSlog();
 
-    // select the default cat model
-    {
-        // cacl the downloading model index
-        QItemSelection readySelect, readDeselect;
-        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
-        qDebug()<<topCatIdx.data();
-        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
-        qDebug()<<l2RowCount;
-        for (int r = 0 ; r < l2RowCount ; r ++) {
-            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
-            qDebug()<<currCatIdx;
-            if (currCatIdx.data().toInt() == ng::cats::downloading) {
-                // for (int c = 0; c <= ng::cats::dirty; c ++) {
-                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
-                //     readySelect.select(readyIndex, readyIndex);
-                // }
-                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx), 
-                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
-                break;
-            }
-        }
-        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
-    }
-
     this->mainUI.action_Pause->setEnabled(false);
     this->mainUI.action_Start->setEnabled(false);
     this->mainUI.action_Delete_task->setEnabled(false);
@@ -265,6 +239,31 @@ void NullGet::firstShowHandler()
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
+
+
+    // select the default cat model
+    {
+        // cacl the downloading model index
+        QItemSelection readySelect, readDeselect;
+        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
+        qDebug()<<topCatIdx.data();
+        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
+        qDebug()<<l2RowCount;
+        for (int r = 0 ; r < l2RowCount ; r ++) {
+            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
+            qDebug()<<currCatIdx;
+            if (currCatIdx.data().toInt() == ng::cats::downloading) {
+                // for (int c = 0; c <= ng::cats::dirty; c ++) {
+                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
+                //     readySelect.select(readyIndex, readyIndex);
+                // }
+                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx), 
+                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
+                break;
+            }
+        }
+        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
+    }
 
     // process arguments 
     this->handleArguments();
@@ -360,24 +359,9 @@ void NullGet::initPopupMenus()
 	//window style : "windows", "motif", "cde", "plastique", "windowsxp", or "macintosh" , "cleanlooks" 
 	//NorwegianWood
 	group = new QActionGroup(this);
-	// mainUI.action_CDE->setData("cde");
-	// mainUI.actionMo_tif->setData("motif");
-	// mainUI.action_Mac->setData("macintosh");
-	// mainUI.action_Windows->setData("windows");
-	// mainUI.actionWindowsX_P->setData("windowsxp");
-	// mainUI.action_Plastique->setData("plastique");
-	// mainUI.actionCleanlooks->setData("cleanlooks");
 	mainUI.action_NorwegianWood->setData("norwegianwood");
-	// group->addAction(mainUI.action_CDE);
-	// group->addAction(mainUI.actionMo_tif);
-	// group->addAction(mainUI.action_Mac);
-	// group->addAction(mainUI.action_Windows);
-	// group->addAction(mainUI.actionWindowsX_P);
-	// group->addAction(mainUI.action_Plastique);
-	// group->addAction(mainUI.actionCleanlooks);
 	group->addAction(mainUI.action_NorwegianWood);
     // automatic check supported style
-
     QStringList styleKeys = QStyleFactory::keys();
     QStyle *defaultStyle = QApplication::style();
     // qDebug()<<QApplication::style()<<styleKeys;
@@ -584,8 +568,8 @@ void NullGet::initSystemTray()
         //iconname = QString(qApp->applicationDirPath()+"/"+"resources/icon_22x22.png");
         //break;
    case 2:
-        iconname = QString(qApp->applicationDirPath() + "/" +"Resources/icon_32x32.png");
-        iconname = QString(qApp->applicationDirPath() + "/Resources/nullget-1.png");
+        // iconname = QString(qApp->applicationDirPath() + "/Resources/nullget-1.png");
+        iconname = QString(qApp->applicationDirPath() + "/" +"Resources/karia2.png");
         break;
     }
 
@@ -595,8 +579,8 @@ void NullGet::initSystemTray()
 	this->mSysTrayIcon->show();
 
 	//this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/"+"resources/icon_16x16.png"));	
-	// this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/"+"Resources/icon_32x32.png"));	
-    this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/nullget-1.png"));	
+    // this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/nullget-1.png"));	
+    this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/karia2.png"));	
 }
 
 void NullGet::initAppIcons()
@@ -614,7 +598,7 @@ void NullGet::initAppIcons()
     this->mainUI.actionFind->setIcon(QIcon(dir + "/edit-find.png"));
     this->mainUI.actionFind_next->setIcon(QIcon(dir + "/go-down-search.png"));
     this->mainUI.action_Connect_Disconnect->setIcon(QIcon(dir + "/network-connect.png"));
-    this->mainUI.actionDefault_Download_Properties->setIcon(QIcon(dir + "/configure.png"));
+    // this->mainUI.actionDefault_Download_Properties->setIcon(QIcon(dir + "/configure.png"));
     this->mainUI.action_Options->setIcon(QIcon(dir + "/preferences-system.png"));
     this->mainUI.actionQuit->setIcon(QIcon(dir + "/system-shutdown.png"));
     this->mainUI.label->setPixmap(QPixmap(dir + "/status/unknown.png"));
@@ -670,7 +654,7 @@ void NullGet::connectAllSignalAndSlog()
 	QObject::connect(this->mainUI.action_Options, SIGNAL(triggered()), this, SLOT(onShowOptions()));
 	QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()), this, SLOT(onShowConnectOption()));
 	
-	QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()), this, SLOT(onShowDefaultDownloadProperty()));
+	// QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()), this, SLOT(onShowDefaultDownloadProperty()));
 
 	//statusbar
 	QObject::connect(this->mSpeedBarSlider, SIGNAL(valueChanged(int)), this, SLOT(onManualSpeedChanged(int)));
@@ -2957,15 +2941,15 @@ void NullGet::onShowConnectOption()
 	delete dlg;
 }
 
-void NullGet::onShowDefaultDownloadProperty()
-{
-	taskinfodlg *tid = new taskinfodlg(0,0);		
+// void NullGet::onShowDefaultDownloadProperty()
+// {
+// 	taskinfodlg *tid = new taskinfodlg(0,0);		
 	
-	//tid->setRename(fname);			
-	int er = tid->exec();	
+// 	//tid->setRename(fname);			
+// 	int er = tid->exec();	
 	
-	delete tid;	
-}
+// 	delete tid;	
+// }
 
 void NullGet::onShowTaskProperty()
 {
@@ -3107,7 +3091,8 @@ QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
         ftype.second = path + ftype.second;
     }
 
-    qDebug()<<QIcon::themeSearchPaths();
+    // ("/usr/share/icons", "/usr/local/share/icons", "/usr/share/icons", ":/home/gzleo/.kde4/share/icons", ":/icons")
+    // qDebug()<<QIcon::themeSearchPaths();
     
     return ftype;
 

@@ -204,7 +204,7 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	QObject::connect(ui.tid_au_pb_add, SIGNAL(clicked()), this, SLOT(onAddAlterUrl()));
 	QObject::connect(ui.tid_au_pb_delete, SIGNAL(clicked()), this, SLOT(onDeleteAlterUrl()));
 	QObject::connect(ui.tid_g_le_pb_show_dir, SIGNAL(clicked()), this, SLOT(onChangeSaveDirectory()));
-	QObject::connect(ui.tid_g_le_pb_category_info, SIGNAL(clicked()), this, SLOT(onShowCategoryInfo()));
+	// QObject::connect(ui.tid_g_le_pb_category_info, SIGNAL(clicked()), this, SLOT(onShowCategoryInfo()));
 
 	//如果剪贴板上是有效的URL，则认为这就是要添加的任务，直填写到任务URL栏中。
 	QClipboard *cb = QApplication::clipboard();
@@ -274,6 +274,11 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	DirCompleterModel *dirModel = new DirCompleterModel(completer);
 	completer->setModel(dirModel);
 	this->ui.tid_g_cb_save_to->setCompleter(completer);
+
+    this->show();
+    this->onShowMoreInfo();
+    QObject::connect(this->ui.toolButton, SIGNAL(clicked()),
+                     this, SLOT(onShowMoreInfo()));
 }
 
 taskinfodlg::~taskinfodlg()
@@ -326,8 +331,8 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		ui.tid_g_le_te_comment->setPlainText(prm->mComment);
 		if (prm->mStartState == 0 ) {
 			ui.tid_g_le_rb_manual->setChecked(true);
-		} else if ( prm->mStartState == 2 ) {
-			ui.tid_g_le_rb_schedule->setChecked(true);
+		// } else if ( prm->mStartState == 2 ) {
+		// 	ui.tid_g_le_rb_schedule->setChecked(true);
 		} else {
 			ui.tid_g_le_rb_immediately->setChecked(true);
 		}
@@ -340,13 +345,13 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 		}
 		
 		//
-		ui.tid_ad_cb_down_subdir_from_ftp->setChecked(prm->mAutoDownSubdirFromFtp==1?true:false);
-		ui.tid_ad_cb_create_subdir_locally->setChecked(prm->mAutoCreateSubdirLocally==1?true:false);
-		ui.tid_ad_cb_create_category->setChecked(prm->mAutoCreateCategory==1?true:false);
+		// ui.tid_ad_cb_down_subdir_from_ftp->setChecked(prm->mAutoDownSubdirFromFtp==1?true:false);
+		// ui.tid_ad_cb_create_subdir_locally->setChecked(prm->mAutoCreateSubdirLocally==1?true:false);
+		// ui.tid_ad_cb_create_category->setChecked(prm->mAutoCreateCategory==1?true:false);
 		
-		ui.tid_ad_cb_proxy_type_http->setCurrentIndex(prm->mProxyTypeHttp);
-		ui.tid_ad_cb_proxy_type_ftp->setCurrentIndex(prm->mProxyTypeFtp);
-		ui.tid_ad_cb_proxy_type_media->setCurrentIndex(prm->mProxyTypeMedia);		
+		// ui.tid_ad_cb_proxy_type_http->setCurrentIndex(prm->mProxyTypeHttp);
+		// ui.tid_ad_cb_proxy_type_ftp->setCurrentIndex(prm->mProxyTypeFtp);
+		// ui.tid_ad_cb_proxy_type_media->setCurrentIndex(prm->mProxyTypeMedia);		
 	}
 }
 
@@ -383,6 +388,30 @@ void taskinfodlg::onCategoryBoxChange(const QString & text)
 		this->ui.tid_g_le_cb_category->setEditText(this->mSwapValue);
     }
 	this->ui.tid_g_le_cb_category->lineEdit()->setWindowIcon(QIcon("icons/crystalsvg/16x16/filesystems/folder_violet_open.png"));
+}
+
+void taskinfodlg::onShowMoreInfo()
+{
+    QWidget *w = this->ui.widget;
+    if (this->ui.toolButton->arrowType() == Qt::UpArrow) {
+        int heightDelta = w->height();
+        QSize baseSize = this->size();
+        w->setVisible(false);
+        baseSize.setHeight(baseSize.height() - heightDelta);
+        this->resize(baseSize);
+        this->setFixedHeight(baseSize.height());
+        this->ui.toolButton->setArrowType(Qt::DownArrow);
+        this->ui.toolButton->setText(tr("Expand"));
+    } else {
+        int heightDelta = w->height();
+        QSize baseSize = this->size();
+        baseSize.setHeight(baseSize.height() + heightDelta);
+        this->resize(baseSize);
+        this->setFixedHeight(baseSize.height());
+        w->setVisible(true);
+        this->ui.toolButton->setArrowType(Qt::UpArrow);
+        this->ui.toolButton->setText(tr("Collapse"));
+    }
 }
 
 TaskOption * taskinfodlg::getOption()
@@ -423,8 +452,8 @@ TaskOption * taskinfodlg::getOption()
 	param->mComment = ui.tid_g_le_te_comment->toPlainText();
 	if (ui.tid_g_le_rb_manual->isChecked())
 		param->mStartState = 0	;	//0,1,2
-	else if ( ui.tid_g_le_rb_schedule->isChecked() )
-		param->mStartState = 2;
+	// else if ( ui.tid_g_le_rb_schedule->isChecked() )
+	// 	param->mStartState = 2;
 	else 
 		param->mStartState = 1;
 
@@ -436,13 +465,13 @@ TaskOption * taskinfodlg::getOption()
 	}
 	
 	//
-	param->mAutoDownSubdirFromFtp = ui.tid_ad_cb_down_subdir_from_ftp->isChecked()?1:0;
-	param->mAutoCreateSubdirLocally = ui.tid_ad_cb_create_subdir_locally->isChecked()?1:0; 
-	param->mAutoCreateCategory  = ui.tid_ad_cb_create_category->isChecked() ? 1:0;
+	// param->mAutoDownSubdirFromFtp = ui.tid_ad_cb_down_subdir_from_ftp->isChecked()?1:0;
+	// param->mAutoCreateSubdirLocally = ui.tid_ad_cb_create_subdir_locally->isChecked()?1:0; 
+	// param->mAutoCreateCategory  = ui.tid_ad_cb_create_category->isChecked() ? 1:0;
 	
-	param->mProxyTypeHttp = ui.tid_ad_cb_proxy_type_http->currentIndex();
-	param->mProxyTypeFtp = ui.tid_ad_cb_proxy_type_ftp->currentIndex();
-	param->mProxyTypeMedia = ui.tid_ad_cb_proxy_type_media->currentIndex( );	
+	// param->mProxyTypeHttp = ui.tid_ad_cb_proxy_type_http->currentIndex();
+	// param->mProxyTypeFtp = ui.tid_ad_cb_proxy_type_ftp->currentIndex();
+	// param->mProxyTypeMedia = ui.tid_ad_cb_proxy_type_media->currentIndex( );	
 
     // param->dump();
 

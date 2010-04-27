@@ -433,7 +433,6 @@
     <addaction name="action_Download_Rules"/>
     <addaction name="separator"/>
     <addaction name="action_Save_as_default"/>
-    <addaction name="actionDefault_Download_Properties"/>
     <addaction name="action_Options"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -638,7 +637,6 @@
    <addaction name="actionFind"/>
    <addaction name="actionFind_next"/>
    <addaction name="action_Connect_Disconnect"/>
-   <addaction name="actionDefault_Download_Properties"/>
    <addaction name="action_Options"/>
    <addaction name="action_About_NullGet"/>
    <addaction name="actionQuit"/>
@@ -936,21 +934,6 @@
     <string>&amp;Save as default</string>
    </property>
   </action>
-  <action name="actionDefault_Download_Properties">
-   <property name="icon">
-    <iconset resource="NullGet.qrc">
-     <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
-   </property>
-   <property name="text">
-    <string>Default Download &amp;Properties</string>
-   </property>
-   <property name="statusTip">
-    <string>Default Download Property</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+0</string>
-   </property>
-  </action>
   <action name="action_Options">
    <property name="icon">
     <iconset resource="NullGet.qrc">
@@ -1045,7 +1028,7 @@
   <action name="action_About_NullGet">
    <property name="icon">
     <iconset resource="NullGet.qrc">
-     <normaloff>:/Resources/nullget-1.png</normaloff>:/Resources/nullget-1.png</iconset>
+     <normaloff>:/Resources/karia2.png</normaloff>:/Resources/karia2.png</iconset>
    </property>
    <property name="text">
     <string>&amp;About NullGet</string>

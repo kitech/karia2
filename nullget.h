@@ -217,7 +217,7 @@ public slots:
 	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
 	void onShowConnectOption();
 	//void onShowDownloadRules();
-	void onShowDefaultDownloadProperty();
+	// void onShowDefaultDownloadProperty();
 
 	void onShowOptions();
 	void onShowTaskProperty();
