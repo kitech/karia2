@@ -547,12 +547,8 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
         if (groups.at(i).startsWith("profile", Qt::CaseInsensitive)) {
             setting.beginGroup(groups.at(i));
             profileName = setting.value("Path").toString();
-#if defined(Q_OS_WIN)
-            profileFile = ffProfileBase + QString("/Profiles/%1/user.js").arg(profileName); 
-#else
             // firefox use it, but not override it
             profileFile = ffProfileBase + QString("/%1/user.js").arg(profileName); 
-#endif
             QFile file(profileFile);
             file.open(QIODevice::ReadWrite);
             if (file.exists(profileFile)) {
@@ -582,7 +578,7 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
             file.write(QByteArray("user_pref(\"flashgot.custom\", \"NullGet\");\n"));
 #if defined(Q_OS_WIN)
             file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"")
-                       + QByteArray(QCoreApplication::applicationFilePath().toString())
+                       + QByteArray(QCoreApplication::applicationFilePath().toAscii())
                        + QByteArray("\");\n"));
             file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \" --uri [URL] --refer [REFERER]\");\n"));
 #else
