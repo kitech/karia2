@@ -95,18 +95,18 @@ public:
 	taskinfodlg(TaskOption * param , QWidget *parent = 0);
     ~taskinfodlg();
 
-public :
-	QString taskUrl(){ return this->ui.tid_g_le_url->text(); }
-	int		segmentCount() { return this->ui.tid_g_sb_split_file->value() ; } 
+public:
+	QString taskUrl(){ return this->uiwin.tid_g_le_url->text(); }
+	int		segmentCount() { return this->uiwin.tid_g_sb_split_file->value() ; } 
 
-	void setTaskUrl (QString url) { this->ui.tid_g_le_url->setText(url); }
-	void setSegmentCount(int segCount) { this->ui.tid_g_sb_split_file->setValue(segCount) ; }
-	void setRename(QString rename) { this->ui.tid_g_le_le_rename->setText(rename) ; }
+	void setTaskUrl (QString url) { this->uiwin.tid_g_le_url->setText(url); }
+	void setSegmentCount(int segCount) { this->uiwin.tid_g_sb_split_file->setValue(segCount) ; }
+	void setRename(QString rename) { this->uiwin.tid_g_le_le_rename->setText(rename) ; }
 	
-	TaskOption * getOption();
+	TaskOption *getOption();
 
 private:
-    Ui::taskinfodlg ui;
+    Ui::taskinfodlg uiwin;
 
 	CategoryComboBoxItemDelegate * mCCID;
 

@@ -2202,7 +2202,7 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
         QVariantMap stsbt = sts.value("bittorrent").toMap();
         QVariantList stsTrackers = stsbt.value("announceList").toList();
         this->mTaskMan->setTrackers(taskId, stsTrackers);
-    }
+    } 
 
     if (sts["status"].toString() == QString("complete")) {
         if (this->mTaskMan->isTorrentTask(taskId)) {

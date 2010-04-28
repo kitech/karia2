@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>625</width>
-    <height>484</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -893,6 +893,13 @@
                  <widget class="QCheckBox" name="checkBox_21">
                   <property name="text">
                    <string>Mointor Opera</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox_22">
+                  <property name="text">
+                   <string>Monitor Firefox</string>
                   </property>
                  </widget>
                 </item>

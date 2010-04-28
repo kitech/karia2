@@ -75,6 +75,7 @@ private slots:
 
     void onMonitorIE(bool checked);
     void onMonitorOpera(bool checked);
+    void onMonitorFirefox(bool checked);
 
     void onNoProxyChecked(bool checked);
     void onCustomProxyChecked();

@@ -79,6 +79,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     QObject::connect(this->uiwin.checkBox_18, SIGNAL(toggled(bool)),
                      this, SLOT(onMonitorIE(bool)));
 
+    QObject::connect(this->uiwin.checkBox_22, SIGNAL(toggled(bool)),
+                     this, SLOT(onMonitorFirefox(bool)));
+
     this->show();
 
     this->generalLoaded = false;;
@@ -265,6 +268,14 @@ void PreferencesDialog::loadMonitorOptions()
     } else {
         this->uiwin.checkBox_21->setChecked(false);        
     }
+
+    optionValue = this->loadKey("monitorfirefox", "false");
+
+    if (optionValue == "true") {
+        this->uiwin.checkBox_22->setChecked(true);
+    } else {
+        this->uiwin.checkBox_22->setChecked(false);        
+    }
 }
 
 void PreferencesDialog::loadProxyOptions()
@@ -323,8 +334,11 @@ void PreferencesDialog::onMonitorIE(bool checked)
     QSettings winreg("HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt",
                      QSettings::NativeFormat);
 
+    QString geturlFilePath = QCoreApplication::applicationDirPath() + "/browser/iegeturl.html";
+    geturlFilePath = QDir::toNativeSeparators(geturlFilePath);
     if (checked) {
-        winreg.setValue("Download by NullGet/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
+        // winreg.setValue("Download by NullGet/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
+        winreg.setValue("Download by NullGet/.", geturlFilePath);
         // winreg.setValue("Download by NullGet/contexts", 0x00000002); // is img
         winreg.setValue("Download by NullGet/contexts", 0x00000022); // is link
     } else {
@@ -333,11 +347,6 @@ void PreferencesDialog::onMonitorIE(bool checked)
     }
 
     winreg.sync();
-}
-
-void onMonitorOperaWin(bool checked)
-{
-    
 }
 
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
@@ -372,7 +381,9 @@ void PreferencesDialog::onMonitorOpera(bool checked)
 #else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
-    QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+        .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 #endif
     QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
 
@@ -519,6 +530,77 @@ void PreferencesDialog::onMonitorOpera(bool checked)
 
 }
 
+// now we can only assoc with flashgot, not really firefox
+void PreferencesDialog::onMonitorFirefox(bool checked)
+{
+#if defined(Q_OS_WIN)
+    QString ffProfileBase = QDir::homePath() + "/Application data/Mozilla/firefox";
+#else
+    QString ffProfileBase = QDir::homePath() + "/.mozilla/firefox";
+#endif
+    QString profileName, profileFile;
+
+    QSettings setting(ffProfileBase + "/profiles.ini", QSettings::IniFormat);
+    QStringList groups = setting.childGroups();
+
+    for (int i = 0 ; i < groups.count(); i ++) {
+        if (groups.at(i).startsWith("profile", Qt::CaseInsensitive)) {
+            setting.beginGroup(groups.at(i));
+            profileName = setting.value("Path").toString();
+#if defined(Q_OS_WIN)
+            profileFile = ffProfileBase + QString("/Profiles/%1/user.js").arg(profileName); 
+#else
+            // firefox use it, but not override it
+            profileFile = ffProfileBase + QString("/%1/user.js").arg(profileName); 
+#endif
+            QFile file(profileFile);
+            file.open(QIODevice::ReadWrite);
+            if (file.exists(profileFile)) {
+            } else {
+            }
+            /*
+              user_pref("flashgot.custom", "NullGet3");
+              user_pref("flashgot.custom.NullGet3.args", "-e /home/gzleo/karia2-svn/NullGet --uri [URL] --refer [REFE
+              RER]");
+              user_pref("flashgot.custom.NullGet3.exe", "/usr/bin/xterm");
+              user_pref("flashgot.defaultDM", "NullGet3");
+              user_pref("flashgot.detect.cache", "浏览器创建于,Wget,NullGet3,DTA (Turbo),DTA,cURL,Aria 2");
+              user_pref("flashgot.dmsopts.GetRight.quiet", false);
+              user_pref("flashgot.dmsopts.JDownloader.path", "");
+              user_pref("flashgot.dmsopts.NullGet3.shownInContextMenu", true);
+              user_pref("flashgot.extensions", "");
+              user_pref("flashgot.hide-all", false);
+              user_pref("flashgot.hide-buildGallery", false);
+              user_pref("flashgot.hide-it", false);
+              user_pref("flashgot.hide-media", false);
+              user_pref("flashgot.hide-options", false);
+              user_pref("flashgot.hide-sel", false);
+              user_pref("flashgot.includeImages", true);
+              user_pref("flashgot.omitCookies", false);
+             */
+            file.resize(0);
+            file.write(QByteArray("user_pref(\"flashgot.custom\", \"NullGet\");\n"));
+#if defined(Q_OS_WIN)
+            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"")
+                       + QByteArray(QCoreApplication::applicationFilePath().toString())
+                       + QByteArray("\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \" --uri [URL] --refer [REFERER]\");\n"));
+#else
+            // file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"/usr/bin/xterm\");\n"));
+            // file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \"-e /home/gzleo/karia2-svn/NullGet --uri [URL] --refer [REFERER]\");\n"));
+
+            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"/usr/bin/xterm\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \"-e ")
+                       + QByteArray(QCoreApplication::applicationFilePath().toAscii())
+                       + QByteArray(" --uri [URL] --refer [REFERER]\");\n"));
+#endif
+
+            file.write(QByteArray("user_pref(\"flashgot.defaultDM\", \"NullGet\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.dmsopts.NullGet.shownInContextMenu\", true);\n"));
+            file.close();
+        }
+    }
+}
 
 void PreferencesDialog::onNoProxyChecked(bool checked)
 {

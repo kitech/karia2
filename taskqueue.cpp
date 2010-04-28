@@ -201,16 +201,16 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 }
 
 //static 
-QString TaskQueue::getFileNameByUrl(QString url)
+QString TaskQueue::getFileNameByUrl(QString text)
 {
-	QString fname ;
-	QFileInfo fi(url);
-	if (fi.fileName().length() == 0) {
-		fname = "index.html";
-	} else {
-		fname = fi.fileName();
-	}	
-	return fname;
+	QUrl url(text);
+	QFileInfo fi(url.path());
+	QString fname = url.hasQuery() ?
+        fi.fileName().left(fi.fileName().lastIndexOf('?')) 
+        : fi.fileName();
+	if (fname.isEmpty()) fname = "index.html";
+
+    return fname;
 }
 
 // void TaskQueue::setUrl(QString url)
@@ -471,6 +471,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
     int numPieces = 0;
     QStringList bitList;
     QString bitString;
+    QVariantList files = sts["files"].toList();
 
 	//maybe should use mCatID , but we cant know the value here , so use default downloading cat
 	QAbstractItemModel *mdl = SqliteTaskModel::instance(ng::cats::downloading, this);
@@ -484,7 +485,11 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         idx = mil.at(0);
         if (sts["status"].toString() == "complete") {
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
-
+            // fix no need download data case, the file is already downloaded, user readd it.
+            if (mdl->index(idx.row(), ng::tasks::file_size).data().toString().length() == 0
+                && files.count() > 0) {
+                mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
+            }
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), 
                          mdl->data(mdl->index(idx.row(), ng::tasks::file_size)));
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
@@ -508,7 +513,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
                          , QString("%1 %").arg((sts["totalLength"].toLongLong() == 0) ? 0 
                                                : (sts["completedLength"].toLongLong()*100.0 / sts["totalLength"].toLongLong()*1.0)));
         }
-            
+
         // 计算完成的pieces
         if (sts["status"].toString() == "complete") {
             int blockCount = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
@@ -518,6 +523,23 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), 
                          this->fromBitArray(this->fromHexBitString(sts["bitfield"].toString())));
+        }
+
+        // fix case that can not resovle file from url, must conntect to server 
+        if (!sts.contains("bittorrent")) {
+            QVariantMap  fileMap0;
+            QString fileName;
+            QString fileSize;
+            if (files.count() > 0) {
+                fileMap0 = files.at(0).toMap();
+                fileName = fileMap0.value("path").toString();
+                if (sts.contains("dir")) {
+                    fileName = fileName.right(fileName.length() - sts["dir"].toString().length() - 1);                    
+                } else {
+                    fileName = QFileInfo(fileName).fileName();
+                }
+                mdl->setData(mdl->index(idx.row(), ng::tasks::file_name), fileName);
+            }
         }
 
         // 处理bt信息
@@ -533,64 +555,6 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         qDebug()<<__FUNCTION__<<"Can not found update model";
     }
 
-	// int taskCount = mdl->rowCount();
-	// for (int i = 0 ; i < taskCount; i ++) {
-	// 	//find the cell index
-	// 	idx = mdl->index(i, ng::tasks::task_id );
-
-	// 	if (idx.data().toInt() == taskId) {
-    //         // qDebug()<<"found index of cell";
-            
-    //         if (sts["status"].toString() == "complete") {
-    //             mdl->setData(mdl->index(i, ng::tasks::finish_time), QDateTime::currentDateTime().toString());
-
-    //             mdl->setData(mdl->index(i, ng::tasks::abtained_length), mdl->data(mdl->index(i, ng::tasks::file_size)));
-    //             mdl->setData(mdl->index(i, ng::tasks::task_status), sts["status"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::left_length), 
-    //                          (sts["totalLength"].toLongLong() - sts["completedLength"].toLongLong()));
-    //             mdl->setData(mdl->index(i, ng::tasks::abtained_percent), QString("%1 %").arg(100));
-    //         } else {
-    //             mdl->setData(mdl->index(i, ng::tasks::file_size), sts["totalLength"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::current_speed), sts["downloadSpeed"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::abtained_length), sts["completedLength"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::task_status), sts["status"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::active_block_count), sts["connections"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::left_length), 
-    //                          (sts["totalLength"].toLongLong() - sts["completedLength"].toLongLong()));
-    //             mdl->setData(mdl->index(i, ng::tasks::total_block_count), sts["numPieces"]);
-    //             mdl->setData(mdl->index(i, ng::tasks::block_activity), 
-    //                          QString("%1/%2").arg(sts["connections"].toString()).arg(sts["numPieces"].toString()));
-    //             mdl->setData(mdl->index(i, ng::tasks::abtained_percent)
-    //                          , QString("%1 %").arg((sts["totalLength"].toLongLong() == 0) ? 0 
-    //                                              : (sts["completedLength"].toLongLong()*100.0 / sts["totalLength"].toLongLong()*1.0)));
-    //         }
-            
-    //         // 计算完成的pieces
-    //         if (sts["status"].toString() == "complete") {
-    //             int blockCount = mdl->data(mdl->index(i, ng::tasks::total_block_count)).toInt();
-    //             QStringList bitList;
-    //             for (int i = 0 ; i < blockCount; i ++) bitList << "1";
-    //             mdl->setData(mdl->index(i, ng::tasks::total_packet), bitList.join(","));
-                
-    //         } else {
-    //             mdl->setData(mdl->index(i, ng::tasks::total_packet), 
-    //                          this->fromBitArray(this->fromHexBitString(sts["bitfield"].toString())));
-    //         }
-
-    //         // 处理bt信息
-    //         if (sts.contains("bittorrent")) {
-    //             QVariantMap btSts = sts["bittorrent"].toMap();
-    //             qDebug()<<"announceList:"<<btSts["announceList"]
-    //                     <<"comment:"<<btSts["comment"]
-    //                     <<"createDate:"<<btSts["createDate"]
-    //                     <<"mode:"<<btSts["mode"]
-    //                     <<"info:"<<btSts["info"];
-    //         }
-            
-    //         found = true;
-	// 		break;
-	// 	}
-	// }
     // qDebug()<<"found status:"<<found;
 }
 
