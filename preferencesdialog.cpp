@@ -378,6 +378,14 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         return;
     }
     QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+
+#elif defined(Q_OS_MAC)
+    QString operaDir = "/Applications/Opera.app/Contents/Resources";
+    QString operaPersonalDir = QDir::homePath() + "/Library/Preferences/Opera Preferences";
+
+    QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+        .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+
 #else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";

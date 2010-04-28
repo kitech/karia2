@@ -500,16 +500,16 @@ void NullGet::initStatusBar()
 	int begin = 1 , end = 500;	//K	500KB/s
 
 	QStatusBar *bar = this->statusBar();
-	QLabel * lab = new QLabel("" );
+	QLabel *lab = new QLabel("" );
 	lab->setFixedWidth(0);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
+	lab->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
 	//bar->addWidget(lab);
 	bar->addPermanentWidget(lab);
 	this->mStatusMessageLabel = lab;
 
 	QProgressBar *pbar = new QProgressBar();	//进度条
 	pbar->setFixedWidth(120);
-	pbar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	pbar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 	//bar->addWidget(pbar);
 	bar->addPermanentWidget(pbar);
 	this->mSpeedProgressBar = pbar;
@@ -517,9 +517,10 @@ void NullGet::initStatusBar()
 	pbar->setValue(begin);
 	pbar->setHidden(true);	//初始化为隐藏
 
-	QSlider * hslider = new QSlider(Qt::Horizontal);	//滑动条
+	QSlider *hslider = new QSlider(Qt::Horizontal);	//滑动条
 	hslider->setFixedWidth(120);
-	hslider->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	hslider->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    hslider->setTracking(false); // avoid drap signal and app busy with socket community
 
 	//bar->addWidget(hslider);
 	bar->addPermanentWidget(hslider);
@@ -530,7 +531,7 @@ void NullGet::initStatusBar()
 
 	lab = new QLabel(QString("%1 KB/s").arg(hslider->value()) );	//速度显示条
 	lab->setFixedWidth(100);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 	//bar->addWidget(lab);
 	bar->addPermanentWidget(lab);
 	this->mSpeedManualLabel = lab;
@@ -540,7 +541,7 @@ void NullGet::initStatusBar()
 	lab = new QLabel("0.00KB/s" );	//for total task speed
 	lab->setFixedWidth(100);
 	//lab->setFixedHeight(28);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 	bar->addPermanentWidget(lab);
 	this->mSpeedTotalLable = lab;
 
