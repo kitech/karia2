@@ -4274,16 +4274,29 @@ void NullGet::handleArguments(int argc, char **argv)
     }
 #endif
 
-    std::string std_uri, std_refer;
+    std::string std_uri, std_refer, std_metafile;
 
     // GetOpt::GetOpt_pp args(argc, argv);
     GetOpt::GetOpt_pp args(rargc, rargv);
     args >> GetOpt::Option('u', "uri", std_uri);
     args >> GetOpt::Option('r', "refer", std_refer);
+    args >> GetOpt::Option('m', "metafile", std_metafile);
 
-    QString uri, refer;
+    QString uri, refer, metafile, cookies;
     uri = QString::fromStdString(std_uri);
     refer = QString::fromStdString(std_refer);
+    metafile = QString::fromStdString(std_metafile);
+
+    if (metafile.length() > 0) {
+        QFile file(metafile);
+        file.open(QIODevice::ReadOnly);
+        QByteArray metaData = file.readAll().trimmed();
+        QList<QByteArray> metaInfo = metaData.split('\n');
+        
+        uri = metaInfo.at(3);
+        refer = metaInfo.at(1);
+        cookies = metaInfo.at(2);
+    }
 
     if (uri.length() == 0) {
         qDebug()<<__FUNCTION__<<"No uri specified.";
@@ -4322,13 +4335,6 @@ void NullGet::handleArguments(int argc, char **argv)
     qApp->setActiveWindow(this);
     this->setFocus(Qt::MouseFocusReason);
 
-    // QStringList args;
-
-    // for (int i = 0; i < argc; ++i) {
-    //     args.append(QString(argv[i]));
-    // }
-
-    // this->handleArguments(args);
 }
 
 void NullGet::handleArguments(QStringList args)

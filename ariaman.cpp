@@ -97,7 +97,7 @@ AriaMan::AriaMan(QObject *parent)
                      << "--continue"
                      << "--max-overall-upload-limit=20000"
     //                     << "--all-proxy=127.0.0.1:8118"
-        
+        //<< "\"--header=SetCookie: ASPSESSIONIDQCSSBTAR=CMCLDODAGFELEECLIPNHCIFI; cnzz_a91594=2; sin91594=; rtime=2; ltime=1272524204007; cnzz_eid=57555832-1258166012-http%3A//www.google.com/search%3Fhl%3Den%26source%3Dhp%26q%3Doffice+2007++%25E4%25; __utmz=100221388.1258165995.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=office%202007%20%20%E4%B8%8B%E8%BD%BD; __utma=100221388.708249400.1258165995.1272523913.1272524204.5; __utmc=100221388; __utmb=100221388.1.10.1272524204\""   // has  cookie ok.
         ;
 
 }

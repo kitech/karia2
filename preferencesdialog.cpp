@@ -349,8 +349,271 @@ void PreferencesDialog::onMonitorIE(bool checked)
     winreg.sync();
 }
 
+// http://www.crsky.com/soft/16475.html ok
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
 void PreferencesDialog::onMonitorOpera(bool checked)
+{
+    qDebug()<<__FUNCTION__<<checked;
+
+#if defined(Q_OS_WIN)
+    QSettings winreg("HKEY_CURRENT_USER\\Software\\Opera Software", QSettings::NativeFormat);
+    QString operaExecFile = winreg.value("Last CommandLine").toString();
+    int exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    if (exeNamePos == -1) {
+        operaExecFile = winreg.value("Last CommandLine v2").toString();
+        exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    }
+    if (exeNamePos == -1) {
+        operaExecFile = winreg.value("Last CommandLine v3").toString();
+        exeNamePos = operaExecFile.indexOf("opera.exe", 0, Qt::CaseInsensitive);
+    }
+    if (exeNamePos == -1) {
+        qDebug()<<"Can not checking opera installation.";
+        return;
+    }
+
+    QString operaDir = operaExecFile.left(exeNamePos);
+    QString operaPersonalDir = QDir::homePath() + "/Application Data/Opera/Opera";
+    if (!QDir().exists(operaPersonalDir)) {
+        qDebug()<<"Can not find opera personal directory.";
+        return;
+    }
+    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+
+#elif defined(Q_OS_MAC)
+    QString operaDir = "/Applications/Opera.app/Contents/Resources";
+    QString operaPersonalDir = QDir::homePath() + "/Library/Preferences/Opera Preferences";
+
+    // QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+    // .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+
+#else
+    QString operaDir = "/usr/share/opera";
+    QString operaPersonalDir = QDir::homePath() + "/.opera";
+    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1nullget%1")
+    // .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+    // QString execProgramValue = 
+    
+#endif
+    QFile file(QApplication::applicationDirPath() + "/browser/opera_go_to_page.dat");
+    file.open(QIODevice::ReadOnly);
+    QByteArray itemValue = file.readAll().trimmed();
+    file.close();
+
+    QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
+
+    QString appPath = QApplication::applicationFilePath();
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    Q_ASSERT(codec != NULL);
+    QStringList menuInis, nameFilters;
+    // QSettings setting;
+    bool newIni = false;
+
+    nameFilters << "*.ini";
+
+    QDir pcDir(operaPersonalDir);
+    if (!pcDir.exists("menu")) {
+        pcDir.mkdir("menu"); 
+    } 
+    
+    pcDir.cd("menu");
+    menuInis = pcDir.entryList(nameFilters);
+
+    if (menuInis.count() == 0) {
+        newIni = true;
+        QFile::copy(operaDir + "/ui/standard_menu.ini", operaPersonalDir + "/menu/standard_menu.ini");
+        menuInis = pcDir.entryList(nameFilters);
+    }
+    if (menuInis.count() > 0) {
+        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
+        QByteArray line;
+        QList<QByteArray> popMenus;
+        qint64 overrideBegin = -1, overrideEnd = -1;
+
+        for (int i = 0; i < menuInis.count() ; i ++) {
+            QString curmenu = operaPersonalDir + "/menu/" + menuInis.at(i);
+            QFile mfile(curmenu);
+            mfile.open(QIODevice::ReadWrite);
+            while (!mfile.atEnd()) {
+                line = mfile.readLine();
+                if (line.trimmed() == "[Link Popup Menu]") {
+                    overrideBegin = mfile.pos() - line.length();
+                    popMenus << line;
+                    while (!mfile.atEnd()) {
+                        line = mfile.readLine();
+                        if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                            continue;
+                        } else if (line.startsWith("[")) {
+                            overrideEnd = mfile.pos() - line.length();
+                            break;
+                        } else {
+                            popMenus << line;
+                        }
+                    }
+                    break;
+                }
+            }
+            // qDebug()<<overrideBegin<<overrideEnd;
+            // Q_ASSERT(overrideEnd > overrideBegin && overrideBegin >= 0);
+            
+            QByteArray spaceArray;
+            if (overrideEnd > overrideBegin && overrideBegin >=0) {
+                spaceArray = line;
+            }
+            spaceArray += mfile.readAll();
+
+            if (overrideBegin >= 0 && overrideEnd == -1) {
+                overrideEnd = mfile.size();
+            }
+
+            mfile.resize(overrideBegin);
+            mfile.seek(overrideBegin);
+            mfile.write(spaceArray);
+
+            // mfile.seek(mfile.size());
+            // mfile.write(QByteArray("\n"));
+            for (int i = 0 ; i < popMenus.count() ; i++) {
+                mfile.write(popMenus.at(i));
+            }
+            if (checked) {
+                mfile.write(codec->fromUnicode(key));
+                // mfile.write(QString("=%1\n").arg(execProgramValue).toAscii());
+                mfile.write(QByteArray("=") + itemValue);
+            } 
+
+        }
+    }
+
+    // 
+    // [User Prefs]
+    // Menu Configuration=$OPERA_PERSONALDIR/menu/standard_menu_1.ini
+    if (newIni) {
+        QString value = QString("$OPERA_PERSONALDIR/menu/standard_menu.ini");
+        QString key = QString("Menu Configuration");
+        QByteArray line;
+        QList<QByteArray> popMenus;
+        qint64 overrideBegin = -1, overrideEnd = -1;
+
+        QFile mfile(operaPrefs);
+        mfile.open(QIODevice::ReadWrite);
+        while (!mfile.atEnd()) {
+            line = mfile.readLine();
+            if (line.trimmed() == "[User Prefs]") {
+                overrideBegin = mfile.pos() - line.length();
+                popMenus << line;
+                while (!mfile.atEnd()) {
+                    line = mfile.readLine();
+                    if (line.trimmed().startsWith(key.toAscii())) {
+                    } else if (line.startsWith("[")) {
+                        overrideEnd = mfile.pos() - line.length();
+                        break;
+                    } else {
+                        popMenus << line;
+                    }
+                }
+                break;
+            }
+        }
+        if (overrideBegin >= 0 && overrideEnd == -1) {
+            overrideEnd = mfile.size();
+        }
+        // Q_ASSERT(overrideEnd > overrideBegin && overrideBegin >= 0);
+
+        QByteArray spaceArray;
+        if (overrideEnd > overrideBegin && overrideBegin >=0) {
+            spaceArray = line;
+        }
+        spaceArray += mfile.readAll();
+
+        if (overrideBegin >= 0 && overrideEnd == -1) {
+            overrideEnd = mfile.size();
+        }
+
+
+        mfile.resize(overrideBegin);
+        mfile.seek(overrideBegin);
+        mfile.write(spaceArray);
+
+        // mfile.seek(mfile.size());
+        mfile.write(QByteArray("\n"));
+        for (int i = 0 ; i < popMenus.count() ; i++) {
+            mfile.write(popMenus.at(i));
+        }
+        mfile.write(codec->fromUnicode(key));
+        mfile.write(QString("=%1\n").arg(value).toAscii());
+            
+    }
+
+    // [File Types]
+    // for mime type handler
+    {
+#if defined(Q_OS_WIN)
+        QString value = QString("3,%1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath);
+#elif defined(Q_OS_MAC)
+        QString value = QString("3,xterm -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
+#else
+        QString value = QString("3,konsole -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
+#endif
+        QString key = QString("text/karia2_nullget_down");
+        QByteArray line;
+        QList<QByteArray> popMenus;
+        qint64 overrideBegin = -1, overrideEnd = -1;
+
+        QFile mfile(operaPrefs);
+        mfile.open(QIODevice::ReadWrite);
+
+        while (!mfile.atEnd()) {
+            line = mfile.readLine();
+            if (line.trimmed() == "[File Types]") {
+                overrideBegin = mfile.pos() - line.length();
+                popMenus << line;
+                while (!mfile.atEnd()) {
+                    line = mfile.readLine();
+                    if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                        continue;
+                    } else if (line.startsWith("[")) {
+                        overrideEnd = mfile.pos() - line.length();
+                        break;
+                    } else {
+                        popMenus << line;
+                    }
+                }
+                break;
+            }
+        }
+        // qDebug()<<overrideBegin<<overrideEnd;
+        // Q_ASSERT(overrideEnd > overrideBegin && overrideBegin >= 0);
+            
+        QByteArray spaceArray;
+        if (overrideEnd > overrideBegin && overrideBegin >=0) {
+            spaceArray = line;
+        }
+        spaceArray += mfile.readAll();
+
+        if (overrideBegin >= 0 && overrideEnd == -1) {
+            overrideEnd = mfile.size();
+        }
+
+        mfile.resize(overrideBegin);
+        mfile.seek(overrideBegin);
+        mfile.write(spaceArray);
+
+        // mfile.seek(mfile.size());
+        // mfile.write(QByteArray("\n"));
+        for (int i = 0 ; i < popMenus.count() ; i++) {
+            mfile.write(popMenus.at(i));
+        }
+        if (checked) {
+            mfile.write(codec->fromUnicode(key));
+            mfile.write(QString("=%1\n").arg(value).toAscii());
+        }
+    }
+}
+
+// modify opera's operaprefs.ini and menu/xxxmenu.ini
+void PreferencesDialog::onMonitorOpera_2(bool checked)
 {
     qDebug()<<__FUNCTION__<<checked;
 
@@ -391,7 +654,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
     // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
-    QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+    QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1nullget%1")
         .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 #endif
     QString operaPrefs = operaPersonalDir + "/operaprefs.ini";

@@ -26,8 +26,8 @@
 #include "sqlitecategorymodel.h"
 #include "dircompletermodel.h"
 
-CategoryComboBoxItemDelegate::CategoryComboBoxItemDelegate(QObject * parent )
- : QAbstractItemDelegate(parent)
+CategoryComboBoxItemDelegate::CategoryComboBoxItemDelegate(QObject *parent)
+    : QAbstractItemDelegate(parent)
 {
 	mCatView = 0;	
 	this->mCatView = new QTreeView(0);
@@ -37,13 +37,16 @@ CategoryComboBoxItemDelegate::~CategoryComboBoxItemDelegate()
 {
 
 }
-QWidget * CategoryComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const
+QWidget *CategoryComboBoxItemDelegate::createEditor(QWidget *parent,
+                                                    const QStyleOptionViewItem &option,
+                                                    const QModelIndex &index ) const
 {
 	qDebug()<<__FUNCTION__;
 	return this->mCatView;
 }
 
-void CategoryComboBoxItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void CategoryComboBoxItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option,
+                                         const QModelIndex & index ) const
 {
 	qDebug()<<__FUNCTION__;
 	//qDebug()<<option<<index.row()<<index.column();
@@ -282,7 +285,7 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	this->uiwin.tid_g_cb_save_to->setCompleter(completer);
 
     this->show();
-    this->onShowMoreInfo();
+    // this->onShowMoreInfo();
     QObject::connect(this->uiwin.toolButton, SIGNAL(clicked()),
                      this, SLOT(onShowMoreInfo()));
 }
@@ -292,7 +295,7 @@ taskinfodlg::~taskinfodlg()
 
 }
 
-taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )	
+taskinfodlg::taskinfodlg(TaskOption *param , QWidget *parent )	
 	: QDialog(parent)
 {
 
@@ -300,12 +303,13 @@ taskinfodlg::taskinfodlg(TaskOption * param , QWidget *parent )
 
 	//signals
 	QObject::connect(uiwin.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
-	QObject::connect(uiwin.tid_g_le_cb_category, SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int)));
-	QObject::connect(uiwin.tid_au_pb_add,SIGNAL(clicked()),this,SLOT(onAddAlterUrl()));
-	QObject::connect(uiwin.tid_au_pb_delete,SIGNAL(clicked()),this,SLOT(onDeleteAlterUrl()));
+	QObject::connect(uiwin.tid_g_le_cb_category, SIGNAL(currentIndexChanged(int)),
+                     this, SLOT(onCategoryBoxChange(int)));
+	QObject::connect(uiwin.tid_au_pb_add, SIGNAL(clicked()), this, SLOT(onAddAlterUrl()));
+	QObject::connect(uiwin.tid_au_pb_delete, SIGNAL(clicked()), this, SLOT(onDeleteAlterUrl()));
 
 	//
-	QClipboard * cb = QApplication::clipboard();
+	QClipboard *cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
     qDebug()<<__FUNCTION__<<cbstr;
 
