@@ -377,7 +377,8 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         qDebug()<<"Can not find opera personal directory.";
         return;
     }
-    QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
+    QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 
 #elif defined(Q_OS_MAC)
     QString operaDir = "/Applications/Opera.app/Contents/Resources";

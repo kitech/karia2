@@ -4228,14 +4228,56 @@ void NullGet::handleArguments()
 
 void NullGet::handleArguments(int argc, char **argv)
 {
-
     for (int i = 0 ; i < argc ; i ++) {
-        qDebug()<<"no: "<<i<<argv[i];
+        qDebug()<<"Arg no: "<<i<<argv[i];
     }
+
+    int rargc = argc;
+    char **rargv = argv;
+    char *targv[100] = {0};
+    /* opera for win send this format arguments:
+       no:  0 Z:\cross\karia2-svn\release\NullGet.exe
+       no:  1 --uri http://down.sandai.net/Thunder5.9.19.1390.exe --refer http://dl.xunlei.com/index.htm?tag=1
+       NullGet::handleArguments No uri specified.
+     */
+    // maybe opera
+#if defined(Q_OS_WIN)
+    if (argc == 2) {
+        rargc = 0;
+        rargv = targv;
+
+        qDebug()<<"Reformat arguments for handle properly. "; // ktyytc11
+        reformatArgs = 1;
+        char *farg = argv[1];
+        char *ptr = 0;
+
+        rargc += 1;
+        targv[0] = argv[0];
+
+        while (*farg == ' ') { farg++; } ; // ltrim
+        while (true && farg != NULL) {
+            ptr = strchr(farg, ' ');
+            qDebug()<<"here:"<<ptr;
+            if (ptr == NULL) {
+                targv[rargc++] = farg;
+                break;
+            } else {
+                targv[rargc++] = farg;
+                farg = ptr + 1;
+                *ptr = '\0';
+            }
+        }
+
+        for (int i = 0 ; i < rargc ; i ++) {
+            qDebug()<<"rArg no: "<<i<<rargv[i];
+        }
+    }
+#endif
 
     std::string std_uri, std_refer;
 
-    GetOpt::GetOpt_pp args(argc, argv);
+    // GetOpt::GetOpt_pp args(argc, argv);
+    GetOpt::GetOpt_pp args(rargc, rargv);
     args >> GetOpt::Option('u', "uri", std_uri);
     args >> GetOpt::Option('r', "refer", std_refer);
 
