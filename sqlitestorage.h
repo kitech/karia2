@@ -126,6 +126,7 @@ public:
     QString getUserOption(QString key);
     QVector<QPair<QString, QString> > getUserOptionsByType(QString type); // for proxy
 
+    bool addTask(QHash<QString, QString> taskHash);  // new 
 	bool addTask(int task_id ,		
                  QString file_size            , 
                  QString retry_times          ,
@@ -160,6 +161,8 @@ public:
                  QString file_length_abtained ,
                  QString dirty
                  );
+
+    bool updateTask(QHash<QString, QString> taskHash); // new 
 	bool updateTask(int task_id , 
                     QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
                     );

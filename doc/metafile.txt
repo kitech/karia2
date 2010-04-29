@@ -2,3 +2,5 @@
 2. 引用url
 3. cookie
 4. 下载地址url
+
+cookie格式： a=1;b=2;c=3...

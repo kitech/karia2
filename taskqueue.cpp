@@ -190,6 +190,8 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
         mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
         index = mdl->index(modelRows, ng::tasks::file_length_abtained);
         mdl->setData(index, QString("false"));
+        index = mdl->index(modelRows, ng::tasks::comment);
+        mdl->setData(index, option->mCookies);
     } else {
         // model exists, resume task
     }
@@ -495,7 +497,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), 
                          (sts["totalLength"].toLongLong() - sts["completedLength"].toLongLong()));
-            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1 %").arg(100));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
                          QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
         } else {
@@ -510,7 +512,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
             mdl->setData(mdl->index(idx.row(), ng::tasks::block_activity), 
                          QString("%1/%2").arg(sts["connections"].toString()).arg(sts["numPieces"].toString()));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent)
-                         , QString("%1 %").arg((sts["totalLength"].toLongLong() == 0) ? 0 
+                         , QString("%1").arg((sts["totalLength"].toLongLong() == 0) ? 0 
                                                : (sts["completedLength"].toLongLong()*100.0 / sts["totalLength"].toLongLong()*1.0)));
         }
 

@@ -107,6 +107,7 @@ void TaskOption::dump()
 	qDebug()<<"mTaskUrl:"<<mTaskUrl;
 	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror ;
 	qDebug()<<"mReferrer:"<<mReferer;
+    qDebug()<<"mCookies:"<<mCookies;
 	qDebug()<<"mCategory:"<<mCategory;
     qDebug()<<"mCatId:"<<mCatId;
 	qDebug()<<"mSavePath:"<<mSavePath ;
@@ -131,6 +132,13 @@ void TaskOption::dump()
 	qDebug()<<"mProxyTypeMedia:"<<mProxyTypeMedia;		
 }
 
+/*
+  package format:
+  0, TaskOption
+  1, url
+  2, refer
+  3, cookies
+ */
 QByteArray TaskOption::toRawData()
 {
     QByteArray ba;
@@ -138,6 +146,7 @@ QByteArray TaskOption::toRawData()
     ba = "TaskOption";
     ba += '|' + this->mTaskUrl.toAscii().toHex();
     ba += '|' + this->mReferer.toAscii().toHex();
+    ba += '|' + this->mCookies.toAscii().toHex();
 
     return ba;
 }
@@ -154,13 +163,14 @@ TaskOption TaskOption::fromRawData(QByteArray ba)
     TaskOption option;
 
     QList<QByteArray> elts = ba.split('|');
-    if (elts.count() != 3 || elts.at(0) != "TaskOption") {
+    if (elts.count() != 4 || elts.at(0) != "TaskOption") {
         qDebug()<<"Invalid TaskOption package";
         return TaskOption();
     }
 
     option.mTaskUrl = QString(QByteArray::fromHex(elts.at(1)));
     option.mReferer = QString(QByteArray::fromHex(elts.at(2)));
+    option.mCookies = QString(QByteArray::fromHex(elts.at(3)));
 
     return option;
 }
@@ -182,6 +192,7 @@ TaskOption *TaskOption::fromModelRow(QAbstractItemModel *model, int row)
     option = new TaskOption();
     option->mTaskUrl = model->data(model->index(row, ng::tasks::org_url)).toString();
     option->mReferer = model->data(model->index(row, ng::tasks::org_url)).toString();
+    option->mCookies = model->data(model->index(row, ng::tasks::comment)).toString();
     // option->mCategory = 
     option->mCatId = model->data(model->index(row, ng::tasks::user_cat_id)).toInt();
     option->mSaveName = model->data(model->index(row, ng::tasks::file_name)).toString();
@@ -218,6 +229,7 @@ taskinfodlg::taskinfodlg(QWidget *parent)
         TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 10));
         this->uiwin.tid_g_le_url->setText(options.mTaskUrl);
         this->uiwin.tid_g_le_referrer->setText(options.mReferer);
+        this->uiwin.tid_g_le_te_comment->setText(options.mCookies);
     } else {
         QUrl u(cbstr);
         qDebug()<<__FUNCTION__<<cbstr<<u<<u.isValid()<<u.scheme();   
@@ -495,6 +507,7 @@ TaskOption * taskinfodlg::getOption()
 	param->mNeedLogin = uiwin.tid_g_le_cb_login_to_server->isChecked()?1:0;
 	param->mLoginUserName = uiwin.tid_g_le_le_user_name->text();
 	param->mLoginPassword = uiwin.tid_g_le_le_password->text() ;
+    param->mCookies = uiwin.tid_g_le_te_comment->toPlainText();
 	param->mComment = uiwin.tid_g_le_te_comment->toPlainText();
 	if (uiwin.tid_g_le_rb_manual->isChecked())
 		param->mStartState = 0	;	//0,1,2

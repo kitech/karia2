@@ -2005,6 +2005,12 @@ QMap<QString, QVariant> NullGet::taskOptionToAria2RpcOption(TaskOption *to)
         aopts["split"] = QString("%1").arg(to->mSplitCount);
     }
 
+    if (!to->mCookies.isEmpty()) {
+        QVariantList header;
+        header << QString("Cookie: %1").arg(to->mCookies);
+        aopts["header"] = header;
+    }
+
     return aopts;
 }
 
@@ -4274,17 +4280,19 @@ void NullGet::handleArguments(int argc, char **argv)
     }
 #endif
 
-    std::string std_uri, std_refer, std_metafile;
+    std::string std_uri, std_refer, std_metafile, std_cookies;
 
     // GetOpt::GetOpt_pp args(argc, argv);
     GetOpt::GetOpt_pp args(rargc, rargv);
     args >> GetOpt::Option('u', "uri", std_uri);
     args >> GetOpt::Option('r', "refer", std_refer);
+    args >> GetOpt::Option('c', "cookie", std_cookies);
     args >> GetOpt::Option('m', "metafile", std_metafile);
 
     QString uri, refer, metafile, cookies;
     uri = QString::fromStdString(std_uri);
     refer = QString::fromStdString(std_refer);
+    cookies = QString::fromStdString(std_cookies);
     metafile = QString::fromStdString(std_metafile);
 
     if (metafile.length() > 0) {
@@ -4325,6 +4333,7 @@ void NullGet::handleArguments(int argc, char **argv)
     TaskOption options;
     options.mTaskUrl = uri;
     options.mReferer = refer;
+    options.mCookies = cookies;
 
     QString ngetUri = "nullget://" + options.toBase64Data();
     QClipboard *cb = QApplication::clipboard();

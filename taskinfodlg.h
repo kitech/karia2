@@ -62,6 +62,7 @@ public:
     QString mOldUrl;
 	int mFindUrlByMirror;
 	QString mReferer;
+    QString mCookies;
 	QString mCategory;
     int mCatId;
 	QString mSavePath;
