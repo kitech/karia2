@@ -105,9 +105,9 @@ void TaskOption::dump()
 {
 	//general
 	qDebug()<<"mTaskUrl:"<<mTaskUrl;
-	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror ;
 	qDebug()<<"mReferrer:"<<mReferer;
     qDebug()<<"mCookies:"<<mCookies;
+    qDebug()<<"mAgent:"<<mAgent;
 	qDebug()<<"mCategory:"<<mCategory;
     qDebug()<<"mCatId:"<<mCatId;
 	qDebug()<<"mSavePath:"<<mSavePath ;
@@ -120,6 +120,7 @@ void TaskOption::dump()
 	qDebug()<<"mStartState:"<<mStartState;	//0,1,2
 
 	////////
+	qDebug()<<"mFindUrlByMirror:"<<mFindUrlByMirror ;
 	//mAlterUrls.clear();
 	
 	//

@@ -94,7 +94,7 @@ function AddLink(Url,Info,Location,strCID,strStatUrl,strCookie)
     var ent;
     var top = 'TaskOption';
     top += "|" + hexEncode(Url);
-    top += "|" + hexEncode(Location);
+    top += "|" + hexEncode(Location.href);
     top += "|" + hexEncode(strCookie);
     top += "|" + hexEncode(navigator.userAgent);
 
