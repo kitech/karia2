@@ -2010,6 +2010,12 @@ QMap<QString, QVariant> NullGet::taskOptionToAria2RpcOption(TaskOption *to)
         QVariantList header;
         header << QString("Cookie: %1").arg(to->mCookies);
         aopts["header"] = header;
+        if (!to->mReferer.isEmpty()) {
+          header << QString("Referer: %1").arg(to->mReferer);
+        }
+        if (!to->mAgent.isEmpty()) {
+          header << QString("User-Agent: %1").arg(to->mAgent);
+        }
     }
 
     return aopts;
@@ -3088,6 +3094,9 @@ QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
     QString path = "icons/crystalsvg/128x128/mimetypes/";
 #else // *nix
     QString path = QString("/usr/share/icons/%1/128x128/mimetypes/").arg(QIcon::themeName());
+    if (!QDir().exists(path)) {
+        path = QString("/usr/share/icons/gnome/32x32/mimetypes/gnome-mime-");
+    }
 #endif
 	QStringList fileParts = fileName.toLower().split(".");
     QString fileExtName = fileParts.at(fileParts.count() - 1);

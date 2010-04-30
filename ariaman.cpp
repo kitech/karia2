@@ -136,7 +136,12 @@ bool AriaMan::start()
 #ifdef Q_OS_WIN
         this->mAriaProc->start(qApp->applicationDirPath() + "/aria2c.exe", this->mStartArgs);
 #else
-        this->mAriaProc->start("aria2c", this->mStartArgs);
+        // for my test
+        if (QFile::exists("/usr/bin/aria2c.patched")) {
+            this->mAriaProc->start("aria2c.patched", this->mStartArgs);
+        } else {
+            this->mAriaProc->start("aria2c", this->mStartArgs);
+        }
 #endif
         this->mAriaPid = this->mAriaProc->pid();
         qDebug()<<"aria2c's pid: "<<this->mAriaPid;
