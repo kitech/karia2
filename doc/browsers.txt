@@ -4,4 +4,6 @@ For opera menu:
     
 For Windows Opera:
 		问题，此扩展名未注册应用程序
+        QString value = QString("3,%1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
+        但是这命令行不能带参数，所以还是有问题。看参数怎么能传递过去。
 

@@ -4246,6 +4246,7 @@ void NullGet::handleArguments(int argc, char **argv)
     int rargc = argc;
     char **rargv = argv;
     char *targv[100] = {0};
+    std::string noprefix_metafile;
     /* opera for win send this format arguments:
        no:  0 Z:\cross\karia2-svn\release\NullGet.exe
        no:  1 --uri http://down.sandai.net/Thunder5.9.19.1390.exe --refer http://dl.xunlei.com/index.htm?tag=1
@@ -4253,12 +4254,11 @@ void NullGet::handleArguments(int argc, char **argv)
      */
     // maybe opera
 #if defined(Q_OS_WIN)
-    if (argc == 2) {
+    if (argc == 2 && (argv[1][0] == argv[1][1] && argv[1][1] == '-')) {
         rargc = 0;
         rargv = targv;
 
         qDebug()<<"Reformat arguments for handle properly. "; // ktyytc11
-        reformatArgs = 1;
         char *farg = argv[1];
         char *ptr = 0;
 
@@ -4282,6 +4282,10 @@ void NullGet::handleArguments(int argc, char **argv)
         for (int i = 0 ; i < rargc ; i ++) {
             qDebug()<<"rArg no: "<<i<<rargv[i];
         }
+    } else if (argc == 2) {
+        // windows metafile arguments, no --metafile prefix
+        GetOpt::GetOpt_pp args(rargc, rargv);
+        args >> GetOpt::Option(GetOpt::GetOpt_pp::EMPTY_OPTION, noprefix_metafile);
     }
 #endif
 
@@ -4295,6 +4299,10 @@ void NullGet::handleArguments(int argc, char **argv)
     args >> GetOpt::Option('m', "metafile", std_metafile);
     args >> GetOpt::Option('a', "agent", std_agent);
 
+    if (noprefix_metafile.length() > 0) {
+        std_metafile = noprefix_metafile;
+    }
+
     QString uri, refer, metafile, cookies, agent;
     uri = QString::fromStdString(std_uri);
     refer = QString::fromStdString(std_refer);
@@ -4307,7 +4315,10 @@ void NullGet::handleArguments(int argc, char **argv)
         file.open(QIODevice::ReadOnly);
         QByteArray metaData = file.readAll().trimmed();
         QList<QByteArray> metaInfo = metaData.split('\n');
-        
+        if (metaInfo.count() != 5) {
+            qDebug()<<__FUNCTION__<<"Not a valid metfile.";
+            return;
+        }
         uri = metaInfo.at(1);
         refer = metaInfo.at(2);
         cookies = metaInfo.at(3);

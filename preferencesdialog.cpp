@@ -550,7 +550,8 @@ void PreferencesDialog::onMonitorOpera(bool checked)
     // for mime type handler
     {
 #if defined(Q_OS_WIN)
-        QString value = QString("3,%1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath);
+        // QString value = QString("3,%1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
+        QString value = QString("3,%1,,,,|").arg(QCoreApplication::applicationFilePath());
 #elif defined(Q_OS_MAC)
         QString value = QString("3,xterm -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
 #else
