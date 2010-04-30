@@ -51,5 +51,5 @@ bool NullGetApplication::x11EventFilter ( XEvent * event )
 
 void NullGetApplication::handleMessage(const QString &msg)
 {
-    qDebug()<<"I am running, you say:"<<msg;
+    // qDebug()<<"I am running, you say:"<<msg;
 }
