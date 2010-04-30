@@ -177,7 +177,7 @@ QString PreferencesDialog::loadKey(QString key, QString dvalue)
     if (optionValue == QString::null) {
         optionValue = this->storage->getDefaultOption(key);
         if (optionValue == QString::null) {
-            this->storage->addDefaultOption(key, dvalue, "v");
+            this->storage->addDefaultOption(key, dvalue, "auto");
             ov = dvalue;
         } else {
             ov = optionValue;

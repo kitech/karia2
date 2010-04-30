@@ -321,66 +321,91 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>ColumnsManDlgClass</name>
+    <name>ColumnsManDlg</name>
     <message>
-        <location filename="../columnsmandlg.ui" line="16"/>
+        <location filename="../columnsmandlg.ui" line="14"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="169"/>
         <source>ColumnsManDlg</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../columnsmandlg.ui" line="50"/>
+    <message utf8="true">
+        <location filename="../columnsmandlg.ui" line="26"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="170"/>
-        <source>&amp;Show</source>
-        <translation></translation>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;ææ³é©¿æ­£é»&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check or no check the column, so the main task view will show what&apos;s you want in your favorate order.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="57"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="171"/>
-        <source>&amp;Hide</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../columnsmandlg.ui" line="64"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="172"/>
-        <source>Move &amp;Up</source>
-        <translation>上移</translation>
-    </message>
-    <message>
-        <location filename="../columnsmandlg.ui" line="71"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="173"/>
-        <source>Move Do&amp;wn</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../columnsmandlg.ui" line="78"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="174"/>
-        <source>&amp;Default</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../columnsmandlg.ui" line="97"/>
+        <location filename="../columnsmandlg.ui" line="56"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="175"/>
-        <source>The selected column should be</source>
-        <translation></translation>
+        <source>&amp;Show</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="127"/>
+        <location filename="../columnsmandlg.ui" line="63"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="176"/>
-        <source>pixel width.</source>
-        <translation></translation>
+        <source>&amp;Hide</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="157"/>
+        <location filename="../columnsmandlg.ui" line="70"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="177"/>
-        <source>OK</source>
-        <translation>确定</translation>
+        <source>Move &amp;Up</source>
+        <translation type="unfinished">上移</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="164"/>
+        <location filename="../columnsmandlg.ui" line="77"/>
         <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="178"/>
+        <source>Move Do&amp;wn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="84"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="179"/>
+        <source>&amp;Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="103"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="180"/>
+        <source>The selected column should be show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="133"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="181"/>
+        <source>pixel width.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="163"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="182"/>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="170"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="183"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="unfinished">取消</translation>
+    </message>
+</context>
+<context>
+    <name>ColumnsManDlgClass</name>
+    <message>
+        <source>Move &amp;Up</source>
+        <translation type="obsolete">上移</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="obsolete">确定</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">取消</translation>
     </message>
 </context>
 <context>
@@ -472,7 +497,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NullGet</name>
     <message>
-        <location filename="../nullget.cpp" line="557"/>
+        <location filename="../nullget.cpp" line="558"/>
         <source>NullGet Icon Tray Control</source>
         <translation>NullGet 控制图标</translation>
     </message>
@@ -485,138 +510,138 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">确认删除未完成的任务吗?</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1489"/>
+        <location filename="../nullget.cpp" line="1490"/>
         <source>Delete permanently. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1494"/>
+        <location filename="../nullget.cpp" line="1495"/>
         <source>Move Task .</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1494"/>
+        <location filename="../nullget.cpp" line="1495"/>
         <source>Move To Trash Now. TaskId: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1754"/>
+        <location filename="../nullget.cpp" line="1755"/>
         <source>Task Done.</source>
         <translation>任务完成。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1894"/>
+        <location filename="../nullget.cpp" line="1895"/>
         <source>Delete Category:</source>
         <translation>删除类别：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1894"/>
+        <location filename="../nullget.cpp" line="1895"/>
         <source>Delete the Category and All sub Category?</source>
         <translation>确认要删除该类另及其所有子类别吗？</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2265"/>
+        <location filename="../nullget.cpp" line="2272"/>
         <source>pause</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2706"/>
+        <location filename="../nullget.cpp" line="2713"/>
         <source>Open a .metalink file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2707"/>
+        <location filename="../nullget.cpp" line="2714"/>
         <source>Metalink File (*.metalink)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2873"/>
-        <location filename="../nullget.cpp" line="2914"/>
+        <location filename="../nullget.cpp" line="2880"/>
+        <location filename="../nullget.cpp" line="2921"/>
         <source>Process Weg Page :</source>
         <translation>处理网页文件：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2873"/>
+        <location filename="../nullget.cpp" line="2880"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
         <translation>在所给的网页文件中没有发现URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2914"/>
+        <location filename="../nullget.cpp" line="2921"/>
         <source>No URL(s) Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3808"/>
-        <location filename="../nullget.cpp" line="3852"/>
-        <location filename="../nullget.cpp" line="3896"/>
+        <location filename="../nullget.cpp" line="3815"/>
+        <location filename="../nullget.cpp" line="3859"/>
+        <location filename="../nullget.cpp" line="3903"/>
         <source>No Task Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3808"/>
-        <location filename="../nullget.cpp" line="3852"/>
-        <location filename="../nullget.cpp" line="3896"/>
+        <location filename="../nullget.cpp" line="3815"/>
+        <location filename="../nullget.cpp" line="3859"/>
+        <location filename="../nullget.cpp" line="3903"/>
         <source>Please Select a Task For Operation</source>
         <translation>请选择一个要执行的任务。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3843"/>
+        <location filename="../nullget.cpp" line="3850"/>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found, has it downloaded already?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4207"/>
+        <location filename="../nullget.cpp" line="4214"/>
         <source>Aria2 backend error :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4208"/>
+        <location filename="../nullget.cpp" line="4215"/>
         <source>Can not start aria2. Are you already installed it properly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1488"/>
+        <location filename="../nullget.cpp" line="1489"/>
         <source>Delete Task .</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1053"/>
-        <location filename="../nullget.cpp" line="1055"/>
+        <location filename="../nullget.cpp" line="1054"/>
+        <location filename="../nullget.cpp" line="1056"/>
         <source>Location: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1754"/>
+        <location filename="../nullget.cpp" line="1755"/>
         <source>Move It To Done Table Now. TaskId: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2639"/>
+        <location filename="../nullget.cpp" line="2646"/>
         <source>Open a .torrent file...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2640"/>
+        <location filename="../nullget.cpp" line="2647"/>
         <source>Torrent File (*.torrent)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3009"/>
+        <location filename="../nullget.cpp" line="3016"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: .%4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3842"/>
+        <location filename="../nullget.cpp" line="3849"/>
         <source>Notice:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3943"/>
+        <location filename="../nullget.cpp" line="3950"/>
         <source>Allocating File Space: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3952"/>
+        <location filename="../nullget.cpp" line="3959"/>
         <source>Waiting ...</source>
         <translation></translation>
     </message>
@@ -3459,7 +3484,8 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="421"/>
+        <location filename="../preferencesdialog.cpp" line="430"/>
+        <location filename="../preferencesdialog.cpp" line="685"/>
         <source>Download By NullGet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4554,27 +4580,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>taskinfodlg</name>
     <message>
-        <location filename="../taskinfodlg.cpp" line="257"/>
+        <location filename="../taskinfodlg.cpp" line="272"/>
         <source>downloaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="378"/>
+        <location filename="../taskinfodlg.cpp" line="394"/>
         <source>Please input URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="380"/>
+        <location filename="../taskinfodlg.cpp" line="396"/>
         <source>Not a valide URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="446"/>
+        <location filename="../taskinfodlg.cpp" line="462"/>
         <source>Expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="527"/>
+        <location filename="../taskinfodlg.cpp" line="544"/>
         <source>Input mirror URL:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4593,7 +4619,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../taskinfodlg.ui" line="56"/>
         <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="466"/>
-        <location filename="../taskinfodlg.cpp" line="527"/>
+        <location filename="../taskinfodlg.cpp" line="544"/>
         <source>URL:</source>
         <translation type="unfinished">网址(&amp;U):</translation>
     </message>
@@ -4612,7 +4638,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../taskinfodlg.ui" line="98"/>
         <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="469"/>
-        <location filename="../taskinfodlg.cpp" line="455"/>
+        <location filename="../taskinfodlg.cpp" line="471"/>
         <source>Collapse</source>
         <translation type="unfinished"></translation>
     </message>

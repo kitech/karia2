@@ -10,4 +10,6 @@ XML-RPC:
 log中的CUID#nn应该是TCP连接号。但是现在无法判断这个连接属于哪个任务的。
         对于HTTP(S)协议，可以通过GET / HTTP/1.x这一行解析出来该CUID属于哪个任务。
 
-目前的版本在redirect的时候不会使用之前的cookie和referer，所以有许多的链接下载出问题。
+目前的版本在redirect的时候不会使用之前的cookie和referer，所以有许多的链接下载出问题。原来这是标准规定的啊。
+The HTTP 1.0 standard per http://www.w3.org/Protocols/rfc2109/rfc2109 in section "4.3.5 Sending Cookies in Unverifiable Transactions" says that cookies should not be set from unverifiable transactions. It states specifically that "Unverifiable transactions typically arise when a user agent automatically requests inlined or embedded entities or when it resolves redirection (3xx) responses from an origin server." So, "Set-Cookie" is not to be acted upon by browsers / user agents for 3xx redirects. Nothing in HTTP 1.1 changes this part of HTTP.
+

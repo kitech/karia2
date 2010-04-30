@@ -151,7 +151,8 @@ void NullGet::firstShowHandler()
 	///////	
 	//初始化配置数据库类实例
 	this->mConfigDatabase = ConfigDatabase::instance(this);
-	this->mStorage = new SqliteStorage(this);
+	// this->mStorage = new SqliteStorage(this);
+    this->mStorage = SqliteStorage::instance(this);
 	this->mStorage->open();
 
     //
@@ -3923,9 +3924,13 @@ void NullGet::onClipBoardDataChanged()
             || text.startsWith("magnet:?", Qt::CaseInsensitive)
             || text.startsWith("flashget", Qt::CaseInsensitive)
             || text.startsWith("qqdl:", Qt::CaseInsensitive)
-            || text.startsWith("thunder:", Qt::CaseInsensitive)) {
-			//this->showNewDownloadDialog(); // Open sometime later
+            || text.startsWith("thunder:", Qt::CaseInsensitive)
+            || text.startsWith("nullget://", Qt::CaseInsensitive)) {
+			// this->showNewDownloadDialog(); // Open sometime later
 		}
+        if (text.startsWith("nullget://", Qt::CaseInsensitive)) {
+            this->showNewDownloadDialog(); // this should be nullget passed from browser, force handle it
+        }
 	}
 	
 	qDebug()<<text;
@@ -4280,7 +4285,7 @@ void NullGet::handleArguments(int argc, char **argv)
     }
 #endif
 
-    std::string std_uri, std_refer, std_metafile, std_cookies;
+    std::string std_uri, std_refer, std_metafile, std_cookies, std_agent;
 
     // GetOpt::GetOpt_pp args(argc, argv);
     GetOpt::GetOpt_pp args(rargc, rargv);
@@ -4288,12 +4293,14 @@ void NullGet::handleArguments(int argc, char **argv)
     args >> GetOpt::Option('r', "refer", std_refer);
     args >> GetOpt::Option('c', "cookie", std_cookies);
     args >> GetOpt::Option('m', "metafile", std_metafile);
+    args >> GetOpt::Option('a', "agent", std_agent);
 
-    QString uri, refer, metafile, cookies;
+    QString uri, refer, metafile, cookies, agent;
     uri = QString::fromStdString(std_uri);
     refer = QString::fromStdString(std_refer);
     cookies = QString::fromStdString(std_cookies);
     metafile = QString::fromStdString(std_metafile);
+    agent = QString::fromStdString(std_agent);
 
     if (metafile.length() > 0) {
         QFile file(metafile);
@@ -4301,9 +4308,10 @@ void NullGet::handleArguments(int argc, char **argv)
         QByteArray metaData = file.readAll().trimmed();
         QList<QByteArray> metaInfo = metaData.split('\n');
         
-        uri = metaInfo.at(3);
-        refer = metaInfo.at(1);
-        cookies = metaInfo.at(2);
+        uri = metaInfo.at(1);
+        refer = metaInfo.at(2);
+        cookies = metaInfo.at(3);
+        agent = metaInfo.at(4);
     }
 
     if (uri.length() == 0) {
@@ -4340,7 +4348,7 @@ void NullGet::handleArguments(int argc, char **argv)
     cb->setText(ngetUri);
     qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
 
-    this->mainUI.action_New_Download->trigger();
+    // this->mainUI.action_New_Download->trigger();
     qApp->setActiveWindow(this);
     this->setFocus(Qt::MouseFocusReason);
 

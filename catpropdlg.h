@@ -39,22 +39,25 @@ protected:
 
 class ColumnsManDlg : public QDialog
 {
-    Q_OBJECT
-
+    Q_OBJECT;
 public:
     ColumnsManDlg(QWidget *parent = 0);
     ~ColumnsManDlg();
 
 private:
-    Ui::ColumnsManDlgClass ui;
+    Ui::ColumnsManDlg ui;
 	QMap<int , QString> mTaskViewTitle;		//task list view header titles
 	QMap<int , int> mTaskViewTitleWidth;		//task list view header titles
 	QMap<int , int> mTaskViewTitleShowState;		//task list view header titles
+
+    QString loadKey(QString key, QString dvalue);
+
 private slots:
-	
 	void onItemClicked(QListWidgetItem * item );
 	void onShowItemClicked( );
 	void onHideItemClicked( );
+    void onApplyChange();
+    void onRestoreDefault();
 };
 
 #endif // CATPROPDLG_H

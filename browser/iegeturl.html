@@ -96,6 +96,7 @@ function AddLink(Url,Info,Location,strCID,strStatUrl,strCookie)
     top += "|" + hexEncode(Url);
     top += "|" + hexEncode(Location);
     top += "|" + hexEncode(strCookie);
+    top += "|" + hexEncode(navigator.userAgent);
 
     ent = "nullget://" + base64_encode(top);
     clipboardData.setData('text', ent);

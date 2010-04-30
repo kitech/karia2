@@ -147,6 +147,7 @@ QByteArray TaskOption::toRawData()
     ba += '|' + this->mTaskUrl.toAscii().toHex();
     ba += '|' + this->mReferer.toAscii().toHex();
     ba += '|' + this->mCookies.toAscii().toHex();
+    ba += '|' + this->mAgent.toAscii().toHex();
 
     return ba;
 }
@@ -163,7 +164,7 @@ TaskOption TaskOption::fromRawData(QByteArray ba)
     TaskOption option;
 
     QList<QByteArray> elts = ba.split('|');
-    if (elts.count() != 4 || elts.at(0) != "TaskOption") {
+    if (elts.count() != 5 || elts.at(0) != "TaskOption") {
         qDebug()<<"Invalid TaskOption package";
         return TaskOption();
     }
@@ -171,6 +172,7 @@ TaskOption TaskOption::fromRawData(QByteArray ba)
     option.mTaskUrl = QString(QByteArray::fromHex(elts.at(1)));
     option.mReferer = QString(QByteArray::fromHex(elts.at(2)));
     option.mCookies = QString(QByteArray::fromHex(elts.at(3)));
+    option.mAgent = QString(QByteArray::fromHex(elts.at(4)));
 
     return option;
 }
