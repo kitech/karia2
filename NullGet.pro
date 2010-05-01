@@ -29,7 +29,7 @@ documentation.extra = cp release/*.exe Z:/temp
 
 INSTALLS += documentation
 
-VERSION = 0.0.93
+VERSION = 0.0.94
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication

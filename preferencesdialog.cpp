@@ -82,6 +82,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     QObject::connect(this->uiwin.checkBox_22, SIGNAL(toggled(bool)),
                      this, SLOT(onMonitorFirefox(bool)));
 
+    QObject::connect(this->uiwin.pushButton, SIGNAL(clicked()),
+                     this, SLOT(onApplyChange()));
+
+    this->connectModifyControlSignal();
     this->show();
 
     this->generalLoaded = false;;
@@ -94,6 +98,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     this->advancedLoaded = false;
 
     this->loadGeneralOptions();
+
+    this->generalModified = false;
+    this->defaultPropertiesModified = false;
+    this->connectionModified = false;
+    this->monitorModified = false;
+    this->graphLogModified = false;
+    this->virtusModified = false;
+    this->proxyModified = false;
+    this->advancedModified = false;
 
 #if !defined(Q_OS_WIN)
     this->uiwin.checkBox_18->setEnabled(false);
@@ -122,21 +135,53 @@ void PreferencesDialog::onPreferencesSelectChanged(int index)
     case 0:
         if (!this->generalLoaded) {
             this->loadGeneralOptions();
+            this->generalLoaded = true;
+            this->generalModified = false;
+        }
+        // this->setWindowModified(this->generalModified);
+        if (this->generalModified) {
+            this->onSetGeneralTabModified();
+        } else {
+            this->onSetGeneralTabUnmodified();
         }
         break;
     case 1:
         if (!this->defaultPropertiesLoaded) {
             this->loadDefaultProperties();
+            this->defaultPropertiesLoaded = true;
+            this->defaultPropertiesModified = false;
+        }
+        // this->setWindowModified(this->defaultPropertiesModified);
+        if (this->defaultPropertiesModified) {
+            this->onSetDefaultPropertiesTabModified();
+        } else {
+            this->onSetDefaultPropertiesTabUnmodified();
         }
         break;
     case 2:
         if (!this->connectionLoaded) {
             this->loadConnectionOptions();
+            this->connectionLoaded = true;
+            this->connectionModified = false;
+        }
+        // this->setWindowModified(this->connectionModified);
+        if (this->connectionModified) {
+            this->onSetConnectionTabModified();
+        } else {
+            this->onSetConnectionTabUnmodified();
         }
         break;
     case 3:
         if (!this->monitorLoaded) {
             this->loadMonitorOptions();
+            this->monitorLoaded = true;
+            this->monitorModified = false;
+        }
+        // this->setWindowModified(this->monitorModified);
+        if (this->monitorModified) {
+            this->onSetMonitorTabModified();
+        } else {
+            this->onSetMonitorTabUnmodified();
         }
         break;
     case 4:
@@ -149,6 +194,14 @@ void PreferencesDialog::onPreferencesSelectChanged(int index)
                            <<tr("Proxy Type")<<tr("User Name")<<tr("Password");
             this->uiwin.tableWidget->setHorizontalHeaderLabels(proxyHeaderText);
             this->loadProxyOptions();
+            this->proxyLoaded = true;
+            this->proxyModified = false;
+        }
+        // this->setWindowModified(this->proxyModified);
+        if (this->proxyModified) {
+            this->onSetProxyTabModified();
+        } else {
+            this->onSetProxyTabUnmodified();
         }
         break;
     case 6:
@@ -166,7 +219,10 @@ void PreferencesDialog::loadStatus(QString msg)
 {
     this->uiwin.label_5->setText(QString("Loading %1").arg(msg));
 }
-
+void PreferencesDialog::saveStatus(QString msg, QString value)
+{
+    this->uiwin.label_5->setText(QString("Saveing %1=%2").arg(msg, value));
+}
 QString PreferencesDialog::loadKey(QString key, QString dvalue)
 {
     QString ov = QString::null;
@@ -187,6 +243,21 @@ QString PreferencesDialog::loadKey(QString key, QString dvalue)
     }
 
     return ov;
+}
+
+bool PreferencesDialog::saveKey(QString key, QString value)
+{
+    QString ov = QString::null;
+    QString optionValue;
+
+    this->saveStatus(key, value);
+    optionValue = this->loadKey(key, "");
+    if (optionValue != value) {
+        this->storage->deleteUserOption(key);
+        this->storage->addUserOption(key, value, "auto");
+    }
+
+    return true;
 }
 
 QVector<QPair<QString, QString> > PreferencesDialog::loadKeyByType(QString type)
@@ -323,9 +394,76 @@ void PreferencesDialog::loadProxyOptions()
     this->proxyLoaded = true;
 }
 
-void PreferencesDialog::saveAllOptions()
+void PreferencesDialog::onApplyDefaultPropertiesTabChange()
 {
+    this->saveKey("defaultrefer", this->uiwin.lineEdit_3->text());
+    this->saveKey("taskstartschedule", this->uiwin.radioButton_3->isChecked() 
+                  ? "manual" : "imidiate");
+    this->saveKey("maxsegmenteverytask", QString("%1").arg(this->uiwin.spinBox_8->value()));
+}
 
+void PreferencesDialog::onApplyConnectionTabChange()
+{
+    this->saveKey("connecttimeout", QString().setNum(this->uiwin.spinBox_2->value()));
+    this->saveKey("readdatatimeout", QString().setNum(this->uiwin.spinBox_3->value()));
+    this->saveKey("retrydelaytimeout", QString().setNum(this->uiwin.spinBox_4->value()));
+    this->saveKey("maxsimulatejobs", QString().setNum(this->uiwin.spinBox_5->value()));
+}
+
+void PreferencesDialog::onApplyMonitorTabChange()
+{
+    // QString optionName;
+    // QString optionValue;
+
+    this->saveKey("monitorie", this->uiwin.checkBox_18->isChecked() ? "true" : "false");
+    this->saveKey("monitoropera", this->uiwin.checkBox_21->isChecked() ? "true" : "false");
+    this->saveKey("monitorfirefox", this->uiwin.checkBox_22->isChecked() ? "true" : "false");
+}
+
+void PreferencesDialog::onApplyProxyTabChange()
+{
+    this->saveKey("noproxy", this->uiwin.radioButton->isChecked() 
+                  ? "true" : "false");
+    this->saveKey("customproxy", this->uiwin.radioButton_2->isChecked()
+                  ? "true" : "false");
+}
+
+void PreferencesDialog::onApplyAllChange()
+{
+    int currentIndex = this->uiwin.stackedWidget->currentIndex();
+    int tabCount = this->uiwin.stackedWidget->count();
+
+    for (int i = 0 ; i < tabCount; ++i) {
+        this->uiwin.stackedWidget->setCurrentIndex(i);
+        this->onApplyChange();
+    }
+
+    this->uiwin.stackedWidget->setCurrentIndex(currentIndex);
+}
+
+void PreferencesDialog::onApplyChange()
+{
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page) {
+
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_2) {
+        this->onSetDefaultPropertiesTabUnmodified();
+        this->onApplyDefaultPropertiesTabChange();
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_3) {
+        this->onSetConnectionTabUnmodified();
+        this->onApplyConnectionTabChange();
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_4) {
+        this->onSetMonitorTabUnmodified();
+        this->onApplyMonitorTabChange();
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_5) {
+
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_15) {
+        this->onSetProxyTabUnmodified();
+        this->onApplyProxyTabChange();
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_11) {
+
+    } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_6) {
+
+    }
 }
 
 // need user open this program before click ie Download menu
@@ -611,6 +749,10 @@ void PreferencesDialog::onMonitorOpera(bool checked)
             mfile.write(QString("=%1\n").arg(value).toAscii());
         }
     }
+
+    // this->monitorModified = true;
+    // qDebug()<<__FUNCTION__<<"set window modified: true";
+    // this->setWindowModified(true);
 }
 
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
@@ -956,3 +1098,176 @@ void PreferencesDialog::onApplyProxy()
 {
     
 }
+
+// only for widget type is checkbox, radiobutton, textbox, sphinbox
+void PreferencesDialog::connectModifyControlSignalRecursive(QObject *parent, const char *slot)
+{
+    const QMetaObject *mo = 0;
+    QObject *obj;
+    QWidget *w;
+    QObjectList childs = parent->children();
+    for (int i = 0 ; i < childs.count(); ++i) {
+        obj = childs.at(i);
+        mo = obj->metaObject();
+        if (obj->isWidgetType()) {
+            w = static_cast<QWidget*>(obj);
+            if (QString(mo->className()) == QString(QCheckBox::staticMetaObject.className())
+                || QString(mo->className()) == QString(QPushButton::staticMetaObject.className())
+                || QString(mo->className()) == QString(QRadioButton::staticMetaObject.className())
+                || QString(mo->className()) == QString(QToolButton::staticMetaObject.className())
+                ) {
+                QAbstractButton *ab = static_cast<QAbstractButton*>(w);
+                QObject::connect(ab, SIGNAL(toggled(bool)), this, slot);
+            } else if (QString(mo->className()) == QString(QSpinBox::staticMetaObject.className())
+                || QString(mo->className()) == QString(QDoubleSpinBox::staticMetaObject.className())
+                || QString(mo->className()) == QString(QDateTimeEdit::staticMetaObject.className())) {
+                QAbstractSpinBox *as = static_cast<QAbstractSpinBox*>(w);
+                QObject::connect(as, SIGNAL(editingFinished()), this, slot);
+            } else if (QString(mo->className()) == QString(QLineEdit::staticMetaObject.className())) {
+                QLineEdit *le = static_cast<QLineEdit*>(w);
+                QObject::connect(le, SIGNAL(editingFinished()), this, slot);
+            } else if (QString(mo->className()) == QString(QLineEdit::staticMetaObject.className())) {
+                QComboBox *cb = static_cast<QComboBox*>(w);
+                QObject::connect(cb, SIGNAL(currentIndexChanged(int)), this, slot);
+            }
+        }
+        this->connectModifyControlSignalRecursive(obj, slot);
+    }
+}
+
+
+void PreferencesDialog::connectModifyControlSignal()
+{
+    QWidget *w;
+    int tabCount = this->uiwin.stackedWidget->count();
+    for (int i = 0; i < tabCount; ++i) {
+        w = this->uiwin.stackedWidget->widget(i);
+
+        if (w == this->uiwin.page) {
+            this->connectModifyControlSignalRecursive(w, SLOT(onSetGeneralTabModified()));
+        }
+        if (w == this->uiwin.page_2) {
+            this->connectModifyControlSignalRecursive(w, SLOT(onSetDefaultPropertiesTabModified()));
+        }
+
+        if (w == this->uiwin.page_3) {
+            this->connectModifyControlSignalRecursive(w, SLOT(onSetConnectionTabModified()));
+        }
+
+        if (w == this->uiwin.page_4) {
+            this->connectModifyControlSignalRecursive(w, SLOT(onSetMonitorTabModified()));
+        }
+
+        if (w == this->uiwin.page_15) {
+            this->connectModifyControlSignalRecursive(w, SLOT(onSetProxyTabModified()));
+        }
+    }
+    
+}
+
+void PreferencesDialog::onSetGeneralTabModified()
+{
+    qDebug()<<__FUNCTION__<<__LINE__<<"haha";
+    this->generalModified = true;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page) {
+        this->setWindowModified(true);
+        this->uiwin.pushButton->setEnabled(true);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(true);
+    }
+}
+
+void PreferencesDialog::onSetGeneralTabUnmodified()
+{
+    this->generalModified = false;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page) {
+        this->setWindowModified(false);
+        this->uiwin.pushButton->setEnabled(false);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(false);
+    }
+}
+void PreferencesDialog::onSetDefaultPropertiesTabModified()
+{
+   this->defaultPropertiesModified = true;
+   if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_2) {
+       this->setWindowModified(true);
+       this->uiwin.pushButton->setEnabled(true);
+       this->uiwin.pd_pb_restore_default_setting->setEnabled(true);
+   }
+}
+void PreferencesDialog::onSetDefaultPropertiesTabUnmodified()
+{
+    this->defaultPropertiesModified = false;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_2) {
+        this->setWindowModified(false);
+        this->uiwin.pushButton->setEnabled(false);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(false);
+    }
+
+}
+
+void PreferencesDialog::onSetConnectionTabModified()
+{
+   this->connectionModified = true;
+   if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_3) {
+       this->setWindowModified(true);
+       this->uiwin.pushButton->setEnabled(true);
+       this->uiwin.pd_pb_restore_default_setting->setEnabled(true);
+   }
+    
+}
+
+void PreferencesDialog::onSetConnectionTabUnmodified()
+{
+    this->connectionModified = false;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_3) {
+        this->setWindowModified(false);
+        this->uiwin.pushButton->setEnabled(false);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(false);
+    }
+
+}
+
+void PreferencesDialog::onSetMonitorTabModified()
+{
+    this->monitorModified = true;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_4) {
+        this->setWindowModified(true);
+        this->uiwin.pushButton->setEnabled(true);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(true);
+    }
+
+}
+
+void PreferencesDialog::onSetMonitorTabUnmodified()
+{
+    this->monitorModified = false;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_4) {
+        this->setWindowModified(false);
+        this->uiwin.pushButton->setEnabled(false);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(false);
+    }
+
+}
+
+void PreferencesDialog::onSetProxyTabModified()
+{
+    this->proxyModified = true;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_15) {
+        this->setWindowModified(true);
+        this->uiwin.pushButton->setEnabled(true);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(true);
+    }
+
+}
+
+void PreferencesDialog::onSetProxyTabUnmodified()
+{
+    this->proxyModified = false;
+    if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_15) {
+        this->setWindowModified(false);
+        this->uiwin.pushButton->setEnabled(false);
+        this->uiwin.pd_pb_restore_default_setting->setEnabled(false);
+    }
+
+}
+

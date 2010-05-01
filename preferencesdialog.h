@@ -48,7 +48,7 @@ public:
 
 private:
     Ui::PreferencesDialog uiwin;
-    bool  mIsModified;
+    bool mIsModified;
     SqliteStorage *storage;
 
     bool generalLoaded;
@@ -60,10 +60,21 @@ private:
     bool proxyLoaded;
     bool advancedLoaded;
 
+    bool generalModified;
+    bool defaultPropertiesModified;
+    bool connectionModified;
+    bool monitorModified;
+    bool graphLogModified;
+    bool virtusModified;
+    bool proxyModified;
+    bool advancedModified;
+
 private slots:
 	void onPreferencesSelectChanged(int index);
     void loadStatus(QString msg);
+    void saveStatus(QString msg, QString value);
     QString loadKey(QString key, QString dvalue);
+    bool saveKey(QString key, QString dvalue);
     QVector<QPair<QString, QString> > loadKeyByType(QString type); // for proxy setting
 
     void loadGeneralOptions();
@@ -71,12 +82,19 @@ private slots:
     void loadConnectionOptions();
     void loadMonitorOptions();
     void loadProxyOptions();
-    void saveAllOptions();
+    void onApplyAllChange();  // for all tab, maybe need an other button for apply all
+    void onApplyChange(); // for current tab
+
+    void onApplyDefaultPropertiesTabChange();
+    void onApplyConnectionTabChange();
+    void onApplyMonitorTabChange();
+    void onApplyProxyTabChange();
 
     void onMonitorIE(bool checked);
     void onMonitorOpera(bool checked);
     void onMonitorOpera_2(bool checked);
     void onMonitorFirefox(bool checked);
+    
 
     void onNoProxyChecked(bool checked);
     void onCustomProxyChecked();
@@ -84,6 +102,19 @@ private slots:
     void onModifyProxy();
     void onDeleteProxy();
     void onApplyProxy();
+
+    void connectModifyControlSignalRecursive(QObject *parent, const char *slot);
+    void connectModifyControlSignal();
+    void onSetGeneralTabModified();
+    void onSetGeneralTabUnmodified();
+    void onSetDefaultPropertiesTabModified();
+    void onSetDefaultPropertiesTabUnmodified();
+    void onSetConnectionTabModified();
+    void onSetConnectionTabUnmodified();
+    void onSetMonitorTabModified();
+    void onSetMonitorTabUnmodified();
+    void onSetProxyTabModified();
+    void onSetProxyTabUnmodified();
 };
 
 #endif // PREFERENCESDIALOG_H

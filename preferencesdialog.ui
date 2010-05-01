@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Preferences Dialgo</string>
+   <string>Preferences Dialog [*]</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
