@@ -55,7 +55,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     this->storage = SqliteStorage::instance();
 
 	////////
-	mIsModified = false;
+	// mIsModified = false;
 
 	//QObject::connect(this->ui.listWidget,SIGNAL( currentRowChanged ( int  )),
 	//	this->ui.stackedWidget,SLOT( setCurrentIndex ( int  ) ) );
@@ -245,7 +245,7 @@ QString PreferencesDialog::loadKey(QString key, QString dvalue)
     return ov;
 }
 
-bool PreferencesDialog::saveKey(QString key, QString value)
+bool PreferencesDialog::saveKey(QString key, QString value, QString type)
 {
     QString ov = QString::null;
     QString optionValue;
@@ -254,7 +254,7 @@ bool PreferencesDialog::saveKey(QString key, QString value)
     optionValue = this->loadKey(key, "");
     if (optionValue != value) {
         this->storage->deleteUserOption(key);
-        this->storage->addUserOption(key, value, "auto");
+        this->storage->addUserOption(key, value, type);
     }
 
     return true;
@@ -357,8 +357,10 @@ void PreferencesDialog::loadProxyOptions()
     optionValue = this->loadKey("noproxy", "true");
     if (optionValue == "true") {
         this->onNoProxyChecked(true);
+        this->uiwin.radioButton->setChecked(true);
     } else {
         this->onNoProxyChecked(false);
+        this->uiwin.radioButton_2->setChecked(true);
     }
     
     optionValue = this->loadKey("customproxy", "false");
@@ -388,7 +390,36 @@ void PreferencesDialog::loadProxyOptions()
 
             item = new QTableWidgetItem(pu.password());
             this->uiwin.tableWidget->setItem(i, 5, item);
+
+            // update proto proxy select combobox
+            QVector<QComboBox*> protoProxys;
+            protoProxys<<this->uiwin.comboBox<<this->uiwin.comboBox_2
+                       <<this->uiwin.comboBox_3<<this->uiwin.comboBox_4;
+            for (int c = 0 ; c < protoProxys.count(); ++c) {
+                if (protoProxys.at(c)->findText(proxys.at(i).first) == -1) {
+                    protoProxys.at(c)->addItem(proxys.at(i).first);
+                }
+            }
         }
+
+        // 
+        optionValue = this->loadKey("httpproxy", "Direct");
+        if (!optionValue.isEmpty()) {
+            this->uiwin.comboBox->setCurrentIndex(this->uiwin.comboBox->findText(optionValue));
+        }
+        optionValue = this->loadKey("ftpproxy", "Direct");
+        if (!optionValue.isEmpty()) {
+            this->uiwin.comboBox_2->setCurrentIndex(this->uiwin.comboBox_2->findText(optionValue));
+        }
+        optionValue = this->loadKey("bittorrentproxy", "Direct");
+        if (!optionValue.isEmpty()) {
+            this->uiwin.comboBox_3->setCurrentIndex(this->uiwin.comboBox_3->findText(optionValue));
+        }
+        optionValue = this->loadKey("metalinkproxy", "Direct");
+        if (!optionValue.isEmpty()) {
+            this->uiwin.comboBox_4->setCurrentIndex(this->uiwin.comboBox_4->findText(optionValue));
+        }
+
     }
 
     this->proxyLoaded = true;
@@ -426,10 +457,40 @@ void PreferencesDialog::onApplyProxyTabChange()
                   ? "true" : "false");
     this->saveKey("customproxy", this->uiwin.radioButton_2->isChecked()
                   ? "true" : "false");
+
+    // item = this->uiwin.tableWidget->item(0, 1);
+    QString pname, phost, pport, pusername, ppassword, ptype, proxy;
+    int proxyCount = this->uiwin.tableWidget->rowCount();
+    for (int i = 0; i < proxyCount; ++i) {
+        pname = this->uiwin.tableWidget->item(i, 0)->text();
+        phost = this->uiwin.tableWidget->item(i, 1)->text();
+        pport = this->uiwin.tableWidget->item(i, 2)->text();
+        ptype = this->uiwin.tableWidget->item(i, 3)->text();
+        pusername = this->uiwin.tableWidget->item(i, 4)->text();
+        ppassword = this->uiwin.tableWidget->item(i, 5)->text();
+
+        proxy = QString("%1://%2:%3@%4:%5/#%6")
+            .arg(ptype, pusername, ppassword,
+                 phost, pport, pname);
+
+        this->saveKey(pname, proxy, "proxy");
+    }
+
+    this->saveKey("httpproxy", this->uiwin.comboBox->currentText());
+    this->saveKey("ftpproxy", this->uiwin.comboBox_2->currentText());
+    this->saveKey("bittorrentproxy", this->uiwin.comboBox_3->currentText());
+    this->saveKey("metalinkproxy", this->uiwin.comboBox_4->currentText());
+
+    for (int i = 0; i < this->removedProxys.count(); ++i) {
+        this->storage->deleteUserOption(removedProxys.at(i));
+    }
+    this->removedProxys.clear();
 }
 
 void PreferencesDialog::onApplyAllChange()
 {
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     int currentIndex = this->uiwin.stackedWidget->currentIndex();
     int tabCount = this->uiwin.stackedWidget->count();
 
@@ -439,10 +500,12 @@ void PreferencesDialog::onApplyAllChange()
     }
 
     this->uiwin.stackedWidget->setCurrentIndex(currentIndex);
+    QApplication::restoreOverrideCursor();
 }
 
 void PreferencesDialog::onApplyChange()
 {
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page) {
 
     } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_2) {
@@ -464,6 +527,7 @@ void PreferencesDialog::onApplyChange()
     } else if (this->uiwin.stackedWidget->currentWidget() == this->uiwin.page_6) {
 
     }
+    QApplication::restoreOverrideCursor();
 }
 
 // need user open this program before click ie Download menu
@@ -693,7 +757,14 @@ void PreferencesDialog::onMonitorOpera(bool checked)
 #elif defined(Q_OS_MAC)
         QString value = QString("3,xterm -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
 #else
-        QString value = QString("3,konsole -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
+        QString value;
+        if (QFile::exists("/usr/bin/konsole")) {
+            value = QString("3,konsole -e %1 --metafile,,,,|")
+                .arg(QCoreApplication::applicationFilePath());
+        } else {
+            value = QString("3,xterm -e %1 --metafile,,,,|")
+                .arg(QCoreApplication::applicationFilePath());
+        }
 #endif
         QString key = QString("text/karia2_nullget_down");
         QByteArray line;
@@ -1079,6 +1150,16 @@ void PreferencesDialog::onAddProxy()
             item = new QTableWidgetItem(pu.password());
         }
         this->uiwin.tableWidget->setItem(0, 5, item);
+
+        // update proto proxy select combobox
+        QVector<QComboBox*> protoProxys;
+        protoProxys<<this->uiwin.comboBox<<this->uiwin.comboBox_2
+                   <<this->uiwin.comboBox_3<<this->uiwin.comboBox_4;
+        for (int i = 0 ; i < protoProxys.count(); ++i) {
+            if (protoProxys.at(i)->findText(pu.fragment()) == -1) {
+                protoProxys.at(i)->addItem(pu.fragment());
+            }
+        }
     }
 
     delete proxyDialog;
@@ -1091,7 +1172,26 @@ void PreferencesDialog::onModifyProxy()
 
 void PreferencesDialog::onDeleteProxy()
 {
-    
+    qDebug()<<__FUNCTION__<<__LINE__;
+    QString pname;
+    int irow;
+    QTableWidgetItem *item = this->uiwin.tableWidget->currentItem();
+    if (item) {
+        pname = this->uiwin.tableWidget->item(item->row(), 0)->text();
+        this->uiwin.tableWidget->removeRow(item->row());
+        // update proto proxy select combobox
+        QVector<QComboBox*> protoProxys;
+        protoProxys<<this->uiwin.comboBox<<this->uiwin.comboBox_2
+                   <<this->uiwin.comboBox_3<<this->uiwin.comboBox_4;
+        for (int i = 0 ; i < protoProxys.count(); ++i) {
+            if ((irow = protoProxys.at(i)->findText(pname)) != -1) {
+                protoProxys.at(i)->removeItem(irow);
+            }
+        }
+        this->removedProxys << pname;
+    } else {
+        this->loadStatus("No proxy row selected");
+    }
 }
 
 void PreferencesDialog::onApplyProxy()
@@ -1126,7 +1226,7 @@ void PreferencesDialog::connectModifyControlSignalRecursive(QObject *parent, con
             } else if (QString(mo->className()) == QString(QLineEdit::staticMetaObject.className())) {
                 QLineEdit *le = static_cast<QLineEdit*>(w);
                 QObject::connect(le, SIGNAL(editingFinished()), this, slot);
-            } else if (QString(mo->className()) == QString(QLineEdit::staticMetaObject.className())) {
+            } else if (QString(mo->className()) == QString(QComboBox::staticMetaObject.className())) {
                 QComboBox *cb = static_cast<QComboBox*>(w);
                 QObject::connect(cb, SIGNAL(currentIndexChanged(int)), this, slot);
             }

@@ -3220,31 +3220,23 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 	//将菜单项进行使合适的变灰
 	QModelIndex idx;
 	QString assumeCategory = "Download";	
-	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0 )
-	{
-	}
-	else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0 )
-	{
+	if (this->mCatView->selectionModel()->selectedIndexes().size() == 0 ) {
+	} else if (this->mCatView->selectionModel()->selectedIndexes().size() > 0 ) {
 		idx = this->mCatView->selectionModel()->selectedIndexes().at(0);
 		if (idx.data().toString().compare("Download")!=0
 			&& idx.data().toString().compare("Downloaded")!=0
-			&& idx.data().toString().compare("Deleted")!=0	)
-		{
+			&& idx.data().toString().compare("Deleted")!=0	) {
 			
-		}
-		else
-		{
+		} else {
 			assumeCategory = idx.data().toString();
 		}
 	}
-	if (assumeCategory.compare("Downloaded") == 0 )
-	{
+	if (assumeCategory.compare("Downloaded") == 0 ) {
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0) {
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
 			//this->mainUI.action_Schedule->setEnabled(true);
@@ -3259,9 +3251,7 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Move_bottom->setEnabled(true);
 			this->mainUI.action_Move_top->setEnabled(true);
 			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
+		} else {
 			//this->mainUI.action_Start->setEnabled(false);
 			//this->mainUI.action_Pause->setEnabled(false);
 			//this->mainUI.action_Schedule->setEnabled(false);
@@ -3277,15 +3267,12 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Move_top->setEnabled(false);
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
-	}
-	else if (assumeCategory.compare("Deleted") == 0 )
-	{
+	} else if (assumeCategory.compare("Deleted") == 0 ) {
 		this->mainUI.action_Start->setEnabled(false);
 		this->mainUI.action_Pause->setEnabled(false);
 		this->mainUI.action_Schedule->setEnabled(false);
 		this->mainUI.action_Delete_task->setEnabled(false);
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size() > 0) {
 			//this->mainUI.action_Start->setEnabled(true);
 			//this->mainUI.action_Pause->setEnabled(true);
 			//this->mainUI.action_Schedule->setEnabled(true);
@@ -3300,9 +3287,7 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Move_bottom->setEnabled(true);
 			this->mainUI.action_Move_top->setEnabled(true);
 			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
+		} else {
 			//this->mainUI.action_Start->setEnabled(false);
 			//this->mainUI.action_Pause->setEnabled(false);
 			//this->mainUI.action_Schedule->setEnabled(false);
@@ -3318,11 +3303,8 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Move_top->setEnabled(false);
 			this->mainUI.action_Site_Properties->setEnabled(false);
 		}
-	}
-	else //if (assumeCategory.compare("Download") == 0 )
-	{
-		if (this->mTaskListView->selectionModel()->selectedIndexes().size()>0)
-		{
+	} else {//if (assumeCategory.compare("Download") == 0 )
+		if (this->mTaskListView->selectionModel()->selectedIndexes().size() > 0) {
 			this->mainUI.action_Start->setEnabled(true);
 			this->mainUI.action_Pause->setEnabled(true);
 			this->mainUI.action_Schedule->setEnabled(true);
@@ -3337,9 +3319,7 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 			this->mainUI.action_Move_bottom->setEnabled(true);
 			this->mainUI.action_Move_top->setEnabled(true);
 			this->mainUI.action_Site_Properties->setEnabled(true);
-		}
-		else
-		{
+		} else {
 			this->mainUI.action_Start->setEnabled(false);
 			this->mainUI.action_Pause->setEnabled(false);
 			this->mainUI.action_Schedule->setEnabled(false);

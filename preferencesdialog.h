@@ -48,7 +48,7 @@ public:
 
 private:
     Ui::PreferencesDialog uiwin;
-    bool mIsModified;
+    // bool mIsModified;
     SqliteStorage *storage;
 
     bool generalLoaded;
@@ -69,12 +69,14 @@ private:
     bool proxyModified;
     bool advancedModified;
 
+    QVector<QString> removedProxys;
+
 private slots:
 	void onPreferencesSelectChanged(int index);
     void loadStatus(QString msg);
     void saveStatus(QString msg, QString value);
     QString loadKey(QString key, QString dvalue);
-    bool saveKey(QString key, QString dvalue);
+    bool saveKey(QString key, QString dvalue, QString type = "auto");
     QVector<QPair<QString, QString> > loadKeyByType(QString type); // for proxy setting
 
     void loadGeneralOptions();
