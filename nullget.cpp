@@ -34,7 +34,7 @@
 #include <QDialogButtonBox>
 
 #include "nullget.h"
-
+#include "dropzone.h"
 #include "taskinfodlg.h"
 
 #include "sqlitecategorymodel.h"
@@ -120,6 +120,18 @@ NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
  */
 void NullGet::firstShowHandler()
 {
+    QMenu *addTaskMenuList = new QMenu(this);
+    addTaskMenuList->addAction(this->mainUI.action_New_Download);
+    addTaskMenuList->addAction(this->mainUI.action_New_Bittorrent);
+    addTaskMenuList->addAction(this->mainUI.action_New_Metalink);
+    addTaskMenuList->addAction(this->mainUI.actionAdd_batch_download); // batch
+    this->mAddOtherTaskButton = new QToolButton(this);
+    this->mAddOtherTaskButton->setPopupMode(QToolButton::MenuButtonPopup); // new, nice
+    this->mAddOtherTaskButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    this->mainUI.toolBar->insertWidget(this->mainUI.action_Delete_task, this->mAddOtherTaskButton);
+    this->mAddOtherTaskButton->setMenu(addTaskMenuList);
+    this->mAddOtherTaskButton->setDefaultAction(this->mainUI.action_New_Download);
+
 	this->mISHW = new InstantSpeedHistogramWnd(this->mainUI.speed_histogram_toolBar);
 	this->mainUI.speed_histogram_toolBar->addWidget(this->mISHW);
 
@@ -140,11 +152,6 @@ void NullGet::firstShowHandler()
     this->initAppIcons();
 	
 	this->initialMainWindow();
-#ifdef WIN32
-	// this->onSwitchWindowStyle(mainUI.actionWindowsX_P); //set default windowsxp UI style
-#else
-	// this->onSwitchWindowStyle(mainUI.action_Plastique); //set default Plastique UI style
-#endif
 
 	this->update();
 
@@ -158,9 +165,7 @@ void NullGet::firstShowHandler()
     //
 	this->mCatView = this->mainUI.mui_tv_category;
 	this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
-	//this->mCatViewModel = CategoryModel::instance(0);
 	this->mCatViewModel = SqliteCategoryModel::instance(0);
-	//this->mCatViewModel =  TreeModel::instance(0);
 	this->mCatView->setModel(this->mCatViewModel);
     this->mCatView->setRootIndex(this->mCatViewModel->index(0, 0)); // root is the topest node
 	this->mCatView->expandAll();
@@ -697,7 +702,7 @@ void NullGet::connectAllSignalAndSlog()
 	QObject::connect(this->mainUI.action_Clear_Seg_Log, SIGNAL(triggered()), this, SLOT(onClearSegLog()));
 
 	//cat view
-	QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+	QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(onCatListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	//toolbar	//在UI设计器中将信号传递到标准菜单中。
@@ -759,7 +764,7 @@ void NullGet::hideUnimplementUiElement()
 	this->mainUI.actionDetail->setVisible(false);
 	//delete this->mainUI.menuToolbar; this->mainUI.menuToolbar = 0;
 	this->mainUI.actionGrid->setVisible(false);
-	//this->mainUI.menuSkin->deleteLater();		//这个不能删除，在翻译的时候使用它的指针时就崩溃了。
+	//this->mainUI.menuSkin->deleteLater();		//can not call, or will crash when switch languages
 	//this->mainUI.actionShow_Text->setVisible(false);
 	this->mainUI.actionButtons->setVisible(false);	
 

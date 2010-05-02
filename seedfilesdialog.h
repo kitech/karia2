@@ -53,8 +53,6 @@ private slots:
     void expandAll(QModelIndex  index );
 
 	void onCategoryBoxChange(int index);
-	void onCategoryBoxChange(const QString & text );
-	void onCatListClicked( const QModelIndex & index );
 	void onCatListSelectChange( const QItemSelection & curr , const QItemSelection & prev  ) ;
 
 private:

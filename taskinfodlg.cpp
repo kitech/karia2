@@ -214,10 +214,10 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	uiwin.setupUi(this);
 
 	//signals
-	QObject::connect(uiwin.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
-	//QObject::connect(uiwin.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int)));
-	QObject::connect(uiwin.tid_g_le_cb_category, SIGNAL(editTextChanged(const QString &)),
-                     this, SLOT(onCategoryBoxChange(const QString &)));
+    QObject::connect(uiwin.tid_g_le_url, SIGNAL(textChanged(QString )), this, SLOT(onUrlBoxChange(QString )));
+
+	// QObject::connect(uiwin.tid_g_le_cb_category, SIGNAL(editTextChanged(const QString &)),
+    //                  this, SLOT(onCategoryBoxChange(const QString &)));
 	QObject::connect(uiwin.tid_au_pb_add, SIGNAL(clicked()), this, SLOT(onAddAlterUrl()));
 	QObject::connect(uiwin.tid_au_pb_delete, SIGNAL(clicked()), this, SLOT(onDeleteAlterUrl()));
 	QObject::connect(uiwin.tid_g_le_pb_show_dir, SIGNAL(clicked()), this, SLOT(onChangeSaveDirectory()));
@@ -254,6 +254,7 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 
 	//创建分类树结构
 	this->mCatView = new QTreeView(0);
+    this->mCatView->setMouseTracking(false);
 	//this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection);
 	//this->mCatView->setSelectionBehavior(QAbstractItemView::SelectItems);
 	//this->mCatView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -270,23 +271,21 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	//this->mCatView->setColumnHidden(1,true);
 	
     this->mCatId = 2; //  this->mCatModel->index(0, 0, this->mCatModel->index(0, 0)).internalId();
-	this->mSwapValue = this->mCatModel->index(0, 0, this->mCatModel->index(0,0)).data().toString();
-	this->uiwin.tid_g_le_cb_category->setEditText(this->mSwapValue);
-    this->uiwin.tid_g_le_cb_category->setEditText(tr("downloaded"));
+	// this->mSwapValue = this->mCatModel->index(0, 0, this->mCatModel->index(0,0)).data().toString();
+	// this->uiwin.tid_g_le_cb_category->setEditText(this->mSwapValue);
+    // this->uiwin.tid_g_le_cb_category->setEditText(tr("downloaded"));
 	this->uiwin.tid_g_cb_save_to->clear();	
 	this->uiwin.tid_g_cb_save_to->addItem(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 	this->uiwin.tid_g_cb_save_to->addItem(this->mCatModel->index(1,1,this->mCatModel->index(0,0) ).data().toString());
 	this->uiwin.tid_g_cb_save_to->setEditText(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 
-	QObject::connect(this->mCatView, SIGNAL(pressed(const QModelIndex & )), 
-                     this, SLOT(onCatListClicked(const QModelIndex &)));
+    QObject::connect(uiwin.tid_g_le_cb_category,SIGNAL(currentIndexChanged(int)),this,SLOT(onCategoryBoxChange(int)));
+	// QObject::connect(this->mCatView, SIGNAL(pressed(const QModelIndex & )), 
+    //                  this, SLOT(onCatListClicked(const QModelIndex &)));
 
 	QObject::connect(this->mCatView->selectionModel(),
                      SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &)),
                      this, SLOT(onCatListSelectChange(const QItemSelection &, const QItemSelection &)));
-
-	//QObject::connect(this->mCatView->selectionModel(),SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &   )),
-	//	this,SLOT(onCatListSelectChange( const QItemSelection & , const QItemSelection &   ) ) );
 
 #ifdef WIN32
 	this->uiwin.tid_g_cb_save_to->setEditText("C:/NGDownload");
@@ -298,6 +297,16 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	DirCompleterModel *dirModel = new DirCompleterModel(completer);
 	completer->setModel(dirModel);
 	this->uiwin.tid_g_cb_save_to->setCompleter(completer);
+
+    QMenu *dsmenu = new QMenu(this);
+    dsmenu->addAction(this->uiwin.actionDownload_Now);
+    dsmenu->addAction(this->uiwin.actionDownload_Manual);
+    this->uiwin.toolButton_2->setMenu(dsmenu);
+    this->uiwin.toolButton_2->setDefaultAction(this->uiwin.actionDownload_Now);
+    QObject::connect(this->uiwin.actionDownload_Now, SIGNAL(triggered()),
+                     this, SLOT(onDownloadNow()));
+    QObject::connect(this->uiwin.actionDownload_Manual, SIGNAL(triggered()),
+                     this, SLOT(onDownloadManual()));
 
     this->show();
     // this->onShowMoreInfo();
@@ -354,14 +363,15 @@ taskinfodlg::taskinfodlg(TaskOption *param , QWidget *parent )
 		uiwin.tid_g_le_le_user_name->setText(prm->mLoginUserName);
 		uiwin.tid_g_le_le_password->setText(prm->mLoginPassword);
 		uiwin.tid_g_le_te_comment->setPlainText(prm->mComment);
-		if (prm->mStartState == 0 ) {
-			uiwin.tid_g_le_rb_manual->setChecked(true);
-		// } else if ( prm->mStartState == 2 ) {
-		// 	uiwin.tid_g_le_rb_schedule->setChecked(true);
-		} else {
-			uiwin.tid_g_le_rb_immediately->setChecked(true);
-		}
-		
+		// if (prm->mStartState == 0 ) {
+		// 	uiwin.tid_g_le_rb_manual->setChecked(true);
+		// // } else if ( prm->mStartState == 2 ) {
+		// // 	uiwin.tid_g_le_rb_schedule->setChecked(true);
+		// } else {
+		// 	uiwin.tid_g_le_rb_immediately->setChecked(true);
+		// }
+		this->mStartState = prm->mStartState;
+
 		////////
 		
 		int row = prm->mAlterUrls.count();
@@ -379,6 +389,19 @@ taskinfodlg::taskinfodlg(TaskOption *param , QWidget *parent )
 		// uiwin.tid_ad_cb_proxy_type_media->setCurrentIndex(prm->mProxyTypeMedia);		
 	}
 }
+
+void taskinfodlg::onDownloadNow()
+{
+    this->mStartState = TaskOption::START_IMMIDATE;
+    this->accept();
+}
+
+void taskinfodlg::onDownloadManual()
+{
+    this->mStartState = TaskOption::START_MANUAL;
+    this->accept();
+}
+
 
 void taskinfodlg::onUrlBoxChange(QString text)
 {
@@ -402,25 +425,30 @@ void taskinfodlg::onUrlBoxChange(QString text)
 
 void taskinfodlg::onCategoryBoxChange(int index)
 {
-	qDebug()<<__FUNCTION__ ;
-	QString cat;
+	qDebug()<<__FUNCTION__ << index<< this->mCatView->currentIndex()<<this->mCatView->currentIndex().data();
+	// QString cat;
 
-	cat = uiwin.tid_g_le_cb_category->itemText(index);
+    QModelIndex cidx = this->mCatView->currentIndex();    
+    this->mCatId = cidx.internalId();
+	// cat = uiwin.tid_g_le_cb_category->itemText(index);
 
-	cat = QString("C:\\") + cat;
-	uiwin.tid_g_cb_save_to->setItemText(index, cat);
-	uiwin.tid_g_cb_save_to->setCurrentIndex(index);
+	// cat = QString("C:\\") + cat;
+	// uiwin.tid_g_cb_save_to->setItemText(index, cat);
+	// uiwin.tid_g_cb_save_to->setCurrentIndex(index);
 
+    QModelIndex pathIndex = this->mCatModel->index(cidx.row(), ng::cats::path, cidx.parent());
+	this->uiwin.tid_g_cb_save_to->setEditText(pathIndex.data().toString());
+    this->uiwin.tid_g_cb_save_to->setToolTip(pathIndex.data().toString());
 }
 
-void taskinfodlg::onCategoryBoxChange(const QString & text)
-{
-	qDebug()<<__FUNCTION__ << text;
-	if (text.isEmpty() || text.isNull() || text.length() == 0) {
-		this->uiwin.tid_g_le_cb_category->setEditText(this->mSwapValue);
-    }
-	this->uiwin.tid_g_le_cb_category->lineEdit()->setWindowIcon(QIcon("icons/crystalsvg/16x16/filesystems/folder_violet_open.png"));
-}
+// void taskinfodlg::onCategoryBoxChange(const QString & text)
+// {
+// 	qDebug()<<__FUNCTION__ << text;
+// 	if (text.isEmpty() || text.isNull() || text.length() == 0) {
+// 		this->uiwin.tid_g_le_cb_category->setEditText(this->mSwapValue);
+//     }
+// 	this->uiwin.tid_g_le_cb_category->lineEdit()->setWindowIcon(QIcon("icons/crystalsvg/16x16/filesystems/folder_violet_open.png"));
+// }
 
 // what's problem
 void taskinfodlg::onCatListSelectChange(const QItemSelection & selection , const QItemSelection & previou  ) 
@@ -512,12 +540,13 @@ TaskOption * taskinfodlg::getOption()
 	param->mLoginPassword = uiwin.tid_g_le_le_password->text() ;
     param->mCookies = uiwin.tid_g_le_te_comment->toPlainText();
 	param->mComment = uiwin.tid_g_le_te_comment->toPlainText();
-	if (uiwin.tid_g_le_rb_manual->isChecked())
-		param->mStartState = 0	;	//0,1,2
-	// else if ( uiwin.tid_g_le_rb_schedule->isChecked() )
-	// 	param->mStartState = 2;
-	else 
-		param->mStartState = 1;
+    param->mStartState = this->mStartState;
+	// if (uiwin.tid_g_le_rb_manual->isChecked())
+	// 	param->mStartState = 0	;	//0,1,2
+	// // else if ( uiwin.tid_g_le_rb_schedule->isChecked() )
+	// // 	param->mStartState = 2;
+	// else 
+	// 	param->mStartState = 1;
 
 	////////
 	param->mAlterUrls.clear();
@@ -595,24 +624,27 @@ void taskinfodlg::onChangeSaveDirectory()
 	}
 }
 
-void taskinfodlg::onCatListClicked( const QModelIndex & index )
-{
-	qDebug()<<__FUNCTION__ << index.data();
-	QModelIndex idx0 , idx;
-	idx0 = index.model()->index(index.row(), 0, index.parent());
-	idx = index.model()->index(index.row(), 1, index.parent());
-	qDebug()<<this->uiwin.tid_g_le_cb_category->currentText();
-	this->uiwin.tid_g_le_cb_category->setEditText(idx0.data().toString());
-	qDebug()<<this->uiwin.tid_g_le_cb_category->currentText();
+// void taskinfodlg::onCatListClicked( const QModelIndex & index )
+// {
+// 	qDebug()<<__FUNCTION__ << index.data();
 
-	mSwapValue = idx0.data().toString();
-    this->mCatId = idx0.internalId();
+// 	QModelIndex idx0 , idx;
+// 	idx0 = index.model()->index(index.row(), 0, index.parent());
+// 	idx = index.model()->index(index.row(), 1, index.parent());
+// 	qDebug()<<"Current cat:"<<this->uiwin.tid_g_le_cb_category->currentText();
+// 	// this->uiwin.tid_g_le_cb_category->setEditText(idx0.data().toString());
+// 	qDebug()<<"Updated cat:"<<this->uiwin.tid_g_le_cb_category->currentText();
 
-	//this->mCatLineEdit->setText(index.model()->index(index.row(),0).data().toString());
-	this->uiwin.tid_g_cb_save_to->setEditText(idx.data().toString());
-	qDebug()<<this->uiwin.tid_g_le_cb_category->currentIndex()<<this->uiwin.tid_g_le_cb_category->count()
-            <<this->uiwin.tid_g_le_cb_category->modelColumn ();
-}
+// 	// mSwapValue = idx0.data().toString();
+//     this->mCatId = idx0.internalId();
+
+//     qDebug()<<"Save path to:"<<idx.data();
+// 	//this->mCatLineEdit->setText(index.model()->index(index.row(),0).data().toString());
+// 	this->uiwin.tid_g_cb_save_to->setEditText(idx.data().toString());
+// 	qDebug()<<this->uiwin.tid_g_le_cb_category->currentIndex()<<this->uiwin.tid_g_le_cb_category->count()
+//             <<this->uiwin.tid_g_le_cb_category->modelColumn ();
+
+// }
 
 void taskinfodlg::expandAll(QModelIndex  index )
 {

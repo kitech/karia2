@@ -36,6 +36,8 @@ class TaskOption
 {
     //	Q_OBJECT;
 public:
+    enum {START_MANUAL, START_IMMIDATE};
+public:
 	TaskOption(QObject *parent=0);
 	~TaskOption();
 
@@ -94,7 +96,7 @@ class taskinfodlg : public QDialog
     Q_OBJECT;
 public:
     taskinfodlg(QWidget *parent = 0);
-	taskinfodlg(TaskOption * param , QWidget *parent = 0);
+	taskinfodlg(TaskOption * param, QWidget *parent = 0);
     ~taskinfodlg();
 
 public:
@@ -107,6 +109,10 @@ public:
 	
 	TaskOption *getOption();
 
+public slots:
+    void onDownloadNow();
+    void onDownloadManual();
+
 private:
     Ui::taskinfodlg uiwin;
 
@@ -118,7 +124,8 @@ private:
 	QLineEdit *mCatLineEdit;
 
     int mCatId;
-	QString mSwapValue;
+	// QString mSwapValue;
+    int mStartState;
 
 	///////////////
 	void expandAll(QModelIndex  index );
@@ -126,14 +133,14 @@ private:
 private slots:
 	void onUrlBoxChange(QString text=QString()) ;
 	void onCategoryBoxChange(int index);
-	void onCategoryBoxChange(const QString & text );
+	// void onCategoryBoxChange(const QString & text );
 	
 	void onAddAlterUrl();
 	void onDeleteAlterUrl() ;
 	void onChangeSaveDirectory() ;
 	void onShowCategoryInfo() ;
 
-	void onCatListClicked( const QModelIndex & index );
+	// void onCatListClicked( const QModelIndex & index );
 	void onCatListSelectChange( const QItemSelection & curr , const QItemSelection & prev  ) ;
 
     void onShowMoreInfo();

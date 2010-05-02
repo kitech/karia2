@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>476</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -306,36 +306,6 @@
                </layout>
               </item>
               <item>
-               <widget class="QGroupBox" name="groupBox">
-                <property name="title">
-                 <string>Start</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_4">
-                 <item>
-                  <widget class="QRadioButton" name="tid_g_le_rb_manual">
-                   <property name="text">
-                    <string>Manual</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="tid_g_le_rb_immediately">
-                   <property name="text">
-                    <string>Immeditely</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
                <widget class="QLabel" name="label_13">
                 <property name="text">
                  <string>User-Agent:</string>
@@ -345,6 +315,23 @@
               <item>
                <widget class="QLineEdit" name="lineEdit"/>
               </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout">
               <item>
                <widget class="QLabel" name="label_12">
                 <property name="text">
@@ -481,9 +468,18 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QToolButton" name="toolButton_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>&amp;Accept</string>
+        <string>Download Now</string>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
        </property>
       </widget>
      </item>
@@ -497,6 +493,16 @@
     </layout>
    </item>
   </layout>
+  <action name="actionDownload_Now">
+   <property name="text">
+    <string>Download &amp;Now</string>
+   </property>
+  </action>
+  <action name="actionDownload_Manual">
+   <property name="text">
+    <string>Download &amp;Manual</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -506,10 +512,7 @@
   <tabstop>tid_g_le_cb_login_to_server</tabstop>
   <tabstop>tid_g_le_le_user_name</tabstop>
   <tabstop>tid_g_le_le_password</tabstop>
-  <tabstop>tid_g_le_rb_manual</tabstop>
-  <tabstop>tid_g_le_rb_immediately</tabstop>
   <tabstop>tid_g_le_te_comment</tabstop>
-  <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>tid_au_lw_alter_urls</tabstop>
   <tabstop>tid_au_pb_add</tabstop>
@@ -519,22 +522,6 @@
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>taskinfodlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>348</x>
-     <y>442</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>281</x>
-     <y>405</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>

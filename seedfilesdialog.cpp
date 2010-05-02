@@ -92,8 +92,6 @@ SeedFilesDialog::SeedFilesDialog(QWidget *parent)
     QObject::connect(this->uiwin.toolButton_6, SIGNAL(clicked()),
                      this, SLOT(onSelectAudioFiles()));
 
-	QObject::connect(uiwin.comboBox, SIGNAL(editTextChanged(const QString &)),
-                     this, SLOT(onCategoryBoxChange(const QString &)));
 
 	//拿到全局单一实例的分类数据模型。
 	//this->mCatModel = CategoryModel::instance(0);
@@ -118,17 +116,14 @@ SeedFilesDialog::SeedFilesDialog(QWidget *parent)
 	//this->mCatView->setColumnHidden(1,true);
 	
     this->mCatId = 2; //  this->mCatModel->index(0, 0, this->mCatModel->index(0, 0)).internalId();
-	// this->mSwapValue = this->mCatModel->index(0, 0, this->mCatModel->index(0,0)).data().toString();
-	// this->uiwin.tid_g_le_cb_category->setEditText(this->mSwapValue);
     this->uiwin.comboBox->setEditText(tr("downloaded"));
 	this->uiwin.comboBox_2->clear();	
 	this->uiwin.comboBox_2->addItem(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 	this->uiwin.comboBox_2->addItem(this->mCatModel->index(1,1,this->mCatModel->index(0,0) ).data().toString());
 	this->uiwin.comboBox_2->setEditText(this->mCatModel->index(0,1,this->mCatModel->index(0,0) ).data().toString());
 
-	QObject::connect(this->mCatView, SIGNAL(pressed(const QModelIndex & )), 
-                     this, SLOT(onCatListClicked(const QModelIndex &)));
-
+	QObject::connect(uiwin.comboBox, SIGNAL(currentIndexChanged(int)),
+                     this, SLOT(onCategoryBoxChange(int)));
 	QObject::connect(this->mCatView->selectionModel(),
                      SIGNAL(selectionChanged ( const QItemSelection & , const QItemSelection &)),
                      this, SLOT(onCatListSelectChange(const QItemSelection &, const QItemSelection &)));
@@ -293,26 +288,15 @@ void SeedFilesDialog::expandAll(QModelIndex  index )
 
 void SeedFilesDialog::onCategoryBoxChange(int index)
 {
-	qDebug()<<__FUNCTION__ ;
-	QString cat;
+	qDebug()<<__FUNCTION__ << index<< this->mCatView->currentIndex()<<this->mCatView->currentIndex().data();
 
-	cat = uiwin.comboBox->itemText(index);
+    QModelIndex cidx = this->mCatView->currentIndex();    
+    this->mCatId = cidx.internalId();
 
-	cat = QString("C:\\") + cat;
-	uiwin.comboBox_2->setItemText(index, cat);
-	uiwin.comboBox_2->setCurrentIndex(index);
-
+    QModelIndex pathIndex = this->mCatModel->index(cidx.row(), ng::cats::path, cidx.parent());
+	this->uiwin.comboBox_2->setEditText(pathIndex.data().toString());
+    this->uiwin.comboBox_2->setToolTip(pathIndex.data().toString());
 }
-
-void SeedFilesDialog::onCategoryBoxChange(const QString & text)
-{
-	qDebug()<<__FUNCTION__ << text;
-	if (text.isEmpty() || text.isNull() || text.length() == 0) {
-		// this->uiwin.comboBox->setEditText(this->mSwapValue);
-    }
-	this->uiwin.comboBox->lineEdit()->setWindowIcon(QIcon("icons/crystalsvg/16x16/filesystems/folder_violet_open.png"));
-}
-
 
 // what's problem
 void SeedFilesDialog::onCatListSelectChange(const QItemSelection & selection , const QItemSelection & previou  ) 
@@ -343,21 +327,3 @@ void SeedFilesDialog::onCatListSelectChange(const QItemSelection & selection , c
 	}
 }
 
-void SeedFilesDialog::onCatListClicked( const QModelIndex & index )
-{
-	qDebug()<<__FUNCTION__ << index.data();
-	QModelIndex idx0 , idx;
-	idx0 = index.model()->index(index.row(), 0, index.parent());
-	idx = index.model()->index(index.row(), 1, index.parent());
-	qDebug()<<this->uiwin.comboBox->currentText();
-	this->uiwin.comboBox->setEditText(idx0.data().toString());
-	qDebug()<<this->uiwin.comboBox->currentText();
-
-	// mSwapValue = idx0.data().toString();
-    this->mCatId = idx0.internalId();
-
-	//this->mCatLineEdit->setText(index.model()->index(index.row(),0).data().toString());
-	this->uiwin.comboBox_2->setEditText(idx.data().toString());
-	qDebug()<<this->uiwin.comboBox->currentIndex()<<this->uiwin.comboBox->count()
-            <<this->uiwin.comboBox->modelColumn ();
-}

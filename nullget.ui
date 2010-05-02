@@ -627,7 +627,6 @@
    </attribute>
    <addaction name="action_Start"/>
    <addaction name="action_Pause"/>
-   <addaction name="action_New_Download"/>
    <addaction name="action_Delete_task"/>
    <addaction name="action_Properties"/>
    <addaction name="actionMove_Up"/>
@@ -1224,7 +1223,7 @@
     <string>Create a New Task</string>
    </property>
    <property name="shortcut">
-    <string>F4</string>
+    <string>F2</string>
    </property>
   </action>
   <action name="action_New_Bittorrent">
@@ -1239,7 +1238,7 @@
     <string>Create a New Bittorrent Task</string>
    </property>
    <property name="shortcut">
-    <string>F4</string>
+    <string>F3</string>
    </property>
   </action>
   <action name="action_New_Metalink">

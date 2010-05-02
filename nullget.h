@@ -32,14 +32,13 @@
 #include "taskinfodlg.h"	// class TaskParameter 
 
 #include "sqlitestorage.h"
-
 #include "viewmodel.h"
-#include "dropzone.h"
 
 //
 
 #include "walksitewnd.h"
 
+class DropZone;
 class TaskQueue;
 class InstantSpeedHistogramWnd;
 // class MusicSearchWnd ;	//搜索窗口类。
@@ -162,7 +161,8 @@ private:
 
 	InstantSpeedHistogramWnd *mISHW;
 	DropZone * mDropZone ;
-	QSystemTrayIcon * mSysTrayIcon;	//系统通知栏图标句柄
+	QSystemTrayIcon * mSysTrayIcon;	//system tray icon
+    QToolButton *mAddOtherTaskButton;
 
 	QLabel *mStatusMessageLabel;
 	QSlider *mSpeedBarSlider ;
