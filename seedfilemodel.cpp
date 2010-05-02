@@ -57,6 +57,25 @@ bool SeedFileModel::setData(QVariantList &files, bool selectAll)
     return true;
 }
 
+bool SeedFileModel::updateSelectFile(QString selected)
+{
+    QStringList indexes = selected.split(",");
+    
+    int rc = this->rowCount(QModelIndex());
+    QVariantMap file;
+    for (int i = rc - 1; i >= 0; --i) {
+        file = this->mFiles.at(i).toMap();
+        if (indexes.contains(file.value("index").toString())) {
+            this->setData(this->index(i, ng::seedfile::selected), QVariant(true));
+        } else {
+            this->setData(this->index(i, ng::seedfile::selected), QVariant(false));
+        }
+    }
+    
+    return true;
+}
+
+
 int SeedFileModel::columnCount(const QModelIndex &parent) const
 {
     return 4;

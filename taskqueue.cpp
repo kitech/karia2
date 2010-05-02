@@ -322,11 +322,19 @@ bool TaskQueue::setTrackers(int taskId, QVariantList &trackers)
 bool TaskQueue::setSeedFiles(int taskId, QVariantList &files)
 {
     if (this->mTasks.contains(taskId)) {
-        this->mTasks[taskId]->seedFileModel->setData(files, true);
+        // this->mTasks[taskId]->seedFileModel->setData(files, true);
+        this->mTasks[taskId]->seedFileModel->setData(files, false);
     }
     return true;
 }
 
+bool TaskQueue::updateSelectFile(int taskId, QString selected)
+{
+    if (this->mTasks.contains(taskId)) {
+        this->mTasks[taskId]->seedFileModel->updateSelectFile(selected);
+    }
+    return true;
+}
 
 void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus ) 
 {

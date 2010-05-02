@@ -46,6 +46,9 @@ public:
     PreferencesDialog(QWidget *parent = 0);
     ~PreferencesDialog();
 
+public slots:
+    void setWindowModified(bool modified);
+
 private:
     Ui::PreferencesDialog uiwin;
     // bool mIsModified;

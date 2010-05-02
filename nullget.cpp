@@ -900,7 +900,7 @@ void NullGet::onAddTaskList(QStringList list)
 		//this->createTask(url,segcnt);
 		//这里先假设用户使用相同的设置。
 		//delete to; to = 0;
-		for(int t = 0; t <list.size(); ++ t )
+		for (int t = 0; t <list.size(); ++ t )
 		{
 			taskUrl = list.at(t);
 			qDebug()<<taskUrl;
@@ -1230,7 +1230,7 @@ void NullGet::onStartTaskAll()
 	int retrCount;
 
 	//taskCount = this->mTaskQueue.size();
-	//for(int i = 0; i < taskCount; i ++)
+	//for (int i = 0; i < taskCount; i ++)
 	{
 		//hTask = this->mTaskQueue[i];
 		if (hTask != 0 )
@@ -1293,7 +1293,7 @@ void NullGet::onPauseTaskAll()
 	int taskCount;
 
 	//taskCount = this->mTaskQueue.size();
-	//for(int i = 0; i < taskCount; i ++)
+	//for (int i = 0; i < taskCount; i ++)
 	{
 	//	hTask = this->mTaskQueue[i];
 		if (hTask != 0 )
@@ -1522,7 +1522,7 @@ void NullGet::onDeleteTask()
 // 		// 	int ret = QMessageBox::question(this,tr("Delete task..."),tr("Deleting an unfinished task,are you sure ?") ,QMessageBox::Ok,QMessageBox::Cancel);
 // 		// 	if (ret == QMessageBox::Cancel) return;
 // 		// }
-// 		for(int i = 0; i < from_model->rowCount();  ++ i)
+// 		for (int i = 0; i < from_model->rowCount();  ++ i)
 // 		{
 // 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
 // 			{
@@ -1540,7 +1540,7 @@ void NullGet::onDeleteTask()
 //                                           tq->getStatusString(TaskQueue::TS_COMPLETE));
 
 // 			// //将线程数据移动出来。
-// 			// for(int j = 0; j < tq->mSegmentThread.size(); ++j)
+// 			// for (int j = 0; j < tq->mSegmentThread.size(); ++j)
 // 			// {
 // 			// 	tq->mSegmentThread[j]->bePauseing = true;
 // 			// 	tq->mSegmentThread[j]->terminate();
@@ -1557,7 +1557,7 @@ void NullGet::onDeleteTask()
 // 			int torows = to_model->rowCount();
 // 			to_model->insertRows(torows,1);
 			
-// 			for(int j = 0; j < colcnt; j ++)
+// 			for (int j = 0; j < colcnt; j ++)
 // 			{
 // 				index = to_model->index(torows,j);
 // 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -1588,7 +1588,7 @@ void NullGet::onDeleteTask()
 // 	{		
 // 		//可能是上次没下载完成或者出错的任务，所有还没有任务执行对象
 // 		//只需要处理一下模型中数的数据就可以了。
-// 		for(int i = 0; i < from_model->rowCount();   i ++ )
+// 		for (int i = 0; i < from_model->rowCount();   i ++ )
 // 		{
 // 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
 // 			{				
@@ -1613,7 +1613,7 @@ void NullGet::onDeleteTask()
 // 			int torows = to_model->rowCount();
 // 			to_model->insertRows(torows,1);
 
-// 			for(int j = 0; j < colcnt; j ++)
+// 			for (int j = 0; j < colcnt; j ++)
 // 			{
 // 				index = to_model->index(torows,j);
 // 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -1741,7 +1741,7 @@ void NullGet::onTaskDone(int pTaskId)
 		to_model = SqliteTaskModel::instance(ng::cats::downloaded, this);
 		int colcnt = from_model->columnCount();
 		int from_rowcnt = from_model->rowCount();
-		for(int i = 0; i < from_rowcnt; i ++ )
+		for (int i = 0; i < from_rowcnt; i ++ )
 		{
 			if (from_model->data(from_model->index(i,ng::tasks::task_id)).toInt() == pTaskId )
 			{
@@ -1757,7 +1757,7 @@ void NullGet::onTaskDone(int pTaskId)
 			tq->onTaskListCellNeedChange(pTaskId , ng::tasks::task_status , tq->getStatusString(TaskQueue::TS_COMPLETE));
 
 			//将线程数据移动出来。
-			// for(int j = 0; j < tq->mSegmentThread.size(); ++j)
+			// for (int j = 0; j < tq->mSegmentThread.size(); ++j)
 			// {
 			// 	//tq->mSegmentThread[j]->bePauseing = true;
 			// 	//tq->mSegmentThread[j]->terminate();
@@ -1774,7 +1774,7 @@ void NullGet::onTaskDone(int pTaskId)
 			int torows = to_model->rowCount();
 			to_model->insertRows(torows,1);
 			
-			for(int j = 0; j < colcnt; j ++)
+			for (int j = 0; j < colcnt; j ++)
 			{
 				index = to_model->index(torows,j);
 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
@@ -2173,6 +2173,10 @@ void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
     QString cmd = mPayload["cmd"].toString();
 
     this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::aria_gid, response.toString());
+    if (mPayload.contains("indexes")) {
+        this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::select_file, mPayload["indexes"].toString());
+        this->mTaskMan->updateSelectFile(taskId, mPayload.value("indexes").toString());
+    }
 
     this->mRunningMap[taskId] = response.toString();
     // if is torrent, add to torrentMap
@@ -2785,7 +2789,7 @@ void NullGet::showBatchDownloadDialog()
 	{		
 		qDebug()<<segcnt<<url;
 		taskinfodlg *tid = new taskinfodlg(this);
-		for(int i = 0; i < sl.count(); ++i)
+		for (int i = 0; i < sl.count(); ++i)
 		{
 			tid->setTaskUrl(sl.at(i));
 			to = tid->getOption();
@@ -2820,7 +2824,7 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 		url = wpid->getLinkList();
 		urlList = url.split("\"+\"");
 		ulcount = urlList.size();
-		for(int i = 0; i < ulcount; ++i)
+		for (int i = 0; i < ulcount; ++i)
 		{
 			if (i == 0 && urlList.at(0).startsWith("\""))
 			{
@@ -2835,7 +2839,7 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 
 		if (urlList.size() > 0 )
 		{
-			for(int i = 0; i < ulcount; ++i)
+			for (int i = 0; i < ulcount; ++i)
 			{
 				u = urlList.at(i);
 				if (u.scheme().toUpper().compare("HTTP") == 0
@@ -2860,12 +2864,12 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 				linkCount = 0;
 				linkList = html_parse_get_all_link(htmlcode.toAscii().data() , &linkCount );
 				qDebug()<<linkCount;
-				for(int j = 0; j < linkCount; j ++ )
+				for (int j = 0; j < linkCount; j ++ )
 				{
 					srcList.append(QString(linkList[j]));
 				}
 				html_parse_free_link_mt(linkList,linkCount);
-			}	//end for(int i = 0; i < ulcount; ++i)
+			}	//end for (int i = 0; i < ulcount; ++i)
 		}
 
 		//////
@@ -2906,7 +2910,7 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 				//this->createTask(url,segcnt);
 				//这里先假设用户使用相同的设置。
 				//delete to; to = 0;
-				for(int t = 0; t < resultList.size(); ++ t )
+				for (int t = 0; t < resultList.size(); ++ t )
 				{
 					taskUrl = resultList.at(t);
 					qDebug()<<taskUrl;
@@ -3180,7 +3184,7 @@ void NullGet::onEditInvertSelect()
 
 	int rows = tv->model()->rowCount();
 	int cols = tv->model()->columnCount();
-	for(int i = 0;i < rows;  i ++ )
+	for (int i = 0;i < rows;  i ++ )
 	{
 		idx = tv->model()->index(i,0);
 		if (sm->isRowSelected(i,QModelIndex()) )
@@ -3192,7 +3196,7 @@ void NullGet::onEditInvertSelect()
 		}
 	}
 	sm->clear();
-	for(int i = 0; i < subrows.size();i ++)
+	for (int i = 0; i < subrows.size();i ++)
 	{
 		sm->select(tv->model()->index(subrows[i],0),QItemSelectionModel::Select|QItemSelectionModel::Rows);
 	}
@@ -3523,9 +3527,9 @@ void NullGet::onCopySelectSegLog()
 		cols = this->mSegLogListView->model()->columnCount();
 		sm = this->mSegLogListView->selectionModel();
 		mil = sm->selectedIndexes();
-		for(int r = 0; r < mil.size()/cols; r++ )
+		for (int r = 0; r < mil.size()/cols; r++ )
 		{
-			for(int c = 0; c < cols; ++c )
+			for (int c = 0; c < cols; ++c )
 			{
 				text +=   mil.value(r+c*mil.size()/cols).data().toString();
 				text += '\t';
@@ -3559,9 +3563,9 @@ void NullGet::onSaveSegLog()
 
 		cols = model->columnCount();
 		
-		for(int r = 0; r < model->rowCount(); ++r)
+		for (int r = 0; r < model->rowCount(); ++r)
 		{
-			for(int c = 0; c < cols; ++ c)
+			for (int c = 0; c < cols; ++ c)
 			{
 				text += model->data(model->index(r,c)).toString();
 				text += '\t';
@@ -3594,7 +3598,7 @@ void NullGet::onClearSegLog() 	//
 	aim = this->mSegLogListView->model();
 	if (aim == 0 ) return;	//没有日志，直接返回
 	row = aim->rowCount();
-	for(int i = row -1; i >=0; i --)
+	for (int i = row - 1; i >=0; i --)
 	{
 		aim->removeRows(i,1);
 	}
@@ -3738,7 +3742,7 @@ void NullGet::showAboutDialog()
 }
 void NullGet::onGotoHomePage()
 {
-	QString homepage = "http://www.qtchina.net/nullget.html";
+	QString homepage = "http://www.qtchina.net/";
 	QDesktopServices::openUrl(homepage);
 }
 

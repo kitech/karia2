@@ -81,7 +81,7 @@
         </property>
         <widget class="QTabWidget" name="mui_tw_segment_graph_log">
          <property name="currentIndex">
-          <number>4</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_5">
           <attribute name="title">
@@ -320,7 +320,7 @@
            <item>
             <widget class="QTreeView" name="treeView_2">
              <property name="editTriggers">
-              <set>QAbstractItemView::AllEditTriggers</set>
+              <set>QAbstractItemView::NoEditTriggers</set>
              </property>
              <property name="alternatingRowColors">
               <bool>true</bool>

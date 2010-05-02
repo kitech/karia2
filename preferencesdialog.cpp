@@ -1371,3 +1371,11 @@ void PreferencesDialog::onSetProxyTabUnmodified()
 
 }
 
+void PreferencesDialog::setWindowModified(bool modified)
+{
+    QDialog::setWindowModified(modified);
+    QString wtitle = this->windowTitle();
+    if (wtitle.contains("*")) {
+        
+    }
+}

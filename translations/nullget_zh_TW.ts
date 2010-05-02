@@ -546,62 +546,62 @@ p, li { white-space: pre-wrap; }
         <translation>确认要删除该类另及其所有子类别吗？</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2278"/>
+        <location filename="../nullget.cpp" line="2282"/>
         <source>pause</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2719"/>
+        <location filename="../nullget.cpp" line="2723"/>
         <source>Open a .metalink file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2720"/>
+        <location filename="../nullget.cpp" line="2724"/>
         <source>Metalink File (*.metalink)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2886"/>
-        <location filename="../nullget.cpp" line="2927"/>
+        <location filename="../nullget.cpp" line="2890"/>
+        <location filename="../nullget.cpp" line="2931"/>
         <source>Process Weg Page :</source>
         <translation>处理网页文件：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2886"/>
+        <location filename="../nullget.cpp" line="2890"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
         <translation>在所给的网页文件中没有发现URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2927"/>
+        <location filename="../nullget.cpp" line="2931"/>
         <source>No URL(s) Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3824"/>
-        <location filename="../nullget.cpp" line="3868"/>
-        <location filename="../nullget.cpp" line="3912"/>
+        <location filename="../nullget.cpp" line="3808"/>
+        <location filename="../nullget.cpp" line="3852"/>
+        <location filename="../nullget.cpp" line="3896"/>
         <source>No Task Selected</source>
         <translation>没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3824"/>
-        <location filename="../nullget.cpp" line="3868"/>
-        <location filename="../nullget.cpp" line="3912"/>
+        <location filename="../nullget.cpp" line="3808"/>
+        <location filename="../nullget.cpp" line="3852"/>
+        <location filename="../nullget.cpp" line="3896"/>
         <source>Please Select a Task For Operation</source>
         <translation>请选择一个要执行的任务。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3859"/>
+        <location filename="../nullget.cpp" line="3843"/>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found, has it downloaded already?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4227"/>
+        <location filename="../nullget.cpp" line="4211"/>
         <source>Aria2 backend error :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="4228"/>
+        <location filename="../nullget.cpp" line="4212"/>
         <source>Can not start aria2. Are you already installed it properly?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -622,32 +622,32 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2652"/>
+        <location filename="../nullget.cpp" line="2656"/>
         <source>Open a .torrent file...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2653"/>
+        <location filename="../nullget.cpp" line="2657"/>
         <source>Torrent File (*.torrent)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3022"/>
+        <location filename="../nullget.cpp" line="3026"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: .%4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3858"/>
+        <location filename="../nullget.cpp" line="3842"/>
         <source>Notice:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3963"/>
+        <location filename="../nullget.cpp" line="3947"/>
         <source>Allocating File Space: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3972"/>
+        <location filename="../nullget.cpp" line="3956"/>
         <source>Waiting ...</source>
         <translation></translation>
     </message>
@@ -3638,136 +3638,141 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="22"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="301"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="302"/>
         <source>File Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="32"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="302"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="303"/>
         <source>Save AS:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="47"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="303"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="304"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="73"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="304"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="305"/>
         <source>Need Space:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="133"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="314"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="315"/>
         <source>File Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="161"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="309"/>
+        <location filename="../seedfilesdialog.ui" line="164"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="310"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="168"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="310"/>
+        <location filename="../seedfilesdialog.ui" line="171"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="311"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="175"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="311"/>
+        <location filename="../seedfilesdialog.ui" line="178"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="312"/>
         <source>Revert Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="182"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="312"/>
+        <location filename="../seedfilesdialog.ui" line="185"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="313"/>
         <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="189"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="313"/>
+        <location filename="../seedfilesdialog.ui" line="192"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="314"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="199"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="320"/>
+        <location filename="../seedfilesdialog.ui" line="202"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="321"/>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="207"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="315"/>
+        <location filename="../seedfilesdialog.ui" line="210"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="316"/>
         <source>Auto run when done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="214"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="316"/>
+        <location filename="../seedfilesdialog.ui" line="217"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="317"/>
         <source>Download ordered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="221"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="317"/>
+        <location filename="../seedfilesdialog.ui" line="224"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="318"/>
         <source>&amp;Help</source>
         <translation type="unfinished">幫助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="230"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="318"/>
+        <location filename="../seedfilesdialog.ui" line="233"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="319"/>
         <source>Trackers List:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="240"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="319"/>
+        <location filename="../seedfilesdialog.ui" line="243"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="320"/>
         <source>Note: one tracker per line.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="253"/>
-        <location filename="../seedfilesdialog.ui" line="260"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="321"/>
+        <location filename="../seedfilesdialog.ui" line="256"/>
+        <location filename="../seedfilesdialog.ui" line="263"/>
         <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="322"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="323"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="100"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="306"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="307"/>
         <source>Left Space:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../seedfilesdialog.ui" line="14"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="300"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="301"/>
         <source>Seed Files Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="154"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="308"/>
+        <location filename="../seedfilesdialog.ui" line="157"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="309"/>
         <source>Select File Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="280"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="323"/>
+        <location filename="../seedfilesdialog.ui" line="283"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="324"/>
         <source>&amp;Ok</source>
         <translation type="unfinished">确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../seedfilesdialog.ui" line="287"/>
-        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="324"/>
+        <location filename="../seedfilesdialog.ui" line="290"/>
+        <location filename="../GeneratedFiles/ui_seedfilesdialog.h" line="325"/>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../seedfilesdialog.cpp" line="123"/>
+        <source>downloaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3791,17 +3796,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SqliteStorage</name>
     <message>
-        <location filename="../sqlitestorage.cpp" line="69"/>
-        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../sqlitestorage.cpp" line="70"/>
-        <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
+        <source>task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../sqlitestorage.cpp" line="71"/>
+        <source>display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sqlitestorage.cpp" line="72"/>
         <source>seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4548,165 +4553,171 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="20"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="465"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="475"/>
         <source>Add New Download</source>
         <translation type="unfinished">添加新的下载任务</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="42"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="489"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="500"/>
         <source>Gerneral</source>
         <translation type="unfinished"> 常规</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="56"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="466"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="476"/>
         <location filename="../taskinfodlg.cpp" line="547"/>
         <source>URL:</source>
         <translation type="unfinished">网址(&amp;U):</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="63"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="467"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="477"/>
         <source>Split file</source>
         <translation type="unfinished">文件分成</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="91"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="468"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="478"/>
         <source>part</source>
         <translation type="unfinished">同时下载</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="98"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="469"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="479"/>
         <location filename="../taskinfodlg.cpp" line="474"/>
         <source>Collapse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="141"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="472"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="482"/>
         <source>C:/NGDownload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="161"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="474"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="484"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="176"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="475"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="485"/>
         <source>http://localhost/mtv.wmv</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="183"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="476"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="486"/>
         <source>Save to:</source>
         <translation type="unfinished">另存到(&amp;A):</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="193"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="477"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="487"/>
         <source>Rename:</source>
         <translation type="unfinished">重命名:</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="217"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="478"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="488"/>
         <source>Referrer:</source>
         <translation type="unfinished">引用(&amp;R)</translation>
     </message>
     <message>
         <location filename="../taskinfodlg.ui" line="224"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="479"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="489"/>
         <source>Find alternate URLs through the mirror list file or Ftp Search</source>
         <translation type="unfinished">允许通过镜像列表和Ftp查找功能发现替代URL</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="267"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="481"/>
+        <location filename="../taskinfodlg.ui" line="261"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="491"/>
         <source>Login to server:</source>
         <translation type="unfinished">登陆到服务器(&amp;G):</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="274"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="482"/>
+        <location filename="../taskinfodlg.ui" line="268"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="492"/>
         <source>Username:</source>
         <translation type="unfinished">用户名(&amp;N):</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="295"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="484"/>
+        <location filename="../taskinfodlg.ui" line="289"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="494"/>
         <source>Password:</source>
         <translation type="unfinished">密码(&amp;P):</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="317"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="485"/>
+        <location filename="../taskinfodlg.ui" line="311"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="495"/>
         <source>Start</source>
         <translation type="unfinished">开始</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="323"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="486"/>
+        <location filename="../taskinfodlg.ui" line="317"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="496"/>
         <source>Manual</source>
         <translation type="unfinished">手动(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="330"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="487"/>
+        <location filename="../taskinfodlg.ui" line="324"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="497"/>
         <source>Immeditely</source>
         <translation type="unfinished">立即(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="353"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="488"/>
+        <location filename="../taskinfodlg.ui" line="341"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="498"/>
+        <source>User-Agent:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../taskinfodlg.ui" line="351"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="499"/>
         <source>Comment:</source>
         <translation type="unfinished">注释(&amp;O):</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="371"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="494"/>
+        <location filename="../taskinfodlg.ui" line="369"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="505"/>
         <source>Alternate URLs</source>
         <translation type="unfinished">替代URL</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="389"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="490"/>
+        <location filename="../taskinfodlg.ui" line="387"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="501"/>
         <source>The Task URL , dynamic update on run.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="433"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="491"/>
+        <location filename="../taskinfodlg.ui" line="431"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="502"/>
         <source>&amp;Add</source>
         <translation type="unfinished">添加(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="440"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="492"/>
+        <location filename="../taskinfodlg.ui" line="438"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="503"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="447"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="493"/>
+        <location filename="../taskinfodlg.ui" line="445"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="504"/>
         <source>&amp;Ok</source>
         <translation type="unfinished">确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="488"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="496"/>
+        <location filename="../taskinfodlg.ui" line="486"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="507"/>
         <source>&amp;Accept</source>
         <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.ui" line="495"/>
-        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="497"/>
+        <location filename="../taskinfodlg.ui" line="493"/>
+        <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="508"/>
         <source>&amp;Reject</source>
         <translation type="unfinished">取消</translation>
     </message>

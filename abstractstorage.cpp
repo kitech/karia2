@@ -107,6 +107,7 @@ AbstractStorage::AbstractStorage(QObject *parent)
 			"sys_cat_id        ,"
         "save_path,"
 			"file_name           ,"
+        "select_file,"
 			"abtained_percent    ,"
 			"org_url             ,"
 			"real_url            ,"

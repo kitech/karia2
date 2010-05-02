@@ -81,6 +81,7 @@ public:
     bool setPeers(int taskId, QVariantList &peers);
     bool setTrackers(int taskId, QVariantList &trackers);
     bool setSeedFiles(int taskId, QVariantList &files);
+    bool updateSelectFile(int taskId, QString selected);
 
 public slots:
 	void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;

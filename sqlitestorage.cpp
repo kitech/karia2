@@ -63,11 +63,11 @@ SqliteStorage::SqliteStorage(QObject *parent)
 	//19
 	//taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
     // "values ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', '%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '%32', '%33', '%34')";
-    taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid) VALUES (__VALUES_PLEACE__)";
+    taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid) VALUES (__VALUES_PLEACE__)";
 
     // this is from AbstractStorage.cpp
     // Marks the string literal sourceText for dynamic translation in the current context (class),
-    tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name,abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
+    tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
 	this->catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
     segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
 
@@ -452,6 +452,7 @@ bool SqliteStorage::addTask(int task_id ,
                             QString sys_cat_id         ,
                             QString save_path,
                             QString file_name            ,
+                            QString select_file,
                             QString abtained_percent          ,
                             QString org_url              ,
                             QString real_url             ,
@@ -474,7 +475,7 @@ bool SqliteStorage::addTask(int task_id ,
     values << QString::number(task_id)<< file_size<< retry_times<< create_time<< current_speed
            << average_speed<< eclapsed_time<< abtained_length<< left_length
            << split_count<< block_activity<< total_block_count<< active_block_count<< user_cat_id
-           << comment<< sys_cat_id<< save_path<< file_name<< abtained_percent<< org_url
+           << comment<< sys_cat_id<< save_path<< file_name<<select_file<< abtained_percent<< org_url
            << real_url<< referer
            << redirect_times<< finish_time<< task_status<< total_packet<< abtained_packet
            << left_packet<< total_timestamp<< abtained_timestamp<< left_timestamp
@@ -507,7 +508,7 @@ bool SqliteStorage::updateTask(QHash<QString, QString> taskHash)
 }
 
 bool SqliteStorage::updateTask(int task_id,
-                               QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
+                               QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString select_file, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
 							   )
 {
 	// QString sql = "UPDATE tasks SET file_size='%1',retry_times='%2',create_time='%3',current_speed='%4',average_speed='%5',eclapsed_time='%6',abtained_length='%7',left_length='%8', block_activity='%9',total_block_count='%10',active_block_count='%11',user_cat_id='%12',comment='%13', sys_cat_id='%14',file_name='%15',abtained_percent='%16',org_url='%17',real_url='%18', referer='%19', redirect_times='%20',finish_time='%21',task_status='%22',total_packet='%23',abtained_packet='%24',left_packet='%25',total_timestamp='%26',abtained_timestamp='%27',left_timestamp='%28',file_length_abtained='%29',dirty='%30', aria_gid='%31' WHERE task_id='%32' ";
@@ -530,6 +531,7 @@ bool SqliteStorage::updateTask(int task_id,
     sql += "sys_cat_id='" + sys_cat_id + "',";
     sql += "save_path='" + save_path + "',";
     sql += "file_name='" + file_name + "',";
+    sql += "select_file='" + select_file + "',";
     sql += "abtained_percent='" + abtained_percent + "',";
     sql += "org_url='" + org_url + "',";
     sql += "real_url='" + real_url + "',";

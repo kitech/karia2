@@ -50,11 +50,22 @@ private slots:
     void onSelectVideoFiles();
     void onSelectAudioFiles();
 
+    void expandAll(QModelIndex  index );
+
+	void onCategoryBoxChange(int index);
+	void onCategoryBoxChange(const QString & text );
+	void onCatListClicked( const QModelIndex & index );
+	void onCatListSelectChange( const QItemSelection & curr , const QItemSelection & prev  ) ;
+
 private:
     Ui::SeedFilesDialog uiwin;
 
     SeedFileModel *seedFileModel;
     SeedFileItemDelegate *itemDelegate;
+
+	QAbstractItemModel * mCatModel;
+	QTreeView *mCatView;
+    int mCatId;
 };
 
 

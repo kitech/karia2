@@ -361,6 +361,7 @@ bool SqliteTaskModel::submit ()
 			QString  sys_cat_id = rec.value("sys_cat_id").toString();
             QString  save_path = rec.value("save_path").toString();
 			QString  file_name = rec.value("file_name").toString();
+            QString  select_file = rec.value("select_file").toString();
 			QString  abtained_percent = rec.value("abtained_percent").toString();
 			QString  org_url = rec.value("org_url").toString();
 			QString  real_url = rec.value("real_url").toString();
@@ -383,7 +384,7 @@ bool SqliteTaskModel::submit ()
 				this->mStorage->updateTask(taskID, file_size, retry_times, create_time, current_speed, average_speed,
                                            eclapsed_time, abtained_length, left_length, split_count, block_activity,
                                            total_block_count, active_block_count, user_cat_id, comment, sys_cat_id,
-                                           save_path, file_name, abtained_percent, org_url, real_url, referer, 
+                                           save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, 
                                            redirect_times, finish_time,
                                            task_status, total_packet, abtained_packet, left_packet, total_timestamp,
                                            abtained_time_stamp, left_timestamp, file_length_abtained, dirty, aria_gid);
@@ -392,7 +393,7 @@ bool SqliteTaskModel::submit ()
 				this->mStorage->addTask(taskID, file_size, retry_times, create_time, current_speed,
                                         average_speed, eclapsed_time, abtained_length, left_length, 
                                         split_count, block_activity, total_block_count, active_block_count, user_cat_id,
-                                        comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, 
+                                        comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, 
                                         real_url, referer,
                                         redirect_times, finish_time, task_status, total_packet, abtained_packet,
                                         left_packet, total_timestamp, abtained_time_stamp, left_timestamp,
