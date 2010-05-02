@@ -61,8 +61,9 @@ SqliteStorage::SqliteStorage(QObject *parent)
 	segInsSql = "INSERT INTO segments (seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty) "
 		" VALUES ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18')";
 	//19
-	taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
-		"values ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', '%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '%32', '%33', '%34')";
+	//taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid)"
+    // "values ('%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', '%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '%32', '%33', '%34')";
+    taskInsSql = "INSERT INTO tasks (task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid) VALUES (__VALUES_PLEACE__)";
 
     // this is from AbstractStorage.cpp
     // Marks the string literal sourceText for dynamic translation in the current context (class),
@@ -469,15 +470,28 @@ bool SqliteStorage::addTask(int task_id ,
 							)
 {
     // TODO previous .arg(v)'s %n will eat later args
-	QString sql = this->taskInsSql
-               .arg(task_id).arg(file_size).arg(retry_times).arg(create_time).arg(current_speed)
-               .arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length)
-               .arg(split_count).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id)
-               .arg(comment).arg(sys_cat_id).arg(save_path).arg(file_name).arg(abtained_percent).arg(org_url)
-               .arg(real_url).arg(referer)
-               .arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet)
-               .arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp)
-               .arg(file_length_abtained).arg(dirty).arg("0") ;
+    QStringList values;
+    values << QString::number(task_id)<< file_size<< retry_times<< create_time<< current_speed
+           << average_speed<< eclapsed_time<< abtained_length<< left_length
+           << split_count<< block_activity<< total_block_count<< active_block_count<< user_cat_id
+           << comment<< sys_cat_id<< save_path<< file_name<< abtained_percent<< org_url
+           << real_url<< referer
+           << redirect_times<< finish_time<< task_status<< total_packet<< abtained_packet
+           << left_packet<< total_timestamp<< abtained_timestamp<< left_timestamp
+           << file_length_abtained<< dirty<< "0" ;
+    // qDebug()<<"values count:"<<values.count();
+    QString valueStr = values.join("','");
+    valueStr = "'" + valueStr + "'";
+	// QString sql = this->taskInsSql
+    //            .arg(task_id).arg(file_size).arg(retry_times).arg(create_time).arg(current_speed)
+    //            .arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length)
+    //            .arg(split_count).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id)
+    //            .arg(comment).arg(sys_cat_id).arg(save_path).arg(file_name).arg(abtained_percent).arg(org_url)
+    //            .arg(real_url).arg(referer)
+    //            .arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet)
+    //            .arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp)
+    //            .arg(file_length_abtained).arg(dirty).arg("0") ;
+    QString sql = this->taskInsSql.replace("__VALUES_PLEACE__", valueStr);
     this->mTasksDB.transaction();
 	QSqlQuery q (this->mTasksDB);
 	q.exec(sql );
@@ -496,9 +510,46 @@ bool SqliteStorage::updateTask(int task_id,
                                QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
 							   )
 {
-	QString sql = "UPDATE tasks SET file_size='%1',retry_times='%2',create_time='%3',current_speed='%4',average_speed='%5',eclapsed_time='%6',abtained_length='%7',left_length='%8', block_activity='%9',total_block_count='%10',active_block_count='%11',user_cat_id='%12',comment='%13', sys_cat_id='%14',file_name='%15',abtained_percent='%16',org_url='%17',real_url='%18', referer='%19', redirect_times='%20',finish_time='%21',task_status='%22',total_packet='%23',abtained_packet='%24',left_packet='%25',total_timestamp='%26',abtained_timestamp='%27',left_timestamp='%28',file_length_abtained='%29',dirty='%30', aria_gid='%31' WHERE task_id='%32' ";
+	// QString sql = "UPDATE tasks SET file_size='%1',retry_times='%2',create_time='%3',current_speed='%4',average_speed='%5',eclapsed_time='%6',abtained_length='%7',left_length='%8', block_activity='%9',total_block_count='%10',active_block_count='%11',user_cat_id='%12',comment='%13', sys_cat_id='%14',file_name='%15',abtained_percent='%16',org_url='%17',real_url='%18', referer='%19', redirect_times='%20',finish_time='%21',task_status='%22',total_packet='%23',abtained_packet='%24',left_packet='%25',total_timestamp='%26',abtained_timestamp='%27',left_timestamp='%28',file_length_abtained='%29',dirty='%30', aria_gid='%31' WHERE task_id='%32' ";
 
-	sql = sql.arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id).arg(comment).arg(sys_cat_id).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(referer).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg("false").arg(aria_gid).arg(task_id) ;
+    QString sql = "UPDATE tasks SET ";
+    sql += "file_size='" + file_size + "',";                                         
+    sql += "retry_times='" + retry_times + "',";
+    sql += "create_time='" + create_time + "',";
+    sql += "current_speed='" + current_speed + "',";
+    sql += "average_speed='" + average_speed + "',";
+    sql += "eclapsed_time='" + eclapsed_time + "',";
+    sql += "abtained_length='" + abtained_length + "',";
+    sql += "left_length='" + left_length + "',";
+    sql += "split_count='" + split_count + "',";
+    sql += "block_activity='" + block_activity + "',";
+    sql += "total_block_count='" + total_block_count + "',";
+    sql += "active_block_count='" + active_block_count + "',";
+    sql += "user_cat_id='" + user_cat_id + "',";
+    sql += "comment='" + comment + "',";
+    sql += "sys_cat_id='" + sys_cat_id + "',";
+    sql += "save_path='" + save_path + "',";
+    sql += "file_name='" + file_name + "',";
+    sql += "abtained_percent='" + abtained_percent + "',";
+    sql += "org_url='" + org_url + "',";
+    sql += "real_url='" + real_url + "',";
+    sql += "referer='" + referer + "',";
+    sql += "redirect_times='" + redirect_times + "',";
+    sql += "finish_time='"   + finish_time + "',";
+    sql += "task_status='" + task_status + "',";
+    sql += "total_packet='" + total_packet + "',";
+    sql += "abtained_packet='" + abtained_packet + "',";
+    sql += "left_packet='" + left_packet + "',";
+    sql += "total_timestamp='" + total_timestamp + "',";
+    sql += "abtained_timestamp='" + abtained_timestamp + "',";
+    sql += "left_timestamp='" + left_timestamp + "',";
+    sql += "file_length_abtained='" + file_length_abtained + "',";
+    sql += "dirty='false" + QString()+ "',";
+    sql += "aria_gid='" + aria_gid + "'";
+    sql += " WHERE task_id='" + QString::number(task_id) + "'";
+
+
+	// sql = sql.arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id).arg(comment).arg(sys_cat_id).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(referer).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg("false").arg(aria_gid).arg(task_id) ;
 
     this->mTasksDB.transaction();
 	QSqlQuery q(this->mTasksDB);
