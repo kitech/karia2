@@ -19,6 +19,7 @@
 
 class SeedFileModel;
 // class SeedFileItemDelegate;
+class TaskOption;
 
 class SeedFileItemDelegate : public QStyledItemDelegate
 {
@@ -42,6 +43,9 @@ public:
     void setFiles(QVariantList files, bool selectAll);
     void setTorrentInfo(QVariantMap statusInfo, QVariantMap torrentInfo);
     QString getSelectedFileIndexes();
+
+    // get option, catid, save path                               
+    TaskOption *getOption();
 
 private slots:
     void onAutoSelectFiles();

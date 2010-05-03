@@ -11,6 +11,7 @@
 #include "sqlitecategorymodel.h"
 #include "seedfilemodel.h"
 
+#include "taskinfodlg.h"  // TODO 
 #include "seedfilesdialog.h"
 
 
@@ -192,6 +193,75 @@ QString SeedFilesDialog::getSelectedFileIndexes()
     qDebug()<<"selectedList: "<< selectedList;
     return selectedList;
 }
+
+TaskOption *SeedFilesDialog::getOption()
+{
+	TaskOption *param = 0;
+
+	param = new TaskOption();
+	param->setDefaultValue();
+
+	//
+	//general
+	// param->mTaskUrl = uiwin.tid_g_le_url->text();
+	// param->mFindUrlByMirror = uiwin.tid_g_cb_seache_mirror->isChecked()?1:0;
+	// param->mReferer = uiwin.tid_g_le_referrer->text();
+    param->mCatId = this->mCatId;
+	param->mCategory = uiwin.comboBox->currentText();
+
+#ifdef WIN32
+	param->mSavePath = QDir(uiwin.comboBox_2->currentText()).absolutePath ();
+#else
+    param->mSavePath = uiwin.comboBox_2->currentText();
+
+    if (param->mSavePath.startsWith("~")) {
+        param->mSavePath = QDir::homePath() + uiwin.comboBox_2->currentText().right(param->mSavePath.length()-1);
+    }
+	qDebug()<<__FUNCTION__<<param->mSavePath<<QDir::isAbsolutePath(param->mSavePath);
+#endif
+	
+	param->mSaveName = uiwin.lineEdit->text();
+    Q_ASSERT(!param->mSaveName.isEmpty());
+	// if (param->mSaveName.isEmpty() ) {		
+	// 	param->mSaveName = QFileInfo(QUrl(param->mTaskUrl).path()).fileName();
+	// }
+
+	// param->mSplitCount = uiwin.tid_g_sb_split_file->value(); 
+	// param->mNeedLogin = uiwin.tid_g_le_cb_login_to_server->isChecked()?1:0;
+	// param->mLoginUserName = uiwin.tid_g_le_le_user_name->text();
+	// param->mLoginPassword = uiwin.tid_g_le_le_password->text() ;
+    // param->mCookies = uiwin.tid_g_le_te_comment->toPlainText();
+	// param->mComment = uiwin.tid_g_le_te_comment->toPlainText();
+    param->mStartState = TaskOption::START_IMMIDATE;
+	// if (uiwin.tid_g_le_rb_manual->isChecked())
+	// 	param->mStartState = 0	;	//0,1,2
+	// // else if ( uiwin.tid_g_le_rb_schedule->isChecked() )
+	// // 	param->mStartState = 2;
+	// else 
+	// 	param->mStartState = 1;
+
+	////////
+	// param->mAlterUrls.clear();
+	// int row = uiwin.tid_au_lw_alter_urls->count();
+	// for (int i = 0; i < row; ++i) {
+	// 	param->mAlterUrls.append(uiwin.tid_au_lw_alter_urls->item(i)->text());
+	// }
+	
+	//
+	// param->mAutoDownSubdirFromFtp = uiwin.tid_ad_cb_down_subdir_from_ftp->isChecked()?1:0;
+	// param->mAutoCreateSubdirLocally = uiwin.tid_ad_cb_create_subdir_locally->isChecked()?1:0; 
+	// param->mAutoCreateCategory  = uiwin.tid_ad_cb_create_category->isChecked() ? 1:0;
+	
+	// param->mProxyTypeHttp = uiwin.tid_ad_cb_proxy_type_http->currentIndex();
+	// param->mProxyTypeFtp = uiwin.tid_ad_cb_proxy_type_ftp->currentIndex();
+	// param->mProxyTypeMedia = uiwin.tid_ad_cb_proxy_type_media->currentIndex( );	
+
+    // param->dump();
+
+	return param;
+
+}
+
 
 void SeedFilesDialog::onAutoSelectFiles()
 {

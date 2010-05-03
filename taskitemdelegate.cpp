@@ -70,3 +70,13 @@ void TaskItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & 
     }
 }
 
+// If you reimplement this you must also reimplement paint().
+// QSize TaskItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index)
+// {
+//     QSize size;
+
+//     size.setHeight(50);
+    
+//     return size;
+// }
+

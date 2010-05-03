@@ -2178,9 +2178,14 @@ void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
     QString cmd = mPayload["cmd"].toString();
 
     this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::aria_gid, response.toString());
+    // for new bittorrent
     if (mPayload.contains("indexes")) {
         this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::select_file, mPayload["indexes"].toString());
         this->mTaskMan->updateSelectFile(taskId, mPayload.value("indexes").toString());
+
+        this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::save_path, mPayload.value("savePath").toString());
+        this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::file_name, mPayload.value("saveName").toString());
+        this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::user_cat_id, mPayload.value("userCatId").toString());
     }
 
     this->mRunningMap[taskId] = response.toString();
@@ -2193,16 +2198,18 @@ void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
 void NullGet::onAriaAddUriFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<reason;
+    Q_UNUSED(payload);
 }
 
 void NullGet::onAriaGetUriResponse(QVariant &response, QVariant &payload)
 {
-    
     qDebug()<<__FUNCTION__<<response;
+    Q_UNUSED(payload);
 }
 void NullGet::onAriaGetUriFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason;
+    Q_UNUSED(payload);
 }
 
 /*
@@ -2243,6 +2250,8 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
 void NullGet::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason;
+    
+    Q_UNUSED(payload);
 }
 
 void NullGet::onAriaUpdaterTimeout()
@@ -2442,8 +2451,15 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
     
     if (rv == QDialog::Accepted) {
         //remove the unused aria2 task
+        TaskOption *option = NULL;
+        option = fileDlg->getOption();
         mPayload["indexes"] = fileDlg->getSelectedFileIndexes();
         mPayload["removeConfirm"] = "no";
+        mPayload["savePath"] = option->mSavePath;
+        mPayload["saveName"] = option->mSaveName;
+        mPayload["userCatId"] = QString::number(option->mCatId);
+        delete option; option = NULL;
+
         QVariantList args;
         args << payload.toMap().value("ariaGid");
 
@@ -2518,6 +2534,7 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
     QString indexList = mPayload["indexes"].toString();
     QString url = mPayload["url"].toString();
     QString removeConfirm = mPayload["removeConfirm"].toString();
+    TaskOption toption = TaskOption::fromBase64Data(mPayload["taskOption"].toString());
 
     if (removeConfirm != "yes") {
         QTimer *timer = new QTimer(); timer->setSingleShot(true); timer->setInterval(500);
@@ -2544,6 +2561,7 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
 
     QMap<QString, QVariant> options;
     // options["split"] = QString("1");
+    options["dir"] = toption.mSavePath;
     options["select-file"] = indexList;
     args.insert(2, options);
     args.insert(3, QVariant(0));
@@ -2697,6 +2715,8 @@ void NullGet::showNewBittorrentFileDialog()
         options["bt-max-peers"] = QString("1");
         options["all-proxy"] = QString("127.0.0.1:65532"); // use a no usable proxy, let aria2 stop quick
         options["select-file"] = QString("1");
+        options["dir"] = QDir::tempPath();
+        options["file-allocation"] = "none";
         args.insert(2, options);
 
         this->mAriaRpc->call(QString("aria2.addTorrent"), args, QVariant(payload),
@@ -2790,12 +2810,10 @@ void NullGet::showBatchDownloadDialog()
 
 	delete bjd;
 
-	if (er == QDialog::Accepted)
-	{		
+	if (er == QDialog::Accepted) {		
 		qDebug()<<segcnt<<url;
 		taskinfodlg *tid = new taskinfodlg(this);
-		for (int i = 0; i < sl.count(); ++i)
-		{
+		for (int i = 0; i < sl.count(); ++i) {
 			tid->setTaskUrl(sl.at(i));
 			to = tid->getOption();
 			this->createTask(to );
@@ -2998,7 +3016,7 @@ void NullGet::onShowTaskProperty()
         // QString url = tq->mTaskUrl;
         // int segcnt = tq->mTotalSegmentCount;
         QString url;
-        int segcnt;
+        int segcnt = 5;
         QString fname;//= tq->mTaskOption->mSaveName;
 		
         taskinfodlg *tid = new taskinfodlg(0, this);
@@ -3492,6 +3510,7 @@ void NullGet::onLogListMenuPopup(const QPoint & pos )
 void NullGet::onSegListMenuPopup(const QPoint & pos) 
 {
 	// this->mSegmentPopupMenu->popup(QCursor::pos());
+    Q_UNUSED(pos);
 }
 void NullGet::onCateMenuPopup(const QPoint & pos)
 {
@@ -3521,7 +3540,7 @@ void NullGet::onCopySelectSegLog()
 	qDebug()<<__FUNCTION__;
 	
 	QModelIndex idx;
-	QTreeView *tv;
+	// QTreeView *tv;
 	QItemSelectionModel *sm;	
 	QString text;
 	QModelIndexList mil;
@@ -3555,8 +3574,8 @@ void NullGet::onCopySelectSegLog()
 void NullGet::onSaveSegLog()
 {
 	QModelIndex idx;
-	QTreeView *tv;
-	QItemSelectionModel *sm;	
+	// QTreeView *tv;
+	// QItemSelectionModel *sm;	
 	QString text;
 	QModelIndexList mil;
 	QAbstractItemModel * model = 0;
@@ -4285,6 +4304,8 @@ void NullGet::handleArguments(int argc, char **argv)
         GetOpt::GetOpt_pp args(rargc, rargv);
         args >> GetOpt::Option(GetOpt::GetOpt_pp::EMPTY_OPTION, noprefix_metafile);
     }
+#else
+    Q_UNUSED(targv);
 #endif
 
     std::string std_uri, std_refer, std_metafile, std_cookies, std_agent;

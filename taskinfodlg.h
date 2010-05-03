@@ -57,6 +57,10 @@ public:
     static TaskOption fromRawData(QByteArray ba);
     static TaskOption fromBase64Data(QString data);
 
+    // use in app level, full data 
+    QHash<QString, QString> toHash();
+    static TaskOption fromHash(QHash<QString, QString> oph);
+
 //private:
 
 	//general
