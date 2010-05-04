@@ -47,7 +47,7 @@
 
 #include "catmandlg.h"
 #include "catpropdlg.h"
-#include "viewmodel.h"
+// #include "viewmodel.h"
 #include "optiondlg.h"
 #include "preferencesdialog.h"
 

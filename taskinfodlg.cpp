@@ -20,7 +20,7 @@
 #include <QSize>
 
 #include "taskinfodlg.h"
-#include "viewmodel.h"
+// #include "viewmodel.h"
 #include "catmandlg.h"
 #include "sqlitestorage.h"
 #include "sqlitecategorymodel.h"
