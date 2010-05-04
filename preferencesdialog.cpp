@@ -539,18 +539,19 @@ void PreferencesDialog::onMonitorIE(bool checked)
     QString geturlFilePath = QCoreApplication::applicationDirPath() + "/browser/iegeturl.html";
     geturlFilePath = QDir::toNativeSeparators(geturlFilePath);
     if (checked) {
-        // winreg.setValue("Download by NullGet/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
-        winreg.setValue("Download by NullGet/.", geturlFilePath);
-        // winreg.setValue("Download by NullGet/contexts", 0x00000002); // is img
-        winreg.setValue("Download by NullGet/contexts", 0x00000022); // is link
+        // winreg.setValue("Download by Karia2/.", QString("Z:\\cross\\karia2-svn\\browser\\iegeturl.html"));
+        winreg.setValue("Download by Karia2/.", geturlFilePath);
+        // winreg.setValue("Download by Karia2/contexts", 0x00000002); // is img
+        winreg.setValue("Download by Karia2/contexts", 0x00000022); // is link
     } else {
-        winreg.remove("Download by NullGet/.");
-        winreg.remove("Download by NullGet/contexts");
+        winreg.remove("Download by Karia2/.");
+        winreg.remove("Download by Karia2/contexts");
     }
 
     winreg.sync();
 }
 
+// TODO if page is ftp:// page, no response.
 // http://www.crsky.com/soft/16475.html ok
 // modify opera's operaprefs.ini and menu/xxxmenu.ini
 void PreferencesDialog::onMonitorOpera(bool checked)
@@ -580,21 +581,21 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         qDebug()<<"Can not find opera personal directory.";
         return;
     }
-    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
-    // QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\karia2.exe%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 
 #elif defined(Q_OS_MAC)
     QString operaDir = "/Applications/Opera.app/Contents/Resources";
     QString operaPersonalDir = QDir::homePath() + "/Library/Preferences/Opera Preferences";
 
-    // QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+    // QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1karia2%1")
     // .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 
 #else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
-    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
-    // QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1nullget%1")
+    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/karia2%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\""));
+    // QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1karia2%1")
     // .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
     // QString execProgramValue = 
     
@@ -629,7 +630,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         menuInis = pcDir.entryList(nameFilters);
     }
     if (menuInis.count() > 0) {
-        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
+        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By karia2"));
         QByteArray line;
         QList<QByteArray> popMenus;
         qint64 overrideBegin = -1, overrideEnd = -1;
@@ -645,7 +646,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
                     popMenus << line;
                     while (!mfile.atEnd()) {
                         line = mfile.readLine();
-                        if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                        if (line.indexOf("karia2") != -1) {
                             continue;
                         } else if (line.startsWith("[")) {
                             overrideEnd = mfile.pos() - line.length();
@@ -781,7 +782,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
                 popMenus << line;
                 while (!mfile.atEnd()) {
                     line = mfile.readLine();
-                    if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                    if (line.indexOf("karia2") != -1) {
                         continue;
                     } else if (line.startsWith("[")) {
                         overrideEnd = mfile.pos() - line.length();
@@ -854,21 +855,21 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
         qDebug()<<"Can not find opera personal directory.";
         return;
     }
-    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\NullGet.exe%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
-    QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
+    // QString execProgramValue = QString("Execute program,%1Z:\\cross\\karia2-svn\\karia2.exe%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\""));
+    QString execProgramValue = QString("Execute program,%1%2%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 
 #elif defined(Q_OS_MAC)
     QString operaDir = "/Applications/Opera.app/Contents/Resources";
     QString operaPersonalDir = QDir::homePath() + "/Library/Preferences/Opera Preferences";
 
-    QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1nullget%1")
+    QString execProgramValue = QString("Execute program,%1xterm -e %2,%1--uri %l --refer %u%1,,%1karia2%1")
         .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 
 #else
     QString operaDir = "/usr/share/opera";
     QString operaPersonalDir = QDir::homePath() + "/.opera";
-    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/NullGet%1,%1--uri %l --refer %u%1,,%1nullget%1").arg(QString("\""));
-    QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1nullget%1")
+    // QString execProgramValue = QString("Execute program,%1xterm -e /home/gzleo/karia2-svn/karia2%1,%1--uri %l --refer %u%1,,%1karia2%1").arg(QString("\""));
+    QString execProgramValue = QString("Execute program,%1xterm -e %2%1, %1--uri %l --refer %u%1,,%1karia2%1")
         .arg(QString("\"")).arg(QCoreApplication::applicationFilePath());
 #endif
     QString operaPrefs = operaPersonalDir + "/operaprefs.ini";
@@ -896,7 +897,7 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
         menuInis = pcDir.entryList(nameFilters);
     }
     if (menuInis.count() > 0) {
-        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By NullGet"));
+        QString key = QString("Item, %1%2%1").arg("\"").arg(tr("Download By karia2"));
         QByteArray line;
         QList<QByteArray> popMenus;
         qint64 overrideBegin = -1, overrideEnd = -1;
@@ -912,7 +913,7 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
                     popMenus << line;
                     while (!mfile.atEnd()) {
                         line = mfile.readLine();
-                        if (line.indexOf("NullGet") != -1 || line.indexOf("Nullget") != -1) {
+                        if (line.indexOf("karia2") != -1) {
                             continue;
                         } else if (line.startsWith("[")) {
                             overrideEnd = mfile.pos() - line.length();
@@ -1041,15 +1042,15 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
             } else {
             }
             /*
-              user_pref("flashgot.custom", "NullGet3");
-              user_pref("flashgot.custom.NullGet3.args", "-e /home/gzleo/karia2-svn/NullGet --uri [URL] --refer [REFE
+              user_pref("flashgot.custom", "karia23");
+              user_pref("flashgot.custom.karia23.args", "-e /home/gzleo/karia2-svn/karia2 --uri [URL] --refer [REFE
               RER]");
-              user_pref("flashgot.custom.NullGet3.exe", "/usr/bin/xterm");
-              user_pref("flashgot.defaultDM", "NullGet3");
-              user_pref("flashgot.detect.cache", "浏览器创建于,Wget,NullGet3,DTA (Turbo),DTA,cURL,Aria 2");
+              user_pref("flashgot.custom.karia23.exe", "/usr/bin/xterm");
+              user_pref("flashgot.defaultDM", "karia23");
+              user_pref("flashgot.detect.cache", "浏览器创建于,Wget,karia23,DTA (Turbo),DTA,cURL,Aria 2");
               user_pref("flashgot.dmsopts.GetRight.quiet", false);
               user_pref("flashgot.dmsopts.JDownloader.path", "");
-              user_pref("flashgot.dmsopts.NullGet3.shownInContextMenu", true);
+              user_pref("flashgot.dmsopts.karia23.shownInContextMenu", true);
               user_pref("flashgot.extensions", "");
               user_pref("flashgot.hide-all", false);
               user_pref("flashgot.hide-buildGallery", false);
@@ -1061,24 +1062,24 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
               user_pref("flashgot.omitCookies", false);
              */
             file.resize(0);
-            file.write(QByteArray("user_pref(\"flashgot.custom\", \"NullGet\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.custom\", \"karia2\");\n"));
 #if defined(Q_OS_WIN)
-            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"")
+            file.write(QByteArray("user_pref(\"flashgot.custom.karia2.exe\", \"")
                        + QByteArray(QCoreApplication::applicationFilePath().toAscii())
                        + QByteArray("\");\n"));
-            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \" --uri [URL] --refer [REFERER]\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.custom.karia2.args\", \" --uri [URL] --refer [REFERER]\");\n"));
 #else
-            // file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"/usr/bin/xterm\");\n"));
-            // file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \"-e /home/gzleo/karia2-svn/NullGet --uri [URL] --refer [REFERER]\");\n"));
+            // file.write(QByteArray("user_pref(\"flashgot.custom.karia2.exe\", \"/usr/bin/xterm\");\n"));
+            // file.write(QByteArray("user_pref(\"flashgot.custom.karia2.args\", \"-e /home/gzleo/karia2-svn/karia2 --uri [URL] --refer [REFERER]\");\n"));
 
-            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.exe\", \"/usr/bin/xterm\");\n"));
-            file.write(QByteArray("user_pref(\"flashgot.custom.NullGet.args\", \"-e ")
+            file.write(QByteArray("user_pref(\"flashgot.custom.karia2.exe\", \"/usr/bin/xterm\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.custom.karia2.args\", \"-e ")
                        + QByteArray(QCoreApplication::applicationFilePath().toAscii())
                        + QByteArray(" --uri [URL] --refer [REFERER]\");\n"));
 #endif
 
-            file.write(QByteArray("user_pref(\"flashgot.defaultDM\", \"NullGet\");\n"));
-            file.write(QByteArray("user_pref(\"flashgot.dmsopts.NullGet.shownInContextMenu\", true);\n"));
+            file.write(QByteArray("user_pref(\"flashgot.defaultDM\", \"karia2\");\n"));
+            file.write(QByteArray("user_pref(\"flashgot.dmsopts.karia2.shownInContextMenu\", true);\n"));
             file.close();
         }
     }

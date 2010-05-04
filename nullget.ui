@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>NullGet Main WIndow</string>
+   <string>Karia2 Download Manager</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -539,20 +539,6 @@
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="menu_Help">
-    <property name="title">
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="action_Manual_NullGet"/>
-    <addaction name="separator"/>
-    <addaction name="actionC_heck_for_a_new_version"/>
-    <addaction name="action_About_NullGet"/>
-    <addaction name="action_Go_to_NullGet_Home_Page"/>
-    <addaction name="actionFAQ_in_Internet"/>
-    <addaction name="action_User_Manual_in_Internet"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout_Qt"/>
-   </widget>
    <widget class="QMenu" name="menu_Jobs">
     <property name="title">
      <string>&amp;Jobs</string>
@@ -588,6 +574,20 @@
     <addaction name="separator"/>
     <addaction name="actionOpen_Exec_download_file"/>
     <addaction name="actionOpen_de_stination_directory"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_Manual_NullGet"/>
+    <addaction name="separator"/>
+    <addaction name="actionC_heck_for_a_new_version"/>
+    <addaction name="action_About_NullGet"/>
+    <addaction name="action_Go_to_NullGet_Home_Page"/>
+    <addaction name="actionFAQ_in_Internet"/>
+    <addaction name="action_User_Manual_in_Internet"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Category"/>
@@ -1030,10 +1030,10 @@
      <normaloff>:/Resources/karia2.png</normaloff>:/Resources/karia2.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;About NullGet</string>
+    <string>&amp;About Karia2</string>
    </property>
    <property name="statusTip">
-    <string>About NullGet</string>
+    <string>About Karia2</string>
    </property>
   </action>
   <action name="action_Go_to_NullGet_Home_Page">

@@ -18,6 +18,5 @@
     <file>icons/system-run.png</file>
     <file>icons/system-shutdown.png</file>
     <file>Resources/nullget-1.png</file>
-    <file>Resources/icon_32x32.png</file>
   </qresource>
 </RCC>

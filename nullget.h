@@ -28,11 +28,10 @@
 #include <QPalette>
 
 #include "ui_nullget.h"
-#include "aboutdialog.h"
 #include "taskinfodlg.h"	// class TaskParameter 
 
 #include "sqlitestorage.h"
-#include "viewmodel.h"
+// #include "viewmodel.h"
 
 //
 
@@ -41,7 +40,6 @@
 class DropZone;
 class TaskQueue;
 class InstantSpeedHistogramWnd;
-// class MusicSearchWnd ;	//搜索窗口类。
 class WalkSiteWndEx ;	//网站遍历窗口类。
 class AriaMan;
 class MaiaXmlRpcClient;
@@ -63,14 +61,14 @@ public slots:
 	
 	int createTask(TaskOption * option);
     int createTask(int taskId, TaskOption *option);
-	int createTaskSegment(int pTaskId , QString purl , long fromPostion , long yourLength );
+	// int createTaskSegment(int pTaskId , QString purl , long fromPostion , long yourLength );
 
 	void onSegmentListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
 	void onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
 	void onCatListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
 	void onAllocateDiskFileSpace(quint64 fileLength , QString fileName );
 	
-	void onAddTaskList(QStringList list);	//下载一个列表中所有的URL任务
+	void onAddTaskList(QStringList list);	// add a list of tasks
 
 //public:
 
@@ -99,16 +97,9 @@ public slots:
 	void onPauseTask(int pTaskId ) ;
 
 	void onPauseTaskAll() ;
-	void onStartSegment(int pTaskId,int pSegId);
-	void onPauseSegment(int pTaskId,int pSegId);
-	void onStartSegment();
-	void onPauseSegment();
 
 	void onDeleteTask();
-	// void onDeleteTask(int pTaskId);
 	void onDeleteTaskAll();
-	void onDeleteSegment();
-	void onDeleteSegment(int pTaskId,int pSegId);
 
 	void onTaskDone(int pTaskId);	//
 
@@ -132,7 +123,6 @@ public slots:
 
 private:
     Ui::NullGet mainUI; 
-	AboutDialog *mpAboutDialog;
 	QTreeView * mTaskListView ;
 	QTreeView * mSegListView;
 	QTreeView * mSegLogListView;
@@ -145,10 +135,7 @@ private:
     TaskItemDelegate *mTaskItemDelegate;
     SeedFileItemDelegate *mSeedFileDelegate;
 
-	//swap buff
-	char mSwapBuff[1024];
-
-	ConfigDatabase * mConfigDatabase;
+	// ConfigDatabase * mConfigDatabase;
 	SqliteStorage * mStorage ;
 
 	///pop menu

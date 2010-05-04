@@ -34,6 +34,7 @@
 #include <QDialogButtonBox>
 
 #include "nullget.h"
+#include "aboutdialog.h"
 #include "dropzone.h"
 #include "taskinfodlg.h"
 
@@ -157,7 +158,7 @@ void NullGet::firstShowHandler()
 
 	///////	
 	//初始化配置数据库类实例
-	this->mConfigDatabase = ConfigDatabase::instance(this);
+	// this->mConfigDatabase = ConfigDatabase::instance(this);
 	// this->mStorage = new SqliteStorage(this);
     this->mStorage = SqliteStorage::instance(this);
 	this->mStorage->open();
@@ -560,7 +561,7 @@ void NullGet::initSystemTray()
 {
 	//init system tray icon
 	this->mSysTrayIcon = new QSystemTrayIcon(this);
-	this->mSysTrayIcon->setToolTip(tr("NullGet Icon Tray Control"));
+	this->mSysTrayIcon->setToolTip(tr("karia2 Icon Tray Control"));
 	//this->mSysTrayIcon->setContextMenu(this->mSysTrayMenu);
 	this->mSysTrayIcon->setContextMenu(this->mDropZonePopupMenu);
 
@@ -690,12 +691,6 @@ void NullGet::connectAllSignalAndSlog()
 	QObject::connect(this->mDropZone, SIGNAL(customContextMenuRequested(const QPoint &)),
 		this, SLOT(onDropZoneCustomMenu(const QPoint &)));
 	
-
-	//seg view menu
-	QObject::connect(this->mainUI.action_Seg_List_Start, SIGNAL(triggered()), this, SLOT(onStartSegment()));
-	QObject::connect(this->mainUI.action_Seg_List_Stop, SIGNAL(triggered()), this, SLOT(onPauseSegment()));
-	//QObject::connect(this->mainUI.action_Seg_List_Restart, SIGNAL(triggered()), this, SLOT(onRestartSegment()));
-
 	//seg log menu
 	QObject::connect(this->mainUI.action_Seg_Log_Copy, SIGNAL(triggered()), this, SLOT(onCopySelectSegLog()));
 	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File, SIGNAL(triggered()), this, SLOT(onSaveSegLog()));
@@ -879,13 +874,6 @@ int NullGet::createTask(int taskId, TaskOption *option)
     return taskId;
 }
 
-int NullGet::createTaskSegment(int pTaskId ,QString purl , long fromPostion , long yourLength )
-{
-	
-	return -1;
-}
-
-
 void NullGet::onAddTaskList(QStringList list)
 {
 	////建立任务
@@ -946,9 +934,9 @@ void NullGet::testFunc2()
 
 	return;
 
-	QStandardItemModel *model = 	mConfigDatabase->createCatModel();	
-	this->mCatView->setModel( model );
-	this->mCatView->expand(model->index(0,0));
+	// QStandardItemModel *model = 	mConfigDatabase->createCatModel();	
+	// this->mCatView->setModel( model );
+	// this->mCatView->expand(model->index(0,0));
 
 	return;
 
@@ -1201,31 +1189,6 @@ void NullGet::onStartTask()
     delete taskOptions; taskOptions = NULL;
 }
 
-// void NullGet::onStartTask(int pTaskId)
-// {
-// 	qDebug()<<__FUNCTION__<<__LINE__;
-
-// 	//假设任务的运行句柄即TaskQueue实例不存在
-// 	if (this->mTaskMan->containsInstance(pTaskId)) {
-// 		// TaskQueue::onStartTask(pTaskId);
-// 	} else {
-// 		// TaskQueue * hTask = TaskQueue::instance(pTaskId,0);
-// 		// QObject::connect(hTask , SIGNAL( onTaskDone(int  ) ), 
-// 		// 	this, SLOT(onTaskDone(int ) ) );
-// 		// QObject::connect(hTask, SIGNAL(taskCompletionChanged(int  , int  , QString ) ) ,
-// 		// 	this->mDropZone,SLOT(onRunTaskCompleteState(int  , int  , QString  ) ) );
-// 		// QObject::connect(hTask , SIGNAL(taskCompletionChanged(TaskQueue *  , bool   ) ) ,
-// 		// 	TaskBallMapWidget::instance(),SLOT(onRunTaskCompleteState(TaskQueue *  , bool  ) ) );
-
-// 		// TaskBallMapWidget::instance()->onRunTaskCompleteState(hTask , true );
-
-// 		// TaskQueue::onStartTask(pTaskId );
-// 		// QObject::connect(hTask, SIGNAL(destroyed(QObject*)), this, SLOT(onObjectDestroyed(QObject*)) );
-// 	}
-
-// 	return;
-// }
-
 void NullGet::onStartTaskAll()
 {
 	qDebug()<<__FUNCTION__;
@@ -1307,116 +1270,6 @@ void NullGet::onPauseTaskAll()
 		}
 	}
 
-}
-
-void NullGet::onStartSegment(int pTaskId,int pSegId)
-{
-	qDebug()<<__FUNCTION__<<pTaskId<<pSegId;
-	int row =0;
-	// BaseRetriver *br = 0;
-	QAbstractItemModel * mdl = 0;
-
-	mdl = SegmentLogModel::instance(pTaskId , pSegId , this );
-
-	// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// if (br != 0 )
-	// {
-	// 	br->bePauseing = false;
-	// 	row = mdl->rowCount();
-	// 	if (row > 0 ) mdl->removeRows(0,row);
-
-	// 	br->start();
-	// }
-}
-
-/**
- * 触发：用户选择了一个视图中的线程模型，然后点击菜单上启动项
- */
-
-void NullGet::onStartSegment()
-{
-	qDebug()<<__FUNCTION__;
-	int pTaskId = -1;
-	int pSegId = -1;
-	// BaseRetriver *br = 0;
-	int row =0;
-	QAbstractItemModel * mdl = 0;
-
-	//if (! this->findRetriverBySelectedModel(&pTaskId,&pSegId)) return;
-	int crow;
-	QItemSelectionModel *sm = this->mSegListView->selectionModel();
-	if (sm == 0 )
-	{
-		qDebug()<<" no segment model selected";
-		return;
-	}
-	QModelIndex mi = sm->currentIndex();
-	qDebug()<<mi;
-	if (mi.isValid()) 
-	{
-		crow = mi.row();
-		if (pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,(int)ng::segs::task_id).data().toInt();
-		if (pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,(int)ng::segs::seg_id).data().toInt();
-		qDebug()<<pTaskId<<pSegId;
-
-		//br = this->findRetriverById(pTaskId,pSegId);
-		// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-		// if (br != 0 && br->bePauseing == true )
-		// {
-		// 	br->bePauseing = false;
-		// 	//row = br->mLogModel.rowCount();
-		// 	//if (row > 0 ) br->mLogModel.removeRows(0,row);
-		// 	row = mdl->rowCount();
-		// 	if (row > 0 ) mdl->removeRows(0,row);
-		// 	br->start();
-		// }		
-	}
-}
-
-void NullGet::onPauseSegment(int pTaskId,int pSegId)
-{
-	qDebug()<<__FUNCTION__;
-
-	// BaseRetriver *br = 0;
-
-	// br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// if (br != 0 )
-	// {
-	// 	br->bePauseing = true;
-	// 	br->terminate();
-	// }
-}
-
-void NullGet::onPauseSegment()
-{
-	qDebug()<<__FUNCTION__;
-	int pTaskId = -1;
-	int pSegId = -1;
-	// BaseRetriver *br = 0;
-		
-	int crow;
-	QItemSelectionModel *sm = this->mSegListView->selectionModel();
-	if (sm == 0 )
-	{
-		qDebug()<<" no segment model selected";
-		return;
-	}
-	QModelIndex mi = sm->currentIndex();
-	qDebug()<<mi;
-	// if (mi.isValid()) 
-	// {
-	// 	crow = mi.row();
-	// 	if (pTaskId != 0 ) pTaskId = this->mSegListView->model()->index(crow,ng::segs::task_id).data().toInt();
-	// 	if (pSegId != 0 ) pSegId = this->mSegListView->model()->index(crow,ng::segs::seg_id).data().toInt();
-	// 	qDebug()<<pTaskId<<pSegId;
-
-	// 	br = TaskQueue::findRetriverById(pTaskId,pSegId);
-	// 	if (br != 0 && br->bePauseing == false )
-	// 	{
-	// 		br->bePauseing = true;	
-	// 		br->terminate();
-	// 	}	
-	// }	
 }
 
 /////delete option
@@ -1506,147 +1359,6 @@ void NullGet::onDeleteTask()
     QApplication::restoreOverrideCursor();
 }
 
-// void NullGet::onDeleteTask(int pTaskId)
-// {
-// 	qDebug()<<__FUNCTION__;
-
-// 	TaskQueue * tq = this->mTaskMan;
-// 	QAbstractItemModel * from_model = 0 , * to_model = 0;
-// 	QModelIndex index; 
-// 	int row = -1 , colcnt = -1;
-
-// 	from_model = this->mTaskListView->model();
-// 	to_model = SqliteTaskModel::instance(ng::cats::deleted, this);
-
-// 	colcnt = from_model->rowCount();
-
-// 	if (tq != 0 )
-// 	{
-// 		// if (tq->mGotLength < tq->mTotalLength )
-// 		// {
-// 		// 	int ret = QMessageBox::question(this,tr("Delete task..."),tr("Deleting an unfinished task,are you sure ?") ,QMessageBox::Ok,QMessageBox::Cancel);
-// 		// 	if (ret == QMessageBox::Cancel) return;
-// 		// }
-// 		for (int i = 0; i < from_model->rowCount();  ++ i)
-// 		{
-// 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
-// 			{
-// 				row = i;
-// 				break;
-// 			}
-// 		}
-// 		if (row >= 0 )	//找到这个任务的数据模型了。
-// 		{
-
-// 			//在system tray 显示移动任务消息
-// 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
-			
-// 			tq->onTaskListCellNeedChange(pTaskId , ng::tasks::task_status , 
-//                                           tq->getStatusString(TaskQueue::TS_COMPLETE));
-
-// 			// //将线程数据移动出来。
-// 			// for (int j = 0; j < tq->mSegmentThread.size(); ++j)
-// 			// {
-// 			// 	tq->mSegmentThread[j]->bePauseing = true;
-// 			// 	tq->mSegmentThread[j]->terminate();
-// 			// 	//assert(tq->mSegmentThread[j]->isRunning() == false  );
-// 			// }
-// 			//清除线程窗口列表
-// 			this->mSegLogListView->setModel(0);
-// 			this->mSegListView->setModel(0);
-// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1, this));
-// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1, this) );
-
-// 			//int idx = this->mTaskQueue.indexOf(tq);
-
-// 			int torows = to_model->rowCount();
-// 			to_model->insertRows(torows,1);
-			
-// 			for (int j = 0; j < colcnt; j ++)
-// 			{
-// 				index = to_model->index(torows,j);
-// 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
-// 			}
-// 			from_model->removeRows(row,1);
-// 			from_model->submit();
-
-// 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
-// 			to_model->submit();
-
-// 			// tq->mTaskStatus = TaskQueue::TS_COMPLETE;
-// 			// tq->mCurrSpeed = 0.0;	//画工具栏上的速度指示图使用该值。
-
-// 			qDebug()<<__FUNCTION__<<" delete task done :"<<tq;
-
-// 		}
-// 		else
-// 		{
-// 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-// 			assert (1== 2 );
-// 		}
-// 	}	//end if (tq != 0 )
-// 	else if (from_model == SqliteTaskModel::instance(ng::cats::deleted, this) )
-// 	{
-// 		qDebug()<<"cant delete from deletion model";
-// 	}
-// 	else
-// 	{		
-// 		//可能是上次没下载完成或者出错的任务，所有还没有任务执行对象
-// 		//只需要处理一下模型中数的数据就可以了。
-// 		for (int i = 0; i < from_model->rowCount();   i ++ )
-// 		{
-// 			if (from_model->data(from_model->index(i,0)).toInt()  == pTaskId )
-// 			{				
-// 				row = i;
-// 				break;
-// 			}
-// 		}
-// 		//qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId << " at row:"<<row;
-		
-// 		if (row >= 0 )	//找到这个任务的数据模型了。
-// 		{
-// 			//在system tray 显示移动任务消息
-// 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),QString(tr("Move It To Deleted Table Now. TaskId: %1")).arg(pTaskId),QSystemTrayIcon::Information,5000);
-
-// 			//清除线程窗口列表
-// 			this->mSegLogListView->setModel(0);
-// 			this->mSegListView->setModel(0);
-// 			this->mSegLogListView->setModel(SegmentLogModel::instance(-1,-1, this));
-			
-// 			this->mSegListView->setModel(SqliteSegmentModel::instance(-1, this) );
-			
-// 			int torows = to_model->rowCount();
-// 			to_model->insertRows(torows,1);
-
-// 			for (int j = 0; j < colcnt; j ++)
-// 			{
-// 				index = to_model->index(torows,j);
-// 				to_model->setData(index,from_model->data(from_model->index(row,j)) );
-// 			}
-
-// 			from_model->removeRows(row,1);
-// 			from_model->submit();
-
-// 			to_model->setData(to_model->index(torows,ng::tasks::cat_id),(int)ng::cats::deleted );
-// 			to_model->submit();
-
-// 			//this->mTaskQueue.remove(idx);
-// 			//this->mDoneTaskQueue.append(tq);
-// 			//tq->mTaskStatus = TaskQueue::TS_DONE;
-// 			//tq->mCurrSpeed = 0.0;	//画工具栏上的速度指示图使用该值。
-
-// 			qDebug()<<__FUNCTION__<<__LINE__<<" delete task done :"<<pTaskId;
-// 		}
-// 		else
-// 		{
-// 			//竟然没有在模型数据中找到，靠，这个是不应该出现的情况。
-// 			assert (1== 2 );
-// 		}
-// 	}
-
-
-// }
-
 void NullGet::onDeleteTaskAll()
 {
 	qDebug()<<__FUNCTION__;
@@ -1661,14 +1373,6 @@ void NullGet::onDeleteTaskAll()
 		int taskId = model->data(index).toInt();
 		// this->onDeleteTask(taskId);
 	}
-}
-void NullGet::onDeleteSegment()
-{
-
-}
-void NullGet::onDeleteSegment(int pTaskId,int pSegId)
-{
-
 }
 
 QModelIndex findCatModelIndexByCatId(QAbstractItemModel *mdl, QModelIndex parent, int catId)
@@ -3757,13 +3461,11 @@ void NullGet::onManualSpeedChanged(int value)
 
 void NullGet::showAboutDialog()
 {
-	this->mpAboutDialog = new AboutDialog(this);
-
-	this->mpAboutDialog->exec();
-
-	delete this->mpAboutDialog;
-
+	AboutDialog *pAboutDialog = new AboutDialog(this);
+	pAboutDialog->exec();
+	delete pAboutDialog;
 }
+
 void NullGet::onGotoHomePage()
 {
 	QString homepage = "http://www.qtchina.net/";

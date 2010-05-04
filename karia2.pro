@@ -117,7 +117,7 @@ HEADERS += aboutdialog.h \
            taskinfodlg.h \
            taskqueue.h \
            utility.h \
-           viewmodel.h \
+#           viewmodel.h \
            walksitewnd.h \
            walksitewndex.h \
            webpagelinkdlg.h \
@@ -171,7 +171,7 @@ SOURCES += aboutdialog.cpp \
            taskinfodlg.cpp \
            taskqueue.cpp \
            utility.cpp \
-           viewmodel.cpp \
+#           viewmodel.cpp \
            walksitewnd.cpp \
            walksitewndex.cpp \
            webpagelinkdlg.cpp \

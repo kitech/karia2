@@ -5,15 +5,11 @@
 /INSTALL -text
 /LICENSE -text
 /NullGet.ico -text
-/NullGet.pro -text
 /NullGet.qrc -text
 /NullGet.rc -text
 /NullGet_resource.rc -text
 /README -text
 Resources/favicon.ico -text
-Resources/icon_16x16.png -text
-Resources/icon_22x22.png -text
-Resources/icon_32x32.png -text
 Resources/karia2.png -text
 Resources/nullget-1.png -text
 /aboutdialog.cpp -text
@@ -83,7 +79,6 @@ icons/folder-tar.png -text
 icons/folder-video.png -text
 icons/folder.png -text
 icons/go-down-search.png -text
-icons/jc.PNG -text
 icons/list-add.png -text
 icons/list-remove.png -text
 icons/media-playback-pause.png -text
@@ -107,6 +102,7 @@ images/woodbackground.png -text
 images/woodbutton.png -text
 /instantspeedhistogramwnd.cpp -text
 /instantspeedhistogramwnd.h -text
+/karia2.pro -text
 /labspace.cpp -text
 /labspace.h -text
 /labspace.ui -text
@@ -232,8 +228,6 @@ translations/qt_zh_CN.qm -text
 translations/qt_zh_TW.qm -text
 /utility.cpp -text
 /utility.h -text
-/viewmodel.cpp -text
-/viewmodel.h -text
 /walksitewnd.cpp -text
 /walksitewnd.h -text
 /walksitewnd.ui -text

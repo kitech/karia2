@@ -19,9 +19,6 @@ public:
     AboutDialog(QWidget *parent = 0);
     ~AboutDialog();
 
-private slots:
-	void changeWindowSize();
-
 private:
     Ui::AboutDialog ui;
 };

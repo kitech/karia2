@@ -17,7 +17,6 @@ AboutDialog::AboutDialog(QWidget *parent)
 	ui.setupUi(this);
 
 	//
-	QObject::connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(changeWindowSize()));
     this->ui.label_5->setText(QString(KARIA2_VERSION));
 }
 
@@ -25,13 +24,3 @@ AboutDialog::~AboutDialog()
 {
 }
 
-void AboutDialog::changeWindowSize()
-{
-	if (ui.pushButton->isChecked()) {
-		this->showFullScreen();
-		ui.pushButton->setText(tr("&Normal"));
-	} else {
-		this->showNormal();
-		ui.pushButton->setText(tr("&FullScreen"));
-	}
-}

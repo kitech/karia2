@@ -11,7 +11,7 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include "viewmodel.h"
+// #include "viewmodel.h"
 #include "catmandlg.h"
 
 #include "sqlitestorage.h"
