@@ -100,13 +100,6 @@ images/woodbackground.png -text
 images/woodbutton.png -text
 /instantspeedhistogramwnd.cpp -text
 /instantspeedhistogramwnd.h -text
-karia2-svn/README -text
-karia2-svn/karia2-svn.kdev4 -text
-karia2-svn/karia2-svn.pro -text
-karia2-svn/qmake4gui.png -text
-karia2-svn/src/main.cpp -text
-karia2-svn/src/mainwindow.ui -text
-karia2-svn/src/src.pro -text
 /karia2.pro -text
 /labspace.cpp -text
 /labspace.h -text
