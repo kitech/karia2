@@ -1,0 +1,4 @@
+[Project]
+Manager=KDevCustomMakeManager
+Name=karia2-svn
+VersionControl=kdevsubversion
