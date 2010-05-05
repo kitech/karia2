@@ -100,7 +100,7 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            nullget.h \
            nullgetapplication.h \
-           optiondlg.h \
+#           optiondlg.h \
            radarscanner.h \
            resource.h \
            rulesmandlg.h \
@@ -156,7 +156,7 @@ SOURCES += aboutdialog.cpp \
            nullcontroller.cpp \
            nullget.cpp \
            nullgetapplication.cpp \
-           optiondlg.cpp \
+#          optiondlg.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \
@@ -204,7 +204,7 @@ FORMS += aboutdialog.ui \
          columnsmandlg.ui \
          dlrules.ui \
          nullget.ui \
-         optiondlg.ui \
+#         optiondlg.ui \
          rulesmandlg.ui \
          skypeclientwnd.ui \
          taskinfodisgestwnd.ui \

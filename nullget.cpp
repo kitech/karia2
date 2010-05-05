@@ -21,10 +21,11 @@
 #include "sqlitesegmentmodel.h"
 #include "segmentlogmodel.h"
 #include "taskitemdelegate.h"
+#include "optionmanager.h"
 
 #include "catmandlg.h"
 #include "catpropdlg.h"
-#include "optiondlg.h"
+// #include "optiondlg.h"
 #include "preferencesdialog.h"
 
 #include "batchjobmandlg.h"
@@ -54,7 +55,6 @@
 
 #include "ariaman.h"
 #include "maiaXmlRpcClient.h"
-
 
 extern QHash<QString, QString> gMimeHash;
 
@@ -207,12 +207,14 @@ void NullGet::firstShowHandler()
     QObject::connect(&this->mAriaGlobalUpdater, SIGNAL(timeout()),
                      this, SLOT(onAriaGlobalUpdaterTimeout()));
     this->mAriaGlobalUpdater.start();
-    QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString, QString, QString)),
-                     this->mTaskMan, SLOT(onTaskLogArrived(QString, QString, QString)));
+    // QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString, QString, QString)),
+    //                  this->mTaskMan, SLOT(onTaskLogArrived(QString, QString, QString)));
     QObject::connect(this->mAriaMan, SIGNAL(error(QProcess::ProcessError)),
                      this, SLOT(onAriaProcError(QProcess::ProcessError)));
     QObject::connect(this->mAriaMan, SIGNAL(finished(int, QProcess::ExitStatus)),
                      this, SLOT(onAriaProcFinished(int, QProcess::ExitStatus)));
+    QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString)),
+                     this, SLOT(onTaskLogArrived(QString)));
 
 	///////
 	this->hideUnimplementUiElement();
@@ -631,7 +633,7 @@ void NullGet::connectAllSignalAndSlog()
 	
 	//tools 
 	QObject::connect(this->mainUI.action_Options, SIGNAL(triggered()), this, SLOT(onShowOptions()));
-	QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()), this, SLOT(onShowConnectOption()));
+	// QObject::connect(this->mainUI.action_Connect_Disconnect, SIGNAL(triggered()), this, SLOT(onShowConnectOption()));
 	
 	// QObject::connect(this->mainUI.actionDefault_Download_Properties , SIGNAL(triggered()), this, SLOT(onShowDefaultDownloadProperty()));
 
@@ -1774,9 +1776,6 @@ QString decodeEncodeUrl(QString enUrl)
 /////////////
 /**
  *
- * 创建下载任务输入对话框，接受用户输入，并获取下载信息进行任务的下载。
- * 
- * @bugs: 在主窗口隐藏的时候如果调用该方法，能够弹出输入对话框，但无论是接受还是取消对话框，都会让主程序退出。
  */
 void NullGet::showNewDownloadDialog()
 {
@@ -1983,6 +1982,10 @@ void NullGet::onAriaGlobalUpdaterTimeout()
     QVariantList args;
     QVariant payload;
 
+    if (this->mRunningMap.count() == 0) {
+        // qDebug()<<"No Running task in queue, don't need run global update";
+        return;
+    }
     this->initXmlRpc();
     this->mAriaRpc->call(QString("aria2.tellActive"), args, payload,
                          this, SLOT(onAriaGetActiveResponse(QVariant&, QVariant&)),
@@ -2636,26 +2639,22 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 
 void NullGet::onShowOptions()
 {
-	//OptionDlg *dlg = new OptionDlg(this);
-
-	//dlg->exec();
-
-	//delete dlg;
-	QDialog * dlg = new PreferencesDialog(this);
+	QDialog *dlg = new PreferencesDialog(this);
 
 	dlg->exec();
 
 	delete dlg;
 
 }
-void NullGet::onShowConnectOption()
-{
-	OptionDlg *dlg = new OptionDlg(this);
 
-	dlg->exec();
+// void NullGet::onShowConnectOption()
+// {
+// 	OptionDlg *dlg = new OptionDlg(this);
 
-	delete dlg;
-}
+// 	dlg->exec();
+
+// 	delete dlg;
+// }
 
 // void NullGet::onShowDefaultDownloadProperty()
 // {
@@ -3393,18 +3392,18 @@ void NullGet::onSwitchSpeedMode(QAction *action)
 		this->mSpeedBarSlider->hide();
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->hide();
-		GlobalOption::instance()->mIsLimitSpeed = 0;
+		// GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0);  // set no limit
 	} else if (action == mainUI.action_Manual) {
 		this->mSpeedBarSlider->show();
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->show();
-		GlobalOption::instance()->mIsLimitSpeed = 1;
+		// GlobalOption::instance()->mIsLimitSpeed = 1;
 	} else if (action == mainUI.action_Automatic ) {
 		this->mSpeedBarSlider->hide();
 		this->mSpeedProgressBar->show();
 		this->mSpeedManualLabel->show();
-		GlobalOption::instance()->mIsLimitSpeed = 0;
+		// GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0); // no limit now 
 	}
 }
@@ -3415,7 +3414,7 @@ void NullGet::onManualSpeedChanged(int value)
 	//qDebug()<<__FUNCTION__;
 	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
 	//this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(value*this->mTaskQueue.size()));
-	GlobalOption::instance()->mMaxLimitSpeed = value * 1024;	//the value is KB in unit
+	// GlobalOption::instance()->mMaxLimitSpeed = value * 1024;	//the value is KB in unit
 
     QVariant payload;
     QVariantList args;
@@ -3897,6 +3896,13 @@ void NullGet::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
     Q_UNUSED(exitStatus);
 }
 
+void NullGet::onTaskLogArrived(QString log)
+{
+    if (log.length() <= 2) {
+        return;
+    }
+    this->mainUI.plainTextEdit->appendPlainText(log.trimmed());
+}
 
 void NullGet::handleArguments()
 {

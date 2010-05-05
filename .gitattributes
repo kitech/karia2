@@ -154,9 +154,6 @@ libng/qtmd5.h -text
 /nullget.ui -text
 /nullgetapplication.cpp -text
 /nullgetapplication.h -text
-/optiondlg.cpp -text
-/optiondlg.h -text
-/optiondlg.ui -text
 /optionmanager.cpp -text
 /optionmanager.h -text
 /pmwmk.bat -text

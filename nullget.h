@@ -45,6 +45,7 @@ class AriaMan;
 class MaiaXmlRpcClient;
 class SeedFileItemDelegate;
 class TaskItemDelegate;
+class OptionManager;
 
 class NullGet : public QMainWindow
 {
@@ -168,7 +169,6 @@ private:
 	//walksite window
 	QMainWindow * mWalkSiteWnd ;
 
-
 	//global vars for dynamic language switch
 	QTranslator appTranslator ;
 	QTranslator qtTranslator ;
@@ -176,7 +176,9 @@ private:
 	QString qmLocale ;
 	//
 	QPalette orginalPalette;
-    QStyle *mNorStyle;
+    QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
+    
+    OptionManager *mOptionMan;
 
     TaskQueue *mTaskMan;
     AriaMan  *mAriaMan;
@@ -203,7 +205,7 @@ public slots:
     void showNewMetalinkFileDialog();
 	void showBatchDownloadDialog();	//添加批量下载对话框
 	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
-	void onShowConnectOption();
+	// void onShowConnectOption();
 	//void onShowDownloadRules();
 	// void onShowDefaultDownloadProperty();
 
@@ -244,6 +246,8 @@ public slots:
 
     void onAriaProcError(QProcess::ProcessError error);
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+    void onTaskLogArrived(QString log); // log is from AriaMan
 
 	//object listener
 	void onObjectDestroyed(QObject * object = 0);

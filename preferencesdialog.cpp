@@ -54,7 +54,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 {
 	this->uiwin.setupUi(this);
 
-    // this->storage = SqliteStorage::instance();
+    this->storage = SqliteStorage::instance();
     this->mom = OptionManager::instance();
 
 	////////
@@ -228,6 +228,7 @@ void PreferencesDialog::saveStatus(QString msg, QString value)
 {
     this->uiwin.label_5->setText(QString("Saveing %1=%2").arg(msg, value));
 }
+
 QString PreferencesDialog::loadKey(QString key, QString dvalue)
 {
     QString ov = QString::null;
@@ -299,17 +300,20 @@ void PreferencesDialog::loadDefaultProperties()
     QString optionName;
     QString optionValue;
     
-    optionValue = this->loadKey("defaultrefer", "http://www.qtchina.net");
+    // optionValue = this->loadKey("defaultrefer", "http://www.qtchina.net");
+    optionValue = this->mom->getDefaultRefer();
     this->uiwin.lineEdit_3->setText(optionValue);
 
-    optionValue = this->loadKey("taskstartschedule", "imidiate");
+    // optionValue = this->loadKey("taskstartschedule", "imidiate");
+    optionValue = this->mom->getTaskStartSchedule();
     if (optionValue == "manual") {
         this->uiwin.radioButton_3->setChecked(true);
     } else {
         this->uiwin.radioButton_4->setChecked(true);
     }
     
-    optionValue = this->loadKey("maxsegmenteverytask", "567");
+    // optionValue = this->loadKey("maxsegmenteverytask", "567");
+    optionValue = this->mom->getMaxSegmentEveryTask();
     this->uiwin.spinBox_8->setValue(optionValue.toInt());
 
     this->defaultPropertiesLoaded = true;
@@ -320,16 +324,20 @@ void PreferencesDialog::loadConnectionOptions()
     QString optionName;
     QString optionValue;
 
-    optionValue = this->loadKey("connecttimeout", "98");
+    // optionValue = this->loadKey("connecttimeout", "98");
+    optionValue = this->mom->getConnectTimeout();
     this->uiwin.spinBox_2->setValue(optionValue.toInt());
 
-    optionValue = this->loadKey("readdatatimeout", "97");
+    // optionValue = this->loadKey("readdatatimeout", "97");
+    optionValue = this->mom->getReadDataTimeout();
     this->uiwin.spinBox_3->setValue(optionValue.toInt());
 
-    optionValue = this->loadKey("retrydelaytimeout", "16");
+    // optionValue = this->loadKey("retrydelaytimeout", "16");
+    optionValue = this->mom->getRetryDelayTimeout();
     this->uiwin.spinBox_4->setValue(optionValue.toInt());
 
-    optionValue = this->loadKey("maxsimulatejobs", "7");
+    // optionValue = this->loadKey("maxsimulatejobs", "7");
+    optionValue = this->mom->getMaxSimulateJobs();
     this->uiwin.spinBox_5->setValue(optionValue.toInt());
 
     this->connectionLoaded = true;
@@ -340,7 +348,8 @@ void PreferencesDialog::loadMonitorOptions()
     QString optionName;
     QString optionValue;
 
-    optionValue = this->loadKey("monitoropera", "false");
+    // optionValue = this->loadKey("monitoropera", "false");
+    optionValue = this->mom->getMonitorOpera();
 
     if (optionValue == "true") {
         this->uiwin.checkBox_21->setChecked(true);
@@ -348,7 +357,8 @@ void PreferencesDialog::loadMonitorOptions()
         this->uiwin.checkBox_21->setChecked(false);        
     }
 
-    optionValue = this->loadKey("monitorfirefox", "false");
+    // optionValue = this->loadKey("monitorfirefox", "false");
+    optionValue = this->mom->getMonitorFirefox();
 
     if (optionValue == "true") {
         this->uiwin.checkBox_22->setChecked(true);
@@ -362,7 +372,8 @@ void PreferencesDialog::loadProxyOptions()
     QString optionName;
     QString optionValue;
 
-    optionValue = this->loadKey("noproxy", "true");
+    // optionValue = this->loadKey("noproxy", "true");
+    optionValue = this->mom->getNoProxy();
     if (optionValue == "true") {
         this->onNoProxyChecked(true);
         this->uiwin.radioButton->setChecked(true);
@@ -371,7 +382,8 @@ void PreferencesDialog::loadProxyOptions()
         this->uiwin.radioButton_2->setChecked(true);
     }
     
-    optionValue = this->loadKey("customproxy", "false");
+    // optionValue = this->loadKey("customproxy", "false");
+    optionValue = this->mom->getCustomProxy();
     
     // name, proxy(scheme://user:pass@host:port)
     QVector<QPair<QString, QString> > proxys = this->loadKeyByType("proxy");
@@ -411,19 +423,24 @@ void PreferencesDialog::loadProxyOptions()
         }
 
         // 
-        optionValue = this->loadKey("httpproxy", "Direct");
+        // optionValue = this->loadKey("httpproxy", "Direct");
+        optionValue = this->mom->getHttpProxy();
+
         if (!optionValue.isEmpty()) {
             this->uiwin.comboBox->setCurrentIndex(this->uiwin.comboBox->findText(optionValue));
         }
-        optionValue = this->loadKey("ftpproxy", "Direct");
+        // optionValue = this->loadKey("ftpproxy", "Direct");
+        optionValue = this->mom->getFtpProxy();
         if (!optionValue.isEmpty()) {
             this->uiwin.comboBox_2->setCurrentIndex(this->uiwin.comboBox_2->findText(optionValue));
         }
-        optionValue = this->loadKey("bittorrentproxy", "Direct");
+        // optionValue = this->loadKey("bittorrentproxy", "Direct");
+        optionValue = this->mom->getBittorrentProxy();
         if (!optionValue.isEmpty()) {
             this->uiwin.comboBox_3->setCurrentIndex(this->uiwin.comboBox_3->findText(optionValue));
         }
-        optionValue = this->loadKey("metalinkproxy", "Direct");
+        // optionValue = this->loadKey("metalinkproxy", "Direct");
+        optionValue = this->mom->getMetalinkProxy();
         if (!optionValue.isEmpty()) {
             this->uiwin.comboBox_4->setCurrentIndex(this->uiwin.comboBox_4->findText(optionValue));
         }
@@ -435,18 +452,27 @@ void PreferencesDialog::loadProxyOptions()
 
 void PreferencesDialog::onApplyDefaultPropertiesTabChange()
 {
-    this->saveKey("defaultrefer", this->uiwin.lineEdit_3->text());
-    this->saveKey("taskstartschedule", this->uiwin.radioButton_3->isChecked() 
-                  ? "manual" : "imidiate");
-    this->saveKey("maxsegmenteverytask", QString("%1").arg(this->uiwin.spinBox_8->value()));
+    // this->saveKey("defaultrefer", this->uiwin.lineEdit_3->text());
+    this->mom->saveDefaultRefer(this->uiwin.lineEdit_3->text());
+
+    // this->saveKey("taskstartschedule", this->uiwin.radioButton_3->isChecked() 
+    //               ? "manual" : "imidiate");
+    this->mom->saveTaskStartSchedule(this->uiwin.radioButton_3->isChecked() 
+                                     ? "manual" : "imidiate");
+    // this->saveKey("maxsegmenteverytask", QString("%1").arg(this->uiwin.spinBox_8->value()));
+    this->mom->saveMaxSegmentEveryTask(QString("%1").arg(this->uiwin.spinBox_8->value()));
 }
 
 void PreferencesDialog::onApplyConnectionTabChange()
 {
-    this->saveKey("connecttimeout", QString().setNum(this->uiwin.spinBox_2->value()));
-    this->saveKey("readdatatimeout", QString().setNum(this->uiwin.spinBox_3->value()));
-    this->saveKey("retrydelaytimeout", QString().setNum(this->uiwin.spinBox_4->value()));
-    this->saveKey("maxsimulatejobs", QString().setNum(this->uiwin.spinBox_5->value()));
+    // this->saveKey("connecttimeout", QString().setNum(this->uiwin.spinBox_2->value()));
+    this->mom->saveConnectTimeout(QString().setNum(this->uiwin.spinBox_2->value()));
+    // this->saveKey("readdatatimeout", QString().setNum(this->uiwin.spinBox_3->value()));
+    this->mom->saveReadDataTimeout(QString().setNum(this->uiwin.spinBox_3->value()));
+    // this->saveKey("retrydelaytimeout", QString().setNum(this->uiwin.spinBox_4->value()));
+    this->mom->saveRetryDelayTimeout(QString().setNum(this->uiwin.spinBox_4->value()));
+    // this->saveKey("maxsimulatejobs", QString().setNum(this->uiwin.spinBox_5->value()));
+    this->mom->saveMaxSimulateJobs(QString().setNum(this->uiwin.spinBox_5->value()));
 }
 
 void PreferencesDialog::onApplyMonitorTabChange()
@@ -454,17 +480,24 @@ void PreferencesDialog::onApplyMonitorTabChange()
     // QString optionName;
     // QString optionValue;
 
-    this->saveKey("monitorie", this->uiwin.checkBox_18->isChecked() ? "true" : "false");
-    this->saveKey("monitoropera", this->uiwin.checkBox_21->isChecked() ? "true" : "false");
-    this->saveKey("monitorfirefox", this->uiwin.checkBox_22->isChecked() ? "true" : "false");
+    // this->saveKey("monitorie", this->uiwin.checkBox_18->isChecked() ? "true" : "false");
+    this->mom->saveMonitorIe(this->uiwin.checkBox_18->isChecked() ? "true" : "false");
+    // this->saveKey("monitoropera", this->uiwin.checkBox_21->isChecked() ? "true" : "false");
+    this->mom->saveMonitorOpera(this->uiwin.checkBox_21->isChecked() ? "true" : "false");
+    // this->saveKey("monitorfirefox", this->uiwin.checkBox_22->isChecked() ? "true" : "false");
+    this->mom->saveMonitorFirefox(this->uiwin.checkBox_22->isChecked() ? "true" : "false");
 }
 
 void PreferencesDialog::onApplyProxyTabChange()
 {
-    this->saveKey("noproxy", this->uiwin.radioButton->isChecked() 
-                  ? "true" : "false");
-    this->saveKey("customproxy", this->uiwin.radioButton_2->isChecked()
-                  ? "true" : "false");
+    // this->saveKey("noproxy", this->uiwin.radioButton->isChecked() 
+    //               ? "true" : "false");
+    // this->saveKey("customproxy", this->uiwin.radioButton_2->isChecked()
+    //               ? "true" : "false");
+    this->mom->saveNoProxy(this->uiwin.radioButton->isChecked() 
+                           ? "true" : "false");
+    this->mom->saveCustomProxy(this->uiwin.radioButton_2->isChecked()
+                               ? "true" : "false");
 
     // item = this->uiwin.tableWidget->item(0, 1);
     QString pname, phost, pport, pusername, ppassword, ptype, proxy;
@@ -484,10 +517,14 @@ void PreferencesDialog::onApplyProxyTabChange()
         this->saveKey(pname, proxy, "proxy");
     }
 
-    this->saveKey("httpproxy", this->uiwin.comboBox->currentText());
-    this->saveKey("ftpproxy", this->uiwin.comboBox_2->currentText());
-    this->saveKey("bittorrentproxy", this->uiwin.comboBox_3->currentText());
-    this->saveKey("metalinkproxy", this->uiwin.comboBox_4->currentText());
+    // this->saveKey("httpproxy", this->uiwin.comboBox->currentText());
+    this->mom->saveHttpProxy(this->uiwin.comboBox->currentText());
+    // this->saveKey("ftpproxy", this->uiwin.comboBox_2->currentText());
+    this->mom->saveFtpProxy(this->uiwin.comboBox_2->currentText());
+    // this->saveKey("bittorrentproxy", this->uiwin.comboBox_3->currentText());
+    this->mom->saveBittorrentProxy(this->uiwin.comboBox_3->currentText());
+    // this->saveKey("metalinkproxy", this->uiwin.comboBox_4->currentText());
+    this->mom->saveMetalinkProxy(this->uiwin.comboBox_4->currentText());
 
     for (int i = 0; i < this->removedProxys.count(); ++i) {
         this->storage->deleteUserOption(removedProxys.at(i));

@@ -203,7 +203,35 @@ void AriaMan::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
     qDebug()<<__FUNCTION__<<exitCode<<exitStatus;
     emit finished(exitCode, exitStatus);
 }
+
 void AriaMan::onAriaProcReadyReadStdout()
+{
+    QString logLine;
+    while(this->mAriaProc->bytesAvailable() > 0) {
+        if (this->mAriaProc->canReadLine()) {
+            logLine = this->mAriaProc->readLine();
+        } else {
+            logLine = this->mAriaProc->readAll();
+        }
+        // qDebug()<<logLine;
+
+        if (logLine.startsWith("POST /rpc")) {
+            while ((logLine = this->mAriaProc->readLine()) != "\r\n"
+                   && this->mAriaProc->bytesAvailable() > 0) {
+                ;
+            }
+        } else if (logLine.startsWith("[#")) {
+        } else if (logLine.startsWith("***")) {
+        } else {
+            emit taskLogReady(logLine);
+        }
+
+        this->mLogFile->write(logLine.toAscii());
+    }
+}
+
+
+void AriaMan::onAriaProcReadyReadStdoutWithParser()
 {
     QString logLine;
     while(this->mAriaProc->bytesAvailable() > 0) {
@@ -255,6 +283,7 @@ void AriaMan::onAriaProcReadyReadStdout()
         this->mLogFile->write(logLine.toAscii());
     }
 }
+
 void AriaMan::onAriaProcReadyReadStderr()
 {
     QString logLine;

@@ -74,7 +74,8 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 	int col = index.column();
 	int row = index.row();
 
-	if (role == Qt::DecorationRole && index.column() == 0 )	{ //只有第一列显示图片就可以了。 
+	if (role == Qt::DecorationRole && index.column() == ng::tasks::task_id
+        || role == Qt::DecorationRole && index.column() == ng::tasks::task_status)	{ // task_id and status column
         if (this->mModelData.at(row).value(ng::tasks::task_status) == "ready") {
             return QImage(qApp->applicationDirPath() + "/icons/status/flag-green.png").scaled(20, 20);
         } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "active") {
@@ -97,7 +98,34 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 	if (role != Qt::DisplayRole)
 		return QVariant();
 
-	return this->mModelData.at(row).value(col);
+    QVariant cellData = this->mModelData.at(row).value(col);
+    QVariant rv;
+    qint64 size;
+    switch (col) {
+    case ng::tasks::file_size:
+    case ng::tasks::abtained_length:
+    case ng::tasks::left_length:
+        size = cellData.toString().toLongLong();
+        if (size >= 1000000000) {
+            // use G
+            rv = QString("%1 G").arg(QString::number(size/1000000000.0));
+        } else if (size >= 1000000) {
+            // use M
+            rv = QString("%1 M").arg(QString::number(size/1000000.0));
+        } else if (size >= 1000) {
+            rv = QString("%1 K").arg(QString::number(size/1000.0));
+        } else {
+            rv = QString("%1 B").arg(QString::number(size));
+        }
+        return rv;
+        break;
+    case ng::tasks::current_speed:
+        rv = QString("%1 KB/s").arg(QString::number(cellData.toString().toInt() / 1000.0));
+        return rv;
+        break;
+    }
+	// return this->mModelData.at(row).value(col);
+    return cellData;
 
 	//int catID = index.internalId();
 	//

@@ -40,6 +40,7 @@ public:
 
 signals:
     void taskLogReady(QString cuid, QString itime, QString log);
+    void taskLogReady(QString log);
     void error(QProcess::ProcessError e);
     void finished(int eixtCode, QProcess::ExitStatus s);
 
@@ -47,6 +48,7 @@ private slots:
     void onAriaProcError(QProcess::ProcessError error);
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onAriaProcReadyReadStdout();
+    void onAriaProcReadyReadStdoutWithParser();
     void onAriaProcReadyReadStderr();
     void onAriaProcStarted();
     void onAriaProcStateChanged(QProcess::ProcessState newState);

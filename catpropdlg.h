@@ -15,8 +15,7 @@
 
 class CatPropDlg : public QDialog
 {
-    Q_OBJECT
-
+    Q_OBJECT;
 public:
     CatPropDlg(QWidget *parent = 0);
     ~CatPropDlg();
@@ -29,14 +28,12 @@ public slots:
 private:
     Ui::CatPropDlgClass ui;
 	
-
 protected:
 	virtual void paintEvent ( QPaintEvent * event ) ;
 };
 
-
-
-
+////////////
+////////////
 class ColumnsManDlg : public QDialog
 {
     Q_OBJECT;
@@ -50,7 +47,7 @@ private:
 	QMap<int , int> mTaskViewTitleWidth;		//task list view header titles
 	QMap<int , int> mTaskViewTitleShowState;		//task list view header titles
 
-    QString loadKey(QString key, QString dvalue);
+    // QString loadKey(QString key, QString dvalue);
 
 private slots:
 	void onItemClicked(QListWidgetItem * item );

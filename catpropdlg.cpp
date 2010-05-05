@@ -8,6 +8,7 @@
 
 
 #include "sqlitestorage.h"
+#include "optionmanager.h"
 
 #include "catpropdlg.h"
 
@@ -191,12 +192,14 @@ void ColumnsManDlg::onApplyChange()
     QString defaultItems = defaultList.join(",");
     // qDebug()<<checkedItems;
 
-    SqliteStorage *storage = SqliteStorage::instance();
-    QString currSetItems = this->loadKey("taskshowcolumns", defaultItems);
+    // SqliteStorage *storage = SqliteStorage::instance();
+    // QString currSetItems = this->loadKey("taskshowcolumns", defaultItems);
+    QString currSetItems = OptionManager::instance()->getTaskShowColumns();
 
-    if (currSetItems != checkedItems) {
-        storage->deleteUserOption("taskshowcolumns");
-        storage->addUserOption("taskshowcolumns", checkedItems, "auto");
+    if (currSetItems != checkedItems && currSetItems != "") {
+        // storage->deleteUserOption("taskshowcolumns");
+        // storage->addUserOption("taskshowcolumns", checkedItems, "auto");
+        OptionManager::instance()->saveTaskShowColumns(checkedItems);
     }
 }
 
@@ -213,26 +216,26 @@ void ColumnsManDlg::onRestoreDefault()
     // this->onApplyChange(); // user trigger this action
 }
 
-QString ColumnsManDlg::loadKey(QString key, QString dvalue)
-{
-    SqliteStorage *storage = SqliteStorage::instance();
-    QString ov = QString::null;
-    QString optionValue;
+// QString ColumnsManDlg::loadKey(QString key, QString dvalue)
+// {
+//     SqliteStorage *storage = SqliteStorage::instance();
+//     QString ov = QString::null;
+//     QString optionValue;
 
-    optionValue = storage->getUserOption(key);
-    if (optionValue == QString::null) {
-        optionValue = storage->getDefaultOption(key);
-        if (optionValue == QString::null) {
-            storage->addDefaultOption(key, dvalue, "auto");
-            ov = dvalue;
-        } else {
-            ov = optionValue;
-        }
-    } else {
-        ov = optionValue;
-    }
+//     optionValue = storage->getUserOption(key);
+//     if (optionValue == QString::null) {
+//         optionValue = storage->getDefaultOption(key);
+//         if (optionValue == QString::null) {
+//             storage->addDefaultOption(key, dvalue, "auto");
+//             ov = dvalue;
+//         } else {
+//             ov = optionValue;
+//         }
+//     } else {
+//         ov = optionValue;
+//     }
 
-    return ov;
-}
+//     return ov;
+// }
 
 
