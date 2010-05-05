@@ -9,6 +9,8 @@
 
 #include "sqlitestorage.h"
 
+#include "optionmanager.h"
+
 #include "preferencesdialog.h"
 
 
@@ -52,7 +54,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 {
 	this->uiwin.setupUi(this);
 
-    this->storage = SqliteStorage::instance();
+    // this->storage = SqliteStorage::instance();
+    this->mom = OptionManager::instance();
 
 	////////
 	// mIsModified = false;
@@ -213,6 +216,8 @@ void PreferencesDialog::onPreferencesSelectChanged(int index)
         break;
     };
     QApplication::restoreOverrideCursor();
+
+    
 }
 
 void PreferencesDialog::loadStatus(QString msg)
@@ -274,13 +279,16 @@ void PreferencesDialog::loadGeneralOptions()
     QString optionName;
     QString optionValue;
 
-    optionValue = this->loadKey("minsegmentsize", "1234");
+    // optionValue = this->loadKey("minsegmentsize", "1234");
+    optionValue = this->mom->getMinSegmentSize();
     this->uiwin.spinBox->setValue(optionValue.toInt());
 
-    optionValue = this->loadKey("autosavetaskinterval", "156");
+    optionValue = this->mom->getAutoSaveTaskInterval();
+    // optionValue = this->loadKey("autosavetaskinterval", "156");
     this->uiwin.lineEdit->setText(optionValue);
 
-    optionValue = this->loadKey("writedatasize", "12345");
+    // optionValue = this->loadKey("writedatasize", "12345");
+    optionValue = this->mom->getWriteDataSize();
     this->uiwin.lineEdit_2->setText(optionValue);
 
     this->generalLoaded = true;

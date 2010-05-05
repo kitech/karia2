@@ -52,6 +52,7 @@ win32 {
         CLARCH=$$system(path)
         VAMD64=$$find(CLARCH,amd64)
         isEmpty(VAMD64) {
+            # from qt 4.7, use QMAKE_LIBDIR instead of LIBPATH
             LIBPATH += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/lib
             INCLUDEPATH += Z:/librarys/vc-ssl-x86/include/
         } else {
@@ -117,11 +118,12 @@ HEADERS += aboutdialog.h \
            taskinfodlg.h \
            taskqueue.h \
            utility.h \
-#           viewmodel.h \
            walksitewnd.h \
            walksitewndex.h \
            webpagelinkdlg.h \
            xmlstorage.h \   
+#           globalpreferences.h \
+            optionmanager.h \
            preferencesdialog.h	\        
            ariaman.h      \
            libng/html-parse.h \
@@ -171,11 +173,12 @@ SOURCES += aboutdialog.cpp \
            taskinfodlg.cpp \
            taskqueue.cpp \
            utility.cpp \
-#           viewmodel.cpp \
            walksitewnd.cpp \
            walksitewndex.cpp \
            webpagelinkdlg.cpp \
            xmlstorage.cpp \      
+#           globalpreferences.cpp \
+            optionmanager.cpp \
            preferencesdialog.cpp	\     
            ariaman.cpp \
            libng/html-parse.c \

@@ -176,6 +176,7 @@ private:
 	QString qmLocale ;
 	//
 	QPalette orginalPalette;
+    QStyle *mNorStyle;
 
     TaskQueue *mTaskMan;
     AriaMan  *mAriaMan;
@@ -336,7 +337,7 @@ protected:
 	virtual bool winEvent ( MSG * message, long * result );
 #else
     #ifdef Q_OS_MAC
-    virtual bool	macEvent ( EventHandlerCallRef caller, EventRef event );
+    virtual bool macEvent ( EventHandlerCallRef caller, EventRef event );
     #else
 	virtual bool x11Event ( XEvent * event ) ;
     virtual void keyReleaseEvent ( QKeyEvent * event );

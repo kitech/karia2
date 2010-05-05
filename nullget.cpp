@@ -9,29 +9,6 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QMainWindow>
-#include <QMenu>
-#include <QActionGroup>
-#include <QStatusBar>
-#include <QMessageBox>
-#include <QDialog>
-#include <QFileDialog>
-#include <QUrlInfo>
-#include <QFileInfo>
-#include <QList>
-#include <QToolTip>
-#include <QScrollArea>
-#include <QRect>
-#include <QSize>
-#include <QProcess>
-#include <QDockWidget>
-#include <QSystemTrayIcon>
-#include <QDesktopServices>
-#include <QProgressDialog>
-#include <QPluginLoader>
-#include <QLibraryInfo>
-#include <QVarLengthArray>
-#include <QDialogButtonBox>
 
 #include "nullget.h"
 #include "aboutdialog.h"
@@ -47,7 +24,6 @@
 
 #include "catmandlg.h"
 #include "catpropdlg.h"
-// #include "viewmodel.h"
 #include "optiondlg.h"
 #include "preferencesdialog.h"
 
@@ -83,16 +59,17 @@
 extern QHash<QString, QString> gMimeHash;
 
 ////////////////////////////////////////////////
-//主窗口类。
+//main window 
 ////////////////////////////////////////////////
 NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
     , mTaskMan(NULL)
     , mAriaMan(NULL), mAriaRpc(NULL)
 {
-    QDir().setCurrent(qApp->applicationDirPath()); //修改当前目录
+    //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
 	mainUI.setupUi(this);	
 	firstShowEvent = true;
+    this->mNorStyle = NULL;
 
 	/////////////
 	orginalPalette = QApplication::palette();
@@ -112,12 +89,10 @@ NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
 	} else {
 		this->mainUI.action_English->setChecked(true);
 	}
-	this->mDropZone = new DropZone();	//浮动窗口句柄
-
-    //this->mainUI.dockWidget->setWindowTitle(QDir::currentPath());		
+	this->mDropZone = new DropZone();	// little float window
 }
 /**
- * 用于首次显示用户界面时的初始化工作
+ * first show adjust window layout
  */
 void NullGet::firstShowHandler()
 {
@@ -157,9 +132,7 @@ void NullGet::firstShowHandler()
 	this->update();
 
 	///////	
-	//初始化配置数据库类实例
-	// this->mConfigDatabase = ConfigDatabase::instance(this);
-	// this->mStorage = new SqliteStorage(this);
+	// init base storage db 
     this->mStorage = SqliteStorage::instance(this);
 	this->mStorage->open();
 
@@ -207,8 +180,6 @@ void NullGet::firstShowHandler()
     this->mSeedFileView = this->mainUI.treeView_2;
     this->mSeedFileView->setItemDelegate(this->mSeedFileDelegate);
 
-	//this->onLoadAllTask();	//loading database 
-	
 	//非UI成员
 	
 	this->mAverageSpeedTimer.setInterval(1000)	;	//1秒合计一次所有任务的平均速度。
@@ -3397,8 +3368,10 @@ void NullGet::onSwitchWindowStyle(QAction * action )
 
 	if (action->data().toString() == "norwegianwood") {
 		//qDebug()<<"NorwegianWood style";
-		QStyle * nw = new NorwegianWoodStyle();
-		QApplication::setStyle(nw);
+        if (this->mNorStyle == NULL) {
+            this->mNorStyle = new NorwegianWoodStyle();
+        }
+		QApplication::setStyle(this->mNorStyle);
 	} else {
 		QApplication::setStyle(action->data().toString());
 	}
@@ -3516,10 +3489,8 @@ void NullGet::onOpenDistDirector()
 	mil = ism->selectedIndexes();
 	if (mil.size() > 0) {
 		taskId = mil.at(ng::tasks::task_id).data().toString().toInt();	
-        // taskId = this->mTaskListViewModel->data(mil.at(0)).toInt();
 		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 
-		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
         dir = mil.at(ng::tasks::save_path).data().toString();
         if (dir.startsWith("~")) {
             dir = QDir::homePath() + dir.right(dir.length() - 1);
@@ -3556,7 +3527,6 @@ void NullGet::onOpenExecDownloadedFile()
 		catId = mil.at(ng::tasks::user_cat_id).data().toString().toInt();
 		fname = mil.at(ng::tasks::file_name).data().toString();
 
-		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
         dir = mil.at(ng::tasks::save_path).data().toString();
 
         if (dir.startsWith("~")) {
@@ -3600,24 +3570,6 @@ void NullGet::onOpenRefererUrl()
         referer = mil.at(ng::tasks::referer).data().toString();
 
         QDesktopServices::openUrl(QUrl(referer));
-		// dir = SqliteStorage::instance(this)->getSavePathByCatId(catId);
-        // dir = mil.at(ng::tasks::save_path).data().toString();
-
-        // if (dir.startsWith("~")) {
-        //     dir = QDir::homePath() + dir.right(dir.length() - 1);
-        // }
-		// durl = dir + QString("/") + fname;
-        // QString fullUrl = QDir().absoluteFilePath(durl);
-		// if (fname .length() == 0 || ! QDir().exists(fullUrl)) {
-		// 	QMessageBox::warning(this, tr("Notice:"),
-        //                          QString(tr("File <b>%1</b> not found, has it downloaded already?")).arg(fullUrl));
-		// } else {
-		// 	//QProcess::execute(openner);
-        //     bool opened = QDesktopServices::openUrl(fullUrl);	//only qt >= 4.2
-        //     if (!opened) {
-        //         opened = QDesktopServices::openUrl(QUrl("file://" + fullUrl));
-        //     }
-		// }
 	} else {
 		QMessageBox::warning(this, tr("No Task Selected"), tr("Please Select a Task For Operation"));
 	}
@@ -4143,7 +4095,7 @@ void NullGet::retranslateUi()
 	//还有一个问题，怎么把程序中所有的字符串都放在这个函数中呢。
 }
 
-void NullGet::onObjectDestroyed(QObject * obj )
+void NullGet::onObjectDestroyed(QObject *obj)
 {
 	qDebug()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName();
 	obj->dumpObjectInfo ();

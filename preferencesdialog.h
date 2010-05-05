@@ -19,6 +19,7 @@
 #include "ui_preferencesdialog.h"
 #include "ui_proxyinfodialog.h"
 
+class OptionManager;
 class SqliteStorage;
 
 //////////////////////
@@ -53,6 +54,7 @@ private:
     Ui::PreferencesDialog uiwin;
     // bool mIsModified;
     SqliteStorage *storage;
+    OptionManager *mom;
 
     bool generalLoaded;
     bool defaultPropertiesLoaded;

@@ -60,8 +60,6 @@ doc/thunder.txt -text
 /getopt_pp.cpp -text
 /getopt_pp.h -text
 /getopt_pp_standalone.h -text
-/globalpreferences.cpp -text
-/globalpreferences.h -text
 /hash.cpp -text
 /hash.h -text
 icons/applications-games.png -text
@@ -159,11 +157,14 @@ libng/qtmd5.h -text
 /optiondlg.cpp -text
 /optiondlg.h -text
 /optiondlg.ui -text
+/optionmanager.cpp -text
+/optionmanager.h -text
 /pmwmk.bat -text
 /preferencesdialog.cpp -text
 /preferencesdialog.h -text
 /preferencesdialog.ui -text
 /proxyinfodialog.ui -text
+qtsingleapplication/QtLockedFile -text
 qtsingleapplication/QtSingleApplication -text
 qtsingleapplication/qtlocalpeer.cpp -text
 qtsingleapplication/qtlocalpeer.h -text
