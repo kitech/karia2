@@ -101,6 +101,10 @@ private:
 
     // other
     DECL_OPTION(TaskShowColumns, "");
+    DECL_OPTION(RememberSpeedLimit, "false");
+    DECL_OPTION(SpeedLimitType, "unlimited"); // other's are manual, auto
+    DECL_OPTION(SpeedLimitSpeed, "1");  // bytes/sec
+    DECL_OPTION(ShutdownWhenDone, "false");
 
 private:
     class OptionElem {

@@ -265,6 +265,12 @@
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
             <widget class="QPlainTextEdit" name="plainTextEdit">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="statusTip">
+              <string>The raw aria2 backend log with little filter</string>
+             </property>
              <property name="maximumBlockCount">
               <number>500</number>
              </property>
@@ -396,58 +402,10 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_Plugins">
-    <property name="title">
-     <string>&amp;Plugins</string>
-    </property>
-    <addaction name="action_Plugins"/>
-    <addaction name="separator"/>
-    <addaction name="actionTestWidgetPlugin"/>
-    <addaction name="action_FileSplitter"/>
-    <addaction name="action_MediaFileModifier"/>
-   </widget>
    <widget class="QMenu" name="menu_Search">
     <property name="title">
      <string>&amp;Search</string>
     </property>
-    <addaction name="action_MP3"/>
-    <addaction name="action_Software"/>
-    <addaction name="action_Game"/>
-    <addaction name="action_File"/>
-    <addaction name="action_Page"/>
-   </widget>
-   <widget class="QMenu" name="menu_Tools">
-    <property name="title">
-     <string>&amp;Tools</string>
-    </property>
-    <widget class="QMenu" name="menuSpeed_Limit_Mode">
-     <property name="windowIcon">
-      <iconset>
-       <normaloff>icons/speed.PNG</normaloff>icons/speed.PNG</iconset>
-     </property>
-     <property name="title">
-      <string>Speed &amp;Limit Mode</string>
-     </property>
-     <addaction name="action_Unlimited"/>
-     <addaction name="action_Manual"/>
-     <addaction name="action_Automatic"/>
-     <addaction name="separator"/>
-     <addaction name="action_Remember"/>
-    </widget>
-    <addaction name="action_Connect_Disconnect"/>
-    <addaction name="action_Site_Explorer"/>
-    <addaction name="actionWalk_Site"/>
-    <addaction name="separator"/>
-    <addaction name="action_Shut_Down_When_Done"/>
-    <addaction name="action_Hang_Up_When_Done"/>
-    <addaction name="actionRedial_if_Disconnected"/>
-    <addaction name="separator"/>
-    <addaction name="menuSpeed_Limit_Mode"/>
-    <addaction name="separator"/>
-    <addaction name="action_Download_Rules"/>
-    <addaction name="separator"/>
-    <addaction name="action_Save_as_default"/>
-    <addaction name="action_Options"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -527,7 +485,7 @@
     <addaction name="separator"/>
     <addaction name="action_Cat_Property"/>
    </widget>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menu_File">
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -603,7 +561,47 @@
     <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
-   <addaction name="menuFile"/>
+   <widget class="QMenu" name="menu_Plugins">
+    <property name="title">
+     <string>&amp;Plugins</string>
+    </property>
+    <addaction name="action_Plugins"/>
+    <addaction name="separator"/>
+    <addaction name="actionTestWidgetPlugin"/>
+    <addaction name="action_FileSplitter"/>
+    <addaction name="action_MediaFileModifier"/>
+   </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <widget class="QMenu" name="menuSpeed_Limit_Mode">
+     <property name="windowIcon">
+      <iconset>
+       <normaloff>icons/speed.PNG</normaloff>icons/speed.PNG</iconset>
+     </property>
+     <property name="title">
+      <string>Speed &amp;Limit Mode</string>
+     </property>
+     <addaction name="action_Unlimited"/>
+     <addaction name="action_Manual"/>
+     <addaction name="action_Automatic"/>
+     <addaction name="separator"/>
+     <addaction name="action_Remember"/>
+    </widget>
+    <addaction name="action_Site_Explorer"/>
+    <addaction name="actionWalk_Site"/>
+    <addaction name="separator"/>
+    <addaction name="action_Shut_Down_When_Done"/>
+    <addaction name="action_Hang_Up_When_Done"/>
+    <addaction name="separator"/>
+    <addaction name="menuSpeed_Limit_Mode"/>
+    <addaction name="separator"/>
+    <addaction name="action_Download_Rules"/>
+    <addaction name="separator"/>
+    <addaction name="action_Options"/>
+   </widget>
+   <addaction name="menu_File"/>
    <addaction name="menu_Category"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_View"/>
@@ -649,7 +647,6 @@
    <addaction name="actionOpen_de_stination_directory"/>
    <addaction name="actionFind"/>
    <addaction name="actionFind_next"/>
-   <addaction name="action_Connect_Disconnect"/>
    <addaction name="action_Options"/>
    <addaction name="action_About_NullGet"/>
    <addaction name="actionQuit"/>
@@ -889,18 +886,6 @@
     <string>Chinese(&amp;Trad)</string>
    </property>
   </action>
-  <action name="action_Connect_Disconnect">
-   <property name="icon">
-    <iconset resource="NullGet.qrc">
-     <normaloff>:/icons/network-connect.png</normaloff>:/icons/network-connect.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Connect/Disconnect</string>
-   </property>
-   <property name="statusTip">
-    <string>Connect/Disconnect The Selected Task</string>
-   </property>
-  </action>
   <action name="action_Site_Explorer">
    <property name="text">
     <string>&amp;Site Explorer</string>
@@ -925,26 +910,9 @@
     <string>&amp;Hang Up When Done</string>
    </property>
   </action>
-  <action name="actionRedial_if_Disconnected">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Redial if Disconnected</string>
-   </property>
-  </action>
   <action name="action_Download_Rules">
    <property name="text">
     <string>&amp;Download Rules</string>
-   </property>
-  </action>
-  <action name="action_Save_as_default">
-   <property name="icon">
-    <iconset>
-     <normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</normaloff>icons/crystalsvg/32x32/actions/filesaveas.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Save as default</string>
    </property>
   </action>
   <action name="action_Options">
@@ -995,38 +963,6 @@
    </property>
    <property name="text">
     <string>&amp;Remember</string>
-   </property>
-  </action>
-  <action name="action_MP3">
-   <property name="icon">
-    <iconset>
-     <normaloff>icons/crystalsvg/32x32/mimetypes/video.png</normaloff>icons/crystalsvg/32x32/mimetypes/video.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;MP3</string>
-   </property>
-   <property name="shortcut">
-    <string>F10</string>
-   </property>
-  </action>
-  <action name="action_Software">
-   <property name="text">
-    <string>&amp;Software</string>
-   </property>
-  </action>
-  <action name="action_Game">
-   <property name="text">
-    <string>&amp;Game</string>
-   </property>
-  </action>
-  <action name="action_File">
-   <property name="text">
-    <string>&amp;File</string>
-   </property>
-  </action>
-  <action name="action_Page">
-   <property name="text">
-    <string>&amp;Page</string>
    </property>
   </action>
   <action name="actionC_heck_for_a_new_version">

@@ -31,10 +31,6 @@
 #include "taskinfodlg.h"	// class TaskParameter 
 
 #include "sqlitestorage.h"
-// #include "viewmodel.h"
-
-//
-
 #include "walksitewnd.h"
 
 class DropZone;
@@ -62,12 +58,10 @@ public slots:
 	
 	int createTask(TaskOption * option);
     int createTask(int taskId, TaskOption *option);
-	// int createTaskSegment(int pTaskId , QString purl , long fromPostion , long yourLength );
 
-	void onSegmentListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
-	void onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
-	void onCatListSelectChange( const QItemSelection & selected, const QItemSelection & deselected );
-	void onAllocateDiskFileSpace(quint64 fileLength , QString fileName );
+	void onSegmentListSelectChange( const QItemSelection & selected, const QItemSelection & deselected);
+	void onTaskListSelectChange( const QItemSelection & selected, const QItemSelection & deselected);
+	void onCatListSelectChange( const QItemSelection & selected, const QItemSelection & deselected);
 	
 	void onAddTaskList(QStringList list);	// add a list of tasks
 
@@ -84,26 +78,26 @@ public slots:
 	void onEditInvertSelect();
 	void onCopySelectSegLog();	//
 	void onSaveSegLog();	//
-	void onClearSegLog() ;	//
+	void onClearSegLog();	//
 
 	//view
-	void onShowToolbarText(bool show) ;
+	void onShowToolbarText(bool show);
 
 	//任务管理
 	void onStartTask();		
 	// void onStartTask(int pTaskId);
 
 	void onStartTaskAll();	
-	void onPauseTask() ;
-	void onPauseTask(int pTaskId ) ;
+	void onPauseTask();
+	void onPauseTask(int pTaskId);
 
-	void onPauseTaskAll() ;
+	void onPauseTaskAll();
 
 	void onDeleteTask();
 	void onDeleteTaskAll();
 
 	void onTaskDone(int pTaskId);	//
-
+    void onShutdown();
 	//
 	void onCopyUrlToClipboard();
 
@@ -159,7 +153,7 @@ private:
 	QLabel * mSpeedTotalLable ;
 
 	//non ui item
-	QTimer mAverageSpeedTimer ;
+	// QTimer mAverageSpeedTimer ;
 
 	//搜索窗口实例
 	WalkSiteWndEx * mHWalkSiteWndEx ;
@@ -191,13 +185,13 @@ private:
     MaiaXmlRpcClient *mAriaRpc;
 
 public slots:
-	
-	void onSwitchWindowStyle(QAction * action );
+	void onSwitchWindowStyle(QAction * action);
 
 	void onSwitchSpeedMode(QAction *action);
-	void onSwitchLanguage(QAction* action) ;
-	void onSwitchSkinType(QAction* action ) ;
+    void onRememberSpeedLimitSetting(bool checked);
 
+	void onSwitchLanguage(QAction* action);
+	void onSwitchSkinType(QAction* action);
 	
 	void showAboutDialog();		//about dialog
 	void showNewDownloadDialog();
@@ -212,21 +206,23 @@ public slots:
 	void onShowOptions();
 	void onShowTaskProperty();
 	void onShowTaskProperty(int pTaskId);
-	void onShowTaskPropertyDigest(const QModelIndex & index );
-	void onShowTaskPropertyDigest(  ) ;
+	void onShowTaskPropertyDigest(const QModelIndex & index);
+	void onShowTaskPropertyDigest( );
 	void onShowColumnEditor();	//列的显示情况管理
-	void onTaskListMenuPopup( /*const QPoint & pos  = QPoint() */ ) ;
-	void onUpdateJobMenuEnableProperty() ;
-	void onLogListMenuPopup( const QPoint & pos ) ;
-	void onSegListMenuPopup( const QPoint & pos ) ;
-	void onCateMenuPopup( const QPoint & pos );
+	void onTaskListMenuPopup( /*const QPoint & pos  = QPoint() */);
+	void onUpdateJobMenuEnableProperty();
+	void onLogListMenuPopup( const QPoint & pos);
+	void onSegListMenuPopup( const QPoint & pos);
+	void onCateMenuPopup( const QPoint & pos);
 	//toolMenu
+    // void onShutdownWhenDone(); // not need save in db
+    // void onHungupWhenDone();  // the same 
 
 	void onDropZoneDoubleClicked();
 	void onDropZoneCustomMenu(const QPoint & pos);
 
 	//statusbar
-	void onManualSpeedChanged(int value) ;
+	void onManualSpeedChanged(int value);
 
 	void onOpenDistDirector();
 	void onOpenExecDownloadedFile();
@@ -235,13 +231,11 @@ public slots:
 	//other
 	void onClipBoardDataChanged();
 
-	void caclAllTaskAverageSpeed();
-
 	//system tray slot handler
-	void onActiveTrayIcon(QSystemTrayIcon::ActivationReason index );
+	void onActiveTrayIcon(QSystemTrayIcon::ActivationReason index);
 	void onBallonClicked();
 	
-	void shootScreen() ;
+	void shootScreen();
 	void firstShowHandler();
 
     void onAriaProcError(QProcess::ProcessError error);
@@ -301,7 +295,7 @@ private slots:
     void onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload);
 
 private:	//method
-	int getNextValidTaskId() ;
+	int getNextValidTaskId();
 
 	void connectAllSignalAndSlog();
 
@@ -309,9 +303,10 @@ private:	//method
 	void initStatusBar();
 	void initSystemTray();
     void initAppIcons();
+    void initUserOptionSetting();
 
 	//overload
-	void moveEvent ( QMoveEvent * event );
+	void moveEvent(QMoveEvent * event);
 
 	//dynamic language switch
 	void retranslateUi();
@@ -322,7 +317,7 @@ private:	//method
 	//
 	QPair<QString,QString> getFileTypeByFileName(QString fileName);
 
-	//temporary 临时用于隐藏没有实现功能用户界面的代码。
+	//temporary method, hide not impled function
 	void hideUnimplementUiElement();
 	void hideUnneededUiElement();
 
@@ -330,27 +325,22 @@ private:	//method
     QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
 protected:
-	virtual void paintEvent ( QPaintEvent * event ) ;
-	virtual void closeEvent ( QCloseEvent * event );
+	virtual void paintEvent(QPaintEvent * event);
+	virtual void closeEvent(QCloseEvent * event);
 	QImage image ;
-	void showEvent ( QShowEvent * event ) ;
-	bool firstShowEvent ;
+	void showEvent(QShowEvent * event);
+	bool firstShowEvent;
 	
 	
-#ifdef Q_OS_WIN32
-	virtual bool winEvent ( MSG * message, long * result );
+#if defined(Q_OS_WIN32)
+	virtual bool winEvent(MSG * message, long * result);
+#elif defined(Q_OS_MAC)
+    virtual bool macEvent(EventHandlerCallRef caller, EventRef event);
 #else
-    #ifdef Q_OS_MAC
-    virtual bool macEvent ( EventHandlerCallRef caller, EventRef event );
-    #else
-	virtual bool x11Event ( XEvent * event ) ;
-    virtual void keyReleaseEvent ( QKeyEvent * event );
-    #endif
+	virtual bool x11Event(XEvent * event);
+    virtual void keyReleaseEvent(QKeyEvent * event);
 #endif
 
-signals:
-	//提出状态改变要求的信号。是否需要呢。
-		
 };
 
 #endif // NULLGET_H
