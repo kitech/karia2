@@ -29,7 +29,7 @@ documentation.extra = cp release/*.exe Z:/temp
 
 INSTALLS += documentation
 
-VERSION = 0.0.95
+VERSION = 0.0.96
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication
@@ -81,8 +81,8 @@ MAIA_HEADERS = libmaia/maiaObject.h libmaia/maiaFault.h libmaia/maiaXmlRpcClient
 MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcClient.cpp \
              libmaia/maiaXmlRpcServer.cpp libmaia/maiaXmlRpcServerConnection.cpp
 
-QTSINGALAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
-QTSINGALAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
+QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
+QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
 # Input
 HEADERS += aboutdialog.h \
@@ -100,7 +100,6 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            nullget.h \
            nullgetapplication.h \
-#           optiondlg.h \
            radarscanner.h \
            resource.h \
            rulesmandlg.h \
@@ -122,7 +121,6 @@ HEADERS += aboutdialog.h \
            walksitewndex.h \
            webpagelinkdlg.h \
            xmlstorage.h \   
-#           globalpreferences.h \
             optionmanager.h \
            preferencesdialog.h	\        
            ariaman.h      \
@@ -132,9 +130,7 @@ HEADERS += aboutdialog.h \
            taskservermodel.h \
            seedfilemodel.h \
            seedfilesdialog.h \  
-           taskitemdelegate.h \
-           qtsingleapplication/qtlocalpeer.h \
-           qtsingleapplication/qtsingleapplication.h
+           taskitemdelegate.h
 
 win32{
         HEADERS += DiskInfo.h	
@@ -156,7 +152,6 @@ SOURCES += aboutdialog.cpp \
            nullcontroller.cpp \
            nullget.cpp \
            nullgetapplication.cpp \
-#          optiondlg.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \
@@ -177,8 +172,7 @@ SOURCES += aboutdialog.cpp \
            walksitewndex.cpp \
            webpagelinkdlg.cpp \
            xmlstorage.cpp \      
-#           globalpreferences.cpp \
-            optionmanager.cpp \
+           optionmanager.cpp \
            preferencesdialog.cpp	\     
            ariaman.cpp \
            libng/html-parse.c \
@@ -189,9 +183,7 @@ SOURCES += aboutdialog.cpp \
            seedfilemodel.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
-           mimetypeshash.cpp \
-           qtsingleapplication/qtlocalpeer.cpp \
-           qtsingleapplication/qtsingleapplication.cpp
+           mimetypeshash.cpp
 
 win32{
         SOURCES += DiskInfo.cpp
@@ -204,7 +196,6 @@ FORMS += aboutdialog.ui \
          columnsmandlg.ui \
          dlrules.ui \
          nullget.ui \
-#         optiondlg.ui \
          rulesmandlg.ui \
          skypeclientwnd.ui \
          taskinfodisgestwnd.ui \
@@ -222,10 +213,10 @@ FORMS += aboutdialog.ui \
 HEADERS += $$MAIA_HEADERS 
 SOURCES += $$MAIA_SOURCES 
 
-# HEADERS += $$QTSINGLEAPP_HEADERS
-# SOURCES += $$QTSINGLEAPP_SOURCES
+HEADERS += $$QTSAPP_HEADERS
+SOURCES += $$QTSAPP_SOURCES
 
 TRANSLATIONS += translations/nullget_en_US.ts \
                 translations/nullget_zh_CN.ts \
                 translations/nullget_zh_TW.ts
-RESOURCES = NullGet.qrc
+RESOURCES = karia2.qrc

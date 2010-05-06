@@ -21,6 +21,19 @@ GetOpt_pp:	Yet another C++ version of getopt.
 #ifndef GETOPT_PP_H
 #define GETOPT_PP_H
 
+/*
+   Avoid "unused parameter" warnings
+*/
+
+#if defined(Q_CC_INTEL) && !defined(Q_OS_WIN)
+template <typename T>
+inline void qUnused(T &x) { (void)x; }
+#  define Q_UNUSED(x) qUnused(x);
+#else
+#  define Q_UNUSED(x) (void)x;
+#endif
+
+
 #include <string>
 #include <vector>
 #include <map>
@@ -93,6 +106,8 @@ template <class T> inline _Option::Result convert(const std::string& s, T& resul
 
 template <> inline _Option::Result convert<std::string>(const std::string& s, std::string& result, std::ios::fmtflags flags)
 {
+    Q_UNUSED(flags);
+
 	result = s;
 	return _Option::OK;
 }
@@ -303,6 +318,8 @@ public:
 protected:
 	virtual Result operator() (ShortOptions& short_ops, LongOptions& long_ops, std::ios::fmtflags flags) const
 	{
+        Q_UNUSED(flags);
+
 		bool found;
 		ShortOptions::iterator it = short_ops.find(short_opt);
 		

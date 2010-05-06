@@ -246,12 +246,13 @@ void NullGet::firstShowHandler()
     this->handleArguments();
 
 	//test area 　---------begin-----------------
-	LabSpace * labspace = new LabSpace(this);
+	LabSpace *labspace = new LabSpace(this);
 	//labspace->show();
+    Q_UNUSED(labspace);
 
 #ifdef Q_OS_WIN32
 	// register system hot key 
-	if (! ::RegisterHotKey(this->winId(), 'C', MOD_CONTROL|MOD_SHIFT, 'C')) {
+	if (!::RegisterHotKey(this->winId(), 'C', MOD_CONTROL|MOD_SHIFT, 'C')) {
 		qDebug()<<"::RegisterHotKey faild";
 	}
 #else	
@@ -707,6 +708,7 @@ void NullGet::hideUnimplementUiElement()
 	this->mainUI.action_Export_list->setVisible(false);
 
 	this->mainUI.action_Recently_Downloaded_Files->setVisible(false);
+    this->mainUI.actionProcess_Web_Page_File->setVisible(false);
 
 	//cat
 	this->mainUI.action_cat_Move_To->setVisible(false);
@@ -758,6 +760,21 @@ void NullGet::initUserOptionSetting()
 
     om = OptionManager::instance();
 
+    //////
+    QStringList colList;
+    QString taskShowColumns = om->getTaskShowColumns();
+    // qDebug()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
+    if (taskShowColumns != "") {
+        colList = taskShowColumns.split(',');
+        for (int i = ng::tasks::task_id ; i <= ng::tasks::aria_gid; ++i) {
+            // qDebug()<<"show col:"<<colList.contains(QString::number(i));
+            if (!colList.contains(QString::number(i))) {
+                this->mainUI.mui_tv_task_list->setColumnHidden(i, true);
+            }
+        }
+    }
+
+    //////
     QString rememberSpeedLimit = om->getRememberSpeedLimit();
     if (rememberSpeedLimit == "true") {
         this->mainUI.action_Remember->setChecked(true);
@@ -1575,7 +1592,9 @@ void NullGet::onCategoryMoveTo()
 }
 void NullGet::onShowColumnEditor()
 {
-	QDialog * dlg = new ColumnsManDlg(this);
+	QDialog *dlg = new ColumnsManDlg(this);
+    QObject::connect(dlg, SIGNAL(taskShowColumnsChanged(QString)),
+                     this, SLOT(onTaskShowColumnsChanged(QString)));
 
 	dlg->exec();
 
@@ -3824,6 +3843,25 @@ void NullGet::onTaskLogArrived(QString log)
         return;
     }
     this->mainUI.plainTextEdit->appendPlainText(log.trimmed());
+}
+
+void NullGet::onTaskShowColumnsChanged(QString columns)
+{
+    //////
+    QStringList colList;
+    QString taskShowColumns = columns;
+    // qDebug()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
+    if (taskShowColumns != "") {
+        colList = taskShowColumns.split(',');
+        for (int i = ng::tasks::task_id ; i <= ng::tasks::aria_gid; ++i) {
+            // qDebug()<<"show col:"<<colList.contains(QString::number(i));
+            if (!colList.contains(QString::number(i))) {
+                this->mainUI.mui_tv_task_list->setColumnHidden(i, true);
+            } else {
+                this->mainUI.mui_tv_task_list->setColumnHidden(i, false);
+            }
+        }
+    }
 }
 
 void NullGet::handleArguments()

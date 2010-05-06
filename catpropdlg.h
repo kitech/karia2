@@ -41,6 +41,9 @@ public:
     ColumnsManDlg(QWidget *parent = 0);
     ~ColumnsManDlg();
 
+signals:
+    void taskShowColumnsChanged(QString columns);
+
 private:
     Ui::ColumnsManDlg ui;
 	QMap<int , QString> mTaskViewTitle;		//task list view header titles
@@ -55,6 +58,10 @@ private slots:
 	void onHideItemClicked( );
     void onApplyChange();
     void onRestoreDefault();
+    void onMoveUp();
+    void onMoveDown();
+    void onSelectAll();
+    void onRevertSelect();
 };
 
 #endif // CATPROPDLG_H

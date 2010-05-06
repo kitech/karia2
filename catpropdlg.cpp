@@ -103,12 +103,27 @@ ColumnsManDlg::ColumnsManDlg(QWidget *parent)
 	// this->mTaskViewTitle.insert(15,"Category");
 	// this->mTaskViewTitle.insert(16,"placeholder");
 
-	QListWidgetItem * lwi ;
-	QStringList sl ;
+    OptionManager *om = OptionManager::instance();
+    QString taskShowColumns = om->getTaskShowColumns();
+    QStringList colList;
+    if (taskShowColumns != "") {
+        colList = taskShowColumns.split(',');
+    }
+
+	QListWidgetItem *lwi;
+	QStringList sl;
 	for (int i = 0 ; i < this->mTaskViewTitle.size() ; i ++)
 	{
 		lwi = new QListWidgetItem (this->mTaskViewTitle[i]);
-		lwi->setCheckState(Qt::Checked);
+        if (colList.count() == 0) {
+            lwi->setCheckState(Qt::Checked);
+        } else {
+            if (colList.contains(QString::number(i))) {
+                lwi->setCheckState(Qt::Checked);
+            } else {
+                lwi->setCheckState(Qt::Unchecked);
+            }
+        }
 		lw->addItem(lwi);
 	}	
 
@@ -118,6 +133,8 @@ ColumnsManDlg::ColumnsManDlg(QWidget *parent)
 
     QObject::connect(this->ui.pushButton, SIGNAL(clicked()), this, SLOT(onApplyChange()));
     QObject::connect(this->ui.pushButton_2, SIGNAL(clicked()), this, SLOT(onRestoreDefault()));
+    QObject::connect(this->ui.pushButton_3, SIGNAL(clicked()), this, SLOT(onSelectAll()));
+    QObject::connect(this->ui.pushButton_4, SIGNAL(clicked()), this, SLOT(onRevertSelect()));
 }
 
 ColumnsManDlg::~ColumnsManDlg()
@@ -149,6 +166,8 @@ void ColumnsManDlg::onItemClicked(QListWidgetItem * item )
 		this->ui.colmd_pb_move_down->setEnabled(true);
 	}
 
+    this->ui.pushButton->setEnabled(true);
+    this->ui.pushButton_2->setEnabled(true);
 }
 
 void ColumnsManDlg::onShowItemClicked( )
@@ -161,6 +180,9 @@ void ColumnsManDlg::onShowItemClicked( )
 		this->ui.colmd_pb_show->setEnabled(false);
 		this->ui.colmd_pb_hide->setEnabled(true);
 	}
+
+    this->ui.pushButton->setEnabled(true);
+    this->ui.pushButton_2->setEnabled(true);
 }
 
 void ColumnsManDlg::onHideItemClicked( )
@@ -173,6 +195,8 @@ void ColumnsManDlg::onHideItemClicked( )
 		this->ui.colmd_pb_show->setEnabled(true);
 		this->ui.colmd_pb_hide->setEnabled(false);
 	}
+    this->ui.pushButton->setEnabled(true);
+    this->ui.pushButton_2->setEnabled(true);
 }
 
 void ColumnsManDlg::onApplyChange()
@@ -196,11 +220,14 @@ void ColumnsManDlg::onApplyChange()
     // QString currSetItems = this->loadKey("taskshowcolumns", defaultItems);
     QString currSetItems = OptionManager::instance()->getTaskShowColumns();
 
-    if (currSetItems != checkedItems && currSetItems != "") {
+    if (currSetItems != checkedItems) {
         // storage->deleteUserOption("taskshowcolumns");
         // storage->addUserOption("taskshowcolumns", checkedItems, "auto");
+        emit taskShowColumnsChanged(checkedItems);
         OptionManager::instance()->saveTaskShowColumns(checkedItems);
     }
+    this->ui.pushButton->setEnabled(false);
+    this->ui.pushButton_2->setEnabled(false);
 }
 
 void ColumnsManDlg::onRestoreDefault()
@@ -213,7 +240,40 @@ void ColumnsManDlg::onRestoreDefault()
         item->setCheckState(Qt::Checked);
     }
 
-    // this->onApplyChange(); // user trigger this action
+    this->onApplyChange(); // user trigger this action
+}
+
+void ColumnsManDlg::onMoveUp()
+{
+
+}
+
+void ColumnsManDlg::onMoveDown()
+{
+
+}
+
+void ColumnsManDlg::onSelectAll()
+{
+    int rowCount = this->ui.colmd_lw_cols->count();
+    QListWidgetItem *item = NULL;
+    QStringList checkedList;
+    for (int i = 0 ; i < rowCount; ++i) {
+        item = this->ui.colmd_lw_cols->item(i);
+        item->setCheckState(Qt::Checked);
+    }
+}
+
+void ColumnsManDlg::onRevertSelect()
+{
+    int rowCount = this->ui.colmd_lw_cols->count();
+    QListWidgetItem *item = NULL;
+    QStringList checkedList;
+    for (int i = 0 ; i < rowCount; ++i) {
+        item = this->ui.colmd_lw_cols->item(i);
+        item->setCheckState(item->checkState() == Qt::Checked 
+                            ? Qt::Unchecked : Qt::Checked);
+    }
 }
 
 // QString ColumnsManDlg::loadKey(QString key, QString dvalue)

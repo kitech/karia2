@@ -112,7 +112,7 @@ public slots:
 
     QBitArray getCompletionBitArray(int taskId);
 
-    void onTaskLogArrived(QString cuid, QString itime, QString log);
+    // void onTaskLogArrived(QString cuid, QString itime, QString log);
 
 	//test 
 	void deleteLater () ;

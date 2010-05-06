@@ -12,20 +12,6 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QtGui/QMainWindow>
-#include <QMessageBox>
-#include <QTreeWidget>
-#include <QStandardItemModel>
-#include <QItemSelectionModel>
-#include <QItemSelection>
-#include <QTime>
-#include <QDate>
-#include <QDateTime>
-#include <QImage>
-#include <QPixmap>
-#include <QTimer>
-#include <QSystemTrayIcon>
-#include <QPalette>
 
 #include "ui_nullget.h"
 #include "taskinfodlg.h"	// class TaskParameter 
@@ -242,6 +228,7 @@ public slots:
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
     void onTaskLogArrived(QString log); // log is from AriaMan
+    void onTaskShowColumnsChanged(QString columns);
 
 	//object listener
 	void onObjectDestroyed(QObject * object = 0);

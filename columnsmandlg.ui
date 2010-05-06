@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ColumnsManDlg</string>
+   <string>Task Column Show/Hide/Order Editor [*]</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -22,6 +22,12 @@
    </property>
    <item>
     <widget class="QTextEdit" name="textEdit">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -75,6 +81,20 @@ p, li { white-space: pre-wrap; }
         <widget class="QPushButton" name="colmd_pb_move_down">
          <property name="text">
           <string>Move Do&amp;wn</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>Check All</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>Revert Select</string>
          </property>
         </widget>
        </item>

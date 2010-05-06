@@ -5,7 +5,6 @@
 /INSTALL -text
 /LICENSE -text
 /NullGet.ico -text
-/NullGet.qrc -text
 /NullGet.rc -text
 /NullGet_resource.rc -text
 /README -text
@@ -101,6 +100,7 @@ images/woodbutton.png -text
 /instantspeedhistogramwnd.cpp -text
 /instantspeedhistogramwnd.h -text
 /karia2.pro -text
+/karia2.qrc -text
 /labspace.cpp -text
 /labspace.h -text
 /labspace.ui -text
