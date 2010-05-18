@@ -804,13 +804,14 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         QString value = QString("3,xterm -e %1 --metafile,,,,|").arg(QCoreApplication::applicationFilePath());
 #else
         QString value;
-        if (QFile::exists("/usr/bin/konsole")) {
-            value = QString("3,konsole -e %1 --metafile,,,,|")
-                .arg(QCoreApplication::applicationFilePath());
-        } else {
-            value = QString("3,xterm -e %1 --metafile,,,,|")
-                .arg(QCoreApplication::applicationFilePath());
-        }
+        // if (QFile::exists("/usr/bin/konsole")) {
+        //     value = QString("3,konsole -e %1 --metafile,,,,|")
+        //         .arg(QCoreApplication::applicationFilePath());
+        // } else {
+        //     value = QString("3,xterm -e %1 --metafile,,,,|")
+        //         .arg(QCoreApplication::applicationFilePath());
+        // }
+        value = QString("3,%1,,,,|").arg(QCoreApplication::applicationFilePath());
 #endif
         QString key = QString("text/karia2_nullget_down");
         QByteArray line;

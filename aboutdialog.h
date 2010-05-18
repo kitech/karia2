@@ -11,6 +11,8 @@
 
 #include <QDialog>
 
+#include "ui_aboutdialog.h"
+
 class AboutDialog : public QDialog
 {
     Q_OBJECT;

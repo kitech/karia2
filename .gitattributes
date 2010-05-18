@@ -39,6 +39,7 @@ doc/(un)compress.txt -text
 doc/66985.user.js -text
 doc/C++.txt -text
 doc/MPC.txt -text
+doc/TODO -text svneol=unset#application/octet-stream
 doc/Torrent[!!-~]获取文件流程.odg -text
 doc/all.txt -text
 doc/aria2-1.9.2_redirect_no_cookie_no_refer.patch -text

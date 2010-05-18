@@ -3924,8 +3924,16 @@ void NullGet::handleArguments(int argc, char **argv)
         GetOpt::GetOpt_pp args(rargc, rargv);
         args >> GetOpt::Option(GetOpt::GetOpt_pp::EMPTY_OPTION, noprefix_metafile);
     }
+#elif defined(Q_OS_MAC)
+    Q_UNUSED(targv);
 #else
     Q_UNUSED(targv);
+    // Fixed opera 10.54 for linux/unix change
+    if (argc == 2) {
+        // linux/unix metafile arguments, no --metafile prefix
+        GetOpt::GetOpt_pp args(rargc, rargv);
+        args >> GetOpt::Option(GetOpt::GetOpt_pp::EMPTY_OPTION, noprefix_metafile);
+    }
 #endif
 
     std::string std_uri, std_refer, std_metafile, std_cookies, std_agent;
