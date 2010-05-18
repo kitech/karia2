@@ -1095,7 +1095,7 @@ void NullGet::onStartTask()
 	qDebug()<<__FUNCTION__<<__LINE__;	
 	QAbstractItemView *view = this->mTaskListView;
     QAbstractItemModel *model = view->model();
-	// int step = model->columnCount();
+    int step = model->columnCount();
     
 	int taskId = -1;
     QString url;
@@ -1105,81 +1105,89 @@ void NullGet::onStartTask()
         return;
     }
 
-    TaskOption *taskOptions = TaskOption::fromModelRow(model, smil.at(0).row());
-    taskId = smil.value(0 + ng::tasks::task_id).data().toInt();
-    url = smil.value(0 + ng::tasks::org_url).data().toString();
-
     this->initXmlRpc();
 
-    QMap<QString, QVariant> payload;
-    QVariantList args;
-    QList<QVariant> uris;
-    QMap<QString, QVariant> options;
-    QString aria2RpcMethod;
+    for (int row = 0; row < smil.count() ; row += step) {
+        TaskOption *taskOptions = TaskOption::fromModelRow(model, smil.at(row).row());
+        taskId = smil.value(row + ng::tasks::task_id).data().toInt();
+        url = smil.value(row + ng::tasks::org_url).data().toString();
 
-    {
-        // 先把这个任务对象创建了
-        payload["taskId"] = QString("%1").arg(taskId);
-        payload["url"] = url;
-        this->createTask(taskId, taskOptions);
-    }
+        // if running
+        if (this->mRunningMap.contains(taskId)) {
+            continue;
+        }
 
-    if (url.startsWith("file://") && url.endsWith(".torrent")) {
-        aria2RpcMethod = QString("aria2.addTorrent");
+        QMap<QString, QVariant> payload;
+        QVariantList args;
+        QList<QVariant> uris;
+        QMap<QString, QVariant> options;
+        QString aria2RpcMethod;
+
+        {
+            // create task object first
+            payload["taskId"] = QString("%1").arg(taskId);
+            payload["url"] = url;
+            this->createTask(taskId, taskOptions);
+        }
+
+        if (url.startsWith("file://") && url.endsWith(".torrent")) {
+            aria2RpcMethod = QString("aria2.addTorrent");
         
-        QFile torrentFile(url.right(url.length() - 7));
-        torrentFile.open(QIODevice::ReadOnly);
-        QByteArray torrentConntent = torrentFile.readAll();
-        torrentFile.close();
+            QFile torrentFile(url.right(url.length() - 7));
+            torrentFile.open(QIODevice::ReadOnly);
+            QByteArray torrentConntent = torrentFile.readAll();
+            torrentFile.close();
 
-        args.insert(0, torrentConntent);
-        args.insert(1, uris);
+            args.insert(0, torrentConntent);
+            args.insert(1, uris);
 
-        // options["split"] = QString("5");
-        options["split"] = taskOptions->mSplitCount;
-        options["dir"] = taskOptions->mSavePath;
-        args.insert(2, options);
-    } else if (url.startsWith("file://") && url.endsWith(".metalink")) {
-        aria2RpcMethod = QString("aria2.addMetalink");
+            // options["split"] = QString("5");
+            options["split"] = taskOptions->mSplitCount;
+            options["dir"] = taskOptions->mSavePath;
+            args.insert(2, options);
+        } else if (url.startsWith("file://") && url.endsWith(".metalink")) {
+            aria2RpcMethod = QString("aria2.addMetalink");
         
-        QFile metalinkFile(url.right(url.length() - 7));
-        metalinkFile.open(QIODevice::ReadOnly);
-        QByteArray metalinkContent = metalinkFile.readAll();
-        metalinkFile.close();
+            QFile metalinkFile(url.right(url.length() - 7));
+            metalinkFile.open(QIODevice::ReadOnly);
+            QByteArray metalinkContent = metalinkFile.readAll();
+            metalinkFile.close();
 
-        args.insert(0, metalinkContent);
-        // options["split"] = QString("5");
-        options["split"] = taskOptions->mSplitCount;
-        options["dir"] = taskOptions->mSavePath;
-        args.insert(1, options);
+            args.insert(0, metalinkContent);
+            // options["split"] = QString("5");
+            options["split"] = taskOptions->mSplitCount;
+            options["dir"] = taskOptions->mSavePath;
+            args.insert(1, options);
 
-    } else {
-        aria2RpcMethod = QString("aria2.addUri");
-        uris << QString(url);
-        args.insert(0, uris);
+        } else {
+            aria2RpcMethod = QString("aria2.addUri");
+            uris << QString(url);
+            args.insert(0, uris);
     
-        // options["split"] = QString("3");
-        options["split"] = taskOptions->mSplitCount;
-        options["dir"] = taskOptions->mSavePath;
-        args.insert(1, options);
-    }
+            // options["split"] = QString("3");
+            options["split"] = taskOptions->mSplitCount;
+            options["dir"] = taskOptions->mSavePath;
+            args.insert(1, options);
+        }
 
-    this->mAriaRpc->call(aria2RpcMethod, args, QVariant(payload),
-                         this, SLOT(onAriaAddUriResponse(QVariant &, QVariant &)),
-                         this, SLOT(onAriaAddUriFault(int, QString, QVariant &)));
+        this->mAriaRpc->call(aria2RpcMethod, args, QVariant(payload),
+                             this, SLOT(onAriaAddUriResponse(QVariant &, QVariant &)),
+                             this, SLOT(onAriaAddUriFault(int, QString, QVariant &)));
 
-    if (!this->mAriaUpdater.isActive()) {
-        this->mAriaUpdater.setInterval(3000);
-        QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
-        this->mAriaUpdater.start();
-    }
-    if (!this->mAriaTorrentUpdater.isActive()) {
-        this->mAriaTorrentUpdater.setInterval(4000);
-        QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
-        this->mAriaTorrentUpdater.start();
-    }
+        if (!this->mAriaUpdater.isActive()) {
+            this->mAriaUpdater.setInterval(3000);
+            QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
+            this->mAriaUpdater.start();
+        }
+        if (!this->mAriaTorrentUpdater.isActive()) {
+            this->mAriaTorrentUpdater.setInterval(4000);
+            QObject::connect(&this->mAriaTorrentUpdater, SIGNAL(timeout()), this, SLOT(onAriaTorrentUpdaterTimeout()));
+            this->mAriaTorrentUpdater.start();
+        }
 
-    delete taskOptions; taskOptions = NULL;
+        delete taskOptions; taskOptions = NULL;
+
+    }
 }
 
 void NullGet::onStartTaskAll()
@@ -1215,22 +1223,30 @@ void NullGet::onPauseTask()
 	QModelIndexList smil = view->selectionModel()->selectedIndexes();
 	qDebug()<<smil.size();
 
-	if (smil.size() > 0) {
-		for (int i = 0; i < smil.size(); i+= step) {
-			taskId = smil.value(i).data().toInt();
-            ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
-			qDebug()<<smil.value(i)<<taskId; 
-			//this->onPauseTask(taskId);
-			// TaskQueue::onPauseTask(taskId);
-            Q_ASSERT(this->mAriaRpc != NULL);
-            QVariantList args;
+	if (smil.size() == 0) {
+        return;
+    }
+    
+    this->initXmlRpc();
+    Q_ASSERT(this->mAriaRpc != NULL);
 
-            args << ariaGid;
-            this->mAriaRpc->call(QString("aria2.remove"), args, QVariant(taskId),
-                                 this, SLOT(onAriaRemoveResponse(QVariant &, QVariant&)),
-                                 this, SLOT(onAriaRemoveFault(int, QString, QVariant&)));
-		}
-	}
+    for (int i = 0; i < smil.size(); i += step) {
+        taskId = smil.value(i).data().toInt();
+        ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
+        qDebug()<<smil.value(i)<<taskId; 
+
+        // check if running
+        if (!this->mRunningMap.contains(taskId)) {
+            continue;
+        }
+
+        QVariantList args;
+
+        args << ariaGid;
+        this->mAriaRpc->call(QString("aria2.remove"), args, QVariant(taskId),
+                             this, SLOT(onAriaRemoveResponse(QVariant &, QVariant&)),
+                             this, SLOT(onAriaRemoveFault(int, QString, QVariant&)));
+    }
 }
 void NullGet::onPauseTask(int pTaskId ) 
 {

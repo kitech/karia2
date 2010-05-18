@@ -1,0 +1,6 @@
+parameters:
+        karia2 [--metafile] /path/to/metafile
+        becuase opera can not start program with --metafile parameter, so it it optional now.
+
+        karia2 -u url -r refer
+        karia2 --url url --refer refer
