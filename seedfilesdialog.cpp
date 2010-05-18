@@ -190,7 +190,7 @@ QString SeedFilesDialog::getSelectedFileIndexes()
 
     selectedList = indexList.join(",");
 
-    qDebug()<<"selectedList: "<< selectedList;
+    qDebug()<<__FUNCTION__<<"selectedList: "<< selectedList;
     return selectedList;
 }
 

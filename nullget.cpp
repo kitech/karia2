@@ -2064,24 +2064,9 @@ void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &paylo
     int taskId = mPayload["taskId"].toInt();
     QString url = mPayload["url"].toString();
     mPayload["ariaGid"] = ariaGid;
-    // QString fileName = url.right(url.length() - 7);
-    // TaskOption *to = new TaskOption(); // TODO get option from GlobalOption
-    // to->setDefaultValue();
-    // to->setUrl("file://" + url); //转换成本地文件协议
-
-    // int taskId = this->createTask(to);
-    qDebug()<<url<<taskId;
+    qDebug()<<__FUNCTION__<<url<<taskId;
         
     this->initXmlRpc();
-
-    // payload["taskId"] = taskId;
-    // payload["url"] = "file://" + url;
-    // payload["cmd"] = QString("torrent_get_files");
-
-    // QFile torrentFile();
-    // torrentFile.open(QIODevice::ReadOnly);
-    // QByteArray torrentConntent = torrentFile.readAll();
-    // torrentFile.close();
 
     QVariantList args;
     args.insert(0, ariaGid);
@@ -2121,7 +2106,7 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
     int rv = fileDlg->exec();
     
     if (rv == QDialog::Accepted) {
-        //remove the unused aria2 task
+        // remove the unused aria2 task
         TaskOption *option = NULL;
         option = fileDlg->getOption();
         mPayload["indexes"] = fileDlg->getSelectedFileIndexes();
@@ -2129,6 +2114,7 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
         mPayload["savePath"] = option->mSavePath;
         mPayload["saveName"] = option->mSaveName;
         mPayload["userCatId"] = QString::number(option->mCatId);
+        // mPayload["taskOption"] = option->toBase64Data();
         delete option; option = NULL;
 
         QVariantList args;
@@ -2142,8 +2128,6 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
         // this->mAriaRpc->call(QString("aria2.purgeDownloadResult"), args, QVariant(taskId),
         //                      this, SLOT(onAriaGetVersionResponse(QVariant &, QVariant &)),
         //                      this, SLOT(onAriaGetVersionFault(int, QString, QVariant&)));
-
-        
     }
 }
 
@@ -2176,7 +2160,8 @@ void NullGet::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVa
     QVariantMap msts = response.toMap();
     QVariantMap mPayload = payload.toMap();
 
-    if (msts.value("status").toString() == "removed") {
+    if (msts.value("status").toString() == "removed"
+        || msts.value("status").toString() == "error") {
         mPayload["removeConfirm"] = "yes";
         QVariant aPayload = QVariant(mPayload);
         this->onAriaRemoveTorrentParseFileTaskResponse(response, aPayload);
@@ -2199,13 +2184,16 @@ void NullGet::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, 
 void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
+    qDebug()<<__FUNCTION__<<payload;
 
     // insert new torrent task
     QMap<QString, QVariant> mPayload = payload.toMap();
     QString indexList = mPayload["indexes"].toString();
     QString url = mPayload["url"].toString();
     QString removeConfirm = mPayload["removeConfirm"].toString();
-    TaskOption toption = TaskOption::fromBase64Data(mPayload["taskOption"].toString());
+    // TaskOption toption = TaskOption::fromBase64Data(mPayload["taskOption"].toString());
+    // toption.dump();
+    QString savePath = mPayload["savePath"].toString();
 
     if (removeConfirm != "yes") {
         QTimer *timer = new QTimer(); timer->setSingleShot(true); timer->setInterval(500);
@@ -2232,7 +2220,7 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
 
     QMap<QString, QVariant> options;
     // options["split"] = QString("1");
-    options["dir"] = toption.mSavePath;
+    options["dir"] = savePath; // toption.mSavePath;
     options["select-file"] = indexList;
     args.insert(2, options);
     args.insert(3, QVariant(0));
@@ -2371,6 +2359,7 @@ void NullGet::showNewBittorrentFileDialog()
         payload["taskId"] = taskId;
         payload["url"] = "file://" + url;
         payload["cmd"] = QString("torrent_get_files");
+        // payload["taskOption"] = to->toBase64Data();
 
         QFile torrentFile(url);
         torrentFile.open(QIODevice::ReadOnly);
@@ -2390,6 +2379,7 @@ void NullGet::showNewBittorrentFileDialog()
         options["select-file"] = QString("1");
         options["dir"] = QDir::tempPath();
         options["file-allocation"] = "none";
+
         args.insert(2, options);
 
         this->mAriaRpc->call(QString("aria2.addTorrent"), args, QVariant(payload),

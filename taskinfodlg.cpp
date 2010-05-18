@@ -20,7 +20,6 @@
 #include <QSize>
 
 #include "taskinfodlg.h"
-// #include "viewmodel.h"
 #include "catmandlg.h"
 #include "sqlitestorage.h"
 #include "sqlitecategorymodel.h"
@@ -166,7 +165,7 @@ TaskOption TaskOption::fromRawData(QByteArray ba)
 
     QList<QByteArray> elts = ba.split('|');
     if (elts.count() != 5 || elts.at(0) != "TaskOption") {
-        qDebug()<<"Invalid TaskOption package";
+        qDebug()<<__FUNCTION__<<"Invalid TaskOption package";
         return TaskOption();
     }
 

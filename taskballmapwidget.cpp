@@ -27,10 +27,11 @@ TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	this->mCurrentTaskId = -8888 ;
 	this->setMinimumSize(parent->size().width() , parent->size().height());
 	qDebug()<< parent->size() ;
-	this->mBallRadius = 10 ;
+	// this->mBallRadius = 10 ;
+    this->mBallRadius = 7;
 
 	this->mBallMap = QImage(parent->size().width(), parent->size().height(), 
-                            QImage::Format_ARGB32_Premultiplied);	//初始化一个和窗口一样大的图象。
+                            QImage::Format_ARGB32_Premultiplied);	// 初始化一个和窗口一样大的图象。
 
 	mSwithTimer.start(1000);
 	QObject::connect(&this->mSwithTimer, SIGNAL(timeout()), this, SLOT(onSwitchState()));

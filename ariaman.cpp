@@ -82,6 +82,7 @@ AriaMan::AriaMan(QObject *parent)
                      << "--listen-port=6881-6999"
                      << "--enable-dht=true"
                      << "--dht-listen-port=6881-6999"
+        // << "--interface=localhost"
                      << "--disable-ipv6=true"
                      << "--log=-"
         //                     << QString("--log=%1").arg(this->mLogFilePath)
@@ -93,9 +94,11 @@ AriaMan::AriaMan(QObject *parent)
                      << "--log-level=info"
         // << "--human-readable=false"   # aria2 1.8.0 can't support this argument
                      << "--check-certificate=false"
-                     << "--user-agent=nullget/0.3"
+                     << "--user-agent=karia2/1.0"
                      << "--continue"
                      << "--max-overall-upload-limit=20000"
+                     << "--summary-interval=20"
+                     << "--seed-time=60"
                      // << "--load-cookies=/tmp/aria2_cookies.ns"
                      // << "--save-cookies=/tmp/aria2_cookies.ns"
     //                     << "--all-proxy=127.0.0.1:8118"

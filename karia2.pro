@@ -72,7 +72,7 @@ DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
 
 #添加这一块可以使得在windows上编译出来的程序有图标 
 win32 {
-   RC_FILE	= NullGet.rc
+   RC_FILE	= karia2.rc
 }    
 
 ## libmaia

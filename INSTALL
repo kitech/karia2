@@ -2,6 +2,9 @@ Installation:
 
 1.On *nix platform
 
+Requirement:
+        libXtst-dev
+
 make sure you have the openSSL library installed to the standard path , /usr/ or /usr/local
 or set add the lib path to  LD_LIBRARY_PATH envirenment variant . 
 make sure you have Qt 4.4.0 or later library installed .
