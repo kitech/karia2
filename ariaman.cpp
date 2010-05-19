@@ -301,6 +301,8 @@ void AriaMan::onAriaProcReadyReadStderr()
 }
 void AriaMan::onAriaProcStarted()
 {
+    this->mStartArgs.clear(); // free memory
+
     // the default port is 6800 on best case, change to 6800+ if any exception.
     this->mAriaRpc = new MaiaXmlRpcClient(QUrl(QString("http://127.0.0.1:%1/rpc")
                                                           .arg(this->rpcPort())));
