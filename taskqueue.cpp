@@ -35,6 +35,7 @@ Task::~Task()
     delete this->btPeerModel; this->btPeerModel = 0;
     delete this->btTrackerModel; this->btTrackerModel = 0;
     delete this->serverModel; this->serverModel = 0;
+    qDebug()<<__FUNCTION__<<"here taskId:"<<this->mTaskId;
 }
 
 /**
@@ -431,22 +432,22 @@ void TaskQueue::onFirstSegmentReady(int pTaskId , long totalLength, bool support
 
 // }
 
-void TaskQueue::onStartSegment(int pTaskId,int pSegId)
-{
-	qDebug()<<__FUNCTION__<<pTaskId<<pSegId;
-	int row =0 ;
-	// BaseRetriver *br = 0 ;
-	QAbstractItemModel * logmdl = 0 ;
-	SqliteSegmentModel * segmdl = 0 ;
+// void TaskQueue::onStartSegment(int pTaskId,int pSegId)
+// {
+// 	qDebug()<<__FUNCTION__<<pTaskId<<pSegId;
+// 	int row =0 ;
+// 	// BaseRetriver *br = 0 ;
+// 	QAbstractItemModel * logmdl = 0 ;
+// 	SqliteSegmentModel * segmdl = 0 ;
 
-	logmdl = SegmentLogModel::instance( pTaskId , pSegId , this );
-	segmdl = SqliteSegmentModel::instance(pTaskId , this);
-}
+// 	logmdl = SegmentLogModel::instance( pTaskId , pSegId , this );
+// 	segmdl = SqliteSegmentModel::instance(pTaskId , this);
+// }
 
-void TaskQueue::onPauseSegment(int pTaskId,int pSegId)
-{
+// void TaskQueue::onPauseSegment(int pTaskId,int pSegId)
+// {
 
-}
+// }
 
 void TaskQueue::onLogSegment(int taskId, int segId, QString log, int type) 
 {
@@ -723,10 +724,10 @@ bool TaskQueue::onStartTask(int pTaskId)
 		if ( taskQueue->getFileAbtained(pTaskId,ng::cats::downloading) ) {
 			int segCount = taskQueue->getMaxSegCount(pTaskId,ng::cats::downloading) ;
 			for (int i = 0 ; i < segCount ; i ++ ) {
-				taskQueue->onStartSegment(pTaskId, i);
+				// taskQueue->onStartSegment(pTaskId, i);
 			}
 		} else {
-			taskQueue->onStartSegment(pTaskId,0);
+			// taskQueue->onStartSegment(pTaskId,0);
 		}
     } else {
 		TaskQueue * taskQueue = NULL;// TaskQueue::instance(pTaskId,0);
@@ -758,6 +759,7 @@ void TaskQueue::onPauseTask(int pTaskId )
 		// assert(1 == 2);		
         Task *task = this->mTasks[pTaskId];
         this->mTasks.remove(pTaskId);
+        delete task;
 	} else {
 		// TaskQueue * taskQueue = TaskQueue::instance(pTaskId,0);
 		// taskQueue->canceled = true ;
@@ -765,6 +767,7 @@ void TaskQueue::onPauseTask(int pTaskId )
 		// TaskQueue::removeInstance(pTaskId);
 		//delete taskQueue;taskQueue = 0 ;		
 		//delete 操作在　onOneSegmentFinished　成员函数中
+        qDebug()<<__FUNCTION__<<"No task meta object found:"<<pTaskId;
 	}	
 }
 

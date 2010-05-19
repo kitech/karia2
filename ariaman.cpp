@@ -29,10 +29,13 @@ AriaMan::AriaMan(QObject *parent)
     , mLogFile(NULL)
     , mCodec(NULL)
 {
+    QString dhtFilePath;
 #ifdef Q_OS_WIN
     this->mPidFile = QCoreApplication::applicationDirPath() + "/.karia2/aria2.pid";
+    dhtFilePath = QCoreApplication::applicationDirPath() + "/.karia2/";
 #else
     this->mPidFile = QDir::homePath() + "/.karia2/aria2.pid";
+    dhtFilePath = QDir::homePath() + "/.karia2/";
 #endif
 
     this->defaultRpcPort = 6800;
@@ -81,16 +84,12 @@ AriaMan::AriaMan(QObject *parent)
                      << QString("--xml-rpc-listen-port=%1").arg(this->currentRpcPort)
                      << "--listen-port=6881-6999"
                      << "--enable-dht=true"
+                     << QString("--dht-file-path=%1").arg(dhtFilePath)
                      << "--dht-listen-port=6881-6999"
         // << "--interface=localhost"
                      << "--disable-ipv6=true"
                      << "--log=-"
         //                     << QString("--log=%1").arg(this->mLogFilePath)
-// #ifdef Q_OS_WIN
-//                      << "--log=aria2c.log"
-// #else
-//                      << "--log=/tmp/aria2c.log"
-// #endif
                      << "--log-level=info"
         // << "--human-readable=false"   # aria2 1.8.0 can't support this argument
                      << "--check-certificate=false"
@@ -99,6 +98,8 @@ AriaMan::AriaMan(QObject *parent)
                      << "--max-overall-upload-limit=20000"
                      << "--summary-interval=20"
                      << "--seed-time=60"
+                     << "--follow-torrent=false"
+                     << "--follow-metalink=false"
                      // << "--load-cookies=/tmp/aria2_cookies.ns"
                      // << "--save-cookies=/tmp/aria2_cookies.ns"
     //                     << "--all-proxy=127.0.0.1:8118"

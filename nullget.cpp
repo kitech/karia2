@@ -1221,7 +1221,7 @@ void NullGet::onPauseTask()
 	int taskId = -1;
     QString ariaGid;
 	QModelIndexList smil = view->selectionModel()->selectedIndexes();
-	qDebug()<<smil.size();
+	qDebug()<<__FUNCTION__<<"selectedIndexes count:"<<smil.size();
 
 	if (smil.size() == 0) {
         return;
@@ -1233,7 +1233,7 @@ void NullGet::onPauseTask()
     for (int i = 0; i < smil.size(); i += step) {
         taskId = smil.value(i).data().toInt();
         ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
-        qDebug()<<smil.value(i)<<taskId; 
+        qDebug()<<__FUNCTION__<<smil.value(i)<<taskId; 
 
         // check if running
         if (!this->mRunningMap.contains(taskId)) {
@@ -1895,6 +1895,7 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
         this->mRunningMap.remove(taskId);
 
         this->onTaskDone(taskId);
+        this->mTaskMan->onPauseTask(taskId); // maybe named clearTask
 
         if (this->mRunningMap.count() == 0 
             && this->mainUI.action_Shut_Down_When_Done->isChecked()) {
@@ -1910,6 +1911,8 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
         if (this->mTorrentMap.contains(taskId)) {
             this->mTorrentMap.remove(taskId);
         }
+
+        this->mTaskMan->onPauseTask(taskId); // maybe named clearTask
     }
 }
 void NullGet::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
@@ -1957,8 +1960,10 @@ void NullGet::onAriaRemoveResponse(QVariant &response, QVariant &payload)
     qDebug()<<__FUNCTION__<<response<<payload;
     int taskId = payload.toInt();
     this->mRunningMap.remove(taskId);
+    if (this->mTorrentMap.contains(taskId)) {
+        this->mTorrentMap.remove(taskId);
+    }
 
-    // tq = this->mTaskMan->findTaskById(taskId);
     this->mTaskMan->onTaskListCellNeedChange(taskId, ng::tasks::task_status, QString(tr("pause")));
     this->mTaskMan->onPauseTask(taskId);
 }

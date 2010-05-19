@@ -17,3 +17,6 @@ The HTTP 1.0 standard per http://www.w3.org/Protocols/rfc2109/rfc2109 in section
 在做redirect的时候，仍旧按照服务器的响应记录cookie, 并在redirect请求中使用这些cookie。
 在做redirect的时候，使用本次地址作为引用发送给服务器。
 用户在--header参数中传递的Cookie会覆盖aria2c获得的Cookie,需要处理。
+
+当一个url指向的是一个.torrent文件，aria2有一个参数--follow-torrent=true|false|mem, 如果为true，则会继续分析这个.torrent文件并下载。
+否则停止任务。

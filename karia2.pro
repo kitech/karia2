@@ -121,7 +121,7 @@ HEADERS += aboutdialog.h \
            walksitewndex.h \
            webpagelinkdlg.h \
            xmlstorage.h \   
-            optionmanager.h \
+           optionmanager.h \
            preferencesdialog.h	\        
            ariaman.h      \
            libng/html-parse.h \

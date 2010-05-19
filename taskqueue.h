@@ -99,8 +99,8 @@ public slots:
 	void onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , int optType );
 	void onSegmentCellNeedChange( int taskId , int segId ,  int cellId , QString value ) ;
 
-	void onStartSegment(int pTaskId,int pSegId);
-	void onPauseSegment(int pTaskId,int pSegId);
+	// void onStartSegment(int pTaskId,int pSegId);
+	// void onPauseSegment(int pTaskId,int pSegId);
 
 	void onMemoryOverLoad();
 
