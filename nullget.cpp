@@ -1038,10 +1038,29 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         this->mainUI.label_7->setText(blocks);
         this->mainUI.label_9->setText(QString("<a href=\"%1\">%1</a>").arg(savePath));
         this->mainUI.label_9->setToolTip(QString(tr("Location: %1")).arg(savePath));
-        this->mainUI.label_11->setText(QString("<a href=\"%1\">%1</a>").arg(refer));
+
+        // calc how much charactors the label can show
+        QFontInfo fontInfo = this->mainUI.label_11->fontInfo();
+        int laWidth = this->mainUI.mui_tw_segment_graph_log->width();
+        int fpSize = fontInfo.pixelSize();
+        int fppSize = fontInfo.pointSize();
+        int chcnt = laWidth * 2/ fpSize;
+        // qDebug()<<"calc chcnt:"<<laWidth<<fpSize<<chcnt<<fppSize<<refer.length();
+
+        if (refer.length() > chcnt) {
+            this->mainUI.label_11->setText(QString("<a href=\"%1\">%2</a>")
+                                           .arg(refer, refer.left(chcnt) + "..."));
+        } else {
+            this->mainUI.label_11->setText(QString("<a href=\"%1\">%1</a>").arg(refer));
+        }
         this->mainUI.label_11->setToolTip(QString(tr("Location: %1")).arg(refer));
 
-        this->mainUI.label->setPixmap(QPixmap(mimeIconPosition.second).scaled(32, 32));
+        if (fileName.isEmpty()) {
+            QString dir = qApp->applicationDirPath() + "/icons";
+            this->mainUI.label->setPixmap(QPixmap(dir + "/status/unknown.png").scaled(32, 32));
+        } else {
+            this->mainUI.label->setPixmap(QPixmap(mimeIconPosition.second).scaled(32, 32));
+        }
     }
 }
 
@@ -2782,7 +2801,11 @@ void NullGet::onShowTaskPropertyDigest( )
 QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
 {
 	QPair<QString,QString> ftype("unknown", "unknown.png");
-	
+
+    // if (fileName.isEmpty()) {
+    //     return ftype;
+    // }
+
 #if defined(Q_OS_WIN)
 	QString path = "icons/crystalsvg/128x128/mimetypes/";
 #elif defined(Q_OS_MAC)
@@ -3204,7 +3227,7 @@ void NullGet::onCopySelectSegLog()
 		if (text.endsWith("\r\n"))
 			text = text.left(text.length()-2);
 		//
-		QClipboard * cb = QApplication::clipboard();
+		QClipboard *cb = QApplication::clipboard();
 		cb->setText(text);		
 	}
 

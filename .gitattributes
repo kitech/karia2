@@ -133,6 +133,7 @@ libng/html-parse.c -text
 libng/html-parse.h -text
 libng/md5.c -text
 libng/md5.h -text
+libng/qbihash.h -text
 libng/qtmd5.cpp -text
 libng/qtmd5.h -text
 /main.cpp -text

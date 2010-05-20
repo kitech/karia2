@@ -18,7 +18,7 @@
 #include "nullgetapplication.h"
 #include "nullget.h"
 
-QString packArguments(QApplication *app, int argc, char **argv)
+QString packArguments(QCoreApplication *app, int argc, char **argv)
 {
     Q_UNUSED(argc);
     Q_UNUSED(argv);

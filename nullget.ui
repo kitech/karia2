@@ -81,7 +81,7 @@
         </property>
         <widget class="QTabWidget" name="mui_tw_segment_graph_log">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_5">
           <attribute name="title">
@@ -228,7 +228,7 @@
                 <enum>Qt::RichText</enum>
                </property>
                <property name="scaledContents">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -260,21 +260,11 @@
          </widget>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
-           <string>RawLog</string>
+           <string>Servers</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <widget class="QPlainTextEdit" name="plainTextEdit">
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="statusTip">
-              <string>The raw aria2 backend log with little filter</string>
-             </property>
-             <property name="maximumBlockCount">
-              <number>500</number>
-             </property>
-            </widget>
+            <widget class="QTreeView" name="mui_tv_seg_list"/>
            </item>
           </layout>
          </widget>
@@ -364,27 +354,15 @@
           </layout>
          </widget>
         </widget>
-        <widget class="QTreeView" name="mui_tv_seg_list">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
+        <widget class="QPlainTextEdit" name="plainTextEdit">
          <property name="toolTip">
-          <string>Current task's connection list</string>
+          <string/>
          </property>
          <property name="statusTip">
-          <string>Current task's connection list</string>
+          <string>The raw aria2 backend log with little filter</string>
          </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="indentation">
-          <number>20</number>
+         <property name="maximumBlockCount">
+          <number>500</number>
          </property>
         </widget>
        </widget>
@@ -682,7 +660,7 @@
   </widget>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/system-shutdown.png</normaloff>:/icons/system-shutdown.png</iconset>
    </property>
    <property name="text">
@@ -761,7 +739,7 @@
   </action>
   <action name="actionFind">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/edit-find.png</normaloff>:/icons/edit-find.png</iconset>
    </property>
    <property name="text">
@@ -776,7 +754,7 @@
   </action>
   <action name="actionFind_next">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/go-down-search.png</normaloff>:/icons/go-down-search.png</iconset>
    </property>
    <property name="text">
@@ -917,7 +895,7 @@
   </action>
   <action name="action_Options">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/preferences-system.png</normaloff>:/icons/preferences-system.png</iconset>
    </property>
    <property name="text">
@@ -976,7 +954,7 @@
   </action>
   <action name="action_About_NullGet">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/Resources/karia2.png</normaloff>:/Resources/karia2.png</iconset>
    </property>
    <property name="text">
@@ -1163,7 +1141,7 @@
   </action>
   <action name="action_New_Download">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1178,7 +1156,7 @@
   </action>
   <action name="action_New_Bittorrent">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1193,7 +1171,7 @@
   </action>
   <action name="action_New_Metalink">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1228,7 +1206,7 @@
   </action>
   <action name="action_Pause">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/media-playback-pause.png</normaloff>:/icons/media-playback-pause.png</iconset>
    </property>
    <property name="text">
@@ -1275,7 +1253,7 @@
   </action>
   <action name="action_Delete_task">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
    </property>
    <property name="text">
@@ -1300,7 +1278,7 @@
   </action>
   <action name="action_Properties">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/document-properties.png</normaloff>:/icons/document-properties.png</iconset>
    </property>
    <property name="text">
@@ -1315,7 +1293,7 @@
   </action>
   <action name="actionMove_Up">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/arrow-up.png</normaloff>:/icons/arrow-up.png</iconset>
    </property>
    <property name="text">
@@ -1330,7 +1308,7 @@
   </action>
   <action name="actionMove_Down">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/arrow-down.png</normaloff>:/icons/arrow-down.png</iconset>
    </property>
    <property name="text">
@@ -1355,7 +1333,7 @@
   </action>
   <action name="actionOpen_Exec_download_file">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/system-run.png</normaloff>:/icons/system-run.png</iconset>
    </property>
    <property name="text">
@@ -1370,7 +1348,7 @@
   </action>
   <action name="actionOpen_de_stination_directory">
    <property name="icon">
-    <iconset resource="NullGet.qrc">
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/document-open-folder.png</normaloff>:/icons/document-open-folder.png</iconset>
    </property>
    <property name="text">
@@ -1556,7 +1534,7 @@
   </action>
  </widget>
  <resources>
-  <include location="NullGet.qrc"/>
+  <include location="karia2.qrc"/>
  </resources>
  <connections>
   <connection>
