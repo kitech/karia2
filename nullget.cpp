@@ -1043,7 +1043,7 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
         QFontInfo fontInfo = this->mainUI.label_11->fontInfo();
         int laWidth = this->mainUI.mui_tw_segment_graph_log->width();
         int fpSize = fontInfo.pixelSize();
-        int fppSize = fontInfo.pointSize();
+        // int fppSize = fontInfo.pointSize();
         int chcnt = laWidth * 2/ fpSize;
         // qDebug()<<"calc chcnt:"<<laWidth<<fpSize<<chcnt<<fppSize<<refer.length();
 

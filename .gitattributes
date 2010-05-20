@@ -151,6 +151,13 @@ libng/qtmd5.h -text
 /nullgetapplication.h -text
 /optionmanager.cpp -text
 /optionmanager.h -text
+packages/debian/DEBIAN/control -text
+packages/debian/DEBIAN/debian-binary -text
+packages/debian/DEBIAN/preinst -text
+packages/mkdeb.sh -text
+packages/mkpkg.sh -text
+packages/nullfxp -text
+packages/opensuse_buildservice/nullfxp.spec -text
 /pmwmk.bat -text
 /preferencesdialog.cpp -text
 /preferencesdialog.h -text
