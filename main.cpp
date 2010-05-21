@@ -16,7 +16,7 @@
 #include <QLocale>
 
 #include "nullgetapplication.h"
-#include "nullget.h"
+#include "karia2.h"
 
 QString packArguments(QCoreApplication *app, int argc, char **argv)
 {
