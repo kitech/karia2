@@ -98,7 +98,7 @@ HEADERS += aboutdialog.h \
            labspace.h \
            norwegianwoodstyle.h \
            nullcontroller.h \
-           nullget.h \
+           karia2.h \
            nullgetapplication.h \
            radarscanner.h \
            resource.h \
@@ -150,7 +150,7 @@ SOURCES += aboutdialog.cpp \
            main.cpp \
            norwegianwoodstyle.cpp \
            nullcontroller.cpp \
-           nullget.cpp \
+           karia2.cpp \
            nullgetapplication.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
@@ -195,7 +195,7 @@ FORMS += aboutdialog.ui \
          catpropdlg.ui \
          columnsmandlg.ui \
          dlrules.ui \
-         nullget.ui \
+         karia2.ui \
          rulesmandlg.ui \
          skypeclientwnd.ui \
          taskinfodisgestwnd.ui \
@@ -216,7 +216,7 @@ SOURCES += $$MAIA_SOURCES
 HEADERS += $$QTSAPP_HEADERS
 SOURCES += $$QTSAPP_SOURCES
 
-TRANSLATIONS += translations/nullget_en_US.ts \
-                translations/nullget_zh_CN.ts \
-                translations/nullget_zh_TW.ts
+TRANSLATIONS += translations/karia2_en_US.ts \
+                translations/karia2_zh_CN.ts \
+                translations/karia2_zh_TW.ts
 RESOURCES = karia2.qrc
