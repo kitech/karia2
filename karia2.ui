@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NullGet</class>
- <widget class="QMainWindow" name="NullGet">
+ <class>Karia2</class>
+ <widget class="QMainWindow" name="Karia2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>820</width>
+    <height>556</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
@@ -521,13 +529,13 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_Manual_NullGet"/>
+    <addaction name="action_Manual_Karia2"/>
     <addaction name="separator"/>
     <addaction name="actionC_heck_for_a_new_version"/>
-    <addaction name="action_Go_to_NullGet_Home_Page"/>
+    <addaction name="action_Go_to_Karia2_Home_Page"/>
     <addaction name="actionFAQ_in_Internet"/>
     <addaction name="separator"/>
-    <addaction name="action_About_NullGet"/>
+    <addaction name="action_About_Karia2"/>
    </widget>
    <widget class="QMenu" name="menu_Plugins">
     <property name="title">
@@ -616,7 +624,7 @@
    <addaction name="actionFind"/>
    <addaction name="actionFind_next"/>
    <addaction name="action_Options"/>
-   <addaction name="action_About_NullGet"/>
+   <addaction name="action_About_Karia2"/>
    <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="speed_histogram_toolBar">
@@ -650,14 +658,14 @@
   </widget>
   <action name="actionQuit">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/system-shutdown.png</normaloff>:/icons/system-shutdown.png</iconset>
    </property>
    <property name="text">
     <string>E&amp;xit</string>
    </property>
    <property name="statusTip">
-    <string>Quit NullGet</string>
+    <string>Quit Karia2</string>
    </property>
   </action>
   <action name="action_Save">
@@ -669,7 +677,7 @@
     <string>&amp;Save</string>
    </property>
   </action>
-  <action name="action_Manual_NullGet">
+  <action name="action_Manual_Karia2">
    <property name="icon">
     <iconset>
      <normaloff>icons/crystalsvg/32x32/actions/toggle_log.png</normaloff>icons/crystalsvg/32x32/actions/toggle_log.png</iconset>
@@ -729,7 +737,7 @@
   </action>
   <action name="actionFind">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/edit-find.png</normaloff>:/icons/edit-find.png</iconset>
    </property>
    <property name="text">
@@ -744,7 +752,7 @@
   </action>
   <action name="actionFind_next">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/go-down-search.png</normaloff>:/icons/go-down-search.png</iconset>
    </property>
    <property name="text">
@@ -885,7 +893,7 @@
   </action>
   <action name="action_Options">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/preferences-system.png</normaloff>:/icons/preferences-system.png</iconset>
    </property>
    <property name="text">
@@ -942,9 +950,9 @@
     <string>C&amp;heck for a new version</string>
    </property>
   </action>
-  <action name="action_About_NullGet">
+  <action name="action_About_Karia2">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/Resources/karia2.png</normaloff>:/Resources/karia2.png</iconset>
    </property>
    <property name="text">
@@ -954,13 +962,13 @@
     <string>About Karia2</string>
    </property>
   </action>
-  <action name="action_Go_to_NullGet_Home_Page">
+  <action name="action_Go_to_Karia2_Home_Page">
    <property name="icon">
     <iconset>
      <normaloff>icons/crystalsvg/32x32/filesystems/folder_home.png</normaloff>icons/crystalsvg/32x32/filesystems/folder_home.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Go to NullGet Home Page -&gt;</string>
+    <string>&amp;Go to Karia2 Home Page -&gt;</string>
    </property>
   </action>
   <action name="actionFAQ_in_Internet">
@@ -1131,7 +1139,7 @@
   </action>
   <action name="action_New_Download">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1146,7 +1154,7 @@
   </action>
   <action name="action_New_Bittorrent">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1161,7 +1169,7 @@
   </action>
   <action name="action_New_Metalink">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
    </property>
    <property name="text">
@@ -1196,7 +1204,7 @@
   </action>
   <action name="action_Pause">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/media-playback-pause.png</normaloff>:/icons/media-playback-pause.png</iconset>
    </property>
    <property name="text">
@@ -1243,7 +1251,7 @@
   </action>
   <action name="action_Delete_task">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
    </property>
    <property name="text">
@@ -1268,7 +1276,7 @@
   </action>
   <action name="action_Properties">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/document-properties.png</normaloff>:/icons/document-properties.png</iconset>
    </property>
    <property name="text">
@@ -1283,7 +1291,7 @@
   </action>
   <action name="actionMove_Up">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/arrow-up.png</normaloff>:/icons/arrow-up.png</iconset>
    </property>
    <property name="text">
@@ -1298,7 +1306,7 @@
   </action>
   <action name="actionMove_Down">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/arrow-down.png</normaloff>:/icons/arrow-down.png</iconset>
    </property>
    <property name="text">
@@ -1323,7 +1331,7 @@
   </action>
   <action name="actionOpen_Exec_download_file">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/system-run.png</normaloff>:/icons/system-run.png</iconset>
    </property>
    <property name="text">
@@ -1338,7 +1346,7 @@
   </action>
   <action name="actionOpen_de_stination_directory">
    <property name="icon">
-    <iconset>
+    <iconset resource="karia2.qrc">
      <normaloff>:/icons/document-open-folder.png</normaloff>:/icons/document-open-folder.png</iconset>
    </property>
    <property name="text">
@@ -1523,12 +1531,14 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="karia2.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>
    <signal>triggered()</signal>
-   <receiver>NullGet</receiver>
+   <receiver>Karia2</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

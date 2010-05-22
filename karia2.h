@@ -29,42 +29,43 @@ class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
 
-namespace karia2 {
 class Karia2 : public QMainWindow
 {
-        Q_OBJECT;
+    Q_OBJECT;
 public:
-        Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
-        ~Karia2();
-        void initialMainWindow();
+    Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
+    ~Karia2();
+    void initialMainWindow();
+    void testFunc();
+    void testFunc2();
 
 public slots:
-        int createTask(TaskOption*option);
-        int createTask(int taskId, TaskOption*option);
+    int createTask(TaskOption*option);
+    int createTask(int taskId, TaskOption*option);
 
-        void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
-        void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
-        void onCatListSelectChange    (const QItemSelection & selected, const QItemSelection & deselected);
+    void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
+    void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
+    void onCatListSelectChange    (const QItemSelection & selected, const QItemSelection & deselected);
 	
-        void onAddTaskList(QStringList list);	// add a list of tasks
+    void onAddTaskList(QStringList list);	// add a list of tasks
 
 //public:
 
 	//cat
-	void onNewCategory();
-	void onShowCategoryProperty();
-	void onDeleteCategory();
-	void onCategoryMoveTo();
+    void onNewCategory();
+    void onShowCategoryProperty();
+    void onDeleteCategory();
+    void onCategoryMoveTo();
 
 	//edit
-	void onEditSelectAll();
-	void onEditInvertSelect();
-	void onCopySelectSegLog();	//
-	void onSaveSegLog();	//
-	void onClearSegLog();	//
+    void onEditSelectAll();
+    void onEditInvertSelect();
+    void onCopySelectSegLog();	//
+    void onSaveSegLog();	//
+    void onClearSegLog();	//
 
-	//view
-	void onShowToolbarText(bool show);
+    //view
+    void onShowToolbarText(bool show);
 
 	//任务管理
 	void onStartTask();		
@@ -100,7 +101,7 @@ public slots:
     void onOtherKaria2MessageRecived(const QString &msg);
 
 private:
-    Ui::NullGet mainUI; 
+    Ui::Karia2 mainUI;
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -326,6 +327,4 @@ protected:
 #endif
 
 };
-} // namespace karia2
-
 #endif // KARIA2_H

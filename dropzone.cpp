@@ -20,7 +20,7 @@
 
 #include "dropzone.h"
 
-#include "nullget.h"
+#include "karia2.h"
 
 //f|Qt::ToolTip|Qt::WindowStaysOnTopHint
 DropZone::DropZone(QWidget *parent,Qt::WFlags f )
@@ -117,7 +117,7 @@ void DropZone::dropEvent(QDropEvent *event)
 	QString text = event->mimeData()->text();
 
 	qDebug()<<__FUNCTION__<<text;
-	NullGet * ng = static_cast<NullGet*>(this->mParentMainWindow);
+	Karia2 * ng = static_cast<Karia2*>(this->mParentMainWindow);
 	if (ng != 0) {
 		QApplication::clipboard()->setText(event->mimeData()->text());
 		

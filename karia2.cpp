@@ -1,4 +1,4 @@
-// nullget.cpp --- 
+// karia2.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
@@ -10,7 +10,7 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "nullget.h"
+#include "karia2.h"
 #include "aboutdialog.h"
 #include "dropzone.h"
 #include "taskinfodlg.h"
@@ -61,10 +61,10 @@ extern QHash<QString, QString> gMimeHash;
 ////////////////////////////////////////////////
 //main window 
 ////////////////////////////////////////////////
-NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
-    : QMainWindow(parent, flags)
-    , mTaskMan(NULL)
-    , mAriaMan(NULL), mAriaRpc(NULL)
+Karia2::Karia2(QWidget *parent, Qt::WFlags flags)
+               : QMainWindow(parent, flags)
+               , mTaskMan(NULL)
+               , mAriaMan(NULL), mAriaRpc(NULL)
 {
     //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
 	mainUI.setupUi(this);	
@@ -79,7 +79,7 @@ NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
 	qDebug()<<"Switch Langague to: "<<qmLocale;
 	qApp->installTranslator(&appTranslator);
 	qApp->installTranslator(&qtTranslator);
-	appTranslator.load(QString("nullget_") + qmLocale , qmPath );
+	appTranslator.load(QString("karia2_") + qmLocale , qmPath );
 	qtTranslator.load(QString("qt_") + qmLocale , qmPath );
 	this->retranslateUi();
 	if (qmLocale.startsWith("zh_CN")) {
@@ -94,7 +94,7 @@ NullGet::NullGet(QWidget *parent, Qt::WFlags flags)
 /**
  * first show adjust window layout
  */
-void NullGet::firstShowHandler()
+void Karia2::firstShowHandler()
 {
     QMenu *addTaskMenuList = new QMenu(this);
     addTaskMenuList->addAction(this->mainUI.action_New_Download);
@@ -261,7 +261,7 @@ void NullGet::firstShowHandler()
 	//test area 　---------end-----------------
 }
 
-NullGet::~NullGet()
+Karia2::~Karia2()
 {
     this->mAriaMan->stop();
     delete this->mAriaMan;
@@ -269,7 +269,7 @@ NullGet::~NullGet()
 /**
  * init main window size, split size 
  */
-void NullGet::initialMainWindow()
+void Karia2::initialMainWindow()
 {
 	//qDebug()<<__FUNCTION__;
 	//set split on humanable postion , but not middle
@@ -299,7 +299,7 @@ void NullGet::initialMainWindow()
 	//this->onSwitchToWindowsXPStyle(true);	
 }
 
-void NullGet::moveEvent (QMoveEvent * event )
+void Karia2::moveEvent (QMoveEvent * event )
 {
 	QPoint cp = event->pos();
 	QPoint op = event->oldPos();
@@ -320,7 +320,7 @@ void NullGet::moveEvent (QMoveEvent * event )
 
 }
 
-void NullGet::initPopupMenus()
+void Karia2::initPopupMenus()
 {
 	//action groups 
 	QActionGroup *group = new QActionGroup(this);
@@ -453,7 +453,7 @@ void NullGet::initPopupMenus()
 	this->mDropZonePopupMenu->addAction(this->mainUI.action_Site_Explorer);
 	this->mDropZonePopupMenu->addSeparator ();
 	this->mDropZonePopupMenu->addAction(this->mainUI.action_Options);
-	this->mDropZonePopupMenu->addAction(this->mainUI.action_About_NullGet);
+	this->mDropZonePopupMenu->addAction(this->mainUI.action_About_Karia2);
 	this->mDropZonePopupMenu->addSeparator ();
 	this->mDropZonePopupMenu->addAction(this->mainUI.actionQuit);
 
@@ -466,7 +466,7 @@ void NullGet::initPopupMenus()
 
 }
 
-void NullGet::initStatusBar()
+void Karia2::initStatusBar()
 {
 	//进度条初始化状态应该从配置读取出来才对。开始结束的最大值也从配置文件来。
 
@@ -523,7 +523,7 @@ void NullGet::initStatusBar()
 /**
  *
  */
-void NullGet::initSystemTray()
+void Karia2::initSystemTray()
 {
 	//init system tray icon
 	this->mSysTrayIcon = new QSystemTrayIcon(this);
@@ -542,7 +542,7 @@ void NullGet::initSystemTray()
         //iconname = QString(qApp->applicationDirPath()+"/"+"resources/icon_22x22.png");
         //break;
    case 2:
-        // iconname = QString(qApp->applicationDirPath() + "/Resources/nullget-1.png");
+        // iconname = QString(qApp->applicationDirPath() + "/Resources/karia2-1.png");
         iconname = QString(qApp->applicationDirPath() + "/" +"Resources/karia2.png");
         break;
     }
@@ -553,11 +553,11 @@ void NullGet::initSystemTray()
 	this->mSysTrayIcon->show();
 
 	//this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/"+"resources/icon_16x16.png"));	
-    // this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/nullget-1.png"));	
+    // this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/karia2-1.png"));	
     this->setWindowIcon(QIcon(qApp->applicationDirPath()+"/Resources/karia2.png"));	
 }
 
-void NullGet::initAppIcons()
+void Karia2::initAppIcons()
 {
     QString dir = qApp->applicationDirPath() + "/icons";
     this->mainUI.action_Start->setIcon(QIcon(dir + "/media-playback-start.png"));
@@ -577,7 +577,7 @@ void NullGet::initAppIcons()
     this->mainUI.label->setPixmap(QPixmap(dir + "/status/unknown.png"));
 }
 
-void NullGet::connectAllSignalAndSlog()
+void Karia2::connectAllSignalAndSlog()
 {
 	QObject::connect(this->mainUI.actionDrop_zone, SIGNAL(triggered(bool)), this->mDropZone,SLOT(setVisible(bool)));
 	
@@ -634,8 +634,8 @@ void NullGet::connectAllSignalAndSlog()
                      this, SLOT(onRememberSpeedLimitSetting(bool)));
     
 	//help action 
-	this->connect(this->mainUI.action_Go_to_NullGet_Home_Page, SIGNAL(triggered()), this, SLOT(onGotoHomePage()));
-	this->connect(this->mainUI.action_About_NullGet, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
+	this->connect(this->mainUI.action_Go_to_Karia2_Home_Page, SIGNAL(triggered()), this, SLOT(onGotoHomePage()));
+	this->connect(this->mainUI.action_About_Karia2, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
 	QObject::connect(this->mainUI.actionAbout_Qt, SIGNAL(triggered()), this, SLOT(onAboutQt()));
 
 	//centrol 
@@ -687,7 +687,7 @@ void NullGet::connectAllSignalAndSlog()
 
 }
 //temporary 临时用于隐藏没有实现功能用户界面的代码。
-void NullGet::hideUnimplementUiElement()
+void Karia2::hideUnimplementUiElement()
 {
     this->mainUI.menu_Search->menuAction()->setVisible(false);
     this->mainUI.menu_Plugins->menuAction()->setVisible(false);
@@ -741,7 +741,7 @@ void NullGet::hideUnimplementUiElement()
 	//help
 	this->mainUI.action_User_Manual_in_Internet->setVisible(false);
 
-	this->mainUI.action_Manual_NullGet->setVisible(false);
+	this->mainUI.action_Manual_Karia2->setVisible(false);
 	this->mainUI.actionC_heck_for_a_new_version->setVisible(false);
 	this->mainUI.actionFAQ_in_Internet->setVisible(false);
 
@@ -749,12 +749,12 @@ void NullGet::hideUnimplementUiElement()
 	this->mainUI.action_Seg_List_Restart->setVisible(false);
 }
 
-void NullGet::hideUnneededUiElement()
+void Karia2::hideUnneededUiElement()
 {
 
 }
 
-void NullGet::initUserOptionSetting()
+void Karia2::initUserOptionSetting()
 {
     OptionManager *om = NULL;
 
@@ -796,7 +796,7 @@ void NullGet::initUserOptionSetting()
 /**
  * access private
  */
-int NullGet::getNextValidTaskId() 
+int Karia2::getNextValidTaskId()
 {
 	int taskId = -1;
 
@@ -811,7 +811,7 @@ int NullGet::getNextValidTaskId()
 /**
  * overload method
  */
-int NullGet::createTask(TaskOption *option)
+int Karia2::createTask(TaskOption *option)
 {
 	//precondition: 
 	assert(option != 0 );
@@ -858,13 +858,13 @@ int NullGet::createTask(TaskOption *option)
 	return taskId;
 }
 
-int NullGet::createTask(int taskId, TaskOption *option)
+int Karia2::createTask(int taskId, TaskOption *option)
 {
     this->mTaskMan->addTaskModel(taskId, option);
     return taskId;
 }
 
-void NullGet::onAddTaskList(QStringList list)
+void Karia2::onAddTaskList(QStringList list)
 {
 	////建立任务
 	QString taskUrl = list.at(0);
@@ -900,7 +900,7 @@ void NullGet::onAddTaskList(QStringList list)
 	delete tid;
 }
 
-void NullGet::testFunc()
+void Karia2::testFunc()
 {
 	qDebug()<<__FUNCTION__;
 	// int count = 7;	
@@ -918,7 +918,7 @@ void NullGet::testFunc()
 
 }
 
-void NullGet::testFunc2()
+void Karia2::testFunc2()
 {
 	qDebug()<<__FUNCTION__;
 
@@ -935,7 +935,7 @@ void NullGet::testFunc2()
 }
 
 
-void NullGet::onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
+void Karia2::onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
 {
 	qDebug()<<__FUNCTION__;
     Q_UNUSED(deselected);
@@ -968,7 +968,7 @@ void NullGet::onSegmentListSelectChange(const QItemSelection & selected, const Q
 	}
 }
 
-void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QItemSelection & deselected)
+void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItemSelection & deselected)
 {
     Q_UNUSED(deselected);
 
@@ -1064,7 +1064,7 @@ void NullGet::onTaskListSelectChange(const QItemSelection & selected, const QIte
     }
 }
 
-void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
+void Karia2::onCatListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
 {
 	qDebug()<<__FUNCTION__<<selected;
 	
@@ -1109,7 +1109,7 @@ void NullGet::onCatListSelectChange(const QItemSelection & selected, const QItem
 }
 
 // TODO, handle multi row select case
-void NullGet::onStartTask() 
+void Karia2::onStartTask()
 {
 	qDebug()<<__FUNCTION__<<__LINE__;	
 	QAbstractItemView *view = this->mTaskListView;
@@ -1209,7 +1209,7 @@ void NullGet::onStartTask()
     }
 }
 
-void NullGet::onStartTaskAll()
+void Karia2::onStartTaskAll()
 {
 	qDebug()<<__FUNCTION__;
 
@@ -1230,7 +1230,7 @@ void NullGet::onStartTaskAll()
 }
 
 
-void NullGet::onPauseTask() 
+void Karia2::onPauseTask()
 {
 	qDebug()<<__FUNCTION__;
 	
@@ -1267,7 +1267,7 @@ void NullGet::onPauseTask()
                              this, SLOT(onAriaRemoveFault(int, QString, QVariant&)));
     }
 }
-void NullGet::onPauseTask(int pTaskId ) 
+void Karia2::onPauseTask(int pTaskId )
 {
 	qDebug()<<__FUNCTION__;
     Q_UNUSED(pTaskId);
@@ -1284,7 +1284,7 @@ void NullGet::onPauseTask(int pTaskId )
 	return;
 }
 
-void NullGet::onPauseTaskAll() 
+void Karia2::onPauseTaskAll()
 {
 	qDebug()<<__FUNCTION__;
 	TaskQueue * hTask = 0;
@@ -1306,7 +1306,7 @@ void NullGet::onPauseTaskAll()
 /**
  * 将任务数据移动到删除队列
  */
-void NullGet::onDeleteTask()
+void Karia2::onDeleteTask()
 {
 	qDebug()<<__FUNCTION__;
 	
@@ -1391,7 +1391,7 @@ void NullGet::onDeleteTask()
     QApplication::restoreOverrideCursor();
 }
 
-void NullGet::onDeleteTaskAll()
+void Karia2::onDeleteTaskAll()
 {
 	qDebug()<<__FUNCTION__;
 	QModelIndex index;
@@ -1434,7 +1434,7 @@ QModelIndex findCatModelIndexByCatId(QAbstractItemModel *mdl, QModelIndex parent
     return idx;
 }
 
-void NullGet::onTaskDone(int pTaskId)
+void Karia2::onTaskDone(int pTaskId)
 {
 	qDebug()<<__FUNCTION__;
 
@@ -1471,14 +1471,14 @@ void NullGet::onTaskDone(int pTaskId)
     return;
 }
 
-void NullGet::onShutdown()
+void Karia2::onShutdown()
 {
     qDebug()<<__FUNCTION__<<" shutdown OS now";
 }
 
 //////ui op
 
-void NullGet::onNewCategory()
+void Karia2::onNewCategory()
 {
 	CatManDlg * dlg = new CatManDlg (this );
 	QAbstractItemModel * aim;
@@ -1524,7 +1524,7 @@ void NullGet::onNewCategory()
 	if (dlg != NULL ) delete dlg; dlg = NULL;
 }
 
-void NullGet::onShowCategoryProperty()
+void Karia2::onShowCategoryProperty()
 {
 	int er;
 	
@@ -1554,7 +1554,7 @@ void NullGet::onShowCategoryProperty()
 	delete dlg;	
 }
 
-void NullGet::onDeleteCategory()
+void Karia2::onDeleteCategory()
 {	
 	// QItemSelectionModel * ism;
 	QModelIndexList mil;
@@ -1583,7 +1583,7 @@ void NullGet::onDeleteCategory()
 	}
 }
 
-void NullGet::onCategoryMoveTo()
+void Karia2::onCategoryMoveTo()
 {
 	// QItemSelectionModel * ism;
 	QModelIndexList mil , milto;
@@ -1625,7 +1625,7 @@ void NullGet::onCategoryMoveTo()
 
 	}	
 }
-void NullGet::onShowColumnEditor()
+void Karia2::onShowColumnEditor()
 {
 	QDialog *dlg = new ColumnsManDlg(this);
     QObject::connect(dlg, SIGNAL(taskShowColumnsChanged(QString)),
@@ -1637,7 +1637,7 @@ void NullGet::onShowColumnEditor()
 }
 
 
-void NullGet::initXmlRpc()
+void Karia2::initXmlRpc()
 {
     if (this->mAriaRpc == NULL) {
         // the default port is 6800 on best case, change to 6800+ if any exception.
@@ -1668,7 +1668,7 @@ void NullGet::initXmlRpc()
     }
 }
 
-QMap<QString, QVariant> NullGet::taskOptionToAria2RpcOption(TaskOption *to)
+QMap<QString, QVariant> Karia2::taskOptionToAria2RpcOption(TaskOption *to)
 {
     Q_ASSERT(to != NULL);
     QMap<QString, QVariant> aopts;
@@ -1776,7 +1776,7 @@ QString decodeEncodeUrl(QString enUrl)
 /**
  *
  */
-void NullGet::showNewDownloadDialog()
+void Karia2::showNewDownloadDialog()
 {
 	QString url;
 	int segcnt = 7;
@@ -1832,16 +1832,16 @@ void NullGet::showNewDownloadDialog()
 	qDebug()<<segcnt<<url;
 }
 
-void NullGet::testResponse(QVariant &response, QVariant &payload)
+void Karia2::testResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
 }
-void NullGet::testFault(int status, QString response, QVariant &payload)
+void Karia2::testFault(int status, QString response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<status<<response<<payload;
 }
 
-void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaAddUriResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload; // why this line cause crash?
 
@@ -1868,29 +1868,29 @@ void NullGet::onAriaAddUriResponse(QVariant &response, QVariant &payload)
      }
     
 }
-void NullGet::onAriaAddUriFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaAddUriFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason;
     Q_UNUSED(payload);
 }
 
-void NullGet::onAriaGetUriResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetUriResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response;
     Q_UNUSED(payload);
 }
-void NullGet::onAriaGetUriFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetUriFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason;
     Q_UNUSED(payload);
 }
 
 /*
-QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ("completedLength" ,  QVariant(QString, "1769472") ) ("connections" ,  QVariant(QString, "2") ) ("dir" ,  QVariant(QString, "/home/gzleo/nullget-svn") ) ("downloadSpeed" ,  QVariant(QString, "35243") ) ("files" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("index", QVariant(QString, "1") ) ("length" ,  QVariant(QString, "13910775") ) ("path" ,  QVariant(QString, "/home/gzleo/nullget-svn/postgresql-9.0alpha5.tar.bz2") ) ("selected" ,  QVariant(QString, "true") ) ("uris" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) ,  QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) )  ) ) )  ) )  ) ) ("gid" ,  QVariant(QString, "1") ) ("numPieces" ,  QVariant(QString, "14") ) ("pieceLength" ,  QVariant(QString, "1048576") ) ("status" ,  QVariant(QString, "active") ) ("totalLength" ,  QVariant(QString, "13910775") ) ("uploadLength" ,  QVariant(QString, "0") ) ("uploadSpeed" ,  QVariant(QString, "0") ) )  )
+QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ("completedLength" ,  QVariant(QString, "1769472") ) ("connections" ,  QVariant(QString, "2") ) ("dir" ,  QVariant(QString, "/home/gzleo/karia2-svn") ) ("downloadSpeed" ,  QVariant(QString, "35243") ) ("files" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("index", QVariant(QString, "1") ) ("length" ,  QVariant(QString, "13910775") ) ("path" ,  QVariant(QString, "/home/gzleo/karia2-svn/postgresql-9.0alpha5.tar.bz2") ) ("selected" ,  QVariant(QString, "true") ) ("uris" ,  QVariant(QVariantList, (QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) ,  QVariant(QVariantMap, QMap(("status", QVariant(QString, "used") ) ("uri" ,  QVariant(QString, "http://wwwmaster.postgresql.org/redir/394/h/source/9.0alpha5/postgresql-9.0alpha5.tar.bz2") ) )  ) )  ) ) )  ) )  ) ) ("gid" ,  QVariant(QString, "1") ) ("numPieces" ,  QVariant(QString, "14") ) ("pieceLength" ,  QVariant(QString, "1048576") ) ("status" ,  QVariant(QString, "active") ) ("totalLength" ,  QVariant(QString, "13910775") ) ("uploadLength" ,  QVariant(QString, "0") ) ("uploadSpeed" ,  QVariant(QString, "0") ) )  )
  */
 
 
-void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
 
@@ -1934,7 +1934,7 @@ void NullGet::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
         this->mTaskMan->onPauseTask(taskId); // maybe named clearTask
     }
 }
-void NullGet::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason;
     
@@ -1942,7 +1942,7 @@ void NullGet::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
 }
 
 // TODO, combine request to aria2.multicall
-void NullGet::onAriaUpdaterTimeout()
+void Karia2::onAriaUpdaterTimeout()
 {
     // qDebug()<<"time out update";
     QHashIterator<int, QString> hit(this->mRunningMap);
@@ -1974,7 +1974,7 @@ void NullGet::onAriaUpdaterTimeout()
     }
 }
 
-void NullGet::onAriaRemoveResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaRemoveResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
     int taskId = payload.toInt();
@@ -1987,13 +1987,13 @@ void NullGet::onAriaRemoveResponse(QVariant &response, QVariant &payload)
     this->mTaskMan->onPauseTask(taskId);
 }
 
-void NullGet::onAriaRemoveFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaRemoveFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
     // assert(1 == 2);
 }
 
-void NullGet::onAriaGlobalUpdaterTimeout()
+void Karia2::onAriaGlobalUpdaterTimeout()
 {
     QVariantList args;
     QVariant payload;
@@ -2008,7 +2008,7 @@ void NullGet::onAriaGlobalUpdaterTimeout()
                          this, SLOT(onAriaGetActiveFault(int, QString, QVariant &)));
 }
 
-void NullGet::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
     Q_UNUSED(payload);
@@ -2039,12 +2039,12 @@ void NullGet::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
 	this->mISHW->updateSpeedHistogram(sumSpeed);
 }
 
-void NullGet::onAriaGetActiveFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetActiveFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaGetServersResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetServersResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
 
@@ -2059,12 +2059,12 @@ void NullGet::onAriaGetServersResponse(QVariant &response, QVariant &payload)
     }
 }
 
-void NullGet::onAriaGetServersFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetServersFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payload)
 {
     int taskId = payload.toInt();
 
@@ -2072,12 +2072,12 @@ void NullGet::onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payloa
     this->mTaskMan->setPeers(taskId, peers);
     // qDebug()<<__FUNCTION__<<response<<payload;
 }
-void NullGet::onAriaGetTorrentPeersFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetTorrentPeersFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaParseTorrentFileResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
     /*
@@ -2106,7 +2106,7 @@ void NullGet::onAriaParseTorrentFileResponse(QVariant &response, QVariant &paylo
     
 }
 
-void NullGet::onAriaParseTorrentFileFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaParseTorrentFileFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
     // onAriaParseTorrentFileFault 1 "We encountered a problem while processing the option '--select-file'."
@@ -2116,7 +2116,7 @@ void NullGet::onAriaParseTorrentFileFault(int code, QString reason, QVariant &pa
      */
 }
 
-void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
     QMap<QString, QVariant> mPayload = payload.toMap();
@@ -2155,12 +2155,12 @@ void NullGet::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payloa
     }
 }
 
-void NullGet::onAriaGetTorrentFilesFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetTorrentFilesFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onTorrentRemoveConfirmTimeout()
+void Karia2::onTorrentRemoveConfirmTimeout()
 {
     QTimer *timer = (QTimer*)(sender());  
     QVariant vtimer = QVariant(qVariantFromValue((QObject*)timer));
@@ -2178,7 +2178,7 @@ void NullGet::onTorrentRemoveConfirmTimeout()
                          this, SLOT(onAriaRemoveGetTorrentFilesConfirmFault(int, QString, QVariant &)));
 }
 
-void NullGet::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
     QVariantMap msts = response.toMap();
@@ -2200,12 +2200,12 @@ void NullGet::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVa
     }
 }
 
-void NullGet::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
     qDebug()<<__FUNCTION__<<payload;
@@ -2271,12 +2271,12 @@ void NullGet::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVari
     this->mTaskMan->setSeedFiles(taskId, seedFiles);
 }
 
-void NullGet::onAriaRemoveTorrentParseFileTaskFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaRemoveTorrentParseFileTaskFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaTorrentUpdaterTimeout()
+void Karia2::onAriaTorrentUpdaterTimeout()
 {
     this->initXmlRpc();
     QVariantList args;
@@ -2291,34 +2291,34 @@ void NullGet::onAriaTorrentUpdaterTimeout()
     }
 }
 
-void NullGet::onAriaGetVersionResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetVersionResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
 }
-void NullGet::onAriaGetVersionFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetVersionFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
-void NullGet::onAriaGetSessionInfoResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetSessionInfoResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
 }
-void NullGet::onAriaGetSessionInfoFault(int code, QString reason, QVariant &payload)
-{
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
-}
-
-void NullGet::onAriaMultiCallVersionSessionResponse(QVariant &response, QVariant &payload)
-{
-    qDebug()<<__FUNCTION__<<response<<payload;
-}
-
-void NullGet::onAriaMultiCallVersionSessionFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetSessionInfoFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaMultiCallVersionSessionResponse(QVariant &response, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<response<<payload;
+}
+
+void Karia2::onAriaMultiCallVersionSessionFault(int code, QString reason, QVariant &payload)
+{
+    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+}
+
+void Karia2::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payload)
 {
     // qDebug()<<__FUNCTION__<<response<<payload;
     Q_UNUSED(response);
@@ -2341,23 +2341,23 @@ void NullGet::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &pay
     //                      this, SLOT(onAriaGetGlobalOptionFault(int, QString, QVariant &)));
 }
 
-void NullGet::onAriaChangeGlobalOptionFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaChangeGlobalOptionFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
-void NullGet::onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload)
+void Karia2::onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<response<<payload;
 }
 
-void NullGet::onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload)
+void Karia2::onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload)
 {
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 // TODO, test with a invalid torrent file
-void NullGet::showNewBittorrentFileDialog()
+void Karia2::showNewBittorrentFileDialog()
 {
     QString url;
     
@@ -2428,7 +2428,7 @@ void NullGet::showNewBittorrentFileDialog()
     }
 }
 
-void NullGet::showNewMetalinkFileDialog()
+void Karia2::showNewMetalinkFileDialog()
 {
     QString url;
     
@@ -2484,7 +2484,7 @@ void NullGet::showNewMetalinkFileDialog()
     }
 }
 
-void NullGet::showBatchDownloadDialog()
+void Karia2::showBatchDownloadDialog()
 {
 	QString url;
 	int segcnt = 7;
@@ -2513,7 +2513,7 @@ void NullGet::showBatchDownloadDialog()
 	}	
 }
 
-void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接并下载
+void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接并下载
 {
 	QStringList urlList , srcList ,resultList;
 	QString url;
@@ -2646,7 +2646,7 @@ void NullGet::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链�
 	if (wpld != 0 ) delete wpld;
 }
 
-void NullGet::onShowOptions()
+void Karia2::onShowOptions()
 {
 	QDialog *dlg = new PreferencesDialog(this);
 
@@ -2656,7 +2656,7 @@ void NullGet::onShowOptions()
 
 }
 
-// void NullGet::onShowConnectOption()
+// void Karia2::onShowConnectOption()
 // {
 // 	OptionDlg *dlg = new OptionDlg(this);
 
@@ -2665,7 +2665,7 @@ void NullGet::onShowOptions()
 // 	delete dlg;
 // }
 
-// void NullGet::onShowDefaultDownloadProperty()
+// void Karia2::onShowDefaultDownloadProperty()
 // {
 // 	taskinfodlg *tid = new taskinfodlg(0,0);		
 	
@@ -2675,7 +2675,7 @@ void NullGet::onShowOptions()
 // 	delete tid;	
 // }
 
-void NullGet::onShowTaskProperty()
+void Karia2::onShowTaskProperty()
 {
 	qDebug()<<__FUNCTION__;
 	// QItemSelectionModel * sim;
@@ -2715,12 +2715,12 @@ void NullGet::onShowTaskProperty()
         delete tid;
     }
 }
-void NullGet::onShowTaskProperty(int pTaskId)
+void Karia2::onShowTaskProperty(int pTaskId)
 {
     Q_UNUSED(pTaskId);
 }
 
-void NullGet::onShowTaskPropertyDigest(const QModelIndex & index )
+void Karia2::onShowTaskPropertyDigest(const QModelIndex & index )
 {
 	//qDebug()<<__FUNCTION__ << index.data();
 	// int taskId;
@@ -2729,7 +2729,7 @@ void NullGet::onShowTaskPropertyDigest(const QModelIndex & index )
 	QTimer::singleShot(1000, this, SLOT(onShowTaskPropertyDigest()));
 }
 
-void NullGet::onShowTaskPropertyDigest( )
+void Karia2::onShowTaskPropertyDigest( )
 {
 	//qDebug()<<__FUNCTION__;
 	QString tips = tr("<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: .%4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>");
@@ -2798,7 +2798,7 @@ void NullGet::onShowTaskPropertyDigest( )
 	this->mSwapModelIndex = QModelIndex();	
 }
 
-QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
+QPair<QString, QString> Karia2::getFileTypeByFileName(QString fileName)
 {
 	QPair<QString,QString> ftype("unknown", "unknown.png");
 
@@ -2832,7 +2832,7 @@ QPair<QString, QString> NullGet::getFileTypeByFileName(QString fileName)
     return ftype;
 }
 
-void NullGet::onEditSelectAll()
+void Karia2::onEditSelectAll()
 {
 	qDebug()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
@@ -2845,7 +2845,7 @@ void NullGet::onEditSelectAll()
 	qDebug()<<wg;
 
 }
-void NullGet::onEditInvertSelect()
+void Karia2::onEditInvertSelect()
 {
 	qDebug()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
@@ -2890,7 +2890,7 @@ void NullGet::onEditInvertSelect()
 
 }
 
-void NullGet::onShowToolbarText(bool show) 
+void Karia2::onShowToolbarText(bool show) 
 {
 	if (show )
 	{
@@ -2902,7 +2902,7 @@ void NullGet::onShowToolbarText(bool show)
 	}
 }
 
-void NullGet::onTaskListMenuPopup(/* const QPoint & pos */) 
+void Karia2::onTaskListMenuPopup(/* const QPoint & pos */) 
 {
 	//qDebug()<<__FUNCTION__;
 
@@ -3032,7 +3032,7 @@ void NullGet::onTaskListMenuPopup(/* const QPoint & pos */)
 		//不是任务视图控件发送来的。
 	}
 }
-void NullGet::onUpdateJobMenuEnableProperty() 
+void Karia2::onUpdateJobMenuEnableProperty() 
 {
 	qDebug()<<__FUNCTION__;
 
@@ -3165,23 +3165,23 @@ void NullGet::onUpdateJobMenuEnableProperty()
 	
 }
 
-void NullGet::onLogListMenuPopup(const QPoint & pos ) 
+void Karia2::onLogListMenuPopup(const QPoint & pos ) 
 {
     Q_UNUSED(pos);
 	this->mLogPopupMenu->popup(QCursor::pos());
 }
-void NullGet::onSegListMenuPopup(const QPoint & pos) 
+void Karia2::onSegListMenuPopup(const QPoint & pos) 
 {
 	// this->mSegmentPopupMenu->popup(QCursor::pos());
     Q_UNUSED(pos);
 }
-void NullGet::onCateMenuPopup(const QPoint & pos)
+void Karia2::onCateMenuPopup(const QPoint & pos)
 {
     Q_UNUSED(pos);
 	this->mCatPopupMenu->popup(QCursor::pos());
 }
 
-void NullGet::onCopyUrlToClipboard()
+void Karia2::onCopyUrlToClipboard()
 {
 	qDebug()<<__FUNCTION__;
 
@@ -3199,7 +3199,7 @@ void NullGet::onCopyUrlToClipboard()
 }
 
 ////////////
-void NullGet::onCopySelectSegLog()
+void Karia2::onCopySelectSegLog()
 {
 	qDebug()<<__FUNCTION__;
 	
@@ -3235,7 +3235,7 @@ void NullGet::onCopySelectSegLog()
 	qDebug()<<cols<<text <<mil.size();
 
 }
-void NullGet::onSaveSegLog()
+void Karia2::onSaveSegLog()
 {
 	QModelIndex idx;
 	// QTreeView *tv;
@@ -3278,7 +3278,7 @@ void NullGet::onSaveSegLog()
 /**
  * 	清除线程日志视图中的LOG信息。
  */
-void NullGet::onClearSegLog() 	//
+void Karia2::onClearSegLog() 	//
 {
 	QAbstractItemModel * aim = 0;
 	int row;
@@ -3302,7 +3302,7 @@ void NullGet::onClearSegLog() 	//
  * Qt 的这种语言处理方式不能在程序运行时动态修改，需要另一种比较麻烦的方法实现，详见Qt 手册。
  * 已经修改为支持动态语言切换了
  */
-void NullGet::onSwitchLanguage(QAction* action)
+void Karia2::onSwitchLanguage(QAction* action)
 {
 	QString lang = "en_US";	//默认
 	//if (action == this->mainUI.action_Chinese_simple)
@@ -3321,10 +3321,10 @@ void NullGet::onSwitchLanguage(QAction* action)
 		 lang = "en_US";	//默认
 	
 	//QTranslator translator;
-	//translator.load(QString("nullget_")+lang);
+	//translator.load(QString("karia2_")+lang);
 	//qApp->installTranslator(&translator);
 
-	QString langFile  = QString("nullget_")+lang;
+	QString langFile  = QString("karia2_")+lang;
 	appTranslator.load(langFile , qmPath );
 	//qDebug()<<"Loading file :"<<langFile;
 	langFile = "qt_"+lang;
@@ -3339,7 +3339,7 @@ void NullGet::onSwitchLanguage(QAction* action)
 	
 }
 
-void NullGet::onSwitchSkinType(QAction* action)
+void Karia2::onSwitchSkinType(QAction* action)
 {
     Q_UNUSED(action);
 }
@@ -3348,7 +3348,7 @@ void NullGet::onSwitchSkinType(QAction* action)
 //"windows", "motif", "cde", "plastique", "windowsxp", or "macintosh"
 // ("Bespin", "Oxygen", "Windows", "Motif", "CDE", "Plastique", "GTK+", "Cleanlooks")
 
-void NullGet::onSwitchWindowStyle(QAction * action )
+void Karia2::onSwitchWindowStyle(QAction * action )
 {
 	qDebug()<<__FUNCTION__<<":"<<__LINE__<<" typeL "<< action->data().toString()
 		<< this->sender();
@@ -3375,7 +3375,7 @@ void NullGet::onSwitchWindowStyle(QAction * action )
 	}
 }
 
-void NullGet::onSwitchSpeedMode(QAction *action)
+void Karia2::onSwitchSpeedMode(QAction *action)
 {
 	qDebug()<<__FUNCTION__;
     QString speedLimitType = "unlimited";
@@ -3405,7 +3405,7 @@ void NullGet::onSwitchSpeedMode(QAction *action)
     }
 }
 
-void NullGet::onRememberSpeedLimitSetting(bool checked)
+void Karia2::onRememberSpeedLimitSetting(bool checked)
 {
     OptionManager *om = NULL;
     QString value;
@@ -3432,7 +3432,7 @@ void NullGet::onRememberSpeedLimitSetting(bool checked)
 
 // TODO call many time when drap the speed slider bar
 // need a accelerate slider
-void NullGet::onManualSpeedChanged(int value) 
+void Karia2::onManualSpeedChanged(int value) 
 {
 	//qDebug()<<__FUNCTION__;
 	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
@@ -3459,14 +3459,14 @@ void NullGet::onManualSpeedChanged(int value)
 }
 ////////////
 
-void NullGet::showAboutDialog()
+void Karia2::showAboutDialog()
 {
 	AboutDialog *pAboutDialog = new AboutDialog(this);
 	pAboutDialog->exec();
 	delete pAboutDialog;
 }
 
-void NullGet::onGotoHomePage()
+void Karia2::onGotoHomePage()
 {
 	QString homepage = "http://www.qtchina.net/";
 	QDesktopServices::openUrl(homepage);
@@ -3476,7 +3476,7 @@ void NullGet::onGotoHomePage()
  * 隐藏或者显示主窗口。
  * 这是一个翻转开关，是显示还是隐藏依赖于主窗口当前是否显示。
  */
-void NullGet::onDropZoneDoubleClicked()
+void Karia2::onDropZoneDoubleClicked()
 {
 	qDebug()<<__FUNCTION__;
 	if (this->isHidden () )
@@ -3493,14 +3493,14 @@ void NullGet::onDropZoneDoubleClicked()
 		this->setHidden(true);
 	}
 }
-void NullGet::onDropZoneCustomMenu(const QPoint & pos)
+void Karia2::onDropZoneCustomMenu(const QPoint & pos)
 {
     Q_UNUSED(pos);
 	this->mDropZonePopupMenu->popup(QCursor::pos());
 }
 
 
-void NullGet::onOpenDistDirector()
+void Karia2::onOpenDistDirector()
 {
 	qDebug()<<__FUNCTION__;
 	QString openner;
@@ -3534,7 +3534,7 @@ void NullGet::onOpenDistDirector()
 	}
 }
 
-void NullGet::onOpenExecDownloadedFile()
+void Karia2::onOpenExecDownloadedFile()
 {
 	qDebug()<<__FUNCTION__;
 	
@@ -3578,7 +3578,7 @@ void NullGet::onOpenExecDownloadedFile()
 }
 
 
-void NullGet::onOpenRefererUrl()
+void Karia2::onOpenRefererUrl()
 {
 	QString tmp;
 	QString dir, fname, referer;
@@ -3607,7 +3607,7 @@ void NullGet::onOpenRefererUrl()
 //////////private
 
 //
-void NullGet::onClipBoardDataChanged()
+void Karia2::onClipBoardDataChanged()
 {
 	
 	QClipboard *cb = QApplication::clipboard();	
@@ -3624,18 +3624,18 @@ void NullGet::onClipBoardDataChanged()
             || text.startsWith("flashget", Qt::CaseInsensitive)
             || text.startsWith("qqdl:", Qt::CaseInsensitive)
             || text.startsWith("thunder:", Qt::CaseInsensitive)
-            || text.startsWith("nullget://", Qt::CaseInsensitive)) {
+            || text.startsWith("karia2://", Qt::CaseInsensitive)) {
 			// this->showNewDownloadDialog(); // Open sometime later
 		}
-        if (text.startsWith("nullget://", Qt::CaseInsensitive)) {
-            this->showNewDownloadDialog(); // this should be nullget passed from browser, force handle it
+        if (text.startsWith("karia2://", Qt::CaseInsensitive)) {
+            this->showNewDownloadDialog(); // this should be karia2 passed from browser, force handle it
         }
 	}
 	
 	qDebug()<<text;
 }
 
-void NullGet::paintEvent (QPaintEvent * event )
+void Karia2::paintEvent (QPaintEvent * event )
 {
     Q_UNUSED(event);
 	QPainter painter(this);
@@ -3661,7 +3661,7 @@ void NullGet::paintEvent (QPaintEvent * event )
  * show user exit.
  * clean data, save state
  */
-void NullGet::closeEvent (QCloseEvent * event )
+void Karia2::closeEvent (QCloseEvent * event )
 {
 	qDebug()<<__FUNCTION__ << this->sender();
 	//qDebug()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
@@ -3669,7 +3669,7 @@ void NullGet::closeEvent (QCloseEvent * event )
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		event->setAccepted(false);
 	} else {//通过点击退出菜单，可认为用户是想退出的。
-		//if (QMessageBox::question(this,"Are you sure?","Exit NullGet Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
+		//if (QMessageBox::question(this,"Are you sure?","Exit Karia2 Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
 		{
 		//	event->setAccepted(false);	//不再传递了
 		//	return;
@@ -3694,7 +3694,7 @@ void NullGet::closeEvent (QCloseEvent * event )
 	}
 }
 
-void NullGet::showEvent (QShowEvent * event ) 
+void Karia2::showEvent (QShowEvent * event ) 
 {
 	QWidget::showEvent(event);
 
@@ -3709,7 +3709,7 @@ void NullGet::showEvent (QShowEvent * event )
 }
 
 #if defined(Q_OS_WIN)
-bool NullGet::winEvent (MSG * msg, long * result )
+bool Karia2::winEvent (MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 	//whereis MOD_CONTROL ???
@@ -3729,12 +3729,12 @@ bool NullGet::winEvent (MSG * msg, long * result )
 	return QMainWindow::winEvent(msg, result);
 }
 #elif defined(Q_OS_MAC)
-bool NullGet::macEvent (EventHandlerCallRef caller, EventRef event )
+bool Karia2::macEvent (EventHandlerCallRef caller, EventRef event )
 {
     return QMainWindow::macEvent(caller, event);
 }
 #else
-bool NullGet::x11Event (XEvent * event )
+bool Karia2::x11Event (XEvent * event )
 {
     //qDebug()<<"XEvent->type:"<< event->type;
     if (event->type == PropertyNotify) {
@@ -3742,7 +3742,7 @@ bool NullGet::x11Event (XEvent * event )
     }
     return QMainWindow::x11Event(event);
 }
-void NullGet::keyReleaseEvent (QKeyEvent * event )
+void Karia2::keyReleaseEvent (QKeyEvent * event )
 {
     // shortcut: CTRL+G
     if (event->modifiers() == Qt::ControlModifier) {
@@ -3757,7 +3757,7 @@ void NullGet::keyReleaseEvent (QKeyEvent * event )
 }
 #endif
 
-void NullGet::shootScreen() 
+void Karia2::shootScreen() 
 {
 	QPixmap screenSnapShot = QPixmap::grabWindow(QApplication::desktop()->winId());
 	QString format = "png";
@@ -3775,7 +3775,7 @@ void NullGet::shootScreen()
 }
 
 //system tray slot handler
-void NullGet::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
+void Karia2::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
 {
 	qDebug()<<__FUNCTION__ << index;
 	if (index == QSystemTrayIcon::DoubleClick	)
@@ -3798,12 +3798,12 @@ void NullGet::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
 /**
  * 系统托盘弹出的泡泡状消息窗口被点击时处理函数
  */
-void NullGet::onBallonClicked()
+void Karia2::onBallonClicked()
 {
 	qDebug()<<__FUNCTION__;
 }
 
-void NullGet::onShowWalkSiteWindow()
+void Karia2::onShowWalkSiteWindow()
 {
 	//将搜索窗口集成到主窗口中，不再需要显示这个窗口了。将下面到hide几行删除，release编译出来的程序会小60多K。	
 	//if (this->mWalkSiteWnd == 0 )
@@ -3856,7 +3856,7 @@ void NullGet::onShowWalkSiteWindow()
 
 }
 
-void NullGet::onAriaProcError(QProcess::ProcessError error)
+void Karia2::onAriaProcError(QProcess::ProcessError error)
 {
     if (error == QProcess::FailedToStart) {
         this->mAriaGlobalUpdater.stop();
@@ -3865,13 +3865,13 @@ void NullGet::onAriaProcError(QProcess::ProcessError error)
     }
 }
 
-void NullGet::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void Karia2::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
 }
 
-void NullGet::onTaskLogArrived(QString log)
+void Karia2::onTaskLogArrived(QString log)
 {
     if (log.length() <= 2) {
         return;
@@ -3879,7 +3879,7 @@ void NullGet::onTaskLogArrived(QString log)
     this->mainUI.plainTextEdit->appendPlainText(log.trimmed());
 }
 
-void NullGet::onTaskShowColumnsChanged(QString columns)
+void Karia2::onTaskShowColumnsChanged(QString columns)
 {
     //////
     QStringList colList;
@@ -3898,7 +3898,7 @@ void NullGet::onTaskShowColumnsChanged(QString columns)
     }
 }
 
-void NullGet::handleArguments()
+void Karia2::handleArguments()
 {
     int argc = qApp->argc();
     char **argv = qApp->argv();
@@ -3908,7 +3908,7 @@ void NullGet::handleArguments()
 
 #include "getopt_pp_standalone.h"
 
-void NullGet::handleArguments(int argc, char **argv)
+void Karia2::handleArguments(int argc, char **argv)
 {
     for (int i = 0 ; i < argc ; i ++) {
         qDebug()<<"Arg no: "<<i<<argv[i];
@@ -3919,9 +3919,9 @@ void NullGet::handleArguments(int argc, char **argv)
     char *targv[100] = {0};
     std::string noprefix_metafile;
     /* opera for win send this format arguments:
-       no:  0 Z:\cross\karia2-svn\release\NullGet.exe
+       no:  0 Z:\cross\karia2-svn\release\Karia2.exe
        no:  1 --uri http://down.sandai.net/Thunder5.9.19.1390.exe --refer http://dl.xunlei.com/index.htm?tag=1
-       NullGet::handleArguments No uri specified.
+       Karia2::handleArguments No uri specified.
      */
     // maybe opera
 #if defined(Q_OS_WIN)
@@ -4036,7 +4036,7 @@ void NullGet::handleArguments(int argc, char **argv)
     options.mCookies = cookies;
     options.mAgent = agent;
 
-    QString ngetUri = "nullget://" + options.toBase64Data();
+    QString ngetUri = "karia2://" + options.toBase64Data();
     QClipboard *cb = QApplication::clipboard();
     cb->setText(ngetUri);
     qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
@@ -4047,7 +4047,7 @@ void NullGet::handleArguments(int argc, char **argv)
 
 }
 
-void NullGet::handleArguments(QStringList args)
+void Karia2::handleArguments(QStringList args)
 {
     QString uri, uri2;
     QString refer, refer2;
@@ -4072,7 +4072,7 @@ void NullGet::handleArguments(QStringList args)
     return;
 }
 
-void NullGet::onOtherKaria2MessageRecived(const QString &msg)
+void Karia2::onOtherKaria2MessageRecived(const QString &msg)
 {
     QStringList args;
     
@@ -4097,13 +4097,13 @@ void NullGet::onOtherKaria2MessageRecived(const QString &msg)
 
 
 //dynamic language switch
-void NullGet::retranslateUi()
+void Karia2::retranslateUi()
 {
 	this->mainUI.retranslateUi(this);	//不调用它还不行，不知道为什么呢。
 	//还有一个问题，怎么把程序中所有的字符串都放在这个函数中呢。
 }
 
-void NullGet::onObjectDestroyed(QObject *obj)
+void Karia2::onObjectDestroyed(QObject *obj)
 {
 	qDebug()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName();
 	obj->dumpObjectInfo ();
@@ -4111,7 +4111,7 @@ void NullGet::onObjectDestroyed(QObject *obj)
 }
 
 
-//QAXFACTORY_DEFAULT(NullGet,
+//QAXFACTORY_DEFAULT(Karia2,
 //	   "{074AA25F-F544-401E-8A2A-5C81F01264EF}",
 //	   "{4351FA96-A922-4D76-B4AD-A0A4CF0ED8AA}",
 //	   "{DBEF3F59-305C-4A58-9491-F7E56ADBB0B0}",
@@ -4119,6 +4119,6 @@ void NullGet::onObjectDestroyed(QObject *obj)
 //	   "{E0D9ECBF-2E40-4E94-A37B-0E4FB1ADBBB9}")
 
 
-//////////end of nullget.cpp
+//////////end of karia2.cpp
 
 

@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    NullGet win;
+    Karia2 win;
 
 	//这种方法只能在启动的时候用，其他时候更改无效。
 	//QTranslator translator;
