@@ -337,62 +337,63 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
     return true;
 }
 
-void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus ) 
-{
-	qDebug() << __FUNCTION__<<taskId<< " "<< segId  ;
+// void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus ) 
+// {
+// 	qDebug() << __FUNCTION__<<taskId<< " "<< segId  ;
 
-	long startOffset ;
-	long totalLength ;
-	long gotLength ;
-	long totalEmitLength ;
-	int  segCount ;
-	long splitLength , splitOffset , splitLeftLength ;
-	TaskQueue * tq = 0 ;
-	// BaseRetriver * br = 0 , * brn = 0 , * nhs = 0 ;
-	bool doneTask = false ;	//標識是否执行了完成任务的移动工作。
-	SqliteSegmentModel * mdl = SqliteSegmentModel::instance(taskId,this);
+// 	long startOffset ;
+// 	long totalLength ;
+// 	long gotLength ;
+// 	long totalEmitLength ;
+// 	int  segCount ;
+// 	long splitLength , splitOffset , splitLeftLength ;
+// 	TaskQueue * tq = 0 ;
+// 	// BaseRetriver * br = 0 , * brn = 0 , * nhs = 0 ;
+// 	bool doneTask = false ;	//標識是否执行了完成任务的移动工作。
+// 	SqliteSegmentModel * mdl = SqliteSegmentModel::instance(taskId,this);
 
-}
+// }
 	
-void TaskQueue::onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive)
-{
-	qDebug() << __FUNCTION__ ;
+// void TaskQueue::onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive)
+// {
+// 	qDebug() << __FUNCTION__ ;
 
-	qDebug()<<  __FUNCTION__ <<" return for nothing done " ;
-	return ;
-	//
-	TaskQueue * tq = 0 ;
-	//tq =  this->findTaskById(pTaskId );
-	tq = this ;
+// 	qDebug()<<  __FUNCTION__ <<" return for nothing done " ;
+// 	return ;
+// 	//
+// 	TaskQueue * tq = 0 ;
+// 	//tq =  this->findTaskById(pTaskId );
+// 	tq = this ;
 	
-	//cacl per len and start offset 
-	long perLen;// = totalLength/tq->mTotalSegmentCount ;
-	long startOffset = perLen ;
+// 	//cacl per len and start offset 
+// 	long perLen;// = totalLength/tq->mTotalSegmentCount ;
+// 	long startOffset = perLen ;
 
-	QModelIndex index ;
-	int modelRows ;
+// 	QModelIndex index ;
+// 	int modelRows ;
 
-	if (tq == 0) {
-		qDebug()<< "find task faild : "<<pTaskId ;
-		// tq->mTaskStatus = TaskQueue::TS_ERROR;
-		this->onTaskListCellNeedChange( pTaskId , 1 , tq->getStatusString(TaskQueue::TS_ERROR));
-		return;
-	}
+// 	if (tq == 0) {
+// 		qDebug()<< "find task faild : "<<pTaskId ;
+// 		// tq->mTaskStatus = TaskQueue::TS_ERROR;
+// 		this->onTaskListCellNeedChange( pTaskId , 1 , tq->getStatusString(TaskQueue::TS_ERROR));
+// 		return;
+// 	}
 
-	QUrl url;// (tq->mTaskUrl);
+// 	QUrl url;// (tq->mTaskUrl);
 
-	//update task list view model cell
-	this->onTaskListCellNeedChange( pTaskId , ng::tasks::file_size , QString("%1").arg( totalLength ));
-	// tq->mTotalLength = totalLength ;
-	//通知画任务状态图。先去掉了，看什么时候能加进去。
-	//TaskBallMapWidget::instance()->onRunTaskCompleteState( tq );
+// 	//update task list view model cell
+// 	this->onTaskListCellNeedChange( pTaskId , ng::tasks::file_size , QString("%1").arg( totalLength ));
+// 	// tq->mTotalLength = totalLength ;
+// 	//通知画任务状态图。先去掉了，看什么时候能加进去。
+// 	//TaskBallMapWidget::instance()->onRunTaskCompleteState( tq );
 
-	//set the first segment totalLength element
-	// br = tq->mSegmentThread[0];
+// 	//set the first segment totalLength element
+// 	// br = tq->mSegmentThread[0];
 
-	//br->mTotalLength = perLen ;
-	QAbstractItemModel * mdl = 0 ;
-}
+// 	//br->mTotalLength = perLen ;
+// 	QAbstractItemModel * mdl = 0 ;
+// }
+
 /**
  * 除了修改这个控制参数外还应该做点什么呢。
  * 这个可以由子线程发出多次，但如果第二次发应该是错误的，这并没有关系，我们只在这里判断就行了。
@@ -497,15 +498,15 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         if (sts["status"].toString() == "complete") {
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
             // fix no need download data case, the file is already downloaded, user readd it.
-            if (mdl->index(idx.row(), ng::tasks::file_size).data().toString().length() == 0
-                && files.count() > 0) {
+            if (files.count() > 0 
+                && files.at(0).toMap().value("length").toLongLong() > 
+                mdl->index(idx.row(), ng::tasks::file_size).data().toLongLong()) {
                 mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
             }
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), 
                          mdl->data(mdl->index(idx.row(), ng::tasks::file_size)));
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), 
-                         (sts["totalLength"].toLongLong() - sts["completedLength"].toLongLong()));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
                          QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));

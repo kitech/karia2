@@ -51,7 +51,7 @@ public:
 	//4是错误状态，5是sheduled状态，6是完成状态 , 7 是删除状态（有可能还需要把它重新找回来）。
 
 	enum {TS_UNKNOWN, TS_READY , TS_WAITING, TS_RUNNING , TS_ERROR , TS_COMPLETE , TS_DELETED } ;
-	~TaskQueue() ;
+	~TaskQueue();
 
 	//取状态描述
 	static QString getStatusString(int status) ;
@@ -84,9 +84,9 @@ public:
     bool updateSelectFile(int taskId, QString selected);
 
 public slots:
-	void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;
+	// void onOneSegmentFinished(int taskId, int segId , int finishStatus ) ;
 	
-	void onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive);
+	// void onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive);
 	// void onAbtainedFileLength( int pTaskId , long totalLength , bool supportBrokenRetrive);
 	// void onFirstSegmentFaild( int taskId, int errorNo );
 	void onLogSegment( int taskId , int segId , QString log , int type ) ; 

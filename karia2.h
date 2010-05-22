@@ -39,8 +39,8 @@ public:
         void initialMainWindow();
 
 public slots:
-        int createTask(TaskOption* option);
-        int createTask(int taskId, TaskOption* option);
+        int createTask(TaskOption*option);
+        int createTask(int taskId, TaskOption*option);
 
         void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
         void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
@@ -101,56 +101,56 @@ public slots:
 
 private:
     Ui::NullGet mainUI; 
-	QTreeView * mTaskListView ;
-	QTreeView * mSegListView;
-	QTreeView * mSegLogListView;
-	QTreeView * mCatView;
+	QTreeView *mTaskListView;
+	QTreeView *mSegListView;
+	QTreeView *mSegLogListView;
+	QTreeView *mCatView;
     QTreeView *mSeedFileView;
 
 	//
-	QAbstractItemModel * mTaskTreeViewModel;
-	QAbstractItemModel * mCatViewModel;
+	QAbstractItemModel *mTaskTreeViewModel;
+	QAbstractItemModel *mCatViewModel;
     TaskItemDelegate *mTaskItemDelegate;
     SeedFileItemDelegate *mSeedFileDelegate;
 
-	// ConfigDatabase * mConfigDatabase;
-	SqliteStorage * mStorage ;
+	// ConfigDatabase *mConfigDatabase;
+	SqliteStorage *mStorage;
 
 	///pop menu
-	QMenu * mTaskPopupMenu;
-	QMenu * mSegmentPopupMenu;
-	QMenu * mLogPopupMenu ;
-	QMenu * mCatPopupMenu ;
-	QMenu * mDropZonePopupMenu;
-	QMenu * mSysTrayMenu;
+	QMenu *mTaskPopupMenu;
+	QMenu *mSegmentPopupMenu;
+	QMenu *mLogPopupMenu;
+	QMenu *mCatPopupMenu;
+	QMenu *mDropZonePopupMenu;
+	QMenu *mSysTrayMenu;
 
 	InstantSpeedHistogramWnd *mISHW;
-	DropZone * mDropZone ;
-	QSystemTrayIcon * mSysTrayIcon;	//system tray icon
+	DropZone *mDropZone;
+	QSystemTrayIcon *mSysTrayIcon;	//system tray icon
     QToolButton *mAddOtherTaskButton;
 
 	QLabel *mStatusMessageLabel;
-	QSlider *mSpeedBarSlider ;
-	QProgressBar * mSpeedProgressBar ;
-	QLabel * mSpeedManualLabel;
-	QLabel * mSpeedTotalLable ;
+	QSlider *mSpeedBarSlider;
+	QProgressBar *mSpeedProgressBar;
+	QLabel *mSpeedManualLabel;
+	QLabel *mSpeedTotalLable;
 
 	//non ui item
-	// QTimer mAverageSpeedTimer ;
+	// QTimer mAverageSpeedTimer;
 
 	//搜索窗口实例
-	WalkSiteWndEx * mHWalkSiteWndEx ;
-	QDockWidget * mWalkSiteDockWidget ;
+	WalkSiteWndEx *mHWalkSiteWndEx;
+	QDockWidget *mWalkSiteDockWidget;
 
 
 	//walksite window
-	QMainWindow * mWalkSiteWnd ;
+	QMainWindow *mWalkSiteWnd;
 
 	//global vars for dynamic language switch
-	QTranslator appTranslator ;
-	QTranslator qtTranslator ;
-	QString qmPath ;
-	QString qmLocale ;
+	QTranslator appTranslator;
+	QTranslator qtTranslator;
+	QString qmPath;
+	QString qmLocale;
 	//
 	QPalette orginalPalette;
     QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
@@ -168,13 +168,13 @@ private:
     MaiaXmlRpcClient *mAriaRpc;
 
 public slots:
-	void onSwitchWindowStyle(QAction * action);
+	void onSwitchWindowStyle(QAction *action);
 
 	void onSwitchSpeedMode(QAction *action);
     void onRememberSpeedLimitSetting(bool checked);
 
-	void onSwitchLanguage(QAction* action);
-	void onSwitchSkinType(QAction* action);
+	void onSwitchLanguage(QAction*action);
+	void onSwitchSkinType(QAction*action);
 	
 	void showAboutDialog();		//about dialog
 	void showNewDownloadDialog();
@@ -228,7 +228,7 @@ public slots:
     void onTaskShowColumnsChanged(QString columns);
 
 	//object listener
-	void onObjectDestroyed(QObject * object = 0);
+	void onObjectDestroyed(QObject *object = 0);
 
 private slots:
     void testResponse(QVariant &res, QVariant &payload);
@@ -290,13 +290,13 @@ private:	//method
     void initUserOptionSetting();
 
 	//overload
-	void moveEvent(QMoveEvent * event);
+	void moveEvent(QMoveEvent *event);
 
 	//dynamic language switch
 	void retranslateUi();
 
-	QPoint mSwapPoint ;
-	QModelIndex mSwapModelIndex ;
+	QPoint mSwapPoint;
+	QModelIndex mSwapModelIndex;
 
 	//
 	QPair<QString,QString> getFileTypeByFileName(QString fileName);
@@ -309,20 +309,20 @@ private:	//method
     QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
 protected:
-	virtual void paintEvent(QPaintEvent * event);
-	virtual void closeEvent(QCloseEvent * event);
-	QImage image ;
-	void showEvent(QShowEvent * event);
+	virtual void paintEvent(QPaintEvent *event);
+	virtual void closeEvent(QCloseEvent *event);
+	QImage image;
+	void showEvent(QShowEvent *event);
 	bool firstShowEvent;
 	
 	
 #if defined(Q_OS_WIN32)
-	virtual bool winEvent(MSG * message, long * result);
+	virtual bool winEvent(MSG *message, long *result);
 #elif defined(Q_OS_MAC)
     virtual bool macEvent(EventHandlerCallRef caller, EventRef event);
 #else
-	virtual bool x11Event(XEvent * event);
-    virtual void keyReleaseEvent(QKeyEvent * event);
+	virtual bool x11Event(XEvent *event);
+    virtual void keyReleaseEvent(QKeyEvent *event);
 #endif
 
 };
