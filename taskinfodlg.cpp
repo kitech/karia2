@@ -226,9 +226,9 @@ taskinfodlg::taskinfodlg(QWidget *parent)
 	QClipboard *cb = QApplication::clipboard();
 	QString cbstr = cb->text();	
 
-    if (cbstr.startsWith("nullget://")) {
+    if (cbstr.startsWith("karia2://")) {
         qDebug()<<__FUNCTION__<<cbstr;   
-        TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 10));
+        TaskOption options = TaskOption::fromBase64Data(cbstr.right(cbstr.length() - 9));
         this->uiwin.tid_g_le_url->setText(options.mTaskUrl);
         this->uiwin.tid_g_le_referrer->setText(options.mReferer);
         this->uiwin.tid_g_le_te_comment->setText(options.mCookies);
