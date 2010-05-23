@@ -3,7 +3,7 @@ Version: 0.0.96-0
 Architecture: i386
 Maintainer: Guangzhao Liu (drswinghead) <liuguangzhao@users.sf.net>
 Installed-Size: 6676
-Depends: libc6 (>= 2.8), libgcc1 (>= 1:4.1.1), libqt4-xml (>= 4.5.1), libqt4-xmlpatterns (>= 4.5.1), libqtcore4 (>= 4.5.1), libqtgui4 (>= 4.5.1), libqtnetwork4 (>=4.5.1), libqtsql4(>= 4.5.1), libssl0.9.8 (>= 0.9.8f-5), libstdc++6 (>= 4.1.1)
+Depends: libc6 (>= 2.8), libgcc1 (>= 1:4.1.1), libqt4-xml (>= 4.5.1), libqt4-xmlpatterns (>= 4.5.1), libqtcore4 (>= 4.5.1), libqtgui4 (>= 4.5.1), libqt4-network (>=4.5.1), libqt4-sql(>= 4.5.1), libssl0.9.8 (>= 0.9.8f-5), libstdc++6 (>= 4.1.1)
 Conflicts: karia2
 Replaces: karia2
 Section: net

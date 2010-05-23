@@ -20,15 +20,16 @@ PKGDIR=/tmp/karia2-$VERSION-0
 rm -fvr /tmp/karia2-$VERSION-0
 mkdir -pv $PKGDIR
 
-cp -va debian/DEBIAN $PKGDIR/
-rm -fv $PKGDIR/DEBIAN/.svn
+cp -va $dirname/debian/DEBIAN $PKGDIR/
+rm -fvr $PKGDIR/DEBIAN/.svn
 
 mkdir -pv $PKGDIR/usr/share/applications $PKGDIR/usr/bin $PKGDIR/usr/lib $PKGDIR/usr/share/karia2
-cp -va ../data/karia2.desktop $PKGDIR/usr/share/applications/
-cp -va ../karia2/bin $PKGDIR/usr/
-cp -va ../karia2/lib $PKGDIR/usr/
+cp -va $dirname/../data/karia2.desktop $PKGDIR/usr/share/applications/
+cp -va $dirname/../karia2/bin $PKGDIR/usr/
+cp -va $dirname/../karia2/lib $PKGDIR/usr/
+rm -vf $PKGDIR/usr/lib/*.so.*
 
-cp -va ../karia2/share/* $PKGDIR/usr/share/karia2/
+cp -va $dirname/../karia2/share/* $PKGDIR/usr/share/karia2/
 find $PKGDIR/usr/share/karia2/ -name .svn | xargs rm -vfr
 
 cd $PKGDIR/../
