@@ -11,13 +11,14 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET += 
+TARGET = 
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
 CONFIG += debug
 QT = core gui xml network sql
-UI_HEADERS_DIR = GeneratedFiles
 
+DESTDIR = ./bin
+UI_HEADERS_DIR = GeneratedFiles
 MOC_DIR = tmp
 UI_DIR = tmp
 OBJECTS_DIR = tmp

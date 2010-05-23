@@ -27,6 +27,7 @@ browser/opera_go_to_page.dat -text
 /catpropdlg.h -text
 /catpropdlg.ui -text
 /columnsmandlg.ui -text
+data/karia2.desktop -text
 /dircompletermodel.cpp -text
 /dircompletermodel.h -text
 /dlrules.cpp -text
@@ -155,9 +156,9 @@ libng/qtmd5.h -text
 packages/debian/DEBIAN/control -text
 packages/debian/DEBIAN/debian-binary -text
 packages/debian/DEBIAN/preinst -text
+packages/karia2 -text
 packages/mkdeb.sh -text
 packages/mkpkg.sh -text
-packages/nullfxp -text
 packages/opensuse_buildservice/nullfxp.spec -text
 /pmwmk.bat -text
 /preferencesdialog.cpp -text

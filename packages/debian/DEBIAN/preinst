@@ -31,11 +31,11 @@ case "$1" in
 
 	if dpkg --compare-versions "$2" lt "1.2.0";
 	then
-		rm -rf /usr/share/nullfxp
+		rm -rf /usr/share/karia2
 	fi
-    rm -rf /usr/bin/nullfxp
-    rm -rf /usr/share/applications/nullfxp.desktop
-    rm -rf /usr/share/nullfxp
+    rm -rf /usr/bin/karia2
+    rm -rf /usr/share/applications/karia2.desktop
+    rm -rf /usr/share/karia2
 
     ;;
 
