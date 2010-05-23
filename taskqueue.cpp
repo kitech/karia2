@@ -504,7 +504,7 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
                 mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
             }
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), 
-                         mdl->data(mdl->index(idx.row(), ng::tasks::file_size)));
+                         mdl->data(mdl->index(idx.row(), ng::tasks::file_size), Qt::EditRole));
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));

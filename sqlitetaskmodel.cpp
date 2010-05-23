@@ -95,12 +95,17 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
         }
 	}
 
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
     QVariant cellData = this->mModelData.at(row).value(col);
     QVariant rv;
     qint64 size;
+
+    if (role == Qt::EditRole) {
+        return cellData;
+    }
+
+	if (role != Qt::DisplayRole)
+		return QVariant();
+
     switch (col) {
     case ng::tasks::file_size:
     case ng::tasks::abtained_length:
@@ -126,63 +131,6 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
     }
 	// return this->mModelData.at(row).value(col);
     return cellData;
-
-	//int catID = index.internalId();
-	//
-	//QModelIndex pmi = index.parent();
-	//int pcol , prow ;
-
-	//if( ! pmi.isValid() )
-	//{
-	//	QSqlRecord rec ;
-	//	for( int i = 0 ; i < this->mModelData.count() ; i ++ )
-	//	{
-	//		rec = this->mModelData.at(i);
-	//		if( rec.value("cat_id") == "0" )
-	//		{
-	//			QVariant rv = QVariant() ;
-	//			if( col == 0 )
-	//			{
-	//				rv = rec.value("display_name");
-	//			}
-	//			else if( col == 1 )
-	//			{
-	//				
-	//				rv = rec.value("cat_id");
-	//			}
-	//			//else if ( col == 2 )
-	//			//{
-	//				//rv = rec.value("display_name").toString() + "=" + rec.value("path").toString(); 
-	//				//rv = rec.value("cat_id");
-	//			//}
-	//			else
-	//			{
-	//				rv = rec.value(col) ;
-	//			}
-	//			return rv ;
-	//			//break ;
-	//		}
-	//		else
-	//		{
-	//			//rec.clear():
-	//		}
-	//	} // end for
-	//}  // end if( ! pmi.isValid() )
-	//else
-	//{
-	//	for( int i = 0 ; i < this->mModelData.count() ; i ++ )
-	//	{
-	//		if( this->mModelData.at(i).value("cat_id").toInt() == catID )
-	//		{
-	//			QSqlRecord rec = this->mModelData.at(i) ;
-	//			return rec.value(  index.column() );
-	//		}
-	//	}		
-	//}
-
-	//qDebug()<<" model error";
-	//assert( 1==2 );
-	return QVariant() ;
 }
 
 Qt::ItemFlags SqliteTaskModel::flags(const QModelIndex &index) const
@@ -360,7 +308,7 @@ bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value
 
 bool SqliteTaskModel::submit () 
 {
-	//把已经修改或者添加了的数据写入到数据库中。
+	// sync dirty data to disk
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
 
@@ -475,6 +423,8 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
         destModel->insertRows(0, 1);
         for (int col = 0 ; col < columnCount; col ++) {
             QMap<int, QVariant> itemData = rowItemData.at(col);
+            itemData[Qt::DisplayRole] = itemData[Qt::EditRole];
+
             if (col == ng::tasks::sys_cat_id) {
                 itemData[Qt::DisplayRole] = QString("%1").arg(destCatId);
             }
@@ -483,11 +433,6 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
             }
             
             destModel->setData(destModel->index(0, col), itemData[Qt::DisplayRole], Qt::DisplayRole);
-            // QMapIterator<int, QVariant> mit(itemData);
-            // while (mit.hasNext()) {
-            //     mit.next();
-            //     destModel->setData(destModel->index(0, col), mit.value(), mit.key());
-            // }
         }
     }
     destModel->submit();

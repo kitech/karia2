@@ -470,7 +470,7 @@ bool SqliteStorage::addTask(int task_id ,
                             QString dirty
 							)
 {
-    // TODO previous .arg(v)'s %n will eat later args
+    // TODO escape issue
     QStringList values;
     values << QString::number(task_id)<< file_size<< retry_times<< create_time<< current_speed
            << average_speed<< eclapsed_time<< abtained_length<< left_length
@@ -479,26 +479,20 @@ bool SqliteStorage::addTask(int task_id ,
            << real_url<< referer
            << redirect_times<< finish_time<< task_status<< total_packet<< abtained_packet
            << left_packet<< total_timestamp<< abtained_timestamp<< left_timestamp
-           << file_length_abtained<< dirty<< "0" ;
+           << file_length_abtained <<"false" <<"0";
     // qDebug()<<"values count:"<<values.count();
     QString valueStr = values.join("','");
     valueStr = "'" + valueStr + "'";
-	// QString sql = this->taskInsSql
-    //            .arg(task_id).arg(file_size).arg(retry_times).arg(create_time).arg(current_speed)
-    //            .arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length)
-    //            .arg(split_count).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id)
-    //            .arg(comment).arg(sys_cat_id).arg(save_path).arg(file_name).arg(abtained_percent).arg(org_url)
-    //            .arg(real_url).arg(referer)
-    //            .arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet)
-    //            .arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp)
-    //            .arg(file_length_abtained).arg(dirty).arg("0") ;
-    QString sql = this->taskInsSql.replace("__VALUES_PLEACE__", valueStr);
+    
+    QString sql = this->taskInsSql;
+    sql.replace("__VALUES_PLEACE__", valueStr);
+
     this->mTasksDB.transaction();
 	QSqlQuery q (this->mTasksDB);
-	q.exec(sql );
+	bool eok = q.exec(sql );
     this->mTasksDB.commit();
 
-	qDebug()<<__FUNCTION__<<q.lastError()<<": " << sql ;
+	qDebug()<<__FUNCTION__<<eok<<q.lastError()<<": " << sql ;
 	return true ;
 }
 
@@ -507,6 +501,7 @@ bool SqliteStorage::updateTask(QHash<QString, QString> taskHash)
     return true;
 }
 
+// TODO escape issue
 bool SqliteStorage::updateTask(int task_id,
                                QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString select_file, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
 							   )
