@@ -36,6 +36,7 @@ data/karia2.desktop -text
 doc/(un)compress.txt -text
 doc/66985.user.js -text
 doc/C++.txt -text
+doc/Doxyfile -text
 doc/MPC.txt -text
 doc/QtCodingStyle -text
 doc/TODO -text svneol=unset#application/octet-stream
@@ -44,6 +45,7 @@ doc/all.txt -text
 doc/aria2-1.9.2_redirect_no_cookie_no_refer.patch -text
 doc/aria2c.txt -text
 doc/browsers.txt -text
+doc/doxy_footer.html -text
 doc/flashget.txt -text
 doc/https.txt -text
 doc/manual.txt -text
