@@ -55,9 +55,11 @@ win32 {
         isEmpty(VAMD64) {
             # from qt 4.7, use QMAKE_LIBDIR instead of LIBPATH
             LIBPATH += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/lib
+            QMAKE_LIBDIR += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/lib
             INCLUDEPATH += Z:/librarys/vc-ssl-x86/include/
         } else {
             LIBPATH += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/lib
+            QMAKE_LIBDIR += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/lib
             INCLUDEPATH += Z:/librarys/vc-ssl-x64/include/
         }
 
@@ -84,6 +86,9 @@ MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcCl
 
 QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
 QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
+
+## qtxmlrpc library
+include(./qxmlrpc/client/client.pri)
 
 # Input
 HEADERS += aboutdialog.h \
