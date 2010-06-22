@@ -155,6 +155,8 @@ libng/qtmd5.h -text
 /nullgetapplication.h -text
 /optionmanager.cpp -text
 /optionmanager.h -text
+packages/archlinux/PKGBUILD -text
+packages/archlinux/karia2.sh -text
 packages/debian/DEBIAN/control -text
 packages/debian/DEBIAN/debian-binary -text
 packages/debian/DEBIAN/preinst -text

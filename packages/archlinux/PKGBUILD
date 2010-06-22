@@ -1,0 +1,48 @@
+# Maintainer: liuguangzhao <liuguangzhao at users.sf.net>
+# Contributor: afoo <afoocn at gmail.com>
+pkgname=karia2
+pkgver=138
+_realver=138
+pkgrel=1
+pkgdesc="A QT4 GUI for aria2 download manager"
+arch=(i686)
+url="http://karia2.sourceforge.net"
+license=('GPL')
+depends=('qt' 'aria2')
+source=('karia2.sh')
+md5sums=('c9292dc6e6b127e5a77ab9da2343dfc7')
+
+_svntrunk=https://karia2.svn.sourceforge.net/svnroot/karia2/trunk
+_svnmod=karia2
+
+build() {
+  cd ${srcdir}
+
+  if [ -d $_svnmod/.svn ]; then
+    (cd $_svnmod && svn up -r $pkgver)
+  else
+    svn co $_svntrunk --config-dir ./ -r $pkgver $_svnmod
+  fi
+
+  msg "SVN checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -r $startdir/src/$_svnmod-build
+  cp -r $_svnmod $_svnmod-build
+  cd $_svnmod-build
+
+  #
+  # BUILD
+  #
+  qmake || return 1
+  make PREFIX=/usr || return 1
+  #strip -s -v $pkgdir/usr/bin/$pkgname
+  mkdir -p $pkgdir/usr/share/$pkgname  || return 1
+  mkdir -p $pkgdir/usr/bin || return1
+  chmod +x bin/./$pkgname
+  cp -v bin/$pkgname $pkgdir/usr/share/$pkgname/
+  cp -v $startdir/karia2.sh $pkgdir/usr/bin/karia2
+  chmod +x $pkgdir/usr/bin/karia2
+  cp -Rfv {icons,browser,Resources,images,translations,data,doc,sounds} $pkgdir/usr/share/$pkgname/ || return 1
+  rm -rfv $pkgdir/usr/share/$pkgname/{icons,icons/status,browser,Resources,images,translations,data,doc,sounds}/.svn
+}
