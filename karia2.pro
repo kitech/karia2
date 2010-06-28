@@ -33,7 +33,7 @@ INSTALLS += documentation
 VERSION = 0.0.96
 
 #########################
-INCLUDEPATH += ./libmaia/ ./qtsingleapplication
+INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet
 
 unix{
 	LIBS += -lssl    	

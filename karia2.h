@@ -29,6 +29,8 @@ class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
 
+class Skype;
+
 class Karia2 : public QMainWindow
 {
     Q_OBJECT;
@@ -167,6 +169,8 @@ private:
     QHash<int, QString> mTorrentMap; // <taskId, ariaGID>
     QHash<QTimer*, QVariant> mTorrentWaitRemoveConfirm;  // <timer*, payload>
     MaiaXmlRpcClient *mAriaRpc;
+
+    Skype *mSkype;
 
 public slots:
 	void onSwitchWindowStyle(QAction *action);

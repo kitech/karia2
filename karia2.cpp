@@ -56,6 +56,8 @@
 #include "ariaman.h"
 #include "maiaXmlRpcClient.h"
 
+#include "skype.h"
+
 extern QHash<QString, QString> gMimeHash;
 
 ////////////////////////////////////////////////

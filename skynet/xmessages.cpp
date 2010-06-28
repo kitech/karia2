@@ -1,3 +1,11 @@
+// xmessages.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-06-28 22:11:39 +0800
+// Version: $Id$
+// 
 /****************************************************************************
 
  Copyright (C) 2001-2003 Lubos Lunak        <l.lunak@kde.org>

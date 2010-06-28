@@ -1,5 +1,5 @@
-#ifndef _skypeComm_H
-#define _skypeComm_H
+#ifndef _SKYPECOMM_H
+#define _SKYPECOMM_H
 
 /***************************************************************
  * skypeComm.h
@@ -7,11 +7,11 @@
  * @License:     GPL v2.0 or later
  * @Created:     2008-05-15.
  * @Last Change: 2008-05-15.
- * @Revision:    0.0
+ * @Revision:    $Id$
  * Description:
  * Usage:
  * TODO:
- *CHANGES:
+ * CHANGES:
  ***************************************************************/
 
 #include <QtCore/QString>
@@ -28,48 +28,48 @@
 #endif
 
 class skypeComm : public QObject {
-  Q_OBJECT
-	private:
-  	  WId skype_win;
+    Q_OBJECT;
+private:
+    WId skype_win;
 
 #ifdef Q_WS_X11
-	  XMessages *msg;
+    XMessages *msg;
 #endif
 
 #ifdef Q_WS_WIN
-	  static QWidget *mainWin;
-	  static WId main_window;
-	  bool connected, refused, tryLater;
-	  static UINT attachMSG, discoverMSG;
+    static QWidget *mainWin;
+    static WId main_window;
+    bool connected, refused, tryLater;
+    static UINT attachMSG, discoverMSG;
 
-	  QEventLoop localEventLoop;
-	  long TimeOut;
-	  bool waitingForConnect;
+    QEventLoop localEventLoop;
+    long TimeOut;
+    bool waitingForConnect;
 
-	private slots:
-	  void timeOut();
+private slots:
+    void timeOut();
 #endif
 
-	public:
-	  skypeComm();
-	  void sendMsgToSkype(const QString &message);
-	  bool attachToSkype();
+public:
+    skypeComm();
+    void sendMsgToSkype(const QString &message);
+    bool attachToSkype();
 
-	signals:
-	  void newMsgFromSkype(const QString &message);
+signals:
+    void newMsgFromSkype(const QString &message);
 
 	
-	protected slots:
+protected slots:
 
 #ifdef Q_WS_X11
-	  void processX11Message(int win, const QString &message);
+    void processX11Message(int win, const QString &message);
 #endif
 
 #ifdef Q_WS_WIN
-	  void processWINMessage( MSG *msg );
+    void processWINMessage( MSG *msg );
 #endif
 
 };
 
 
-#endif /* _skypeComm_H */
+#endif /* _SKYPECOMM_H */

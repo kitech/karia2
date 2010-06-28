@@ -4,7 +4,7 @@
  * @License:     GPL v2.0 or later
  * @Created:     2008-04-30.
  * @Last Change: 2008-04-30.
- * @Revision:    0.0
+ * @Revision:    $Id$
  * Description:
  * Usage:
  * TODO:
@@ -47,7 +47,7 @@ void skype::ping() {
 
 
 void skype::readIncomingData(QString contactName, int streamNum) {
-  sk.sendMsgToSkype( skypeCommand::READ(appName, contactName, streamNum) );
+  sk.sendMsgToSkype( skypeCommand::READ_AP2AP(appName, contactName, streamNum) );
 }
 
 void skype::processMessage(const QString &message) {
@@ -145,7 +145,7 @@ bool skype::connectToSkype() {
  connect( &sk, SIGNAL( newMsgFromSkype(const QString) ), this, SLOT( processMessage(const QString) ) );
  if ( ! doCommand( skypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
  if ( ! doCommand( skypeCommand::PROTOCOL(5) ) ) return false;
- if ( ! doCommand( skypeCommand::CREATE(appName) ) ) return false;
+ if ( ! doCommand( skypeCommand::CREATE_AP2AP(appName) ) ) return false;
  connect( pingTimer, SIGNAL( timeout() ), this, SLOT( ping() ) );
  pingTimer->start(20000);
  connected = true;
@@ -159,7 +159,7 @@ bool skype::disconnectFromSkype() {
 #endif
 
   if ( ! connected ) return true;
-  if ( ! doCommand( skypeCommand::DELETE(appName) ) ) return false;
+  if ( ! doCommand( skypeCommand::DELETE_AP2AP(appName) ) ) return false;
   disconnect( &sk, 0, this, 0 );
   pingTimer->stop();
   disconnect( pingTimer, 0, 0, 0 );
@@ -168,13 +168,13 @@ bool skype::disconnectFromSkype() {
 
 
 void skype::newStream(QString contact) { 
-  doCommand( skypeCommand::CONNECT( appName, contact ) );
+  doCommand( skypeCommand::CONNECT_AP2AP( appName, contact ) );
 }
 
 bool skype::writeToStream(QByteArray data, QString contactName ) {
   if ( ! activeStream.contains( contactName ) )  return false; // We are not connected to contactName
 
-  doCommand( skypeCommand::WRITE( appName, contactName, activeStream[contactName],data ), false );
+  doCommand( skypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
   return true;
 }
 
