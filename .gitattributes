@@ -219,6 +219,15 @@ qxmlrpc/xmlrpctest/xmlrpctest.pro -text
 /segmentlogmodel.h -text
 /serverswitcher.cpp -text
 /serverswitcher.h -text
+skynet/skype.cpp -text
+skynet/skype.h -text
+skynet/skypeComm.h -text
+skynet/skypeCommand.cpp -text
+skynet/skypeCommand.h -text
+skynet/skypeWin.cpp -text
+skynet/skypeX11.cpp -text
+skynet/xmessages.cpp -text
+skynet/xmessages.h -text
 /skypeclientwnd.cpp -text
 /skypeclientwnd.h -text
 /skypeclientwnd.ui -text

@@ -87,6 +87,11 @@ MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcCl
 QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
 QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
+SKYNET_HEADERS = skynet/xmessages.h skynet/skypeComm.h skynet/skypeCommand.h \
+               skynet/skype.h
+SKYNET_SOURCES = skynet/xmessages.cpp skynet/skypeX11.cpp skynet/skypeCommand.cpp \
+               skynet/skype.cpp
+
 ## qtxmlrpc library
 include(./qxmlrpc/client/client.pri)
 
@@ -221,6 +226,9 @@ SOURCES += $$MAIA_SOURCES
 
 HEADERS += $$QTSAPP_HEADERS
 SOURCES += $$QTSAPP_SOURCES
+
+HEADERS += $$SKYNET_HEADERS
+SOURCES += $$SKYNET_SOURCES
 
 TRANSLATIONS += translations/karia2_en_US.ts \
                 translations/karia2_zh_CN.ts \
