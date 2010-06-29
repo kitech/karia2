@@ -17,7 +17,7 @@
 #include "nullgetapplication.h"
 
 NullGetApplication::NullGetApplication(int & argc, char ** argv)
-	: QtSingleApplication(argc,argv)
+	: QtSingleApplication(argc, argv)
 {
 
 }
@@ -27,7 +27,7 @@ NullGetApplication::~NullGetApplication()
 
 }
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN3)
 bool NullGetApplication::winEventFilter ( MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
@@ -43,8 +43,16 @@ bool NullGetApplication::macEventFilter(EventHandlerCallRef caller, EventRef eve
     return QApplication::macEventFilter(caller, event);
 }
 #else
-bool NullGetApplication::x11EventFilter ( XEvent * event )
+#include <X11/Xlib.h>
+#include "xmessages.h"
+bool NullGetApplication::x11EventFilter(XEvent *event)
 {
+    switch(event->type) {
+    case ClientMessage:
+        XMessages::processXMessages(event);
+        break;
+    }
+    // return FALSE;
 	return QApplication::x11EventFilter(event);
 }
 #endif

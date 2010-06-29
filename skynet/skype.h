@@ -25,51 +25,51 @@
 
 
 class skype : public QObject { 
-  Q_OBJECT
-	private:
-	  skypeComm sk;
+    Q_OBJECT;
+private:
+    skypeComm sk;
 
-	  QString appName;
-	  bool connected;
-	  QHash<QString, QByteArray> streams;
-	  QHash<QString, int> activeStream;
+    QString appName;
+    bool connected;
+    QHash<QString, QByteArray> streams;
+    QHash<QString, int> activeStream;
 
-	  QStringList contacts;
-	  bool contactsUpToDate;
+    QStringList contacts;
+    bool contactsUpToDate;
 
 
-	  bool waitingForResponse;
-	  QString waitForResponseID;
-	  QEventLoop localEventLoop;
-	  QTimer *pingTimer;
-	  int TimeOut;
-	  skypeResponse response;
+    bool waitingForResponse;
+    QString waitForResponseID;
+    QEventLoop localEventLoop;
+    QTimer *pingTimer;
+    int TimeOut;
+    skypeResponse response;
 
-	protected:
-	  void readIncomingData(QString contact, int stream);
-	  bool doCommand(QString cmd, bool blocking = true);
-	  int waitForResponse ( QString commandID );
+protected:
+    void readIncomingData(QString contact, int stream);
+    bool doCommand(QString cmd, bool blocking = true);
+    int waitForResponse ( QString commandID );
 
-	public:
-	  skype(QString AppName);
-	  bool connectToSkype();
-	  bool disconnectFromSkype();
-	  void newStream(QString contact);
-	  bool writeToStream(QByteArray data, QString contactName); //deprecated
-	  bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
-	  QByteArray readFromStream(QString contact);
+public:
+    skype(QString AppName);
+    bool connectToSkype();
+    bool disconnectFromSkype();
+    void newStream(QString contact);
+    bool writeToStream(QByteArray data, QString contactName); //deprecated
+    bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
+    QByteArray readFromStream(QString contact);
 
-	  QStringList getContacts();
+    QStringList getContacts();
 
-	signals:
-	  void skypeError(int errNo, QString Msg);
-	  void dataInStream(QString contactName);
-	  void newStreamCreated(QString contactName);
+signals:
+    void skypeError(int errNo, QString Msg);
+    void dataInStream(QString contactName);
+    void newStreamCreated(QString contactName);
 
-	protected slots:
-	  void processMessage(const QString &message);
-	  void timeOut();
-	  void ping();
+protected slots:
+    void processMessage(const QString &message);
+    void timeOut();
+    void ping();
 };
 
 

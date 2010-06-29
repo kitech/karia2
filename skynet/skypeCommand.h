@@ -1,5 +1,5 @@
-#ifndef _skypeCommand_H
-#define _skypeCommand_H
+#ifndef _SKYPECOMMAND_H
+#define _SKYPECOMMAND_H
 
 /***************************************************************
  * skypeCommand.h

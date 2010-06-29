@@ -57,7 +57,34 @@
         <property name="windowTitle">
          <string>User Feedback</string>
         </property>
-        <widget class="QWidget" name="dockWidgetContents"/>
+        <widget class="QWidget" name="dockWidgetContents">
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>86</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>Chat with ...</string>
+          </property>
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>10</y>
+            <width>113</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
       <widget class="QSplitter" name="splitter_2">
@@ -377,7 +404,7 @@
      <x>0</x>
      <y>0</y>
      <width>820</width>
-     <height>23</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Search">

@@ -247,6 +247,13 @@ void Karia2::firstShowHandler()
     // process arguments 
     this->handleArguments();
 
+    this->mSkype = new skype("karia2");
+    QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
+                     this, SLOT(onSkypeError(int, QString)));
+    this->mSkype->connectToSkype();
+    QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
+                     this, SLOT(onChatWithSkype()));
+
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
 	//labspace->show();
@@ -4112,6 +4119,18 @@ void Karia2::onObjectDestroyed(QObject *obj)
 	obj->dumpObjectTree ();
 }
 
+void Karia2::onSkypeError(int errNo, QString msg)
+{
+    qDebug()<<errNo<<msg;
+}
+
+void Karia2::onChatWithSkype()
+{
+    QString skypeName = this->mainUI.lineEdit->text();
+    
+    QStringList contacts = this->mSkype->getContacts();
+    qDebug()<<skypeName<<contacts;
+}
 
 //QAXFACTORY_DEFAULT(Karia2,
 //	   "{074AA25F-F544-401E-8A2A-5C81F01264EF}",

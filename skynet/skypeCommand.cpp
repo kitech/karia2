@@ -23,12 +23,12 @@ QString skypeCommand::PING() {
     return "PING";
 }
 
-QString skypeCommand::CONNECT_TO_SKYPE(QString AppName) { 
-    return "NAME "+ AppName;
+QString skypeCommand::CONNECT_TO_SKYPE(QString appName) { 
+    return "NAME " + appName;
 }
 
 QString skypeCommand::CREATE_AP2AP(QString appName) { 
-    return "CREATE APPLICATION "+appName;
+    return "CREATE APPLICATION " + appName;
 }
 
 QString skypeCommand::DELETE_AP2AP(QString appName) { 
@@ -183,12 +183,12 @@ bool skypeResponse::parse(QString msg) {
     } else if ( msg.indexOf("CREATE") == 0 ) { 
         exp.setPattern("CREATE APPLICATION ([^ ]*) *([^ ]*) *(.*)"); 
     } else {
-        Type=SK_UNKNOWN;
+        Type = SK_UNKNOWN;
         return true;
     }
 
     if ( ! exp.exactMatch(msg) ) { 
-        Type=SK_PARSE_ERROR;
+        Type = SK_PARSE_ERROR;
         return false;
     }
 

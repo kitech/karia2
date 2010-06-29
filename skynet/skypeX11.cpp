@@ -46,12 +46,11 @@ bool skypeComm::attachToSkype() {
     status = XGetWindowProperty(QX11Info::display(), QX11Info::appRootWindow(), skype_inst, 0, 1, False, XA_WINDOW, &type_ret, &format_ret, &nitems_ret, &bytes_after_ret, &prop);
 
     // sanity check
-    if(status != Success || format_ret != 32 || nitems_ret != 1)
-        {
-            skype_win = (WId) -1;
-            qDebug("skype::connectToInstance(): Skype not detected, status %d\n", status );
-            return false;
-        } else  {
+    if(status != Success || format_ret != 32 || nitems_ret != 1) {
+        skype_win = (WId) -1;
+        qDebug("skype::connectToInstance(): Skype not detected, status %d\n", status );
+        return false;
+    } else  {
         skype_win = * (const unsigned long *) prop & 0xffffffff;
         qDebug("skype::connectToInstance(): Skype instance found, window id %d\n", skype_win);
         return true;

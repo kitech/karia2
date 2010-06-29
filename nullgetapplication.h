@@ -16,12 +16,11 @@
 class NullGetApplication : public QtSingleApplication
 {
 	Q_OBJECT;
-
 public:
     NullGetApplication(int & argc, char ** argv);
     ~NullGetApplication();
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
 	virtual bool winEventFilter ( MSG * msg, long * result );
 #elif defined(Q_OS_MAC)
     virtual bool macEventFilter(EventHandlerCallRef caller, EventRef event ) ;
