@@ -16,7 +16,7 @@ LabSpace::LabSpace(QWidget *parent)
 #else
 	// mSysMon->addPath(QDir::homePath() + "/aa.txt");	
 	// mSysMon->addPath(QDir::homePath());	//好象对文件管用，对目录不管用。windows平台是这样的。
-    mSysMon->addPath(QDir::homePath() + "/.opera/cookies4.dat");
+    // mSysMon->addPath(QDir::homePath() + "/.opera/cookies4.dat");
 #endif
 
 	QObject::connect(mSysMon, SIGNAL(directoryChanged ( const QString &  )) ,

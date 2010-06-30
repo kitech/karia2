@@ -18,7 +18,7 @@
 #include "skype.h"
 #include "skypeCommand.h"
 
-skype::skype(QString AppName): appName(AppName) {
+skype::skype(QString AppName): appPrefix(AppName) {
     connected = false;
     TimeOut = 10000;
     pingTimer = new QTimer(this);
@@ -80,7 +80,18 @@ void skype::processMessage(const QString &message) {
         emit skypeError( cmd.errorCode(), cmd.errorMsg() );
         return;
     }
-    if ( cmd.appName() != appName ) return;
+    // if ( cmd.appName() != appName ) return;
+
+    if (cmd.type() == SK_PROTOCOL) {
+        this->protocolNumber = cmd.protocolNum();
+        return;
+    }
+
+    if (cmd.type() == SK_CURRENTUSERHANDLE) {
+        this->appName = "skype_app_" + this->appPrefix + "_" + cmd.contactName();
+        qDebug()<<"unique appName:"<<this->appName;
+        return;
+    }
 
     if ( cmd.type() == SK_READY_TO_READ ) {
         readIncomingData( cmd.contactName(), cmd.streamNum() );
@@ -143,8 +154,8 @@ bool skype::connectToSkype() {
     if ( ! sk.attachToSkype() ) return false;
     connect( &sk, SIGNAL( newMsgFromSkype(const QString) ), this, SLOT( processMessage(const QString) ) );
     if ( ! doCommand( skypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
-    if ( ! doCommand( skypeCommand::PROTOCOL(5) ) ) return false;
-    if ( ! doCommand( skypeCommand::CREATE_AP2AP(appName) ) ) return false;
+    if ( ! doCommand( skypeCommand::PROTOCOL(50) ) ) return false;
+    // if ( ! doCommand( skypeCommand::CREATE_AP2AP(appName) ) ) return false;
     connect( pingTimer, SIGNAL( timeout() ), this, SLOT( ping() ) );
     pingTimer->start(20000);
     connected = true;
@@ -158,11 +169,12 @@ bool skype::disconnectFromSkype() {
 // #endif
 
     if ( ! connected ) return true;
-    if ( ! doCommand( skypeCommand::DELETE_AP2AP(appName) ) ) return false;
+    // if ( ! doCommand( skypeCommand::DELETE_AP2AP(appName) ) ) return false;
     disconnect( &sk, 0, this, 0 );
     pingTimer->stop();
-    disconnect( pingTimer, 0, 0, 0 );
+    disconnect(pingTimer, 0, 0, 0 );
     connected = false;
+    return true;
 }
 
 

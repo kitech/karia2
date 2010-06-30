@@ -29,14 +29,16 @@ class skype : public QObject {
 private:
     skypeComm sk;
 
+    QString skypeName;
+    QString appPrefix;
     QString appName;
+    int protocolNumber;
     bool connected;
     QHash<QString, QByteArray> streams;
     QHash<QString, int> activeStream;
 
     QStringList contacts;
     bool contactsUpToDate;
-
 
     bool waitingForResponse;
     QString waitForResponseID;

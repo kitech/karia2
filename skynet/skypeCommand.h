@@ -20,7 +20,9 @@
 enum skypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ, 
                       SK_DATA, SK_STREAMS, SK_UNKNOWN, SK_NO_COMMAND, 
                       SK_STATUS, SK_ECHO, SK_END_OF_DATA, SK_CLOSE_STREAM, 
-                      SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST
+                      SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST,
+                      SK_PROTOCOL,
+                      SK_CURRENTUSERHANDLE
 };
 
 class skypeResponse {
@@ -80,4 +82,4 @@ public:
 
 
 
-#endif /* _skypeCommand_H */
+#endif /* _SKYPECOMMAND_H */

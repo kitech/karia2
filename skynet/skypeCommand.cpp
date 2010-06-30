@@ -142,7 +142,10 @@ bool skypeResponse::parse(QString msg) {
     }
 
     if ( msg.indexOf("PROTOCOL") == 0 ) { // PROTOCOL
-        Type = SK_INFO;
+        Type = SK_PROTOCOL;
+        list = msg.split(" ");
+        this->ProtocolNum = list.at(1).toInt();
+        // qDebug()<<"ProtocolNum:"<<this->ProtocolNum;
         return true;
     }
 
@@ -171,7 +174,15 @@ bool skypeResponse::parse(QString msg) {
             return true;
         }
     } 
-  
+
+    if (msg.startsWith("CURRENTUSERHANDLE")) {
+        this->Type = SK_CURRENTUSERHANDLE;
+        list = msg.split(" ");
+        this->ContactName = list.at(1);
+        // qDebug()<<"Got my name"<<this->ContactName;
+        return true;
+    }
+
     echo = true; // Except for APPLICATION everything should be of type SK_ECHO
     if ( msg.indexOf("ALTER") == 0 ) {
         exp.setPattern("ALTER APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
