@@ -4130,6 +4130,8 @@ void Karia2::onChatWithSkype()
     
     QStringList contacts = this->mSkype->getContacts();
     qDebug()<<skypeName<<contacts;
+
+    this->mSkype->newStream("liuguangzhao");
 }
 
 //QAXFACTORY_DEFAULT(Karia2,

@@ -86,6 +86,7 @@ icons/media-playback-start.png -text
 icons/network-connect.png -text
 icons/network-disconnect.png -text
 icons/preferences-system.png -text
+icons/skype.png -text
 icons/status/.directory -text
 icons/status/dialog-error.png -text
 icons/status/flag-green.png -text
@@ -231,6 +232,7 @@ skynet/xmessages.h -text
 /skypeclientwnd.cpp -text
 /skypeclientwnd.h -text
 /skypeclientwnd.ui -text
+/skypetracer.ui -text
 /sqlitecategorymodel.cpp -text
 /sqlitecategorymodel.h -text
 /sqlitesegmentmodel.cpp -text

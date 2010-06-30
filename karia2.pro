@@ -219,7 +219,8 @@ FORMS += aboutdialog.ui \
          labspace.ui				\
          preferencesdialog.ui  \
          seedfilesdialog.ui \
-         proxyinfodialog.ui
+         proxyinfodialog.ui \
+         skypetracer.ui
 
 HEADERS += $$MAIA_HEADERS 
 SOURCES += $$MAIA_SOURCES 
@@ -233,4 +234,5 @@ SOURCES += $$SKYNET_SOURCES
 TRANSLATIONS += translations/karia2_en_US.ts \
                 translations/karia2_zh_CN.ts \
                 translations/karia2_zh_TW.ts
+
 RESOURCES = karia2.qrc

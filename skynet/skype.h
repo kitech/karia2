@@ -33,7 +33,7 @@ private:
     QString appPrefix;
     QString appName;
     int protocolNumber;
-    bool connected;
+    bool mConnected;
     QHash<QString, QByteArray> streams;
     QHash<QString, int> activeStream;
 
@@ -64,11 +64,13 @@ public:
     QStringList getContacts();
 
 signals:
+    void connected(QString skypeName);
     void skypeError(int errNo, QString Msg);
     void dataInStream(QString contactName);
     void newStreamCreated(QString contactName);
 
 protected slots:
+    void onConnected(QString skypeName);
     void processMessage(const QString &message);
     void timeOut();
     void ping();

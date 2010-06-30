@@ -26,6 +26,11 @@ enum skypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ,
 };
 
 class skypeResponse {
+public:
+    enum CommandKey{
+        CK_UNKNOWN, CK_OK, CK_ERROR, CK_PROTOCOL, CK_CURRENTUSERHANDLE, CK_USER,
+        CK_GROUP, CK_APPLICATION
+    };
 private:
     enum skypeResponses Type;
     QString Msg;
@@ -63,12 +68,14 @@ private:
 public:
     static QString CONNECT_TO_SKYPE(QString AppName);
     static QString CREATE_AP2AP(QString appName);
+    static QString DELETE_AP2AP(QString AppObject);
     static QString CONNECT_AP2AP(QString appName, QString contactName);
     static QString GET_CONTACT_LIST();
     static QString WRITE_AP2AP(QString appName, QString contactName, int streamNum, QByteArray data);
     static QString READ_AP2AP(QString appName, QString contactName, int streamNum);
+    static QString SEND_AP2AP(QString appName, QString contactName, int streamNum, QString data);
+    static QString RECV_AP2AP(QString appName, QString contactName, int streamNum);
     static QString DISCONNECT_AP2AP(QString appName, QString contactName, int streamNum);
-    static QString DELETE_AP2AP(QString AppObject);
     static QString PING();
     static QString PROTOCOL(int protocolNum);
     static QString prependID(QString command, QString myID);

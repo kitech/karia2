@@ -59,6 +59,18 @@ QString skypeCommand::READ_AP2AP(QString appName, QString contactName, int strea
     return "ALTER APPLICATION "+ appName + " READ " + skypeCommand::streamID(contactName,streamNum);
 }
 
+QString skypeCommand::SEND_AP2AP(QString appName, QString contactName, int streamNum, QString data)
+{
+    return QString("ALTER APPLICATION %1 DATAGRAM %2:%3 %4")
+        .arg(appName).arg(contactName).arg(streamNum).arg(data);
+}
+
+QString skypeCommand::RECV_AP2AP(QString appName, QString contactName, int streamNum)
+{
+    return QString();
+}
+
+
 QString skypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;
 }
@@ -142,6 +154,7 @@ bool skypeResponse::parse(QString msg) {
     }
 
     if ( msg.indexOf("PROTOCOL") == 0 ) { // PROTOCOL
+        // Type = SK_INFO;
         Type = SK_PROTOCOL;
         list = msg.split(" ");
         this->ProtocolNum = list.at(1).toInt();
