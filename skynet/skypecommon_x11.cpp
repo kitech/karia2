@@ -11,7 +11,7 @@
  * CHANGES:
  ***************************************************************/
 #include <QtGui/QApplication>
-#include "skypeComm.h"
+#include "skypecommon.h"
 
 #ifdef Q_WS_X11
 #include <QtGui/QX11Info>

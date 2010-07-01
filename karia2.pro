@@ -87,9 +87,9 @@ MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcCl
 QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
 QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
-SKYNET_HEADERS = skynet/xmessages.h skynet/skypeComm.h skynet/skypeCommand.h \
+SKYNET_HEADERS = skynet/xmessages.h skynet/skypecommon.h skynet/skypecommand.h \
                skynet/skype.h
-SKYNET_SOURCES = skynet/xmessages.cpp skynet/skypeX11.cpp skynet/skypeCommand.cpp \
+SKYNET_SOURCES = skynet/xmessages.cpp skynet/skypecommon_X11.cpp skynet/skypecommand.cpp \
                skynet/skype.cpp
 
 ## qtxmlrpc library
@@ -141,7 +141,8 @@ HEADERS += aboutdialog.h \
            taskservermodel.h \
            seedfilemodel.h \
            seedfilesdialog.h \  
-           taskitemdelegate.h
+           taskitemdelegate.h \
+           skypetracer.h
 
 win32{
         HEADERS += DiskInfo.h	
@@ -194,8 +195,8 @@ SOURCES += aboutdialog.cpp \
            seedfilemodel.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
-           mimetypeshash.cpp
-
+           mimetypeshash.cpp \
+           skypetracer.cpp
 win32{
         SOURCES += DiskInfo.cpp
 }  

@@ -10,7 +10,7 @@
  * TODO:
  * CHANGES:
  ***************************************************************/
-#include "skypeCommand.h"
+#include "skypecommand.h"
 
 #include <QtCore/QString>
 #include <QtCore/QRegExp>
