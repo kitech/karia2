@@ -30,7 +30,7 @@ documentation.extra = cp release/*.exe Z:/temp
 
 INSTALLS += documentation
 
-VERSION = 0.0.96
+VERSION = 0.0.97
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet

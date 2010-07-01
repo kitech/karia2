@@ -29,7 +29,8 @@ class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
 
-class skype;
+class Skype;
+class SkypeTracer;
 
 class Karia2 : public QMainWindow
 {
@@ -170,7 +171,8 @@ private:
     QHash<QTimer*, QVariant> mTorrentWaitRemoveConfirm;  // <timer*, payload>
     MaiaXmlRpcClient *mAriaRpc;
 
-    skype *mSkype;
+    Skype *mSkype;
+    SkypeTracer *mSkypeTracer;
 
 public slots:
 	void onSwitchWindowStyle(QAction *action);
@@ -239,6 +241,7 @@ public slots:
     void onSkypeError(int errNo, QString msg);
     // skype related
     void onChatWithSkype();
+    void onShowSkypeTracer(bool checked);
 
 private slots:
     // aria2rpc related

@@ -468,6 +468,9 @@
     <addaction name="menuLanguage"/>
     <addaction name="separator"/>
     <addaction name="menuStyle"/>
+    <addaction name="separator"/>
+    <addaction name="actionAria2_Raw_Log"/>
+    <addaction name="actionSkype_Tracer_2"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
     <property name="title">
@@ -1555,6 +1558,33 @@
   <action name="action_MediaFileModifier">
    <property name="text">
     <string>&amp;MediaFileModifier</string>
+   </property>
+  </action>
+  <action name="actionSkype_Tracer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ffff</string>
+   </property>
+  </action>
+  <action name="actionAria2_Raw_Log">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Aria2 Raw Log</string>
+   </property>
+  </action>
+  <action name="actionSkype_Tracer_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Skype Tracer</string>
    </property>
   </action>
  </widget>

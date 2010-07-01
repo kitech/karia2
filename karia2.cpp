@@ -57,6 +57,7 @@
 #include "maiaXmlRpcClient.h"
 
 #include "skype.h"
+#include "skypetracer.h"
 
 extern QHash<QString, QString> gMimeHash;
 
@@ -64,9 +65,10 @@ extern QHash<QString, QString> gMimeHash;
 //main window 
 ////////////////////////////////////////////////
 Karia2::Karia2(QWidget *parent, Qt::WFlags flags)
-               : QMainWindow(parent, flags)
-               , mTaskMan(NULL)
-               , mAriaMan(NULL), mAriaRpc(NULL)
+    : QMainWindow(parent, flags)
+    , mTaskMan(NULL)
+    , mAriaMan(NULL), mAriaRpc(NULL)
+    , mSkypeTracer(NULL)
 {
     //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
 	mainUI.setupUi(this);	
@@ -247,12 +249,14 @@ void Karia2::firstShowHandler()
     // process arguments 
     this->handleArguments();
 
-    this->mSkype = new skype("karia2");
+    this->mSkype = new Skype("karia2");
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
                      this, SLOT(onSkypeError(int, QString)));
     this->mSkype->connectToSkype();
     QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
                      this, SLOT(onChatWithSkype()));
+    QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
+                     this, SLOT(onShowSkypeTracer(bool)));
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -4131,7 +4135,22 @@ void Karia2::onChatWithSkype()
     QStringList contacts = this->mSkype->getContacts();
     qDebug()<<skypeName<<contacts;
 
-    this->mSkype->newStream("liuguangzhao");
+    this->mSkype->newStream("drswinghead");
+}
+
+void Karia2::onShowSkypeTracer(bool checked)
+{
+    if (this->mSkypeTracer == NULL) {
+        this->mSkypeTracer = new SkypeTracer(this);
+        QObject::connect(this->mSkype, SIGNAL(commandRequest(QString)),
+                         this->mSkypeTracer, SLOT(onCommandRequest(QString)));
+        QObject::connect(this->mSkype, SIGNAL(commandResponse(QString)),
+                         this->mSkypeTracer, SLOT(onCommandResponse(QString)));
+        QObject::connect(this->mSkypeTracer, SIGNAL(commandRequest(QString)),
+                         this->mSkype, SLOT(onCommandRequest(QString)));
+    }
+
+    this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
 }
 
 //QAXFACTORY_DEFAULT(Karia2,

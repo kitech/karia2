@@ -1,5 +1,5 @@
 /***************************************************************
- * skypeCommand.cpp
+ * SkypeCommand.cpp
  * @Author:      Jonathan Verner (jonathan.verner@matfyz.cz)
  * @License:     GPL v2.0 or later
  * @Created:     2008-04-25.
@@ -17,69 +17,69 @@
 #include <QtCore/QStringList>
 #include <QtCore/QtDebug>
 
-int skypeCommand::ID = 0;
+int SkypeCommand::ID = 0;
 
-QString skypeCommand::PING() { 
+QString SkypeCommand::PING() { 
     return "PING";
 }
 
-QString skypeCommand::CONNECT_TO_SKYPE(QString appName) { 
+QString SkypeCommand::CONNECT_TO_SKYPE(QString appName) { 
     return "NAME " + appName;
 }
 
-QString skypeCommand::CREATE_AP2AP(QString appName) { 
+QString SkypeCommand::CREATE_AP2AP(QString appName) { 
     return "CREATE APPLICATION " + appName;
 }
 
-QString skypeCommand::DELETE_AP2AP(QString appName) { 
+QString SkypeCommand::DELETE_AP2AP(QString appName) { 
     return "DELETE APPLICATION " +appName;
 }
 
-QString skypeCommand::PROTOCOL(int protocolNum) { 
+QString SkypeCommand::PROTOCOL(int protocolNum) { 
     return "PROTOCOL "+QString::number(protocolNum);
 }
 
-QString skypeCommand::CONNECT_AP2AP(QString appName, QString contactName) { 
+QString SkypeCommand::CONNECT_AP2AP(QString appName, QString contactName) { 
     return "ALTER APPLICATION "+appName+" CONNECT "+ contactName;
 }
 
-QString skypeCommand::DISCONNECT_AP2AP(QString appName, QString contactName, int streamNum) { 
-    return "ALTER APPLICATION "+appName+" DISCNNECT " + skypeCommand::streamID(contactName,streamNum);
+QString SkypeCommand::DISCONNECT_AP2AP(QString appName, QString contactName, int streamNum) { 
+    return "ALTER APPLICATION "+appName+" DISCNNECT " + SkypeCommand::streamID(contactName,streamNum);
 }
 
-QString skypeCommand::GET_CONTACT_LIST() { 
+QString SkypeCommand::GET_CONTACT_LIST() { 
     return "SEARCH FRIENDS";
 }
 
-QString skypeCommand::WRITE_AP2AP(QString appName, QString contactName, int streamNum, QByteArray data) { 
-    return "ALTER APPLICATION "+ appName +" WRITE "+skypeCommand::streamID(contactName,streamNum)+" "+data;
+QString SkypeCommand::WRITE_AP2AP(QString appName, QString contactName, int streamNum, QByteArray data) { 
+    return "ALTER APPLICATION "+ appName +" WRITE "+SkypeCommand::streamID(contactName,streamNum)+" "+data;
 }
 
-QString skypeCommand::READ_AP2AP(QString appName, QString contactName, int streamNum) { 
-    return "ALTER APPLICATION "+ appName + " READ " + skypeCommand::streamID(contactName,streamNum);
+QString SkypeCommand::READ_AP2AP(QString appName, QString contactName, int streamNum) { 
+    return "ALTER APPLICATION "+ appName + " READ " + SkypeCommand::streamID(contactName,streamNum);
 }
 
-QString skypeCommand::SEND_AP2AP(QString appName, QString contactName, int streamNum, QString data)
+QString SkypeCommand::SEND_AP2AP(QString appName, QString contactName, int streamNum, QString data)
 {
     return QString("ALTER APPLICATION %1 DATAGRAM %2:%3 %4")
         .arg(appName).arg(contactName).arg(streamNum).arg(data);
 }
 
-QString skypeCommand::RECV_AP2AP(QString appName, QString contactName, int streamNum)
+QString SkypeCommand::RECV_AP2AP(QString appName, QString contactName, int streamNum)
 {
     return QString();
 }
 
 
-QString skypeCommand::prependID(QString command, QString myID) { 
+QString SkypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;
 }
 
-QString skypeCommand::prependID(QString command) { 
+QString SkypeCommand::prependID(QString command) { 
     return prependID(command, QString::number(ID++));
 }
 
-QString skypeCommand::getID(QString command) { 
+QString SkypeCommand::getID(QString command) { 
     QRegExp exp;
     QStringList list;
     exp.setPattern("^#([^ ]*).*$");
@@ -90,22 +90,26 @@ QString skypeCommand::getID(QString command) {
 }
 
 
-QString skypeCommand::streamID(QString contactName, int streamNum) {
+QString SkypeCommand::streamID(QString contactName, int streamNum) {
     return contactName+":"+QString::number(streamNum);
 }
 
-void skypeResponse::clear() { 
+
+///////////////
+//
+///////////////
+void SkypeResponse::clear() { 
     Type = SK_UNKNOWN;
     StreamNum =0; ProtocolNum=0;ErrorCode=0;
     ContactName="";AppName="";ErrorMsg="";ResponseID="";Data.clear();
     Msg="";
 }
 
-QString skypeResponse::streamID() { 
-    return skypeCommand::streamID(ContactName, StreamNum);
+QString SkypeResponse::streamID() { 
+    return SkypeCommand::streamID(ContactName, StreamNum);
 }
 
-QString skypeResponse::_debugState() {
+QString SkypeResponse::_debugState() {
     switch (Type) { 
     case SK_OK: return "OK";
     case SK_ERROR: return "ERROR "+QString::number(ErrorCode)+": "+ErrorMsg;
@@ -124,20 +128,20 @@ QString skypeResponse::_debugState() {
     }
 }
 
-void skypeCommand::removeID(QString &msg) { 
+void SkypeCommand::removeID(QString &msg) { 
     msg.remove( QRegExp("^#[^ ]* ") );
 } 
 
 
-bool skypeResponse::parse(QString msg) {
+bool SkypeResponse::parse(QString msg) {
     QRegExp exp;
     QStringList list;
     QString CommandName;
     bool tmp=false, echo=false;
     clear();
     Msg=msg;
-    ResponseID = skypeCommand::getID(Msg);
-    skypeCommand::removeID(msg);
+    ResponseID = SkypeCommand::getID(Msg);
+    SkypeCommand::removeID(msg);
 
     if ( msg == "" ) { Type=SK_NO_COMMAND; return true;}
 
@@ -228,21 +232,29 @@ bool skypeResponse::parse(QString msg) {
         ContactName = list[1];
         StreamNum = list[2].toInt(&tmp);
     }
- 
+
     if ( echo && CommandName != "READ" ) Type = SK_ECHO;
     else  if ( CommandName == "CONNECTING" || CommandName == "SENDING" ) Type = SK_STATUS;
     else if ( CommandName == "STREAMS" ) Type = SK_STREAMS;
     else if ( CommandName == "READ" ) Type = SK_DATA;
     else if ( CommandName == "RECEIVED" ) Type = SK_READY_TO_READ;
+    else if (CommandName == "DATAGRAM") {
+        Type = SK_DATAGRAM;
+    }
     else Type = SK_UNKNOWN;
+
+    // qDebug()<<__FILE__<<__LINE__<<"hhhhhhhhhhhhh"<<this->Type<<CommandName;    
 
     if (Type == SK_READY_TO_READ && ContactName == "") Type = SK_END_OF_DATA;
     else if (Type == SK_STREAMS && ContactName == "") Type = SK_CLOSE_STREAM;
     return true;
 }
 
-skypeResponse::skypeResponse() { 
+SkypeResponse::SkypeResponse() { 
     clear();
+}
+SkypeResponse::~SkypeResponse()
+{
 }
 
 

@@ -21,6 +21,16 @@ public:
     SkypeTracer(QWidget *parent = 0);
     virtual ~SkypeTracer();
 
+public slots:
+    void onCommandRequest(QString cmd);
+    void onCommandResponse(QString cmd);
+
+signals:
+    void commandRequest(QString cmd);
+
+private slots:
+    void onSendRequest();
+
 private:
     Ui::SkypeTracer uiw;
 };

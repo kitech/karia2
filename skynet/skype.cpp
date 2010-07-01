@@ -1,24 +1,25 @@
 /***************************************************************
  * skype.cpp
  * @Author:      Jonathan Verner (jonathan.verner@matfyz.cz)
+ * @Author:      flyfish (liuguangzhao@users.sf.net)
  * @License:     GPL v2.0 or later
  * @Created:     2008-04-30.
- * @Last Change: 2008-04-30.
  * @Revision:    $Id$
  * Description:
  * Usage:
  * TODO:
- *CHANGES:
+ * CHANGES:
  ***************************************************************/
+#include <QtCore>
 #include <QtGui/QApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QTimer>
 
 
 #include "skype.h"
-#include "skypeCommand.h"
+#include "skypecommand.h"
 
-skype::skype(QString AppName): appPrefix(AppName) {
+Skype::Skype(QString AppName): appPrefix(AppName) {
     this->mConnected = false;
     TimeOut = 10000;
     pingTimer = new QTimer(this);
@@ -27,34 +28,42 @@ skype::skype(QString AppName): appPrefix(AppName) {
     QObject::connect(this, SIGNAL(connected(QString)), this, SLOT(onConnected(QString)));
 }
 
-QStringList skype::getContacts() {
+Skype::~Skype()
+{
+}
+
+QStringList Skype::getContacts() {
     if ( this->mConnected ) {
         if ( contactsUpToDate ) return contacts;
-        doCommand( skypeCommand::GET_CONTACT_LIST() );
+        doCommand( SkypeCommand::GET_CONTACT_LIST() );
         return contacts;
     }
     return contacts;
 }
 
 
-void skype::timeOut() {
+void Skype::timeOut() {
     qDebug() << "Timeout while waiting for event #"<<waitForResponseID;
     localEventLoop.exit(2);
 }
 
-void skype::ping() { 
-    sk.sendMsgToSkype( skypeCommand::PING() );
+void Skype::ping() { 
+    // sk.sendMsgToSkype( SkypeCommand::PING() );
+    this->doCommand(SkypeCommand::PING());
 }
 
 
-void skype::readIncomingData(QString contactName, int streamNum) {
-    sk.sendMsgToSkype( skypeCommand::READ_AP2AP(appName, contactName, streamNum) );
+void Skype::readIncomingData(QString contactName, int streamNum) {
+    sk.sendMsgToSkype( SkypeCommand::READ_AP2AP(appName, contactName, streamNum) );
 }
 
-void skype::processMessage(const QString &message) {
-    qDebug() <<__FILE__<<__LINE__<< "SKYPE: <=" << message;
+void Skype::processMessage(const QString &message) {
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    // QString u8msg = codec->toUnicode(message.toAscii());
+    qDebug() <<__FILE__<<__LINE__<< "SKYPE: <=" << message; // << u8msg;
+    emit this->commandResponse(message);
 
-    skypeResponse cmd;
+    SkypeResponse cmd;
 
     if ( ! cmd.parse(message) ) {
         emit skypeError( -1, "Error parsing Skype output" );
@@ -95,7 +104,7 @@ void skype::processMessage(const QString &message) {
 
         emit connected(cmd.contactName());
 
-        bool ok = doCommand( skypeCommand::CREATE_AP2AP(appName) );
+        bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
         Q_ASSERT(ok);
         return;
     }
@@ -117,6 +126,18 @@ void skype::processMessage(const QString &message) {
         return;
     }
 
+    if (cmd.type() == SK_DATAGRAM) {
+        // qDebug()<<"Got udp package";
+        if (this->dataGrams.contains(cmd.streamNum())) {
+            this->dataGrams[cmd.streamNum()] = cmd.data();
+        } else {
+            activeStream[cmd.contactName()] = cmd.streamNum();
+            this->dataGrams[cmd.streamNum()] = cmd.data();
+        }
+        emit this->packageArrived(cmd.contactName(), cmd.streamNum(), cmd.data());
+        return;
+    }
+
     if ( cmd.type() == SK_STREAMS ) {
         QByteArray data;
         if (! streams.contains( cmd.contactName() ) ) {
@@ -128,9 +149,12 @@ void skype::processMessage(const QString &message) {
     }
 }
 
+void Skype::processAP2APMessage(const QString &message)
+{
+    
+}
 
-
-int skype::waitForResponse( QString cID ) {
+int Skype::waitForResponse( QString cID ) {
     waitingForResponse = true;
     waitForResponseID = cID;
     //QTimer *timer = new QTimer(this);
@@ -140,9 +164,11 @@ int skype::waitForResponse( QString cID ) {
     return result;
 }
 
-bool skype::doCommand(QString cmd, bool blocking) {
-    QString cID = skypeCommand::prependID( cmd );
-    QString ID = skypeCommand::getID( cID );
+bool Skype::doCommand(QString cmd, bool blocking) {
+    QString cID = SkypeCommand::prependID( cmd );
+    QString ID = SkypeCommand::getID( cID );
+    qDebug() <<__FILE__<<__LINE__<< "SKYPE: =>" << cID;
+    emit this->commandRequest(cmd);
     sk.sendMsgToSkype( cID );
     if ( blocking ) {
         qDebug() << "Waiting for response to message "<<ID;
@@ -155,29 +181,33 @@ bool skype::doCommand(QString cmd, bool blocking) {
     } else return true;
 }
 
+void Skype::onCommandRequest(QString cmd)
+{
+    this->doCommand(cmd);
+}
 
-bool skype::connectToSkype() { 
+bool Skype::connectToSkype() { 
     if ( this->mConnected ) return true;
     if ( ! sk.attachToSkype() ) return false;
     QObject::connect(&sk, SIGNAL(newMsgFromSkype(const QString)), this, SLOT(processMessage(const QString)));
-    // if ( ! doCommand( skypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
-    if ( ! doCommand( skypeCommand::CONNECT_TO_SKYPE(this->appPrefix) ) ) return false;
-    if ( ! doCommand( skypeCommand::PROTOCOL(50) ) ) return false;
-    // if ( ! doCommand( skypeCommand::CREATE_AP2AP(appName) ) ) return false;
+    // if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
+    if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(this->appPrefix) ) ) return false;
+    if ( ! doCommand( SkypeCommand::PROTOCOL(50) ) ) return false;
+    // if ( ! doCommand( SkypeCommand::CREATE_AP2AP(appName) ) ) return false;
     connect( pingTimer, SIGNAL( timeout() ), this, SLOT( ping() ) );
     pingTimer->start(20000);
     this->mConnected = true;
     return true;
 }
 
-bool skype::disconnectFromSkype() {
+bool Skype::disconnectFromSkype() {
 
 // #ifdef Q_WS_WIN
 // #undef DELETE
 // #endif
 
     if ( ! this->mConnected) return true;
-    // if ( ! doCommand( skypeCommand::DELETE_AP2AP(appName) ) ) return false;
+    // if ( ! doCommand( SkypeCommand::DELETE_AP2AP(appName) ) ) return false;
     disconnect( &sk, 0, this, 0 );
     pingTimer->stop();
     disconnect(pingTimer, 0, 0, 0 );
@@ -186,18 +216,18 @@ bool skype::disconnectFromSkype() {
 }
 
 
-void skype::newStream(QString contact) { 
-    doCommand( skypeCommand::CONNECT_AP2AP( appName, contact ) );
+void Skype::newStream(QString contact) { 
+    doCommand( SkypeCommand::CONNECT_AP2AP( appName, contact ) );
 }
 
-bool skype::writeToStream(QByteArray data, QString contactName ) {
+bool Skype::writeToStream(QByteArray data, QString contactName ) {
     if ( ! activeStream.contains( contactName ) )  return false; // We are not connected to contactName
 
-    doCommand( skypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
+    doCommand( SkypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
     return true;
 }
 
-QByteArray skype::readFromStream(QString contactName) {
+QByteArray Skype::readFromStream(QString contactName) {
     QByteArray ret;
     ret.clear();
     if ( streams.contains( contactName ) ) { 
@@ -208,10 +238,21 @@ QByteArray skype::readFromStream(QString contactName) {
     return ret;
 }
 
-void skype::onConnected(QString skypeName)
+bool Skype::sendPackage(QString contactName, QString data)
+{
+    // TODO stream_id should be dynamic detect
+    QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, 1, data);
+    if (!this->doCommand(cmd)) {
+        Q_ASSERT(1 == 2);
+        return false;
+    }
+    return true;
+}
+
+void Skype::onConnected(QString skypeName)
 {
     Q_UNUSED(skypeName);
-    // bool ok = doCommand( skypeCommand::CREATE_AP2AP(appName) );
+    // bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
     // Q_ASSERT(ok);
 }
 

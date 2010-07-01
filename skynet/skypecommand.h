@@ -17,22 +17,28 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-enum skypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ, 
-                      SK_DATA, SK_STREAMS, SK_UNKNOWN, SK_NO_COMMAND, 
+enum SkypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ, 
+                      SK_DATA, SK_DATAGRAM, SK_STREAMS, SK_UNKNOWN, SK_NO_COMMAND, 
                       SK_STATUS, SK_ECHO, SK_END_OF_DATA, SK_CLOSE_STREAM, 
                       SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST,
                       SK_PROTOCOL,
                       SK_CURRENTUSERHANDLE
 };
 
-class skypeResponse {
+enum SkypeCommands{
+    CK_UNKNOWN, CK_OK, CK_ERROR, CK_PROTOCOL, CK_CURRENTUSERHANDLE, CK_USER,
+    CK_GROUP, CK_APPLICATION
+};
+
+enum SkypeStatus {
+    SS_OFFLINE, SS_INVISIBLE, SS_DND, SS_AWAY, SS_ONLINE
+};
+
+class SkypeResponse {
 public:
-    enum CommandKey{
-        CK_UNKNOWN, CK_OK, CK_ERROR, CK_PROTOCOL, CK_CURRENTUSERHANDLE, CK_USER,
-        CK_GROUP, CK_APPLICATION
-    };
 private:
-    enum skypeResponses Type;
+    enum SkypeResponses Type;
+    enum SkypeCommands cmd;
     QString Msg;
 
     int StreamNum, ProtocolNum, ErrorCode;
@@ -45,7 +51,8 @@ private:
     void clear();
 
 public:
-    skypeResponse();
+    SkypeResponse();
+    virtual ~SkypeResponse();
     bool parse(QString msg);
     QString responseID() {return ResponseID;};
     int protocolNum() {return ProtocolNum;};
@@ -56,13 +63,13 @@ public:
     QStringList getContacts() { return Contacts; };
     int errorCode() {return ErrorCode;};
     QString errorMsg() {return ErrorMsg;};
-    enum skypeResponses type() {return Type;};
+    enum SkypeResponses type() {return Type;};
     QString streamID(); // returns contactName:streamNum
     QString _debugState();
 
 };
 
-class skypeCommand {
+class SkypeCommand {
 private:
     static int ID;
 public:
