@@ -154,7 +154,8 @@ void Skype::processAP2APMessage(const QString &message)
     
 }
 
-int Skype::waitForResponse( QString cID ) {
+int Skype::waitForResponse( QString cID ) 
+{
     waitingForResponse = true;
     waitForResponseID = cID;
     //QTimer *timer = new QTimer(this);
@@ -164,7 +165,8 @@ int Skype::waitForResponse( QString cID ) {
     return result;
 }
 
-bool Skype::doCommand(QString cmd, bool blocking) {
+bool Skype::doCommand(QString cmd, bool blocking) 
+{
     QString cID = SkypeCommand::prependID( cmd );
     QString ID = SkypeCommand::getID( cID );
     qDebug() <<__FILE__<<__LINE__<< "SKYPE: =>" << cID;
@@ -186,7 +188,8 @@ void Skype::onCommandRequest(QString cmd)
     this->doCommand(cmd);
 }
 
-bool Skype::connectToSkype() { 
+bool Skype::connectToSkype() 
+{ 
     if ( this->mConnected ) return true;
     if ( ! sk.attachToSkype() ) return false;
     QObject::connect(&sk, SIGNAL(newMsgFromSkype(const QString)), this, SLOT(processMessage(const QString)));
@@ -200,12 +203,8 @@ bool Skype::connectToSkype() {
     return true;
 }
 
-bool Skype::disconnectFromSkype() {
-
-// #ifdef Q_WS_WIN
-// #undef DELETE
-// #endif
-
+bool Skype::disconnectFromSkype() 
+{
     if ( ! this->mConnected) return true;
     // if ( ! doCommand( SkypeCommand::DELETE_AP2AP(appName) ) ) return false;
     disconnect( &sk, 0, this, 0 );
@@ -216,11 +215,14 @@ bool Skype::disconnectFromSkype() {
 }
 
 
-void Skype::newStream(QString contact) { 
-    doCommand( SkypeCommand::CONNECT_AP2AP( appName, contact ) );
+void Skype::newStream(QString contact) 
+{ 
+    int ok = doCommand( SkypeCommand::CONNECT_AP2AP( appName, contact ) );
+    Q_ASSERT(ok);
 }
 
-bool Skype::writeToStream(QByteArray data, QString contactName ) {
+bool Skype::writeToStream(QByteArray data, QString contactName ) 
+{
     if ( ! activeStream.contains( contactName ) )  return false; // We are not connected to contactName
 
     doCommand( SkypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
@@ -238,15 +240,25 @@ QByteArray Skype::readFromStream(QString contactName) {
     return ret;
 }
 
-bool Skype::sendPackage(QString contactName, QString data)
+bool Skype::sendPackage(QString contactName, int streamNum, QString data)
 {
-    // TODO stream_id should be dynamic detect
-    QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, 1, data);
+    QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, streamNum, data);
     if (!this->doCommand(cmd)) {
         Q_ASSERT(1 == 2);
         return false;
     }
-    return true;
+    return true;    
+}
+
+// for client, should use only one stream
+bool Skype::sendPackage(QString contactName, QString data)
+{
+    qDebug()<<this->activeStream;
+    // TODO stream_id should be dynamic detect
+    Q_ASSERT(this->activeStream.count() == 1);
+    QList<QString> keys = this->activeStream.keys();
+    int streamNum = this->activeStream.value(keys.at(0));
+    return this->sendPackage(contactName, streamNum, data);
 }
 
 void Skype::onConnected(QString skypeName)

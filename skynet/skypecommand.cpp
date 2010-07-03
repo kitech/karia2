@@ -76,7 +76,12 @@ QString SkypeCommand::prependID(QString command, QString myID) {
 }
 
 QString SkypeCommand::prependID(QString command) { 
-    return prependID(command, QString::number(ID++));
+    return prependID(command, QString::number(ID += 2));
+}
+
+QString SkypeCommand::nextID()
+{
+    return QString::number(ID += 2);
 }
 
 QString SkypeCommand::getID(QString command) { 

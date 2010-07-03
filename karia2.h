@@ -238,10 +238,11 @@ public slots:
 	void onObjectDestroyed(QObject *object = 0);
 
     // skype related
-    void onSkypeError(int errNo, QString msg);
-    // skype related
-    void onChatWithSkype();
     void onShowSkypeTracer(bool checked);
+    void onSkypeError(int errNo, QString msg);
+    // skype related test
+    void onChatWithSkype();
+    void onSendPackage();
 
 private slots:
     // aria2rpc related

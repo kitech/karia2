@@ -56,6 +56,7 @@
 #include "ariaman.h"
 #include "maiaXmlRpcClient.h"
 
+#include "metauri.h"
 #include "skype.h"
 #include "skypetracer.h"
 
@@ -253,10 +254,12 @@ void Karia2::firstShowHandler()
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
                      this, SLOT(onSkypeError(int, QString)));
     this->mSkype->connectToSkype();
-    QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
-                     this, SLOT(onChatWithSkype()));
     QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
                      this, SLOT(onShowSkypeTracer(bool)));
+    QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
+                     this, SLOT(onChatWithSkype()));
+    QObject::connect(this->mainUI.pushButton_2, SIGNAL(clicked()),
+                     this, SLOT(onSendPackage()));
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -4128,16 +4131,6 @@ void Karia2::onSkypeError(int errNo, QString msg)
     qDebug()<<errNo<<msg;
 }
 
-void Karia2::onChatWithSkype()
-{
-    QString skypeName = this->mainUI.lineEdit->text();
-    
-    QStringList contacts = this->mSkype->getContacts();
-    qDebug()<<skypeName<<contacts;
-
-    this->mSkype->newStream("drswinghead");
-}
-
 void Karia2::onShowSkypeTracer(bool checked)
 {
     if (this->mSkypeTracer == NULL) {
@@ -4151,6 +4144,41 @@ void Karia2::onShowSkypeTracer(bool checked)
     }
 
     this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
+}
+
+void Karia2::onChatWithSkype()
+{
+    QString skypeName = this->mainUI.lineEdit->text();
+    
+    QStringList contacts = this->mSkype->getContacts();
+    qDebug()<<skypeName<<contacts;
+
+    this->mSkype->newStream("drswinghead");
+}
+
+void Karia2::onSendPackage()
+{
+    MetaUri mu;
+    mu.url = "http://sourceforge.net/projects/nullfxp/files/nullfxp/nullfxp-2.0.2/nullfxp-2.0.2.tar.bz2/download";
+    mu.nameMd5 = "aceo732lksdf93sf32983rwe";
+    mu.contentMd5 = "is832rj9dvsdklfwwewfwf8sd2";
+    mu.fileSize = 12342432812;
+    mu.owner = "liuguangzhao";
+    mu.valid = true;
+    mu.mtime = 1234556789;
+
+    QString muStr = mu.toString();
+    
+    SkypePackage sp;
+    sp.seq = SkypeCommand::nextID().toInt();
+    sp.type = SkypePackage::SPT_MU_ADD;
+    sp.data = muStr;
+    
+    QString spStr = sp.toString();
+    
+    qDebug()<<muStr<<spStr;
+
+    this->mSkype->sendPackage("drswinghead", spStr);
 }
 
 //QAXFACTORY_DEFAULT(Karia2,

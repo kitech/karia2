@@ -87,6 +87,7 @@ public:
     static QString PROTOCOL(int protocolNum);
     static QString prependID(QString command, QString myID);
     static QString prependID(QString command);
+    static QString nextID();
     static QString getID(QString command);
     static QString streamID(QString contactName, int streamNum);
     static void    removeID(QString &msg);

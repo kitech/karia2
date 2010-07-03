@@ -196,7 +196,8 @@ SOURCES += aboutdialog.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
            mimetypeshash.cpp \
-           skypetracer.cpp
+           skypetracer.cpp \
+           metauri.cpp
 win32{
         SOURCES += DiskInfo.cpp
 }  

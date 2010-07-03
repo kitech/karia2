@@ -146,6 +146,8 @@ libng/qbihash.h -text
 libng/qtmd5.cpp -text
 libng/qtmd5.h -text
 /main.cpp -text
+/metauri.cpp -text
+/metauri.h -text
 /mimetypeshash.cpp -text
 /mmex.cpp -text
 /mmex.h -text

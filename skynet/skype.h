@@ -62,6 +62,7 @@ public:
     bool writeToStream(QByteArray data, QString contactName); //deprecated
     bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
     QByteArray readFromStream(QString contact);
+    bool sendPackage(QString contactName, int streamNum, QString data);
     bool sendPackage(QString contactName, QString data);
 
     QStringList getContacts();
@@ -71,6 +72,7 @@ public slots:
 
 signals:
     void connected(QString skypeName);
+    void connectionLost();
     void skypeError(int errNo, QString Msg);
     void dataInStream(QString contactName);
     void newStreamCreated(QString contactName);
