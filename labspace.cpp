@@ -1,3 +1,12 @@
+// labspace.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2010-07-03 13:30:32 +0800
+// Version: $Id$
+// 
+
 #include <QtCore>
 #include <QApplication>
 #include <QtGui>

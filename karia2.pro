@@ -24,12 +24,6 @@ UI_DIR = tmp
 OBJECTS_DIR = tmp
 #CONFIG += qtestlib
 
-documentation.path = /
-documentation.files = release/*.exe
-documentation.extra = cp release/*.exe Z:/temp
-
-INSTALLS += documentation
-
 VERSION = 0.0.97
 
 #########################
@@ -87,10 +81,8 @@ MAIA_SOURCES = libmaia/maiaObject.cpp libmaia/maiaFault.cpp libmaia/maiaXmlRpcCl
 QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h
 QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
-SKYNET_HEADERS = skynet/xmessages.h skynet/skypecommon.h skynet/skypecommand.h \
-               skynet/skype.h
-SKYNET_SOURCES = skynet/xmessages.cpp skynet/skypecommon_X11.cpp skynet/skypecommand.cpp \
-               skynet/skype.cpp
+## libskynet
+include(./skynet/libskynet.pri)
 
 ## qtxmlrpc library
 include(./qxmlrpc/client/client.pri)
@@ -230,11 +222,17 @@ SOURCES += $$MAIA_SOURCES
 HEADERS += $$QTSAPP_HEADERS
 SOURCES += $$QTSAPP_SOURCES
 
-HEADERS += $$SKYNET_HEADERS
-SOURCES += $$SKYNET_SOURCES
+# HEADERS += $$SKYNET_HEADERS
+# SOURCES += $$SKYNET_SOURCES
 
 TRANSLATIONS += translations/karia2_en_US.ts \
                 translations/karia2_zh_CN.ts \
                 translations/karia2_zh_TW.ts
 
 RESOURCES = karia2.qrc
+
+documentation.path = /
+documentation.files = release/*.exe
+documentation.extra = cp release/*.exe Z:/temp
+
+INSTALLS += documentation
