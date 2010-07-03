@@ -3,6 +3,8 @@
 #include <QtGui>
 
 #include "labspace.h"
+#include "libng/qbihash.h"
+KBiHash<QString, int> bihTest;
 
 LabSpace::LabSpace(QWidget *parent)
     : QDialog(parent)
