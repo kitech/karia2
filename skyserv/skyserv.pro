@@ -1,10 +1,13 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2010-07-03T10:44:47
-#
-#-------------------------------------------------
+# skyserv.pro --- 
+# 
+# Author: liuguangzhao
+# Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+# URL: 
+# Created: 2010-07-03 14:03:38 +0800
+# Version: $Id$
+# 
 
-QT       += core gui
+QT       += core gui network
 
 TARGET = skyserv
 TEMPLATE = app
@@ -19,15 +22,23 @@ VERSION = 0.0.97
 #########################
 INCLUDEPATH += ../qtsingleapplication ../skynet
 
+QTSAPP_HEADERS = ../qtsingleapplication/qtsingleapplication.h ../qtsingleapplication/qtlocalpeer.h
+QTSAPP_SOURCES = ../qtsingleapplication/qtsingleapplication.cpp ../qtsingleapplication/qtlocalpeer.cpp
+
 SOURCES += main.cpp\
         skyserv.cpp \
+        skyservapplication.cpp \
         ../metauri.cpp
 
 HEADERS  += skyserv.h \
+         skyservapplication.h \
           ../metauri.h
 
 FORMS    += skyserv.ui
 
-#libskynet
+SOURCES += $$QTSAPP_SOURCES
+HEADERS += $$QTSAPP_HEADERS
+
+#libskynet 
 include(../skynet/libskynet.pri)
 

@@ -245,6 +245,8 @@ skyserv/skyserv.h -text
 skyserv/skyserv.pro -text
 skyserv/skyserv.pro.user -text
 skyserv/skyserv.ui -text
+skyserv/skyservapplication.cpp -text
+skyserv/skyservapplication.h -text
 /sqlitecategorymodel.cpp -text
 /sqlitecategorymodel.h -text
 /sqlitesegmentmodel.cpp -text

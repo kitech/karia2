@@ -1,10 +1,10 @@
-// nullgetapplication.cpp --- 
+// skyservapplication.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-17 23:14:21 +0800
-// Version: $Id$
+// Version: $Id: skyservapplication.cpp 143 2010-06-29 15:23:14Z drswinghead $
 // 
 
 #include <QtCore>
@@ -14,21 +14,21 @@
 #else
 #endif
 
-#include "nullgetapplication.h"
+#include "skyservapplication.h"
 
-NullGetApplication::NullGetApplication(int & argc, char ** argv)
+SkyServApplication::SkyServApplication(int & argc, char ** argv)
 	: QtSingleApplication(argc, argv)
 {
 
 }
 
-NullGetApplication::~NullGetApplication()
+SkyServApplication::~SkyServApplication()
 {
 
 }
 
 #if defined(Q_OS_WIN)
-bool NullGetApplication::winEventFilter ( MSG * msg, long * result )
+bool SkyServApplication::winEventFilter ( MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 
@@ -38,14 +38,14 @@ bool NullGetApplication::winEventFilter ( MSG * msg, long * result )
 
 }
 #elif defined(Q_OS_MAC)
-bool NullGetApplication::macEventFilter(EventHandlerCallRef caller, EventRef event )
+bool SkyServApplication::macEventFilter(EventHandlerCallRef caller, EventRef event )
 {
     return QApplication::macEventFilter(caller, event);
 }
 #else
 #include <X11/Xlib.h>
 #include "xmessages.h"
-bool NullGetApplication::x11EventFilter(XEvent *event)
+bool SkyServApplication::x11EventFilter(XEvent *event)
 {
     switch(event->type) {
     case ClientMessage:
@@ -57,7 +57,7 @@ bool NullGetApplication::x11EventFilter(XEvent *event)
 }
 #endif
 
-void NullGetApplication::handleMessage(const QString &msg)
+void SkyServApplication::handleMessage(const QString &msg)
 {
     // qDebug()<<"I am running, you say:"<<msg;
 }
