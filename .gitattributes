@@ -238,6 +238,12 @@ skynet/xmessages.h -text
 /skypetracer.cpp -text
 /skypetracer.h -text
 /skypetracer.ui -text
+skyserv/main.cpp -text
+skyserv/skyserv.cpp -text
+skyserv/skyserv.h -text
+skyserv/skyserv.pro -text
+skyserv/skyserv.pro.user -text
+skyserv/skyserv.ui -text
 /sqlitecategorymodel.cpp -text
 /sqlitecategorymodel.h -text
 /sqlitesegmentmodel.cpp -text
