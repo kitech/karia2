@@ -12,7 +12,10 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "ui_skypetracer.h"
+// #include "ui_skypetracer.h"
+namespace Ui {
+    class SkypeTracer;
+};
 
 class SkypeTracer : public QDialog
 {
@@ -30,9 +33,12 @@ signals:
 
 private slots:
     void onSendRequest();
+    void onCommandTemplateSelected(QListWidgetItem *item);
+    void onCompleteRequest(const QString &text);
 
 private:
-    Ui::SkypeTracer uiw;
+    // Ui::SkypeTracer uiw;
+    Ui::SkypeTracer *uiw;
 };
 
 #endif /* _SKYPETRACER_H_ */
