@@ -8,10 +8,9 @@
 # 
 
 QT       += core gui network
-
 TARGET = skyserv
 TEMPLATE = app
-
+CONFIG += debug
 UI_HEADERS_DIR = GeneratedFiles
 MOC_DIR = tmp
 UI_DIR = tmp
@@ -20,7 +19,7 @@ OBJECTS_DIR = tmp
 VERSION = 0.0.97
 
 #########################
-INCLUDEPATH += ../qtsingleapplication ../skynet
+INCLUDEPATH += ../qtsingleapplication ../skynet ..
 
 QTSAPP_HEADERS = ../qtsingleapplication/qtsingleapplication.h ../qtsingleapplication/qtlocalpeer.h
 QTSAPP_SOURCES = ../qtsingleapplication/qtsingleapplication.cpp ../qtsingleapplication/qtlocalpeer.cpp

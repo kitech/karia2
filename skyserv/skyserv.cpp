@@ -12,6 +12,7 @@
 #include "skyserv.h"
 #include "ui_skyserv.h"
 
+#include "metauri.h"
 #include "skype.h"
 
 SkyServ::SkyServ(QObject *parent)
@@ -50,9 +51,45 @@ void SkyServ::onSkypeDisconnected(QString skypeName)
 
 }
 
+void SkyServ::onNewStreamCreated(QString contactName, int stream)
+{
+    
+}
+
 void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)
 {
     qDebug()<<contactName<<stream<<data;
+    SkypePackage sp = SkypePackage::fromString(data);
+    Q_ASSERT(sp.isValid());
+
+    this->processRequest(contactName, stream, &sp);
+}
+
+void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
+{
+    MetaUri mu = MetaUri::fromString(sp->data);
+    MetaUri rmu; // response
+    SkypePackage rsp; // response package
+    QString rspStr;
+
+    switch (sp->type) {
+    case SkypePackage::SPT_MU_ADD:
+        // add to storage here;
+        mu.dump();
+        rsp.seq = sp->seq; // the same as request
+        rsp.type = SkypePackage::SPT_MU_ADD_RESP;
+        rsp.data = QString("OK");
+
+        rspStr = rsp.toString();
+        this->mSkype->sendPackage(contactName, stream, rspStr);
+        break;
+    case SkypePackage::SPT_MU_DELETE:
+        
+        break;
+    default:
+        Q_ASSERT(1==2);
+        break;
+    };
 }
 
 // SkyServ::SkyServ(QWidget *parent) :

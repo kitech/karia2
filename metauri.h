@@ -49,8 +49,9 @@ public:
 
 public:
     enum {
-        SPT_MIN=100,
-        SPT_MU_ADD=101,
+        SPT_MIN = 100,
+        SPT_PING,
+        SPT_MU_ADD,
         SPT_MU_ADD_RESP,
         SPT_MU_UPDATE,
         SPT_MU_UPDATE_RESP,
@@ -59,8 +60,15 @@ public:
         SPT_MU_SEARCH,
         SPT_MU_SEARCH_RESULT,
         SPT_STREAM_CLOSE,
-        SPT_MAX=999
+        SPT_MAX = 999
     };
+
+    enum {
+        SPR_MIN = 100,
+        SPR_OK,
+        SPR_MAX = 999
+    };
+
     int seq;
     int type;
     QString data;

@@ -144,8 +144,13 @@ void Skype::processMessage(const QString &message) {
             streams.insert( cmd.contactName(), data );
         }
         activeStream[ cmd.contactName() ] = cmd.streamNum();
-        emit newStreamCreated( cmd.contactName() );
+        emit newStreamCreated(cmd.contactName(), cmd.streamNum());
         return;
+    }
+
+    if (cmd.type() == SK_CLOSE_STREAM) {
+        // qDebug()<<__FILE__<<__LINE__<<"Maybe stream disconnected:"<<cmd.streamNum();
+        emit this->streamClosed();
     }
 }
 

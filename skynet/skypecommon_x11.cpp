@@ -51,7 +51,8 @@ bool skypeComm::attachToSkype() {
         qDebug("skype::connectToInstance(): Skype not detected, status %d\n", status );
         return false;
     } else  {
-        skype_win = * (const unsigned long *) prop & 0xffffffff;
+        // skype_win = * (const unsigned long *) prop & 0xffffffff;
+        skype_win = * (const unsigned long *) prop & 0xffffffffffffffff; // test for x64
         qDebug("skype::connectToInstance(): Skype instance found, window id %d\n", skype_win);
         return true;
     }

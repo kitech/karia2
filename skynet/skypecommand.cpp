@@ -209,6 +209,7 @@ bool SkypeResponse::parse(QString msg) {
     if ( msg.indexOf("ALTER") == 0 ) {
         exp.setPattern("ALTER APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
     } else if ( msg.indexOf("APPLICATION") == 0 ) {
+        // exp.setPattern("APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
         exp.setPattern("APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
         echo=false; // We need to determine Type
     } else if ( msg.indexOf("DELETE") == 0 ) { 
@@ -229,8 +230,15 @@ bool SkypeResponse::parse(QString msg) {
     if (list.size() > 1) AppName = list[1];
     if (list.size() > 2) CommandName = list[2];
     if (list.size() > 3) ContactName = list[3];
-    if (list.size() > 4) Data.append(list[4]);
-    StreamNum=0;
+    if (list.size() > 4) {
+        // why have a space at begin?
+        if (Data.isEmpty() && list[4].length() > 0 && list[4].at(0) == QChar(' ')) {
+            Data.append(list[4].trimmed());
+        } else {
+            Data.append(list[4]);
+        }
+    }
+    StreamNum = 0;
     exp.setPattern("([^:]*):([0-9]*).*");
     if ( exp.exactMatch(ContactName) ) {
         list = exp.capturedTexts();
@@ -240,7 +248,9 @@ bool SkypeResponse::parse(QString msg) {
 
     if ( echo && CommandName != "READ" ) Type = SK_ECHO;
     else  if ( CommandName == "CONNECTING" || CommandName == "SENDING" ) Type = SK_STATUS;
-    else if ( CommandName == "STREAMS" ) Type = SK_STREAMS;
+    else if ( CommandName == "STREAMS" ) {
+        Type = SK_STREAMS;
+    }
     else if ( CommandName == "READ" ) Type = SK_DATA;
     else if ( CommandName == "RECEIVED" ) Type = SK_READY_TO_READ;
     else if (CommandName == "DATAGRAM") {

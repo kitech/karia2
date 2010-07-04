@@ -39,7 +39,7 @@ QString MetaUri::toString()
     str += "|" + this->contentMd5;
     str += "|" + QString("%1").arg(this->fileSize);
     str += "|" + owner.toAscii();
-    str += "|" + QString("%1").arg(this->valid ? "true" : "false");
+    str += "|" + QString("%1").arg(this->valid ? "T" : "F");
     str += "|" + QString("%1").arg(this->mtime);
 
     return str;
@@ -61,7 +61,7 @@ MetaUri MetaUri::fromString(QString str)
     mu.contentMd5 = elts.at(3); // QString(QByteArray::fromHex(elts.at(3)));
     mu.fileSize = elts.at(4).toLongLong(); // QString(QByteArray::fromHex(elts.at(4))).toLongLong();
     mu.owner = elts.at(5); // QString(QByteArray::fromHex(elts.at(5)));
-    mu.valid = elts.at(6) == "true" ? true : false; // QString(QByteArray::fromHex(elts.at(6))) == "true" ? true : false;
+    mu.valid = elts.at(6) == "T" ? true : false; // QString(QByteArray::fromHex(elts.at(6))) == "true" ? true : false;
     mu.mtime = elts.at(7).toInt(); // QString(QByteArray::fromHex(elts.at(7))).toInt();
 
     return MetaUri();
@@ -100,8 +100,19 @@ SkypePackage SkypePackage::fromString(QString str)
 
     QList<QString> elts = str.split(",");
     
-    if (elts.count() != 4 || elts.at(0) != "SkypePackage") {
-        qDebug()<<"Invalid SkypePackage";
+    // qDebug()<<elts.count()<<elts
+    //         <<(elts.count() == 4)
+    //         <<(elts.at(0) == QString("SkypePackage"));
+    // if (elts.at(0) != QString("SkypePackage")) {
+    //     QString str = elts.at(0);
+    //     int len = str.length();
+    //     for (int i = 0 ; i < len ; ++i) {
+    //         qDebug()<<str.at(i)<<QString("SkypePackage").at(i)
+    //                 <<(str.at(i) == QString("SkypePackage").at(i));
+    //     }
+    // }
+    if (elts.count() != 4 || elts.at(0) != QString("SkypePackage")) {
+        qDebug()<<__FILE__<<__LINE__<<"Invalid SkypePackage";
         return sp;
     }
 

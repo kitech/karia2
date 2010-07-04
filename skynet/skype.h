@@ -75,7 +75,8 @@ signals:
     void connectionLost();
     void skypeError(int errNo, QString Msg);
     void dataInStream(QString contactName);
-    void newStreamCreated(QString contactName);
+    void newStreamCreated(QString contactName, int num);
+    void streamClosed();
 
     void commandRequest(QString cmd);
     void commandResponse(QString cmd);

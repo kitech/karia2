@@ -12,6 +12,8 @@
 
 #include <QMainWindow>
 
+class SkypePackage;
+// class MetaUri;
 class Skype;
 class SkyServ : public QObject
 {
@@ -24,7 +26,9 @@ public slots:
     void onSkypeError(int errNo, QString msg);
     void onSkypeConnected(QString skypeName);
     void onSkypeDisconnected(QString skypeName);
+    void onNewStreamCreated(QString contactName, int stream);
     void onSkypePackageArrived(QString contactName, int stream, QString data);
+    void processRequest(QString contactName, int stream, SkypePackage *sp);
 
 private:
     Skype *mSkype;
