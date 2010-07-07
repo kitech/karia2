@@ -15,6 +15,8 @@
 #include "metauri.h"
 #include "skype.h"
 
+#include "database.h"
+
 SkyServ::SkyServ(QObject *parent)
     : QObject(parent)
 {

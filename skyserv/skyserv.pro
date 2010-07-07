@@ -27,10 +27,12 @@ QTSAPP_SOURCES = ../qtsingleapplication/qtsingleapplication.cpp ../qtsingleappli
 SOURCES += main.cpp\
         skyserv.cpp \
         skyservapplication.cpp \
+        database.cpp \
         ../metauri.cpp
 
 HEADERS  += skyserv.h \
          skyservapplication.h \
+         database.h \
           ../metauri.h
 
 FORMS    += skyserv.ui
@@ -41,3 +43,4 @@ HEADERS += $$QTSAPP_HEADERS
 #libskynet 
 include(../skynet/libskynet.pri)
 
+LIBS += -lpq

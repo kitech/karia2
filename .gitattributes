@@ -239,6 +239,8 @@ skynet/xmessages.h -text
 /skypetracer.cpp -text
 /skypetracer.h -text
 /skypetracer.ui -text
+skyserv/database.cpp -text
+skyserv/database.h -text
 skyserv/main.cpp -text
 skyserv/skyserv.cpp -text
 skyserv/skyserv.h -text
