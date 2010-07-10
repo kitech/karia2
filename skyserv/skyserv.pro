@@ -19,6 +19,7 @@ OBJECTS_DIR = tmp
 VERSION = 0.0.97
 
 #########################
+INCLUDEPATH += /usr/include/postgresql/              # for ubuntu, the include header not in standard /usr/include
 INCLUDEPATH += ../qtsingleapplication ../skynet ..
 
 QTSAPP_HEADERS = ../qtsingleapplication/qtsingleapplication.h ../qtsingleapplication/qtlocalpeer.h
