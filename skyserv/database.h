@@ -26,6 +26,10 @@ public:
     bool disconnectdb();
     bool reconnectdb();
 
+    PGconn *connection() {
+        return this->conn;
+    }
+
 private:
     PGconn *conn;
 };

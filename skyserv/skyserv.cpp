@@ -1,11 +1,11 @@
-// skyserv.cpp --- 
-// 
+// skyserv.cpp ---
+//
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
-// URL: 
+// URL:
 // Created: 2010-07-03 15:35:48 +0800
 // Version: $Id$
-// 
+//
 
 #include <QtCore>
 
@@ -20,6 +20,12 @@
 SkyServ::SkyServ(QObject *parent)
     : QObject(parent)
 {
+
+    Database *db = new Database();
+    db->connectdb();
+
+
+
     this->mSkype = new Skype("karia2");
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
                      this, SLOT(onSkypeError(int, QString)));
@@ -55,7 +61,7 @@ void SkyServ::onSkypeDisconnected(QString skypeName)
 
 void SkyServ::onNewStreamCreated(QString contactName, int stream)
 {
-    
+
 }
 
 void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)
@@ -86,7 +92,6 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         this->mSkype->sendPackage(contactName, stream, rspStr);
         break;
     case SkypePackage::SPT_MU_DELETE:
-        
         break;
     default:
         Q_ASSERT(1==2);

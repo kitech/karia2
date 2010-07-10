@@ -16,6 +16,11 @@
 #define DB_PASSWD ""
 #define DB_PORT 5432
 
+static void noticeReceiver(void *arg, const PGresult *res)
+{
+    qDebug()<<__FILE__<<__LINE__<<arg<<res;
+}
+
 Database::Database(QObject *parent)
     : QObject(parent)
 {
@@ -33,13 +38,23 @@ bool Database::connectdb()
     snprintf(connInfo, sizeof(connInfo), "hostaddr=%s dbname=%s user=%s password=%s port=%d",
              DB_HOST, DB_NAME, DB_USER, DB_PASSWD, DB_PORT);
     this->conn = PQconnectdb(connInfo);
-    switch(PQstatus(this->conn)) {
-    case CONNECTION_STARTED:
-        break;
-    case CONNECTION_MADE:
-        break;
-    default:
-        break;
+    int st = PQstatus(this->conn);
+    if (st == CONNECTION_OK) {
+        qDebug()<<"Connect pg ok.";
+        PQsetNoticeReceiver(this->conn, noticeReceiver, 0);
+        return true;
+    } else {
+        switch(st) {
+        case CONNECTION_STARTED:
+            break;
+        case CONNECTION_MADE:
+            break;
+        default:
+            qDebug()<<"Unknown connect status:"<<st;
+            break;
+        }
+        PQfinish(this->conn);
+        this->conn = NULL;
     }
     return false;
 }
