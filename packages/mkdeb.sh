@@ -16,8 +16,13 @@ echo $VER_FILE
 VERSION=`cat $VER_FILE|grep "VERSION ="|head -n 1|awk '{print $3}'`
 echo "Version: $VERSION"
 
-PKGDIR=/tmp/karia2-$VERSION-0
-rm -fvr /tmp/karia2-$VERSION-0
+SVNVER=0
+ARCH=`uname -m`
+if [ x"$1" != x"" ] ; then
+	SVNVER=$1
+fi
+PKGDIR=/tmp/karia2-$VERSION-$SVNVER
+rm -fvr /tmp/karia2-$VERSION-$SVNVER
 mkdir -pv $PKGDIR
 
 cp -va $dirname/debian/DEBIAN $PKGDIR/
@@ -33,7 +38,9 @@ cp -va $dirname/../karia2/share/* $PKGDIR/usr/share/karia2/
 find $PKGDIR/usr/share/karia2/ -name .svn | xargs rm -vfr
 
 cd $PKGDIR/../
-dpkg -b karia2-$VERSION-0
+dpkg -b karia2-$VERSION-$SVNVER
+
+mv -v /tmp/karia2-$VERSION-$SVNVER.deb /tmp/karia2-$VERSION-${SVNVER}_${ARCH}.deb
 
 # cleanup
 rm -fvr $PKGDIR
