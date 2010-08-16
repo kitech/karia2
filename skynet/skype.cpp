@@ -84,6 +84,7 @@ void Skype::processMessage(const QString &message) {
     }
 
     if ( cmd.type() == SK_UNKNOWN ) { 
+        qDebug()<<__FILE__<<__LINE__<<"UNKNOWN cmd type:"<<cmd.data();
         return;
     }
 
@@ -99,7 +100,7 @@ void Skype::processMessage(const QString &message) {
     }
 
     if (cmd.type() == SK_CURRENTUSERHANDLE) {
-        this->appName = "skype_app_" + this->appPrefix;// + "_" + cmd.contactName();
+        this->appName = "skynet_" + this->appPrefix;// + "_" + cmd.contactName();
         qDebug()<<"unique appName:"<<this->appName;
 
         emit connected(cmd.contactName());
@@ -120,7 +121,8 @@ void Skype::processMessage(const QString &message) {
         } else { // should not happen (a SK_STREAMS message should always arrive before)
             qDebug() << "ASSERT: Data arriving before stream Created (" << cmd.contactName() <<":"<< cmd.streamNum() << cmd.data() << ")"; 
             streams[cmd.contactName()] = cmd.data();
-            activeStream[cmd.contactName()] = cmd.streamNum();
+            // activeStream[cmd.contactName()] = cmd.streamNum();
+            this->activeStreams.insert(cmd.contactName(), cmd.streamNum());
         }
         emit dataInStream( cmd.contactName() );
         return;
@@ -131,7 +133,8 @@ void Skype::processMessage(const QString &message) {
         if (this->dataGrams.contains(cmd.streamNum())) {
             this->dataGrams[cmd.streamNum()] = cmd.data();
         } else {
-            activeStream[cmd.contactName()] = cmd.streamNum();
+            // activeStream[cmd.contactName()] = cmd.streamNum();
+            this->activeStreams.insert(cmd.contactName(), cmd.streamNum());
             this->dataGrams[cmd.streamNum()] = cmd.data();
         }
         emit this->packageArrived(cmd.contactName(), cmd.streamNum(), cmd.data());
@@ -143,7 +146,8 @@ void Skype::processMessage(const QString &message) {
         if (! streams.contains( cmd.contactName() ) ) {
             streams.insert( cmd.contactName(), data );
         }
-        activeStream[ cmd.contactName() ] = cmd.streamNum();
+        // activeStream[ cmd.contactName() ] = cmd.streamNum();
+        this->activeStreams.insert(cmd.contactName(), cmd.streamNum());
         emit newStreamCreated(cmd.contactName(), cmd.streamNum());
         return;
     }
@@ -153,7 +157,7 @@ void Skype::processMessage(const QString &message) {
         emit this->streamClosed();
     }
 }
-
+// shoud not be here, maybe in upper level
 void Skype::processAP2APMessage(const QString &message)
 {
     
@@ -228,9 +232,11 @@ void Skype::newStream(QString contact)
 
 bool Skype::writeToStream(QByteArray data, QString contactName ) 
 {
-    if ( ! activeStream.contains( contactName ) )  return false; // We are not connected to contactName
+    // if ( ! activeStream.contains( contactName ) )  return false; // We are not connected to contactName
+    if (!this->activeStreams.leftContains(contactName)) return false;
 
-    doCommand( SkypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
+    // doCommand( SkypeCommand::WRITE_AP2AP( appName, contactName, activeStream[contactName],data ), false );
+    doCommand( SkypeCommand::WRITE_AP2AP( appName, contactName, this->activeStreams[contactName], data), false);
     return true;
 }
 
@@ -258,11 +264,15 @@ bool Skype::sendPackage(QString contactName, int streamNum, QString data)
 // for client, should use only one stream
 bool Skype::sendPackage(QString contactName, QString data)
 {
-    qDebug()<<this->activeStream;
+    // qDebug()<<this->activeStream;
+    qDebug()<<this->activeStreams;
     // TODO stream_id should be dynamic detect
-    Q_ASSERT(this->activeStream.count() == 1);
-    QList<QString> keys = this->activeStream.keys();
-    int streamNum = this->activeStream.value(keys.at(0));
+    // Q_ASSERT(this->activeStream.count() == 1);
+    Q_ASSERT(this->activeStreams.count() == 1);
+    // QList<QString> keys = this->activeStream.keys();
+    QList<QString> keys = this->activeStreams.leftValues();
+    // int streamNum = this->activeStream.value(keys.at(0));
+    int streamNum = this->activeStreams.leftToRight(keys.at(0));
     return this->sendPackage(contactName, streamNum, data);
 }
 

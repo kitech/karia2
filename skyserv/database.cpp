@@ -7,6 +7,7 @@
 // Version: $Id$
 // 
 
+#include <QtCore>
 
 #include "database.h"
 
@@ -34,9 +35,29 @@ Database::~Database()
 
 bool Database::connectdb()
 {
+    QString db_host;
+    QString db_name;
+    QString db_user;
+    QString db_passwd;
+    QString db_port;
+
     char connInfo[200] = {0};
+    QString confFile = "/home/gzleo/.skyserv.ini";
+    QSettings setting(confFile, QSettings::IniFormat);
+    
+    setting.beginGroup("database");
+    db_host = setting.value("host").toString();
+    db_name = setting.value("db_name").toString();
+    db_user = setting.value("user").toString();
+    db_passwd = setting.value("passwd").toString();
+    db_port = setting.value("port").toString();
+    // qDebug()<<db_host<<db_name<<db_user<<db_passwd<<db_port;
+
     snprintf(connInfo, sizeof(connInfo), "hostaddr=%s dbname=%s user=%s password=%s port=%d",
-             DB_HOST, DB_NAME, DB_USER, DB_PASSWD, DB_PORT);
+             db_host.toAscii().data(), db_name.toAscii().data(), db_user.toAscii().data(),
+             db_passwd.toAscii().data(), db_port.toInt());
+    //             DB_HOST, DB_NAME, DB_USER, DB_PASSWD, DB_PORT);
+
     this->conn = PQconnectdb(connInfo);
     int st = PQstatus(this->conn);
     if (st == CONNECTION_OK) {
@@ -50,7 +71,7 @@ bool Database::connectdb()
         case CONNECTION_MADE:
             break;
         default:
-            qDebug()<<"Unknown connect status:"<<st;
+            qDebug()<<"Unknown db connect status:"<<st;
             break;
         }
         PQfinish(this->conn);
@@ -61,6 +82,7 @@ bool Database::connectdb()
 
 bool Database::isConnected()
 {
+    return (this->conn != NULL);
     return false;
 }
 

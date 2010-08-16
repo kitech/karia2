@@ -71,7 +71,7 @@
            <string>Chat with ...</string>
           </property>
           <property name="text">
-           <string>PushButton</string>
+           <string>connect a2a</string>
           </property>
          </widget>
          <widget class="QLineEdit" name="lineEdit">
@@ -82,6 +82,9 @@
             <width>113</width>
             <height>20</height>
            </rect>
+          </property>
+          <property name="text">
+           <string>liuguangzhao</string>
           </property>
          </widget>
          <widget class="QPushButton" name="pushButton_2">

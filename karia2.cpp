@@ -4153,7 +4153,8 @@ void Karia2::onChatWithSkype()
     QStringList contacts = this->mSkype->getContacts();
     qDebug()<<skypeName<<contacts;
 
-    this->mSkype->newStream("drswinghead");
+    this->mSkype->newStream(skypeName);
+    // this->mSkype->newStream("drswinghead");
 }
 
 void Karia2::onSendPackage()
@@ -4178,7 +4179,7 @@ void Karia2::onSendPackage()
     
     qDebug()<<muStr<<spStr;
 
-    this->mSkype->sendPackage("drswinghead", spStr);
+    this->mSkype->sendPackage("liuguangzhao", spStr);
 }
 
 //QAXFACTORY_DEFAULT(Karia2,

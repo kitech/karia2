@@ -13,12 +13,15 @@
  * TODO:
  * CHANGES:
  ***************************************************************/
+
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QHash>
 #include <QtCore/QEventLoop>
 #include <QtCore/QTimer>
+
+#include "libng/qbihash.h"
 
 #include "skypecommand.h"
 #include "skypecommon.h"
@@ -35,8 +38,9 @@ private:
     int protocolNumber;
     bool mConnected;
     QHash<QString, QByteArray> streams; // 
-    QHash<QString, int> activeStream; // <skype_id, stream_id>
+    // QHash<QString, int> activeStream; // <skype_id, stream_id>
     QHash<int, QString> dataGrams;// <stream_id, udp_data>
+    KBiHash<QString, int> activeStreams;  // <skype_id, stream_id>
 
     QStringList contacts;
     bool contactsUpToDate;
