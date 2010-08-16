@@ -323,6 +323,8 @@ private:	//method
     void initXmlRpc();
     QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
+    QString showCommandLineArguments();
+
 protected:
 	virtual void paintEvent(QPaintEvent *event);
 	virtual void closeEvent(QCloseEvent *event);

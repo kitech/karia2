@@ -22,7 +22,8 @@ TaskBallMapWidget * TaskBallMapWidget::hWnd = 0 ;
 TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	: QWidget(parent) , mp(parent)
 {
-    this->mTaskMan = TaskQueue::instance();
+    // this->mTaskMan = TaskQueue::instance();
+    this->mTaskMan = NULL;
 	// mBlockSize = 50 * 1024 ;	// 50K
 	this->mCurrentTaskId = -8888 ;
 	this->setMinimumSize(parent->size().width() , parent->size().height());
@@ -33,7 +34,7 @@ TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	this->mBallMap = QImage(parent->size().width(), parent->size().height(), 
                             QImage::Format_ARGB32_Premultiplied);	// 初始化一个和窗口一样大的图象。
 
-	mSwithTimer.start(1000);
+	mSwithTimer.start(1000); // can start manually
 	QObject::connect(&this->mSwithTimer, SIGNAL(timeout()), this, SLOT(onSwitchState()));
 }
 
@@ -226,6 +227,10 @@ void TaskBallMapWidget::onRunTaskCompleteState(int taskId, bool pSwitch) 	//pSwi
 
 void TaskBallMapWidget::onSwitchState() 	//timer 超时调用槽
 {
+    if (this->mTaskMan == NULL) {
+        qDebug()<<"instance TaskQueue";
+        this->mTaskMan = TaskQueue::instance();
+    }
     Q_ASSERT(this->mTaskMan != NULL);
     // if (this->mTaskMan != NULL) {
     QBitArray ba = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId);

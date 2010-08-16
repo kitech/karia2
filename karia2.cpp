@@ -120,7 +120,8 @@ void Karia2::firstShowHandler()
 	this->mainUI.tab_4->setLayout(new QVBoxLayout());
 	this->mainUI.tab_4->layout()->addWidget(sa);
 
-	TaskBallMapWidget * wg = TaskBallMapWidget::instance(sa);
+    // datbase inited here???
+	TaskBallMapWidget *wg = TaskBallMapWidget::instance(sa);
 	//sa->setLayout(new QVBoxLayout());
 	sa->setWidget(wg);
 	sa->setWidgetResizable(false);
@@ -131,11 +132,12 @@ void Karia2::firstShowHandler()
 	this->initStatusBar();
 	this->initSystemTray();	
     this->initAppIcons();
-	
+
 	this->initialMainWindow();
 
 	this->update();
 
+    return;
 	///////	
 	// init base storage db 
     this->mStorage = SqliteStorage::instance(this);
@@ -3922,6 +3924,25 @@ void Karia2::handleArguments()
     this->handleArguments(argc, argv);
 }
 
+QString Karia2::showCommandLineArguments()
+{
+    QString cmdLine;
+
+    cmdLine = 
+        "Karia2 command line arguments:\n"
+        "    -u --uri url\n"
+        "    -r --refer url\n"
+        "    -c --cookie cookie_str\n"
+        "    -m --metafile file_path\n"
+        "    -a --agent   host:port\n"
+        "\n";
+        ;
+
+    qDebug()<<cmdLine;
+
+    return cmdLine;
+}
+
 #include "getopt_pp_standalone.h"
 
 void Karia2::handleArguments(int argc, char **argv)
@@ -3934,11 +3955,12 @@ void Karia2::handleArguments(int argc, char **argv)
     char **rargv = argv;
     char *targv[100] = {0};
     std::string noprefix_metafile;
-    /* opera for win send this format arguments:
-       no:  0 Z:\cross\karia2-svn\release\Karia2.exe
-       no:  1 --uri http://down.sandai.net/Thunder5.9.19.1390.exe --refer http://dl.xunlei.com/index.htm?tag=1
-       Karia2::handleArguments No uri specified.
-     */
+    /*
+      opera for win send this format arguments:
+      no:  0 Z:\cross\karia2-svn\release\Karia2.exe
+      no:  1 --uri http://down.sandai.net/Thunder5.9.19.1390.exe --refer http://dl.xunlei.com/index.htm?tag=1
+      Karia2::handleArguments No uri specified.
+    */
     // maybe opera
 #if defined(Q_OS_WIN)
     if (argc == 2 && (argv[1][0] == argv[1][1] && argv[1][1] == '-')) {
