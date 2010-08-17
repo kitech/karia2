@@ -120,7 +120,7 @@ void Karia2::firstShowHandler()
 	this->mainUI.tab_4->setLayout(new QVBoxLayout());
 	this->mainUI.tab_4->layout()->addWidget(sa);
 
-    // datbase inited here???
+    // database inited here???
 	TaskBallMapWidget *wg = TaskBallMapWidget::instance(sa);
 	//sa->setLayout(new QVBoxLayout());
 	sa->setWidget(wg);
@@ -137,7 +137,6 @@ void Karia2::firstShowHandler()
 
 	this->update();
 
-    return;
 	///////	
 	// init base storage db 
     this->mStorage = SqliteStorage::instance(this);

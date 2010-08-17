@@ -39,7 +39,7 @@ doc/C++.txt -text
 doc/Doxyfile -text
 doc/MPC.txt -text
 doc/QtCodingStyle -text
-doc/TODO -text svneol=unset#application/octet-stream
+doc/TODO.txt -text svneol=unset#text/plain
 doc/Torrent[!!-~]获取文件流程.odg -text
 doc/all.txt -text
 doc/aria2-1.9.2_redirect_no_cookie_no_refer.patch -text

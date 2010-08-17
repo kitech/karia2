@@ -161,6 +161,7 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
                                      QString("%1").arg(taskId), 1, Qt::MatchExactly | Qt::MatchWrap);
     if (mil.count() == 0) {
         int modelRows = mdl->rowCount();
+        modelRows = 0; // put on top
         mdl->insertRows(modelRows, 1);
         index = mdl->index(modelRows, ng::tasks::task_id);
         mdl->setData(index, taskId);

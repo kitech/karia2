@@ -24,11 +24,12 @@ UI_DIR = tmp
 OBJECTS_DIR = tmp
 #CONFIG += qtestlib
 
-VERSION = 0.0.98
+VERSION = 0.1.60
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet
 
+# karia2 realy need this?
 unix{
 	LIBS += -lssl    	
 }
@@ -60,7 +61,7 @@ win32 {
       #      LIBPATH += Z:/librarys/vc-ssl/lib Z:/librarys/vc-zlib/lib
       # INCLUDEPATH += Z:/librarys/vc-ssl/include/
       LIBS += -lqtmain -lzlib -llibeay32 -lssleay32 -ladvapi32 -luser32 -lpsapi -lws2_32
-      RESOURCES = NullGet.rc
+      RESOURCES = karia2.rc
       # QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:console
     }
 }
