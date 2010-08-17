@@ -102,7 +102,7 @@ HEADERS += aboutdialog.h \
            norwegianwoodstyle.h \
            nullcontroller.h \
            karia2.h \
-           nullgetapplication.h \
+           karia2application.h \
            radarscanner.h \
            resource.h \
            rulesmandlg.h \
@@ -155,7 +155,7 @@ SOURCES += aboutdialog.cpp \
            norwegianwoodstyle.cpp \
            nullcontroller.cpp \
            karia2.cpp \
-           nullgetapplication.cpp \
+           karia2application.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \

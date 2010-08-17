@@ -1,4 +1,4 @@
-// nullgetapplication.cpp --- 
+// karia2application.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
@@ -14,21 +14,21 @@
 #else
 #endif
 
-#include "nullgetapplication.h"
+#include "karia2application.h"
 
-NullGetApplication::NullGetApplication(int & argc, char ** argv)
+Karia2Application::Karia2Application(int & argc, char ** argv)
 	: QtSingleApplication(argc, argv)
 {
 
 }
 
-NullGetApplication::~NullGetApplication()
+Karia2Application::~Karia2Application()
 {
 
 }
 
 #if defined(Q_OS_WIN)
-bool NullGetApplication::winEventFilter ( MSG * msg, long * result )
+bool Karia2Application::winEventFilter ( MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 
@@ -38,14 +38,14 @@ bool NullGetApplication::winEventFilter ( MSG * msg, long * result )
 
 }
 #elif defined(Q_OS_MAC)
-bool NullGetApplication::macEventFilter(EventHandlerCallRef caller, EventRef event )
+bool Karia2Application::macEventFilter(EventHandlerCallRef caller, EventRef event )
 {
     return QApplication::macEventFilter(caller, event);
 }
 #else
 #include <X11/Xlib.h>
 #include "xmessages.h"
-bool NullGetApplication::x11EventFilter(XEvent *event)
+bool Karia2Application::x11EventFilter(XEvent *event)
 {
     switch(event->type) {
     case ClientMessage:
@@ -57,7 +57,7 @@ bool NullGetApplication::x11EventFilter(XEvent *event)
 }
 #endif
 
-void NullGetApplication::handleMessage(const QString &msg)
+void Karia2Application::handleMessage(const QString &msg)
 {
     // qDebug()<<"I am running, you say:"<<msg;
 }

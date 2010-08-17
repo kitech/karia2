@@ -111,6 +111,8 @@ images/woodbutton.png -text
 /karia2.qrc -text
 /karia2.rc -text
 /karia2.ui -text
+/karia2application.cpp -text
+/karia2application.h -text
 /labspace.cpp -text
 /labspace.h -text
 /labspace.ui -text
@@ -155,8 +157,6 @@ libng/qtmd5.h -text
 /norwegianwoodstyle.h -text
 /nullcontroller.cpp -text
 /nullcontroller.h -text
-/nullgetapplication.cpp -text
-/nullgetapplication.h -text
 /optionmanager.cpp -text
 /optionmanager.h -text
 packages/archlinux/PKGBUILD -text

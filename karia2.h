@@ -1,4 +1,4 @@
-// nullget.h --- 
+// karia2.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net

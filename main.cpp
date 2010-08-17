@@ -15,7 +15,7 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include "nullgetapplication.h"
+#include "karia2application.h"
 #include "karia2.h"
 
 QString packArguments(QCoreApplication *app, int argc, char **argv)
@@ -34,7 +34,7 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
     // args.prepend(app->applicationFilePath());
     if (args.count() == 0) {
         args.append(app->applicationFilePath());
-    } else if (!args.at(0).endsWith("nullget.exe", Qt::CaseInsensitive)) {
+    } else if (!args.at(0).endsWith("karia2.exe", Qt::CaseInsensitive)) {
         args.prepend(app->applicationFilePath());
     } else {
         // ok, get argument's mechinism the same as *nix, go on 
@@ -54,7 +54,7 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
 int main(int argc, char *argv[])
 {
 	//Q_INIT_RESOURCE(styles);
-    NullGetApplication app(argc, argv);
+    Karia2Application app(argc, argv);
     app.addLibraryPath(app.applicationDirPath() + "/plugins");
 
 	app.setQuitOnLastWindowClosed(false);
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
 	//这种方法只能在启动的时候用，其他时候更改无效。
 	//QTranslator translator;
-	//translator.load("nullget_zh_CN");
+	//translator.load("karia2_zh_CN");
 	//a.installTranslator(&translator);
 	//在这里使用与动态切换怎么是冲突的呢。
 	//QTranslator qtTranslatorInit;
@@ -88,8 +88,8 @@ int main(int argc, char *argv[])
 	//QString locale = QLocale::system().name();
 	//qDebug()<<"Switch Langague to: "<<locale;
 	//QTranslator appTranslatorInit;
-	//appTranslatorInit.load(QString("nullget_") + locale);
-	//////translator.load(QString("nullget_") + "en_US");
+	//appTranslatorInit.load(QString("karia2_") + locale);
+	//////translator.load(QString("karia2_") + "en_US");
 	//a.installTranslator(&appTranslatorInit);
 
     //w.show();	

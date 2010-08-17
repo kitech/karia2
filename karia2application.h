@@ -1,4 +1,4 @@
-// nullgetapplication.h --- 
+// karia2application.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
@@ -7,18 +7,18 @@
 // Version: $Id$
 // 
 
-#ifndef NULLGETAPPLICATION_H
-#define NULLGETAPPLICATION_H
+#ifndef KARIA2APPLICATION_H
+#define KARIA2APPLICATION_H
 
 #include <QApplication>
 #include <QtSingleApplication>  // add include_once in this file
 
-class NullGetApplication : public QtSingleApplication
+class Karia2Application : public QtSingleApplication
 {
 	Q_OBJECT;
 public:
-    NullGetApplication(int & argc, char ** argv);
-    ~NullGetApplication();
+    Karia2Application(int & argc, char ** argv);
+    ~Karia2Application();
 
 #if defined(Q_OS_WIN)
 	virtual bool winEventFilter ( MSG * msg, long * result );
@@ -35,6 +35,6 @@ private:
     
 };
 
-#endif // NULLGETAPPLICATION_H
+#endif // KARIA2APPLICATION_H
 
 
