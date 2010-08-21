@@ -102,6 +102,7 @@ icons/system-shutdown.png -text
 icons/user-trash.png -text
 images/woodbackground.png -text
 images/woodbutton.png -text
+/install.pri -text
 /instantspeedhistogramwnd.cpp -text
 /instantspeedhistogramwnd.h -text
 /karia2.cpp -text

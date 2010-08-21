@@ -24,7 +24,7 @@ UI_DIR = tmp
 OBJECTS_DIR = tmp
 #CONFIG += qtestlib
 
-VERSION = 0.1.60
+VERSION = 0.1.61
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet
@@ -67,6 +67,10 @@ win32 {
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
+include(./install.pri)
+DEFINES += NXDATADIR=\"\\\"$$DATADIR\\\"\"
+DEFINES += NXPKGDATADIR=\"\\\"$$PKGDATADIR\\\"\"
+DEFINES += THREADSAFE=1   # for sqlite thread-safe feature
 
 #添加这一块可以使得在windows上编译出来的程序有图标 
 win32 {

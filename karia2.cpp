@@ -789,6 +789,9 @@ void Karia2::initUserOptionSetting()
                 this->mainUI.mui_tv_task_list->setColumnHidden(i, true);
             }
         }
+        if (this->mCustomTaskShowColumns != taskShowColumns) {
+            this->mCustomTaskShowColumns = taskShowColumns;
+        }
     }
 
     //////
@@ -1081,48 +1084,56 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
     }
 }
 
-void Karia2::onCatListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
+void Karia2::onCatListSelectChange(const QItemSelection &selected, const QItemSelection &deselected)
 {
 	qDebug()<<__FUNCTION__<<selected;
 	
-	if (selected.size() == 1) {
-		QModelIndex currentIndex;
-		currentIndex = selected.at(0).indexes().at(0);
-		qDebug()<<currentIndex;
-		QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id);
-		int catID = catIDIndex.model()->data(catIDIndex ).toInt();
+    // has case selected.size() > 1
+	if (selected.size() != 1) {
+        return;
+    }
 
-		qDebug()<<"My cat id is: "<<catIDIndex.model()->data(catIDIndex).toString();
+    QModelIndex currentIndex;
+    currentIndex = selected.at(0).indexes().at(0);
+    qDebug()<<currentIndex;
+    QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id);
+    int catID = catIDIndex.model()->data(catIDIndex ).toInt();
 
-		this->mTaskListView->setModel(0);
+    // qDebug()<<"My cat id is: "<<catIDIndex.model()->data(catIDIndex).toString();
+    this->mTaskListView->setModel(0);
 
-		if (catIDIndex.model()->data(catIDIndex).toString() == "0") {
-			//this->mCatView->clearSelection(); // 不让选择树根也不合适啊。
-			QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
-			this->mTaskListView->setModel(mdl);
-		} else {
-			QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
-			this->mTaskListView->setModel(mdl);
-		}
+    if (catIDIndex.model()->data(catIDIndex).toString() == "0") {
+        //this->mCatView->clearSelection(); // 不让选择树根也不合适啊。
+        QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
+        this->mTaskListView->setModel(mdl);
+    } else {
+        QAbstractItemModel *mdl = SqliteTaskModel::instance(catID, this);
+        this->mTaskListView->setModel(mdl);
+    }
 
-		QObject::connect(this->mTaskListView->selectionModel(), 
-                         SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection &)),
-                         this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
-        
-        // clean up
-        // qDebug()<<deselected;
-        // qDebug()<<deselected.count();
-        // qDebug<<deselected.at(0); //.indexes();
-        if (deselected.count() > 0) {
-            QModelIndex deCatIdIndex = deselected.at(0).indexes().at(ng::cats::cat_id);
-            if (deCatIdIndex.data().toInt() == ng::cats::downloading
-                || deCatIdIndex.data().toInt() == ng::cats::deleted) {
-            } else {
-                int deCatId = deCatIdIndex.model()->data(deCatIdIndex).toInt();
-                SqliteTaskModel::removeInstance(deCatId);
-            }
+    QObject::connect(this->mTaskListView->selectionModel(), 
+                     SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection &)),
+                     this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
+    
+    // qDebug()<<"colums should show:"<<this->mCustomTaskShowColumns;
+    if (!this->mCustomTaskShowColumns.isEmpty()) {
+        this->onTaskShowColumnsChanged(this->mCustomTaskShowColumns);
+    }
+
+    // clean up
+    // qDebug()<<deselected;
+    // qDebug()<<deselected.count();
+    // qDebug<<deselected.at(0); //.indexes();
+    if (deselected.count() > 0) {
+        QModelIndex deCatIdIndex = deselected.at(0).indexes().at(ng::cats::cat_id);
+        if (deCatIdIndex.data().toInt() == ng::cats::downloading
+            || deCatIdIndex.data().toInt() == ng::cats::deleted) {
+        } else {
+            int deCatId = deCatIdIndex.model()->data(deCatIdIndex).toInt();
+            SqliteTaskModel::removeInstance(deCatId);
         }
-	}
+    }
+	
 }
 
 // TODO, handle multi row select case
@@ -1770,6 +1781,14 @@ QString decodeFlashgetUrl(QString enUrl)
 	
     QString deUrl = (u8codec == NULL) ? bUrl : u8codec->toUnicode(bUrl);
     deUrl = deUrl.mid(10, deUrl.length() - 20);
+
+    if (deUrl.toLower().startsWith("flashget://")) {
+        deUrl = decodeFlashgetUrl(deUrl);
+    }
+
+    if (deUrl.toLower().startsWith("flashgetx://")) {
+        qDebug()<<"Unsupported protocol type."<<deUrl;
+    }
     return deUrl;
 
 }
@@ -1808,7 +1827,7 @@ void Karia2::showNewDownloadDialog()
 	delete tid;
 
     QString deUrl = decodeEncodeUrl(url);
-	qDebug()<<segcnt<<url<<deUrl;
+	qDebug()<<"Decode url: "<<segcnt<<url<<deUrl;
     if (url != deUrl) {
         to->setUrl(deUrl);
         url = deUrl;
@@ -3911,6 +3930,9 @@ void Karia2::onTaskShowColumnsChanged(QString columns)
             } else {
                 this->mainUI.mui_tv_task_list->setColumnHidden(i, false);
             }
+        }
+        if (this->mCustomTaskShowColumns != columns) {
+            this->mCustomTaskShowColumns = columns;
         }
     }
 }

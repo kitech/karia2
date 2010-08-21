@@ -14,10 +14,25 @@ http://hn61.3gpjoy.com:8110/movie/20070304/七龙珠/www_3gpjoy_com七龙珠(第
 
 下载地址出来了吧。
 
+flashget新的协议,flashgetx://|file|FILENAME|FILESIZE|HASH|/
 
+这其实是一个ed2k链接.
+参考:http://www.linuxsir.org/bbs/showthread.php?p=2001316
+flashgetx://|mhts|W87evKu159Owd3d3LjU3bW92aWUuY29tXbHk0M698LjVMlRT1tDX1i5ybXZi|677224149|64CD8CEDABC23342D5053187FFB95882|/
+
+将“flashgetx://|mhts|”到下一个“|”之间的内容解码得到“[无极电影www.57movie.com]变形金刚2TS中字.rmvb”，进行替换得到。
+
+flashgetx://|mhts|[无极电影www.57movie.com]变形金刚2TS中字.rmvb|677224149|64CD8CEDABC23342D5053187FFB95882|/
+
+这种链接类似电驴，由|文件名|大小|HASH值|组成，但用网上的将“flashgetx://|mhts|”改为“ed2k://”的方法不管用，我猜测这种地址使用快车的内部网络进行下载，就像电驴的内部网络一样，目前下载软件还不支持这种网络。
+
+=========================
 QQ超级旋风的加密连接为：qqdl://aHR0cDovL3d3dy5sZXZpbC5jbg==，去除前面的qqdl://，解密后直接得到了“[url]http://www.levil.cn[/url]”，看得出腾讯的下载软件专用链地址是不经过任何变形直接加密的。
 
 
+======================
 迅雷、旋风、快车专用链破解【GM脚本】
 http://board.mozest.com/viewthread.php?tid=33219
 66xxx.js
+
+
