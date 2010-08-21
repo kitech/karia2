@@ -14,8 +14,13 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
-CONFIG += debug
 QT = core gui xml network sql
+
+win32 {
+      CONFIG += release
+} else {
+      CONFIG += debug
+}
 
 DESTDIR = ./bin
 UI_HEADERS_DIR = GeneratedFiles
@@ -47,14 +52,15 @@ win32 {
         ## check cl.exe, x64 or x86
         CLARCH=$$system(path)
         VAMD64=$$find(CLARCH,amd64)
+
         isEmpty(VAMD64) {
             # from qt 4.7, use QMAKE_LIBDIR instead of LIBPATH
-            LIBPATH += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/lib
-            QMAKE_LIBDIR += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/lib
+            LIBPATH += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/static32   # depcreated
+            QMAKE_LIBDIR += Z:/librarys/vc-ssl-x86/lib Z:/librarys/vc-zlib/static32
             INCLUDEPATH += Z:/librarys/vc-ssl-x86/include/
         } else {
-            LIBPATH += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/lib
-            QMAKE_LIBDIR += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/lib
+             LIBPATH += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/staticx64 # depcreated
+             QMAKE_LIBDIR += Z:/librarys/vc-ssl-x64/lib Z:/librarys/vc-zlib/staticx64
             INCLUDEPATH += Z:/librarys/vc-ssl-x64/include/
         }
 
