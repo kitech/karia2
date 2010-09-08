@@ -21,7 +21,7 @@ enum SkypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ,
                       SK_DATA, SK_DATAGRAM, SK_STREAMS, SK_UNKNOWN, SK_NO_COMMAND, 
                       SK_STATUS, SK_ECHO, SK_END_OF_DATA, SK_CLOSE_STREAM, 
                       SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST,
-                      SK_PROTOCOL,
+                      SK_PROTOCOL,SK_CALL,
                       SK_CURRENTUSERHANDLE
 };
 
@@ -41,6 +41,11 @@ private:
     enum SkypeCommands cmd;
     QString Msg;
 
+    // user object
+
+    // message object
+
+    // application object
     int StreamNum, ProtocolNum, ErrorCode;
     QString ContactName, AppName;
     QString ErrorMsg;
@@ -48,12 +53,22 @@ private:
     QByteArray Data;
     QStringList Contacts;
 
+    // call object
+    QString CallID;
+    QString CallStatusKey;
+    QString CallStatusValue;
+    QString CallDuration;
+
     void clear();
 
 public:
     SkypeResponse();
     virtual ~SkypeResponse();
     bool parse(QString msg);
+    bool parseMisc(QString msg);
+    bool parseApp(QString msg);
+    bool parseCall(QString msg);
+
     QString responseID() {return ResponseID;};
     int protocolNum() {return ProtocolNum;};
     int streamNum() {return StreamNum;};
@@ -67,6 +82,10 @@ public:
     QString streamID(); // returns contactName:streamNum
     QString _debugState();
 
+    QString callID() { return this->CallID; }
+    QString callDuration() { return this->CallDuration; }
+    QString callStatusKey() { return this->CallStatusKey; }
+    QString callStatusValue() { return this->CallStatusValue; }
 };
 
 class SkypeCommand {
@@ -85,6 +104,8 @@ public:
     static QString DISCONNECT_AP2AP(QString appName, QString contactName, int streamNum);
     static QString PING();
     static QString PROTOCOL(int protocolNum);
+    static QString CALL(QString contactName);
+    static QString GET_CALL_PROP(QString callID, QString propName);
     static QString prependID(QString command, QString myID);
     static QString prependID(QString command);
     static QString nextID();

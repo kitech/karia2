@@ -28,10 +28,12 @@ public slots:
     void onSkypeDisconnected(QString skypeName);
     void onNewStreamCreated(QString contactName, int stream);
     void onSkypePackageArrived(QString contactName, int stream, QString data);
+    void onNewCallArrived(QString contactName, int callID);
     void processRequest(QString contactName, int stream, SkypePackage *sp);
 
 private:
     Skype *mSkype;
+    QMap<QString, QString> ccMap; // caller -> callee
 };
 
 // namespace Ui {

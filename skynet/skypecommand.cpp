@@ -70,6 +70,15 @@ QString SkypeCommand::RECV_AP2AP(QString appName, QString contactName, int strea
     return QString();
 }
 
+QString SkypeCommand::CALL(QString contactName)
+{
+    return QString("CALL %1").arg(contactName);
+}
+
+QString SkypeCommand::GET_CALL_PROP(QString callID, QString propName)
+{
+    return QString("GET CALL %1 %2").arg(callID).arg(propName);
+}
 
 QString SkypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;
@@ -216,6 +225,8 @@ bool SkypeResponse::parse(QString msg) {
         exp.setPattern("DELETE ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");    
     } else if ( msg.indexOf("CREATE") == 0 ) { 
         exp.setPattern("CREATE APPLICATION ([^ ]*) *([^ ]*) *(.*)"); 
+    } else if (msg.indexOf("CALL") == 0) {
+        return this->parseCall(msg);
     } else {
         Type = SK_UNKNOWN;
         return true;
@@ -262,6 +273,49 @@ bool SkypeResponse::parse(QString msg) {
 
     if (Type == SK_READY_TO_READ && ContactName == "") Type = SK_END_OF_DATA;
     else if (Type == SK_STREAMS && ContactName == "") Type = SK_CLOSE_STREAM;
+    return true;
+}
+bool SkypeResponse::parseMisc(QString msg)
+{
+    
+}
+
+bool SkypeResponse::parseApp(QString msg)
+{
+    
+}
+
+bool SkypeResponse::parseCall(QString msg)
+{
+    QRegExp exp;
+    QStringList list;
+    QString CommandName;
+    bool tmp=false, echo=false;
+    clear();
+    Msg=msg;
+    ResponseID = SkypeCommand::getID(Msg);
+    SkypeCommand::removeID(msg);
+
+    echo = true; // Except for APPLICATION everything should be of type SK_ECHO
+    if (msg.indexOf("CALL") == 0) {
+        exp.setPattern("CALL ([^ ]*) ([^ ]*) ([^ ]*)");
+    } else {
+        Type = SK_UNKNOWN;
+        return true;
+    }
+
+    if ( ! exp.exactMatch(msg) ) { 
+        Type = SK_PARSE_ERROR;
+        return false;
+    }
+
+    list = exp.capturedTexts();
+    if (list.size() > 1) this->CallID = list[1];
+    if (list.size() > 2) this->CallStatusKey = list[2];
+    if (list.size() > 3) this->CallStatusValue = list[3];
+
+    this->Type = SK_CALL;
+    
     return true;
 }
 

@@ -244,6 +244,7 @@ public slots:
     // skype related test
     void onChatWithSkype();
     void onSendPackage();
+    void onCallSkype();
 
 private slots:
     // aria2rpc related

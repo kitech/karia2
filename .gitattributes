@@ -240,6 +240,8 @@ skynet/xmessages.h -text
 /skypetracer.cpp -text
 /skypetracer.h -text
 /skypetracer.ui -text
+/skypetunnel.cpp -text
+/skypetunnel.h -text
 skyserv/database.cpp -text
 skyserv/database.h -text
 skyserv/main.cpp -text

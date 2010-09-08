@@ -58,6 +58,7 @@
 
 #include "metauri.h"
 #include "skype.h"
+#include "skypetunnel.h"
 #include "skypetracer.h"
 
 extern QHash<QString, QString> gMimeHash;
@@ -261,6 +262,10 @@ void Karia2::firstShowHandler()
                      this, SLOT(onChatWithSkype()));
     QObject::connect(this->mainUI.pushButton_2, SIGNAL(clicked()),
                      this, SLOT(onSendPackage()));
+    QObject::connect(this->mainUI.pushButton_4, SIGNAL(clicked()),
+                     this, SLOT(onCallSkype()));
+    SkypeTunnel *tun = new SkypeTunnel(this);
+    tun->setSkype(this->mSkype);
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -4222,7 +4227,21 @@ void Karia2::onSendPackage()
     
     qDebug()<<muStr<<spStr;
 
-    this->mSkype->sendPackage("liuguangzhao", spStr);
+    this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
+}
+
+void Karia2::onCallSkype()
+{
+    QString num = this->mainUI.lineEdit_2->text();
+    
+    SkypePackage sp;
+    sp.seq = SkypeCommand::nextID().toInt();
+    sp.type = SkypePackage::SPT_GW_SELECT;
+    sp.data = num;
+
+    QString spStr = sp.toString();
+    qDebug()<<spStr;
+    this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 }
 
 //QAXFACTORY_DEFAULT(Karia2,

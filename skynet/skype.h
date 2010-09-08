@@ -70,6 +70,7 @@ public:
     bool sendPackage(QString contactName, QString data);
 
     QStringList getContacts();
+    QString callFriend(QString contactName);
 
 public slots:
     void onCommandRequest(QString cmd);
@@ -88,6 +89,8 @@ signals:
     void packageSent(QString contactName, QString data);
     void packageArrived(QString contactName, int stream, QString data);
 
+    void newCallArrived(QString contactName, int callID);
+    void onCallAcceptCalleeDone(QString contactName, int callID);
 
 protected slots:
     void onConnected(QString skypeName);

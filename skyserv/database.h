@@ -30,6 +30,8 @@ public:
         return this->conn;
     }
 
+    QString acquireGateway(QString caller_name);
+
 private:
     PGconn *conn;
 };

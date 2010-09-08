@@ -51,6 +51,7 @@ public:
     enum {
         SPT_MIN = 100,
         SPT_PING,
+        SPT_PONG,
         SPT_MU_ADD,
         SPT_MU_ADD_RESP,
         SPT_MU_UPDATE,
@@ -60,6 +61,9 @@ public:
         SPT_MU_SEARCH,
         SPT_MU_SEARCH_RESULT,
         SPT_STREAM_CLOSE,
+        SPT_STREAM_CLOSE_RESULT,
+        SPT_GW_SELECT,
+        SPT_GW_SELECT_RESULT,
         SPT_MAX = 999
     };
 

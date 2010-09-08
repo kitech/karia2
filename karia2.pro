@@ -145,7 +145,8 @@ HEADERS += aboutdialog.h \
            seedfilemodel.h \
            seedfilesdialog.h \  
            taskitemdelegate.h \
-           skypetracer.h
+           skypetracer.h \
+           skypetunnel.h
 
 win32{
         HEADERS += DiskInfo.h	
@@ -200,7 +201,8 @@ SOURCES += aboutdialog.cpp \
            taskitemdelegate.cpp \
            mimetypeshash.cpp \
            skypetracer.cpp \
-           metauri.cpp
+           metauri.cpp \
+           skypetunnel.cpp
 win32{
         SOURCES += DiskInfo.cpp
 }  

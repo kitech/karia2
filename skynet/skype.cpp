@@ -152,6 +152,15 @@ void Skype::processMessage(const QString &message) {
         return;
     }
 
+    if (cmd.type() == SK_CALL) {
+        if (cmd.callStatusValue() == "RINGING" || cmd.callStatusValue() == "INPROGRESS") {
+            this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
+        } else if (cmd.callStatusKey() == "PARTNER_HANDLE") {
+            emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
+        }
+        return;
+    }
+
     if (cmd.type() == SK_CLOSE_STREAM) {
         // qDebug()<<__FILE__<<__LINE__<<"Maybe stream disconnected:"<<cmd.streamNum();
         emit this->streamClosed();
@@ -249,6 +258,12 @@ QByteArray Skype::readFromStream(QString contactName) {
         streams[contactName].clear();
     } 
     return ret;
+}
+
+QString Skype::callFriend(QString contactName)
+{
+    int ok = doCommand(SkypeCommand::CALL(contactName), false);
+    // Q_ASSERT(ok);
 }
 
 bool Skype::sendPackage(QString contactName, int streamNum, QString data)

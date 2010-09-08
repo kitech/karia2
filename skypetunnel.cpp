@@ -1,75 +1,64 @@
-// skyserv.cpp ---
-//
+// skypetunnel.cpp --- 
+// 
 // Author: liuguangzhao
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
-// URL:
-// Created: 2010-07-03 15:35:48 +0800
+// URL: 
+// Created: 2010-09-08 14:12:07 +0800
 // Version: $Id$
-//
+// 
 
 #include <QtCore>
-
-#include "skyserv.h"
-#include "ui_skyserv.h"
+#include <QtGui>
 
 #include "metauri.h"
 #include "skype.h"
 
-#include "database.h"
+#include "skypetunnel.h"
 
-SkyServ::SkyServ(QObject *parent)
+SkypeTunnel::SkypeTunnel(QObject *parent)
     : QObject(parent)
 {
+    this->mSkype = NULL;
+}
 
-    Database *db = new Database();
-    db->connectdb();
+SkypeTunnel::~SkypeTunnel()
+{
 
+}
 
+void SkypeTunnel::setSkype(Skype *skype)
+{
+    Q_ASSERT(skype != NULL);
 
-    this->mSkype = new Skype("karia2");
+    this->mSkype = skype;
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
                      this, SLOT(onSkypeError(int, QString)));
     this->mSkype->connectToSkype();
     QObject::connect(this->mSkype, SIGNAL(packageArrived(QString, int, QString)),
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
-    // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
-    //                  this, SLOT(onShowSkypeTracer(bool)));
-    // QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
-    //                  this, SLOT(onChatWithSkype()));
-    // QObject::connect(this->mainUI.pushButton_2, SIGNAL(clicked()),
-    //                  this, SLOT(onSendPackage()));
 }
 
-SkyServ::~SkyServ()
-{
-}
-
-void SkyServ::onSkypeError(int errNo, QString msg)
+void SkypeTunnel::onSkypeError(int errNo, QString msg)
 {
     qDebug()<<errNo<<msg;
 }
 
-void SkyServ::onSkypeConnected(QString skypeName)
+void SkypeTunnel::onSkypeConnected(QString skypeName)
 {
 
 }
 
-void SkyServ::onSkypeDisconnected(QString skypeName)
+void SkypeTunnel::onSkypeDisconnected(QString skypeName)
 {
 
 }
 
-void SkyServ::onNewStreamCreated(QString contactName, int stream)
+void SkypeTunnel::onNewStreamCreated(QString contactName, int stream)
 {
 
 }
 
-void SkyServ::onNewCallArrived(QString contactName, int callID)
-{
-    
-}
-
-void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)
+void SkypeTunnel::onSkypePackageArrived(QString contactName, int stream, QString data)
 {
     qDebug()<<contactName<<stream<<data;
     SkypePackage sp = SkypePackage::fromString(data);
@@ -78,13 +67,13 @@ void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString dat
     this->processRequest(contactName, stream, &sp);
 }
 
-void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
+void SkypeTunnel::processRequest(QString contactName, int stream, SkypePackage *sp)
 {
     MetaUri mu;
     MetaUri rmu; // response
     SkypePackage rsp; // response package
     QString rspStr;
-    
+    QString callee_name;
 
     switch (sp->type) {
     case SkypePackage::SPT_MU_ADD:
@@ -104,12 +93,17 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         qDebug()<<"SPT_GW_SELECT: "<<sp->data;
         rsp.seq = sp->seq;
         rsp.type = SkypePackage::SPT_GW_SELECT_RESULT;
-        rsp.data = QString("drswinghead");
+        rsp.data = QString("tivr001");
         
         rspStr = rsp.toString();
         this->mSkype->sendPackage(contactName, stream, rspStr);
-        this->ccMap[contactName] = sp->data;
-        
+        break;
+    case SkypePackage::SPT_GW_SELECT_RESULT:
+        callee_name = sp->data;
+        qDebug()<<"get a ivr gate way: "<<sp->data;
+        qDebug()<<"ready for call,...";
+        this->mSkype->callFriend(callee_name);
+        qDebug()<<"ready for called done";
         break;
     default:
         Q_ASSERT(1==2);
@@ -117,14 +111,3 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
     };
 }
 
-// SkyServ::SkyServ(QWidget *parent) :
-//     QMainWindow(parent),
-//     ui(new Ui::SkyServ)
-// {
-//     ui->setupUi(this);
-// }
-
-// SkyServ::~SkyServ()
-// {
-//     delete ui;
-// }
