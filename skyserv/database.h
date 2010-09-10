@@ -30,7 +30,8 @@ public:
         return this->conn;
     }
 
-    QString acquireGateway(QString caller_name);
+    int acquireGateway(QString caller_name, QString callee_phone, QString &gateway);
+    int releaseGateway(QString caller_name, QString gateway);
 
 private:
     PGconn *conn;

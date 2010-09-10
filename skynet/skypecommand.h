@@ -106,6 +106,8 @@ public:
     static QString PROTOCOL(int protocolNum);
     static QString CALL(QString contactName);
     static QString GET_CALL_PROP(QString callID, QString propName);
+    static QString SET_CALL_PROP(QString callID, QString propName, QString propValue);
+    static QString ALTER_CALL_STATUS(QString callID, QString propName);
     static QString prependID(QString command, QString myID);
     static QString prependID(QString command);
     static QString nextID();

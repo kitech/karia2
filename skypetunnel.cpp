@@ -36,6 +36,9 @@ void SkypeTunnel::setSkype(Skype *skype)
     this->mSkype->connectToSkype();
     QObject::connect(this->mSkype, SIGNAL(packageArrived(QString, int, QString)),
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
+    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, int)),
+                     this, SLOT(onNewCallArrived(QString, int)));
+
 }
 
 void SkypeTunnel::onSkypeError(int errNo, QString msg)
@@ -58,6 +61,29 @@ void SkypeTunnel::onNewStreamCreated(QString contactName, int stream)
 
 }
 
+void SkypeTunnel::onNewCallArrived(QString contactName, int callID)
+{
+    qDebug()<<__FILE__<<__LINE__<<contactName<<callID;
+    if (contactName.startsWith("+")) {
+        // int ok = this->mSkype->setCallHold(QString("%1").arg(callID));
+        int ok = this->mSkype->setCallHangup(QString("%1").arg(callID));
+        // QString ret = this->mSkype->callFriend(contactName);
+
+        QString num = contactName; // this->mainUI.lineEdit_2->text();
+        SkypePackage sp;
+        sp.seq = SkypeCommand::nextID().toInt();
+        sp.type = SkypePackage::SPT_GW_SELECT;
+        sp.data = num;
+
+        QString spStr = sp.toString();
+        qDebug()<<spStr;
+        this->mSkype->sendPackage("drswinghead", spStr);
+
+    } else {
+        // pstn
+    }
+}
+
 void SkypeTunnel::onSkypePackageArrived(QString contactName, int stream, QString data)
 {
     qDebug()<<contactName<<stream<<data;
@@ -74,6 +100,8 @@ void SkypeTunnel::processRequest(QString contactName, int stream, SkypePackage *
     SkypePackage rsp; // response package
     QString rspStr;
     QString callee_name;
+    QUrl turl;
+    QString rcode;
 
     switch (sp->type) {
     case SkypePackage::SPT_MU_ADD:
@@ -99,8 +127,11 @@ void SkypeTunnel::processRequest(QString contactName, int stream, SkypePackage *
         this->mSkype->sendPackage(contactName, stream, rspStr);
         break;
     case SkypePackage::SPT_GW_SELECT_RESULT:
-        callee_name = sp->data;
-        qDebug()<<"get a ivr gate way: "<<sp->data;
+        turl = QString("http://www.qtchina.net/skype.cgi?%1").arg(sp->data);
+        // callee_name = sp->data;
+        rcode = turl.queryItemValue("ret");
+        callee_name = turl.queryItemValue("gateway");
+        qDebug()<<"get a ivr gate way: "<<sp->data<<turl;
         qDebug()<<"ready for call,...";
         this->mSkype->callFriend(callee_name);
         qDebug()<<"ready for called done";

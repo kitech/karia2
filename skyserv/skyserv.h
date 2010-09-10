@@ -11,10 +11,12 @@
 #define SKYSERV_H
 
 #include <QMainWindow>
+#include <QtCore>
 
 class SkypePackage;
 // class MetaUri;
 class Skype;
+class Database;
 class SkyServ : public QObject
 {
     Q_OBJECT;
@@ -32,6 +34,7 @@ public slots:
     void processRequest(QString contactName, int stream, SkypePackage *sp);
 
 private:
+    Database *db;
     Skype *mSkype;
     QMap<QString, QString> ccMap; // caller -> callee
 };

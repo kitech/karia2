@@ -7,6 +7,9 @@
 // Version: $Id$
 // 
 
+#include <stdlib.h>
+#include <assert.h>
+
 #include <QtCore>
 
 #include "database.h"
@@ -93,5 +96,57 @@ bool Database::disconnectdb()
 bool Database::reconnectdb()
 {
     return false;
+}
+
+
+int Database::acquireGateway(QString caller_name, QString callee_phone, QString &gateway)
+{
+    gateway = QString::null;
+    QString sql = QString("UPDATE skype_gateways SET in_use = 1, lock_time=NOW(),caller_name='%1',callee_phone='%2' WHERE in_use = 0 AND skype_id = (SELECT skype_id FROM skype_gateways WHERE in_use=0 ORDER BY RANDOM() LIMIT 1)").arg(caller_name).arg(callee_phone);
+    QString sql2 = QString("SELECT skype_id FROM skype_gateways WHERE in_use=1 AND caller_name='%1'").arg(caller_name);
+    int upcnt = 0;
+
+    PGresult *pres = PQexec(this->conn, sql.toAscii().data());
+    if (PQresultStatus(pres) == PGRES_COMMAND_OK) {
+        upcnt = atoi(PQcmdTuples(pres));
+    }
+    PQclear(pres);
+    if (upcnt == 1) {
+        pres = PQexec(this->conn, sql2.toAscii().data());
+        if (PQresultStatus(pres) != PGRES_TUPLES_OK) {
+            assert(PQresultStatus(pres) == PGRES_TUPLES_OK);
+        } else {
+            gateway = QString(PQgetvalue(pres, 0, 0));
+        }
+        PQclear(pres);
+    }
+    if (gateway == QString::null || gateway.length() == 0) {
+        return 404;
+    }
+    return 200;
+}
+
+int Database::releaseGateway(QString caller_name, QString gateway)
+{
+    // 200 ok, 404 not found, 500 internal error
+
+    QString sql = QString("UPDATE skype_gateways SET in_use = 0, lock_time=NOW(), caller_name='' WHERE skype_id='%1' AND in_use=1").arg(gateway);
+
+    int upcnt = 0;
+
+    PGresult *pres = PQexec(this->conn, sql.toAscii().data());
+    if (PQresultStatus(pres) == PGRES_COMMAND_OK) {
+        upcnt = atoi(PQcmdTuples(pres));
+    }
+    PQclear(pres);
+    
+    if (upcnt == 0) {
+        return 404;
+    } else if (upcnt == 1) {
+        return 200;
+    } else {
+        return 500;
+    }
+    return 500;
 }
 

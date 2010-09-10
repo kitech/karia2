@@ -64,6 +64,8 @@ public:
         SPT_STREAM_CLOSE_RESULT,
         SPT_GW_SELECT,
         SPT_GW_SELECT_RESULT,
+        SPT_GW_RELEASE,
+        SPT_GW_RELEASE_RESULT,
         SPT_MAX = 999
     };
 

@@ -153,10 +153,13 @@ void Skype::processMessage(const QString &message) {
     }
 
     if (cmd.type() == SK_CALL) {
-        if (cmd.callStatusValue() == "RINGING" || cmd.callStatusValue() == "INPROGRESS") {
+        // cmd.callStatusValue() == "RINGING" || cmd.callStatusValue() == "INPROGRESS") {
+        if (cmd.callStatusValue() == "UNPLACED") {
             this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
         } else if (cmd.callStatusKey() == "PARTNER_HANDLE") {
             emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
+        } else if (cmd.callStatusKey() == "PSTN_NUMBER") {
+            
         }
         return;
     }
@@ -264,13 +267,35 @@ QString Skype::callFriend(QString contactName)
 {
     int ok = doCommand(SkypeCommand::CALL(contactName), false);
     // Q_ASSERT(ok);
+    return QString();
+}
+
+int Skype::setCallHold(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "HOLD"), false);
+    // int ok = doCommand(SkypeCommand::SET_CALL_PROP(callID, "STATUS", "ONHOLD"), false);
+    return 0;
+}
+
+int Skype::setCallResume(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "RESUME"), false);
+    // int ok = doCommand(SkypeCommand::SET_CALL_PROP(callID, "STATUS", "RESUME"), false);
+    return 0;
+}
+
+int Skype::setCallHangup(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "HANGUP"), false);
+    // int ok = doCommand(SkypeCommand::SET_CALL_PROP(callID, "STATUS", "HANGUP"), false);
+    return 0;
 }
 
 bool Skype::sendPackage(QString contactName, int streamNum, QString data)
 {
     QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, streamNum, data);
     if (!this->doCommand(cmd)) {
-        Q_ASSERT(1 == 2);
+        // Q_ASSERT(1 == 2);
         return false;
     }
     return true;    

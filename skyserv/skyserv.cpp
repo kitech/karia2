@@ -21,8 +21,8 @@ SkyServ::SkyServ(QObject *parent)
     : QObject(parent)
 {
 
-    Database *db = new Database();
-    db->connectdb();
+    this->db = new Database();
+    this->db->connectdb();
 
 
 
@@ -84,7 +84,8 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
     MetaUri rmu; // response
     SkypePackage rsp; // response package
     QString rspStr;
-    
+    QString myStr;
+    int ret = -1;
 
     switch (sp->type) {
     case SkypePackage::SPT_MU_ADD:
@@ -102,14 +103,31 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         break;
     case SkypePackage::SPT_GW_SELECT:
         qDebug()<<"SPT_GW_SELECT: "<<sp->data;
+
+        ret = this->db->acquireGateway(contactName, sp->data, myStr);
+
         rsp.seq = sp->seq;
         rsp.type = SkypePackage::SPT_GW_SELECT_RESULT;
-        rsp.data = QString("drswinghead");
+        rsp.data = QString("ret=%1&gateway=%2").arg(ret).arg(myStr);
         
         rspStr = rsp.toString();
         this->mSkype->sendPackage(contactName, stream, rspStr);
         this->ccMap[contactName] = sp->data;
         
+        break;
+    case SkypePackage::SPT_GW_RELEASE:
+        qDebug()<<"SPT_GW_RELEASE: "<<sp->data;
+        // this cmd will recived from gateway
+        ret = this->db->releaseGateway(sp->data, contactName);
+        // ret = this->db->releaseGateway(contactName, sp->data);
+        rsp.seq = sp->seq;
+        rsp.type = SkypePackage::SPT_GW_RELEASE_RESULT;
+        rsp.data = QString("ret=%1").arg(ret);
+        
+        rspStr = rsp.toString();
+        this->mSkype->sendPackage(contactName, stream, rspStr);
+        this->ccMap.remove(contactName);
+
         break;
     default:
         Q_ASSERT(1==2);

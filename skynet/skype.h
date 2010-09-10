@@ -71,6 +71,9 @@ public:
 
     QStringList getContacts();
     QString callFriend(QString contactName);
+    int setCallHold(QString callID);
+    int setCallResume(QString callID);
+    int setCallHangup(QString callID);
 
 public slots:
     void onCommandRequest(QString cmd);

@@ -80,6 +80,16 @@ QString SkypeCommand::GET_CALL_PROP(QString callID, QString propName)
     return QString("GET CALL %1 %2").arg(callID).arg(propName);
 }
 
+QString SkypeCommand::SET_CALL_PROP(QString callID, QString propName, QString propValue)
+{
+    return QString("SET CALL %1 %2 %3").arg(callID).arg(propName).arg(propValue);
+}
+
+QString SkypeCommand::ALTER_CALL_STATUS(QString callID, QString propName)
+{
+    return QString("ALTER CALL %1 %2").arg(callID).arg(propName);
+}
+
 QString SkypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;
 }
