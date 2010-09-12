@@ -10,6 +10,7 @@
 #include <QtCore>
 #include <QtGui>
 
+#include "utility.h"
 #include "karia2.h"
 #include "aboutdialog.h"
 #include "dropzone.h"
@@ -25,7 +26,6 @@
 
 #include "catmandlg.h"
 #include "catpropdlg.h"
-// #include "optiondlg.h"
 #include "preferencesdialog.h"
 
 #include "batchjobmandlg.h"
@@ -1029,6 +1029,13 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
         this->mainUI.trackersView->setModel(mdl);
         mdl = this->mTaskMan->taskSeedFileModel(taskId);
         this->mSeedFileView->setModel(mdl);
+        QWidget *w = this->mSeedFileView->cornerWidget();
+        if (w == NULL) {
+            w = new QToolButton();
+            static_cast<QToolButton*>(w)->setText("");
+            this->mSeedFileView->setCornerWidget(w);
+        }
+        QObject::connect(mdl, SIGNAL(reselectFile(int, bool)), this, SLOT(onReselectFile(int, bool)));
     } else {
         mdl = this->mTaskMan->torrentPeerModel(taskId);
         this->mainUI.peersView->setModel(0);
@@ -3940,6 +3947,28 @@ void Karia2::onTaskShowColumnsChanged(QString columns)
             this->mCustomTaskShowColumns = columns;
         }
     }
+}
+
+void Karia2::onReselectFile(int row, bool selected)
+{
+    SeedFileModel *model = static_cast<SeedFileModel*>(this->mSeedFileView->model());
+    QToolButton *btn = static_cast<QToolButton*>(this->mSeedFileView->cornerWidget());
+    btn->setText("*");
+    btn->setToolTip(tr("Click to apply reselected files"));
+    QObject::connect(btn, SIGNAL(clicked()), this, SLOT(applyReselectFile()));
+}
+
+void Karia2::applyReselectFile()
+{
+    SeedFileModel *model = static_cast<SeedFileModel*>(this->mSeedFileView->model());
+    QString reselectedIndexes = model->clearReselectFiles();
+    q_debug()<<reselectedIndexes;
+    QToolButton *btn = static_cast<QToolButton*>(this->mSeedFileView->cornerWidget());
+    QObject::disconnect(btn, SIGNAL(clicked()), this, SLOT(applyReselectFile()));
+    btn->setText("");
+    btn->setToolTip(tr("No Change"));
+
+    // now tell aria2 back  reselected files 
 }
 
 void Karia2::handleArguments()

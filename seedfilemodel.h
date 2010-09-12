@@ -25,8 +25,6 @@ public:
     SeedFileModel(QObject *parent = 0);
     ~SeedFileModel();
 
-    bool setData(QVariantList &files, bool selectAll);
-
     int columnCount(const QModelIndex &parent) const;
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -36,11 +34,23 @@ public:
 
     Qt::ItemFlags flags ( const QModelIndex & index ) const ;
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
+
+    bool setData(QVariantList &files, bool selectAll);
     bool updateSelectFile(QString selected);
+
+    QString clearReselectFiles();
+private:
+    QString currentSelectedIndexes();
 
 private:
     QVariantList mFiles;
     char *columnHeaders;
+    QMap<int, bool> reselectFiles;
+    QString oldSelectedIndexes; // no update if no change, like a snapshot
+    bool batchUpdate;
+
+signals:
+    void reselectFile(int row, bool selected);
 };
 
 

@@ -235,6 +235,9 @@ public slots:
     void onTaskLogArrived(QString log); // log is from AriaMan
     void onTaskShowColumnsChanged(QString columns);
 
+    void onReselectFile(int row, bool selected);
+    void applyReselectFile();
+
 	//object listener
 	void onObjectDestroyed(QObject *object = 0);
 
