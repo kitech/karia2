@@ -298,6 +298,9 @@ private slots:
     void onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload);
     void onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload);
 
+    void onAriaTorrentReselectFileMachineResponse(QVariant &response, QVariant &payload);
+    void onAriaTorrentReselectFileMachineFault(int code, QString reason, QVariant &payload);
+
 private:	//method
 	int getNextValidTaskId();
 

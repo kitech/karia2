@@ -2404,6 +2404,16 @@ void Karia2::onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payl
     qDebug()<<__FUNCTION__<<code<<reason<<payload;
 }
 
+void Karia2::onAriaTorrentReselectFileMachineResponse(QVariant &response, QVariant &payload)
+{
+    
+}
+
+void Karia2::onAriaTorrentReselectFileMachineFault(int code, QString reason, QVariant &payload)
+{
+    
+}
+
 // TODO, test with a invalid torrent file
 void Karia2::showNewBittorrentFileDialog()
 {
