@@ -90,6 +90,17 @@ QString SkypeCommand::ALTER_CALL_STATUS(QString callID, QString propName)
     return QString("ALTER CALL %1 %2").arg(callID).arg(propName);
 }
 
+QString SkypeCommand::ALTER_CALL_SET_INPUT_PORT(QString callID, QString port)
+{
+    return QString("ALTER CALL %1 SET_INPUT PORT=\"%2\"").arg(callID).arg(port);
+}
+
+QString SkypeCommand::ALTER_CALL_SET_OUTPUT_PORT(QString callID, QString port)
+{
+    return QString("ALTER CALL %1 SET_OUTPUT PORT=\"%2\"").arg(callID).arg(port);
+}
+
+
 QString SkypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;
 }

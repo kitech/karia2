@@ -157,9 +157,13 @@ void Skype::processMessage(const QString &message) {
         if (cmd.callStatusValue() == "UNPLACED") {
             this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
         } else if (cmd.callStatusKey() == "PARTNER_HANDLE") {
+            this->activeCalls.insert(cmd.callID().toInt(), cmd.callStatusValue());
             emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
         } else if (cmd.callStatusKey() == "PSTN_NUMBER") {
             
+        } else if (cmd.callStatusValue() == "FINISHED" 
+                   || cmd.callStatusValue() == "REFUSED") {
+            emit this->callHangup(this->handlerName(), this->activeCalls[cmd.callID().toInt()], cmd.callID().toInt());
         }
         return;
     }

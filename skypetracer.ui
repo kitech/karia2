@@ -156,6 +156,16 @@
       </item>
       <item>
        <property name="text">
+        <string>ALTER CALL &lt;id&gt; SET_INPUT PORT=&quot;&lt;port&gt;&quot;</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ALTER CALL &lt;id&gt; SET_OUTPUT PORT=&quot;&lt;port&gt;&quot;</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>ALTER CHAT &lt;chat_id&gt; ADDMEMBERS &lt;target&gt;</string>
        </property>
       </item>

@@ -41,6 +41,7 @@ private:
     // QHash<QString, int> activeStream; // <skype_id, stream_id>
     QHash<int, QString> dataGrams;// <stream_id, udp_data>
     KBiHash<QString, int> activeStreams;  // <skype_id, stream_id>
+    KBiHash<int, QString> activeCalls; // <callid, caller_id>
 
     QStringList contacts;
     bool contactsUpToDate;
@@ -62,6 +63,7 @@ public:
     virtual ~Skype();
     bool connectToSkype();
     bool disconnectFromSkype();
+    QString handlerName() { return this->skypeName;}
     void newStream(QString contact);
     bool writeToStream(QByteArray data, QString contactName); //deprecated
     bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
@@ -94,6 +96,7 @@ signals:
 
     void newCallArrived(QString contactName, int callID);
     void onCallAcceptCalleeDone(QString contactName, int callID);
+    void callHangup(QString contactName, QString callerName, int callID);
 
 protected slots:
     void onConnected(QString skypeName);

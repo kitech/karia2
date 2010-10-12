@@ -130,9 +130,10 @@ int Database::releaseGateway(QString caller_name, QString gateway)
 {
     // 200 ok, 404 not found, 500 internal error
 
-    QString sql = QString("UPDATE skype_gateways SET in_use = 0, lock_time=NOW(), caller_name='' WHERE skype_id='%1' AND in_use=1").arg(gateway);
-
+    QString sql = QString("UPDATE skype_gateways SET in_use = 0, lock_time=NOW() WHERE skype_id='%1' AND in_use=1").arg(gateway);
     int upcnt = 0;
+
+    qDebug()<<sql;
 
     PGresult *pres = PQexec(this->conn, sql.toAscii().data());
     if (PQresultStatus(pres) == PGRES_COMMAND_OK) {
@@ -148,5 +149,31 @@ int Database::releaseGateway(QString caller_name, QString gateway)
         return 500;
     }
     return 500;
+}
+
+QString Database::getForwardPhone(QString caller_name, QString gateway)
+{
+    QString callee_phone = QString::null;
+    QString update_time;
+    QString sql = QString("SELECT callee_phone, lock_time FROM skype_gateways WHERE skype_id='%1' AND in_use=1").arg(gateway);
+
+    int upcnt = 0;
+
+    PGresult *pres = PQexec(this->conn, sql.toAscii().data());
+    if (PQresultStatus(pres) == PGRES_COMMAND_OK) {
+        upcnt = atoi(PQcmdTuples(pres));
+    }
+    qDebug()<<sql;
+    PQclear(pres);
+    if (upcnt == 1) {
+        callee_phone = PQgetvalue(pres, 0, 0);
+        update_time = QString(PQgetvalue(pres, 0, 1));
+        PQclear(pres);
+        qDebug()<<sql<<callee_phone<<update_time;
+    } else {
+        qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<"not found:"<<gateway;
+    }
+    
+    return callee_phone;
 }
 

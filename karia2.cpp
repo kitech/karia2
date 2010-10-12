@@ -4283,6 +4283,7 @@ void Karia2::onCallSkype()
     this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 }
 
+
 //QAXFACTORY_DEFAULT(Karia2,
 //	   "{074AA25F-F544-401E-8A2A-5C81F01264EF}",
 //	   "{4351FA96-A922-4D76-B4AD-A0A4CF0ED8AA}",

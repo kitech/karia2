@@ -108,6 +108,8 @@ public:
     static QString GET_CALL_PROP(QString callID, QString propName);
     static QString SET_CALL_PROP(QString callID, QString propName, QString propValue);
     static QString ALTER_CALL_STATUS(QString callID, QString propName);
+    static QString ALTER_CALL_SET_INPUT_PORT(QString callID, QString port);
+    static QString ALTER_CALL_SET_OUTPUT_PORT(QString callID, QString port);
     static QString prependID(QString command, QString myID);
     static QString prependID(QString command);
     static QString nextID();

@@ -39,6 +39,9 @@ void SkypeTunnel::setSkype(Skype *skype)
     QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, int)),
                      this, SLOT(onNewCallArrived(QString, int)));
 
+    QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
+                     this, SLOT(onCallHangup(QString, QString, int)));
+
 }
 
 void SkypeTunnel::onSkypeError(int errNo, QString msg)
@@ -84,6 +87,21 @@ void SkypeTunnel::onNewCallArrived(QString contactName, int callID)
     }
 }
 
+void SkypeTunnel::onCallHangup(QString contactName, QString callerName, int callID)
+{
+    qDebug()<<__FILE__<<__LINE__<<contactName<<callID;
+
+    QString num = callerName;
+    SkypePackage sp;
+    sp.seq = SkypeCommand::nextID().toInt();
+    sp.type = SkypePackage::SPT_GW_RELEASE;
+    sp.data = num;
+
+    QString spStr = sp.toString();
+    qDebug()<<spStr;
+    this->mSkype->sendPackage("drswinghead", spStr);
+}
+
 void SkypeTunnel::onSkypePackageArrived(QString contactName, int stream, QString data)
 {
     qDebug()<<contactName<<stream<<data;
@@ -121,7 +139,8 @@ void SkypeTunnel::processRequest(QString contactName, int stream, SkypePackage *
         qDebug()<<"SPT_GW_SELECT: "<<sp->data;
         rsp.seq = sp->seq;
         rsp.type = SkypePackage::SPT_GW_SELECT_RESULT;
-        rsp.data = QString("tivr001");
+        // rsp.data = QString("drswinghead");   
+        rsp.data = sp->data;
         
         rspStr = rsp.toString();
         this->mSkype->sendPackage(contactName, stream, rspStr);
@@ -135,6 +154,13 @@ void SkypeTunnel::processRequest(QString contactName, int stream, SkypePackage *
         qDebug()<<"ready for call,...";
         this->mSkype->callFriend(callee_name);
         qDebug()<<"ready for called done";
+        break;
+    case SkypePackage::SPT_GW_RELEASE_RESULT:
+        turl = QString("http://www.qtchina.net/skype.cgi?%1").arg(sp->data);
+        rcode = turl.queryItemValue("ret");
+        callee_name = turl.queryItemValue("gateway");
+
+        qDebug()<<"released: gateway="<<callee_name;
         break;
     default:
         Q_ASSERT(1==2);

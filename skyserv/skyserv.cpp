@@ -32,6 +32,12 @@ SkyServ::SkyServ(QObject *parent)
     this->mSkype->connectToSkype();
     QObject::connect(this->mSkype, SIGNAL(packageArrived(QString, int, QString)),
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
+    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, int)),
+                     this, SLOT(onNewCallArrived(QString, int)));
+
+    QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
+                     this, SLOT(onCallHangup(QString, QString, int)));
+
     // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
     //                  this, SLOT(onShowSkypeTracer(bool)));
     // QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
@@ -66,7 +72,14 @@ void SkyServ::onNewStreamCreated(QString contactName, int stream)
 
 void SkyServ::onNewCallArrived(QString contactName, int callID)
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<contactName<<callID;
+    QString callee_phone;
+
+    // 查找
     
+    // accept
+
+    // sip call
 }
 
 void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)
@@ -116,13 +129,14 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         
         break;
     case SkypePackage::SPT_GW_RELEASE:
+        
         qDebug()<<"SPT_GW_RELEASE: "<<sp->data;
         // this cmd will recived from gateway
-        ret = this->db->releaseGateway(sp->data, contactName);
+        ret = this->db->releaseGateway(contactName, sp->data);
         // ret = this->db->releaseGateway(contactName, sp->data);
         rsp.seq = sp->seq;
         rsp.type = SkypePackage::SPT_GW_RELEASE_RESULT;
-        rsp.data = QString("ret=%1").arg(ret);
+        rsp.data = QString("ret=%1&gateway=%2").arg(ret).arg(contactName);
         
         rspStr = rsp.toString();
         this->mSkype->sendPackage(contactName, stream, rspStr);
