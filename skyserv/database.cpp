@@ -160,19 +160,22 @@ QString Database::getForwardPhone(QString caller_name, QString gateway)
     int upcnt = 0;
 
     PGresult *pres = PQexec(this->conn, sql.toAscii().data());
-    if (PQresultStatus(pres) == PGRES_COMMAND_OK) {
-        upcnt = atoi(PQcmdTuples(pres));
+    if (PQresultStatus(pres) == PGRES_COMMAND_OK
+        || PQresultStatus(pres) == PGRES_TUPLES_OK) {
+        upcnt = PQntuples(pres);
+    } else {
+        qDebug()<<"PQexec error: "<<PQresultStatus(pres)<<QString(PQerrorMessage(this->conn));
     }
     qDebug()<<sql;
-    PQclear(pres);
     if (upcnt == 1) {
         callee_phone = PQgetvalue(pres, 0, 0);
         update_time = QString(PQgetvalue(pres, 0, 1));
-        PQclear(pres);
+        // PQclear(pres);
         qDebug()<<sql<<callee_phone<<update_time;
     } else {
         qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<"not found:"<<gateway;
     }
+    PQclear(pres);
     
     return callee_phone;
 }

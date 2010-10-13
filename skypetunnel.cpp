@@ -36,8 +36,8 @@ void SkypeTunnel::setSkype(Skype *skype)
     this->mSkype->connectToSkype();
     QObject::connect(this->mSkype, SIGNAL(packageArrived(QString, int, QString)),
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
-    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, int)),
-                     this, SLOT(onNewCallArrived(QString, int)));
+    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, QString, int)),
+                     this, SLOT(onNewCallArrived(QString, QString, int)));
 
     QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
                      this, SLOT(onCallHangup(QString, QString, int)));
@@ -64,15 +64,15 @@ void SkypeTunnel::onNewStreamCreated(QString contactName, int stream)
 
 }
 
-void SkypeTunnel::onNewCallArrived(QString contactName, int callID)
+void SkypeTunnel::onNewCallArrived(QString callerName, QString calleeName, int callID)
 {
-    qDebug()<<__FILE__<<__LINE__<<contactName<<callID;
-    if (contactName.startsWith("+")) {
+    qDebug()<<__FILE__<<__LINE__<<calleeName<<callID;
+    if (calleeName.startsWith("+")) {
         // int ok = this->mSkype->setCallHold(QString("%1").arg(callID));
         int ok = this->mSkype->setCallHangup(QString("%1").arg(callID));
         // QString ret = this->mSkype->callFriend(contactName);
 
-        QString num = contactName; // this->mainUI.lineEdit_2->text();
+        QString num = calleeName; // this->mainUI.lineEdit_2->text();
         SkypePackage sp;
         sp.seq = SkypeCommand::nextID().toInt();
         sp.type = SkypePackage::SPT_GW_SELECT;

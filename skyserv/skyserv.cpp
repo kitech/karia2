@@ -17,14 +17,19 @@
 
 #include "database.h"
 
+#include "sip_vars.h"
+
+// global vars
+SipVarSet *hSip;
+
 SkyServ::SkyServ(QObject *parent)
     : QObject(parent)
 {
-
     this->db = new Database();
     this->db->connectdb();
 
-
+    hSip = new SipVarSet();
+    hSip->sip_app_init();
 
     this->mSkype = new Skype("karia2");
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
@@ -32,8 +37,8 @@ SkyServ::SkyServ(QObject *parent)
     this->mSkype->connectToSkype();
     QObject::connect(this->mSkype, SIGNAL(packageArrived(QString, int, QString)),
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
-    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, int)),
-                     this, SLOT(onNewCallArrived(QString, int)));
+    QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, QString, int)),
+                     this, SLOT(onNewCallArrived(QString, QString, int)));
 
     QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
                      this, SLOT(onCallHangup(QString, QString, int)));
@@ -70,16 +75,31 @@ void SkyServ::onNewStreamCreated(QString contactName, int stream)
 
 }
 
-void SkyServ::onNewCallArrived(QString contactName, int callID)
+void SkyServ::onNewCallArrived(QString callerName, QString calleeName, int callID)
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<contactName<<callID;
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<callerName<<calleeName<<callID;
+    pj_status_t status;
     QString callee_phone;
 
     // 查找
-    
+    callee_phone = this->db->getForwardPhone(callerName, calleeName);
+    if (callee_phone.isEmpty() || callee_phone.length() == 0) {
+        qDebug()<<"Error: call pair not found.";
+        return;
+    }
     // accept
+    this->mSkype->answerCall(QString("%1").arg(callID));
 
     // sip call
+    QString serv_addr = "172.24.172.21:5060";
+    status = hSip->call_phone(callerName, callee_phone, serv_addr);
+    
+}
+
+void SkyServ::onCallHangup(QString contactName, QString calleeName, int callID)
+{
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<contactName<<callID;
+    
 }
 
 void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)

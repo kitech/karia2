@@ -29,7 +29,7 @@ public slots:
     void onSkypeDisconnected(QString skypeName);
     void onNewStreamCreated(QString contactName, int stream);
     void onSkypePackageArrived(QString contactName, int stream, QString data);
-    void onNewCallArrived(QString contactName, int callID);
+    void onNewCallArrived(QString callerName, QString calleeName, int callID);
     void onCallHangup(QString contactName, QString callerName, int callID);
 
     void processRequest(QString contactName, int stream, SkypePackage *sp);

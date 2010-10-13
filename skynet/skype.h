@@ -26,6 +26,7 @@
 #include "skypecommand.h"
 #include "skypecommon.h"
 
+enum {INCOMING_PSTN = 1, OUTGOING_PSTN, INCOMING_P2P, OUTGOING_P2P};
 // TODO to async mode
 class Skype : public QObject { 
     Q_OBJECT;
@@ -42,6 +43,7 @@ private:
     QHash<int, QString> dataGrams;// <stream_id, udp_data>
     KBiHash<QString, int> activeStreams;  // <skype_id, stream_id>
     KBiHash<int, QString> activeCalls; // <callid, caller_id>
+    KBiHash<int, int> callTypes; // <callid, type_id|xxxx>
 
     QStringList contacts;
     bool contactsUpToDate;
@@ -73,6 +75,7 @@ public:
 
     QStringList getContacts();
     QString callFriend(QString contactName);
+    int answerCall(QString callID);
     int setCallHold(QString callID);
     int setCallResume(QString callID);
     int setCallHangup(QString callID);
@@ -94,7 +97,7 @@ signals:
     void packageSent(QString contactName, QString data);
     void packageArrived(QString contactName, int stream, QString data);
 
-    void newCallArrived(QString contactName, int callID);
+    void newCallArrived(QString callerName, QString calleeName, int callID);
     void onCallAcceptCalleeDone(QString contactName, int callID);
     void callHangup(QString contactName, QString callerName, int callID);
 

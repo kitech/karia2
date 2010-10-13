@@ -105,6 +105,7 @@ void Skype::processMessage(const QString &message) {
 
         emit connected(cmd.contactName());
 
+        this->skypeName = cmd.contactName();
         bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
         Q_ASSERT(ok);
         return;
@@ -151,19 +152,32 @@ void Skype::processMessage(const QString &message) {
         emit newStreamCreated(cmd.contactName(), cmd.streamNum());
         return;
     }
-
+    // todo, detect incoming or outgoing call
     if (cmd.type() == SK_CALL) {
         // cmd.callStatusValue() == "RINGING" || cmd.callStatusValue() == "INPROGRESS") {
         if (cmd.callStatusValue() == "UNPLACED") {
+            this->callTypes.insert(cmd.callID().toInt(), OUTGOING_P2P);
             this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
         } else if (cmd.callStatusKey() == "PARTNER_HANDLE") {
             this->activeCalls.insert(cmd.callID().toInt(), cmd.callStatusValue());
-            emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
+            if (this->callTypes[cmd.callID().toInt()] == OUTGOING_P2P) {
+                emit this->newCallArrived(this->handlerName(), cmd.callStatusValue(), cmd.callID().toInt());
+            } else {
+                emit this->newCallArrived(cmd.callStatusValue(), this->handlerName(), cmd.callID().toInt());
+            }
         } else if (cmd.callStatusKey() == "PSTN_NUMBER") {
             
         } else if (cmd.callStatusValue() == "FINISHED" 
                    || cmd.callStatusValue() == "REFUSED") {
             emit this->callHangup(this->handlerName(), this->activeCalls[cmd.callID().toInt()], cmd.callID().toInt());
+        } else if (cmd.callStatusValue() == "RINGING") {
+            if (this->callTypes.leftContains(cmd.callID().toInt())) {
+            } else {
+                // this->activeCalls.insert(cmd.callID().toInt(), cmd.callStatusValue());
+                this->callTypes.insert(cmd.callID().toInt(), INCOMING_P2P);
+                // emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
+                this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
+            }
         }
         return;
     }
@@ -274,6 +288,12 @@ QString Skype::callFriend(QString contactName)
     return QString();
 }
 
+int Skype::answerCall(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "ANSWER"), false);
+    return 0;
+}
+
 int Skype::setCallHold(QString callID)
 {
     int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "HOLD"), false);
@@ -324,7 +344,7 @@ void Skype::onConnected(QString skypeName)
 {
     Q_UNUSED(skypeName);
     // bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
-    // Q_ASSERT(ok);
+    // Q_ASSERT(ok); 
 }
 
 // #include "skype.moc"

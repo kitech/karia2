@@ -29,12 +29,14 @@ SOURCES += main.cpp\
         skyserv.cpp \
         skyservapplication.cpp \
         database.cpp \
-        ../metauri.cpp
+        ../metauri.cpp \
+        wav_switcher.cpp sua_switcher.cpp PjCallback.cpp sip_vars.cpp
 
 HEADERS  += skyserv.h \
          skyservapplication.h \
          database.h \
-          ../metauri.h
+          ../metauri.h \
+          wav_switcher.h sua_switcher.h PjCallback.h sip_vars.h
 
 FORMS    += skyserv.ui
 
@@ -45,3 +47,29 @@ HEADERS += $$QTSAPP_HEADERS
 include(../skynet/libskynet.pri)
 
 LIBS += -lpq
+
+INCLUDEPATH += /serv/stow/pjsip/include
+LIBS += -L/serv/stow/pjsip/lib
+LIBS += -lpjsua-x86_64-unknown-linux-gnu \
+    -lpjsip-ua-x86_64-unknown-linux-gnu \
+    -lpjsip-simple-x86_64-unknown-linux-gnu \
+    -lpjsip-x86_64-unknown-linux-gnu \
+    -lpjmedia-codec-x86_64-unknown-linux-gnu \
+    -lpjmedia-x86_64-unknown-linux-gnu \
+    -lpjmedia-codec-x86_64-unknown-linux-gnu \
+    -lpjmedia-audiodev-x86_64-unknown-linux-gnu \
+    -lpjnath-x86_64-unknown-linux-gnu \
+    -lpjlib-util-x86_64-unknown-linux-gnu \
+    -lpj-x86_64-unknown-linux-gnu \
+    -lportaudio-x86_64-unknown-linux-gnu \
+    -lgsmcodec-x86_64-unknown-linux-gnu \
+    -lilbccodec-x86_64-unknown-linux-gnu \
+    -lspeex-x86_64-unknown-linux-gnu \
+    -lresample-x86_64-unknown-linux-gnu \
+    -lmilenage-x86_64-unknown-linux-gnu \
+    -lsrtp-x86_64-unknown-linux-gnu \
+    -lm \
+    -lpthread \
+    -lssl \
+    -lasound \
+    -luuid
