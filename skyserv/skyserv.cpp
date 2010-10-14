@@ -25,11 +25,18 @@ SipVarSet *hSip;
 SkyServ::SkyServ(QObject *parent)
     : QObject(parent)
 {
+    // todo , connection stabilty
     this->db = new Database();
     this->db->connectdb();
 
     hSip = new SipVarSet();
     hSip->sip_app_init();
+    QObject::connect(hSip, SIGNAL(sip_call_finished(int, int)),
+                     this, SLOT(onSipCallFinished(int, int)));
+    QObject::connect(hSip, SIGNAL(sip_call_media_server_ready(unsigned short)),
+                     this, SLOT(onSipCallMediaServerReady(unsigned short)));
+    QObject::connect(hSip, SIGNAL(sip_call_incoming_media_server_ready(unsigned short)),
+                     this, SLOT(onSipCallIncomingMediaServerReady(unsigned short)));
 
     this->mSkype = new Skype("karia2");
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
@@ -39,9 +46,11 @@ SkyServ::SkyServ(QObject *parent)
                      this, SLOT(onSkypePackageArrived(QString, int, QString)));
     QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, QString, int)),
                      this, SLOT(onNewCallArrived(QString, QString, int)));
-
     QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
                      this, SLOT(onCallHangup(QString, QString, int)));
+    QObject::connect(this->mSkype, SIGNAL(callAnswered(int)),
+                     this, SLOT(onCallAnswered(int)));
+
 
     // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
     //                  this, SLOT(onShowSkypeTracer(bool)));
@@ -93,13 +102,21 @@ void SkyServ::onNewCallArrived(QString callerName, QString calleeName, int callI
     // sip call
     QString serv_addr = "172.24.172.21:5060";
     status = hSip->call_phone(callerName, callee_phone, serv_addr);
-    
+    hSip->payload_id = callID;
+
 }
 
 void SkyServ::onCallHangup(QString contactName, QString calleeName, int callID)
 {
     qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<contactName<<callID;
     
+}
+
+void SkyServ::onCallAnswered(int callID)
+{
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<callID;
+    // set call output port
+    // this->mSkype->setCallMediaOutputPort(QString::number(callID), 12356);
 }
 
 void SkyServ::onSkypePackageArrived(QString contactName, int stream, QString data)
@@ -156,7 +173,7 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         // ret = this->db->releaseGateway(contactName, sp->data);
         rsp.seq = sp->seq;
         rsp.type = SkypePackage::SPT_GW_RELEASE_RESULT;
-        rsp.data = QString("ret=%1&gateway=%2").arg(ret).arg(contactName);
+        rsp.data = QString("ret=%1&caller=%2&gateway=%3").arg(ret).arg(contactName).arg(sp->data);
         
         rspStr = rsp.toString();
         this->mSkype->sendPackage(contactName, stream, rspStr);
@@ -168,6 +185,35 @@ void SkyServ::processRequest(QString contactName, int stream, SkypePackage *sp)
         break;
     };
 }
+
+
+// from sip signals
+void SkyServ::onSipCallFinished(int call_id, int status_code)
+{
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<call_id<<status_code;
+
+    int skype_call_id = hSip->payload_id;
+    this->mSkype->setCallHangup(QString("%1").arg(skype_call_id));
+    hSip->payload_id = -1;
+}
+
+void SkyServ::onSipCallMediaServerReady(unsigned short port)
+{
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<port;
+
+    int skype_call_id = hSip->payload_id;
+    int ok = this->mSkype->setCallMediaInputPort(QString("%1").arg(skype_call_id), port);
+
+}
+
+void SkyServ::onSipCallIncomingMediaServerReady(unsigned short port)
+{
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<port;
+
+    int skype_call_id = hSip->payload_id;
+    int ok = this->mSkype->setCallMediaOutputPort(QString::number(skype_call_id), port);
+}
+
 
 // SkyServ::SkyServ(QWidget *parent) :
 //     QMainWindow(parent),

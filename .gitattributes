@@ -245,6 +245,7 @@ skynet/xmessages.h -text
 skyserv/database.cpp -text
 skyserv/database.h -text
 skyserv/main.cpp -text
+skyserv/mserv_ctl.sh -text
 skyserv/serv.sql -text
 skyserv/skyserv.cpp -text
 skyserv/skyserv.h -text

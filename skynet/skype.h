@@ -79,6 +79,8 @@ public:
     int setCallHold(QString callID);
     int setCallResume(QString callID);
     int setCallHangup(QString callID);
+    int setCallMediaInputPort(QString callID, unsigned short port);
+    int setCallMediaOutputPort(QString callID, unsigned short port);
 
 public slots:
     void onCommandRequest(QString cmd);
@@ -100,6 +102,7 @@ signals:
     void newCallArrived(QString callerName, QString calleeName, int callID);
     void onCallAcceptCalleeDone(QString contactName, int callID);
     void callHangup(QString contactName, QString callerName, int callID);
+    void callAnswered(int callID);
 
 protected slots:
     void onConnected(QString skypeName);

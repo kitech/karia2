@@ -178,6 +178,8 @@ void Skype::processMessage(const QString &message) {
                 // emit this->newCallArrived(cmd.callStatusValue(), cmd.callID().toInt());
                 this->doCommand(SkypeCommand::GET_CALL_PROP(cmd.callID(), "PARTNER_HANDLE"), false);
             }
+        } else if (cmd.callStatusKey() == "ANSWER") {
+            emit this->callAnswered(cmd.callID().toInt());
         }
         return;
     }
@@ -312,6 +314,18 @@ int Skype::setCallHangup(QString callID)
 {
     int ok = doCommand(SkypeCommand::ALTER_CALL_STATUS(callID, "HANGUP"), false);
     // int ok = doCommand(SkypeCommand::SET_CALL_PROP(callID, "STATUS", "HANGUP"), false);
+    return 0;
+}
+
+int Skype::setCallMediaInputPort(QString callID, unsigned short port)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_SET_INPUT_PORT(callID, QString("%1").arg(port)));
+    return 0;
+}
+
+int Skype::setCallMediaOutputPort(QString callID, unsigned short port)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_SET_OUTPUT_PORT(callID, QString("%1").arg(port)));
     return 0;
 }
 

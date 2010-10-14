@@ -19,6 +19,8 @@
 
 int SkypeCommand::ID = 0;
 
+// TODO group by skype api object
+
 QString SkypeCommand::PING() { 
     return "PING";
 }
@@ -236,7 +238,7 @@ bool SkypeResponse::parse(QString msg) {
     }
 
     echo = true; // Except for APPLICATION everything should be of type SK_ECHO
-    if ( msg.indexOf("ALTER") == 0 ) {
+    if ( msg.indexOf("ALTER APPLICATION") == 0 ) {
         exp.setPattern("ALTER APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
     } else if ( msg.indexOf("APPLICATION") == 0 ) {
         // exp.setPattern("APPLICATION ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");
@@ -246,7 +248,8 @@ bool SkypeResponse::parse(QString msg) {
         exp.setPattern("DELETE ([^ ]*) ([^ ]*) *([^ ]*) *(.*)");    
     } else if ( msg.indexOf("CREATE") == 0 ) { 
         exp.setPattern("CREATE APPLICATION ([^ ]*) *([^ ]*) *(.*)"); 
-    } else if (msg.indexOf("CALL") == 0) {
+    } else if (msg.indexOf("CALL") == 0
+               || msg.indexOf("ALTER CALL") == 0) {
         return this->parseCall(msg);
     } else {
         Type = SK_UNKNOWN;
@@ -317,9 +320,12 @@ bool SkypeResponse::parseCall(QString msg)
     ResponseID = SkypeCommand::getID(Msg);
     SkypeCommand::removeID(msg);
 
+    // TODO , can not paser ALTER CALL <id> ANSWER response
     echo = true; // Except for APPLICATION everything should be of type SK_ECHO
     if (msg.indexOf("CALL") == 0) {
         exp.setPattern("CALL ([^ ]*) ([^ ]*) ([^ ]*)");
+    } else if(msg.indexOf("ALTER") == 0) {
+        exp.setPattern("ALTER CALL ([^ ]*) ([^ ]*)");
     } else {
         Type = SK_UNKNOWN;
         return true;

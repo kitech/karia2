@@ -25,6 +25,7 @@ public:
     virtual ~SkyServ();
 
 public slots:
+    // from skype
     void onSkypeError(int errNo, QString msg);
     void onSkypeConnected(QString skypeName);
     void onSkypeDisconnected(QString skypeName);
@@ -32,7 +33,14 @@ public slots:
     void onSkypePackageArrived(QString contactName, int stream, QString data);
     void onNewCallArrived(QString callerName, QString calleeName, int callID);
     void onCallHangup(QString contactName, QString calleeName, int callID);
+    void onCallAnswered(int callID);
+
     void processRequest(QString contactName, int stream, SkypePackage *sp);
+
+    // from sip
+    void onSipCallFinished(int call_id, int status_code);
+    void onSipCallMediaServerReady(unsigned short port);
+    void onSipCallIncomingMediaServerReady(unsigned short port);
 
 private:
     Database *db;
