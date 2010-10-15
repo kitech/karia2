@@ -619,6 +619,11 @@
         <string>SET USERSTATUS &lt;value&gt;</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>SET SILENT MODE &lt;ON|OFF&gt;</string>
+       </property>
+      </item>
      </widget>
     </widget>
    </item>

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CFGDIR=$HOME/gateways
-SCRN=2
+SCRN=2000
 # XVFB=/usr/bin/Xvfb -screen 2 120x120x16 :2
 XVFB=/usr/bin/Xvfb
 OBOX=/usr/bin/openbox
@@ -9,7 +9,7 @@ X11VNC=/usr/bin/x11vnc
 SKYPE=/usr/bin/skype
 
 ## start
-$XVFB -screen $SCRN 300x500x24 :$SCRN &
+$XVFB :$SCRN &
 sleep 2
 DISPLAY=:$SCRN
 $OBOX &

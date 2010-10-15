@@ -4250,7 +4250,7 @@ void Karia2::onSendPackage()
     mu.url = "http://sourceforge.net/projects/nullfxp/files/nullfxp/nullfxp-2.0.2/nullfxp-2.0.2.tar.bz2/download";
     mu.nameMd5 = "aceo732lksdf93sf32983rwe";
     mu.contentMd5 = "is832rj9dvsdklfwwewfwf8sd2";
-    mu.fileSize = 12342432812;
+    mu.fileSize = 12342432812LL;
     mu.owner = "liuguangzhao";
     mu.valid = true;
     mu.mtime = 1234556789;

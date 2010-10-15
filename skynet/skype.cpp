@@ -180,7 +180,10 @@ void Skype::processMessage(const QString &message) {
             }
         } else if (cmd.callStatusKey() == "ANSWER") {
             emit this->callAnswered(cmd.callID().toInt());
+        } else if (cmd.callStatusValue() == "INPROGRESS") {
+            emit this->callAnswered(cmd.callID().toInt());
         }
+
         return;
     }
 

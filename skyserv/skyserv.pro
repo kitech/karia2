@@ -30,13 +30,13 @@ SOURCES += main.cpp\
         skyservapplication.cpp \
         database.cpp \
         ../metauri.cpp \
-        wav_switcher.cpp sua_switcher.cpp PjCallback.cpp sip_vars.cpp
+        wav_switcher.cpp sua_switcher.cpp PjCallback.cpp sip_entry.cpp
 
 HEADERS  += skyserv.h \
          skyservapplication.h \
          database.h \
           ../metauri.h \
-          wav_switcher.h sua_switcher.h PjCallback.h sip_vars.h
+          wav_switcher.h sua_switcher.h PjCallback.h sip_entry.h
 
 FORMS    += skyserv.ui
 
@@ -50,26 +50,32 @@ LIBS += -lpq
 
 INCLUDEPATH += /serv/stow/pjsip/include
 LIBS += -L/serv/stow/pjsip/lib
-LIBS += -lpjsua-x86_64-unknown-linux-gnu \
-    -lpjsip-ua-x86_64-unknown-linux-gnu \
-    -lpjsip-simple-x86_64-unknown-linux-gnu \
-    -lpjsip-x86_64-unknown-linux-gnu \
-    -lpjmedia-codec-x86_64-unknown-linux-gnu \
-    -lpjmedia-x86_64-unknown-linux-gnu \
-    -lpjmedia-codec-x86_64-unknown-linux-gnu \
-    -lpjmedia-audiodev-x86_64-unknown-linux-gnu \
-    -lpjnath-x86_64-unknown-linux-gnu \
-    -lpjlib-util-x86_64-unknown-linux-gnu \
-    -lpj-x86_64-unknown-linux-gnu \
-    -lportaudio-x86_64-unknown-linux-gnu \
-    -lgsmcodec-x86_64-unknown-linux-gnu \
-    -lilbccodec-x86_64-unknown-linux-gnu \
-    -lspeex-x86_64-unknown-linux-gnu \
-    -lresample-x86_64-unknown-linux-gnu \
-    -lmilenage-x86_64-unknown-linux-gnu \
-    -lsrtp-x86_64-unknown-linux-gnu \
-    -lm \
+
+# LIBS += -lpjsua-x86_64-unknown-linux-gnu \
+#     -lpjsip-ua-x86_64-unknown-linux-gnu \
+#     -lpjsip-simple-x86_64-unknown-linux-gnu \
+#     -lpjsip-x86_64-unknown-linux-gnu \
+#     -lpjmedia-codec-x86_64-unknown-linux-gnu \
+#     -lpjmedia-x86_64-unknown-linux-gnu \
+#     -lpjmedia-codec-x86_64-unknown-linux-gnu \
+#     -lpjmedia-audiodev-x86_64-unknown-linux-gnu \
+#     -lpjnath-x86_64-unknown-linux-gnu \
+#     -lpjlib-util-x86_64-unknown-linux-gnu \
+#     -lpj-x86_64-unknown-linux-gnu \
+#     -lportaudio-x86_64-unknown-linux-gnu \
+#     -lgsmcodec-x86_64-unknown-linux-gnu \
+#     -lilbccodec-x86_64-unknown-linux-gnu \
+#     -lspeex-x86_64-unknown-linux-gnu \
+#     -lresample-x86_64-unknown-linux-gnu \
+#     -lmilenage-x86_64-unknown-linux-gnu \
+#     -lsrtp-x86_64-unknown-linux-gnu \
+
+LIBS += -lm \
     -lpthread \
     -lssl \
-    -lasound \
-    -luuid
+    -lasound
+
+PJSIP_LIBS=$$system("cat /serv/stow/pjsip/lib/pkgconfig/libpjproject.pc | grep Libs | awk -F\"}\" '{print $2}'")
+# message($$PJSIP_LIBS)
+
+LIBS += $$PJSIP_LIBS
