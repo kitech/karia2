@@ -17,7 +17,7 @@
 
 #include "database.h"
 
-#include "sip_vars.h"
+#include "sip_entry.h"
 
 // global vars
 SipVarSet *hSip;

@@ -30,12 +30,14 @@ SOURCES += main.cpp\
         skyservapplication.cpp \
         database.cpp \
         ../metauri.cpp \
+        streamd.cpp \
         wav_switcher.cpp sua_switcher.cpp PjCallback.cpp sip_entry.cpp
 
 HEADERS  += skyserv.h \
          skyservapplication.h \
          database.h \
           ../metauri.h \
+          streamd.h \
           wav_switcher.h sua_switcher.h PjCallback.h sip_entry.h
 
 FORMS    += skyserv.ui
