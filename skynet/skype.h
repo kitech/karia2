@@ -31,7 +31,7 @@ enum {INCOMING_PSTN = 1, OUTGOING_PSTN, INCOMING_P2P, OUTGOING_P2P};
 class Skype : public QObject { 
     Q_OBJECT;
 private:
-    skypeComm sk;
+    SkypeCommon sk;
 
     QString skypeName;
     QString appPrefix;
@@ -57,7 +57,7 @@ private:
 
 protected:
     void readIncomingData(QString contact, int stream);
-    bool doCommand(QString cmd, bool blocking = true);
+    bool doCommand(QString cmd, bool blocking = false);
     int waitForResponse ( QString commandID );
 
 public:
@@ -66,8 +66,9 @@ public:
     bool connectToSkype();
     bool disconnectFromSkype();
     QString handlerName() { return this->skypeName;}
+    bool isConnected() { return this->mConnected; }
     void newStream(QString contact);
-    bool writeToStream(QByteArray data, QString contactName); //deprecated
+    bool writeToStream(QByteArray data, QString contactName); // deprecated
     bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
     QByteArray readFromStream(QString contact);
     bool sendPackage(QString contactName, int streamNum, QString data);
@@ -87,7 +88,7 @@ public slots:
 
 signals:
     void connected(QString skypeName);
-    void connectionLost();
+    void connectionLost(QString skypeName);
     void skypeError(int errNo, QString Msg);
     void dataInStream(QString contactName);
     void newStreamCreated(QString contactName, int num);
@@ -106,6 +107,7 @@ signals:
 
 protected slots:
     void onConnected(QString skypeName);
+    void onDisconnected(QString skypeName);
     void processMessage(const QString &message);
     void processAP2APMessage(const QString &message);
     void timeOut();

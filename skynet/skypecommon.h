@@ -27,7 +27,7 @@
 #include <windows.h>
 #endif
 
-class skypeComm : public QObject {
+class SkypeCommon : public QObject {
     Q_OBJECT;
 private:
     WId skype_win;
@@ -51,9 +51,13 @@ private slots:
 #endif
 
 public:
-    skypeComm();
+    SkypeCommon();
+    virtual ~SkypeCommon();
+
     void sendMsgToSkype(const QString &message);
     bool attachToSkype();
+    bool detachSkype();
+    bool is_skype_running();
 
 signals:
     void newMsgFromSkype(const QString &message);

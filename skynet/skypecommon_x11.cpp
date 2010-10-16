@@ -10,6 +10,9 @@
  * TODO:
  * CHANGES:
  ***************************************************************/
+
+#include <sys/stat.h>
+
 #include <QtGui/QApplication>
 #include "skypecommon.h"
 
@@ -22,18 +25,26 @@
 
 static const char *skypemsg = "SKYPECONTROLAPI_MESSAGE";
 
-skypeComm::skypeComm() { 
-    msg = new XMessages( skypemsg, (QWidget *) QApplication::desktop() );
-    connect( msg, SIGNAL( gotMessage(int, const QString &) ), this, SLOT( processX11Message(int, const QString &) ) );
+SkypeCommon::SkypeCommon() { 
+    msg = new XMessages( skypemsg, (QWidget *) QApplication::desktop());
+    QObject::connect(msg, SIGNAL(gotMessage(int, const QString &)), 
+                     this, SLOT(processX11Message(int, const QString &)));
     skype_win = 0;
 }
 
-void skypeComm::sendMsgToSkype(const QString &message) {
-    if ( skype_win > 0 ) msg->sendMessage(skype_win,skypemsg, message);
+SkypeCommon::~SkypeCommon()
+{
+    
+}
+
+void SkypeCommon::sendMsgToSkype(const QString &message) {
+    if ( skype_win > 0 ) {
+        msg->sendMessage(skype_win, skypemsg, message);
+    }
 
 }
 
-bool skypeComm::attachToSkype() {
+bool SkypeCommon::attachToSkype() {
     Atom skype_inst = XInternAtom(QX11Info::display(), "_SKYPE_INSTANCE", True);
     Atom type_ret;
     int format_ret;
@@ -58,11 +69,72 @@ bool skypeComm::attachToSkype() {
     }
 }
 
+bool SkypeCommon::detachSkype()
+{
+    this->skype_win = (WId) -1;
+    return true;
+}
 
-void skypeComm::processX11Message(int win, const QString &message) {
+// put in skype class is nice
+bool SkypeCommon::is_skype_running()
+{
+    char *temp;
+    int pid;
+    char *stat_path;
+    FILE *fh;
+    char exec_name[15];
+    struct stat statobj;
+    
+	/* const gchar *temp; */
+	/* int pid; */
+	/* gchar* stat_path; */
+	/* FILE *fh; */
+	/* gchar exec_name[15]; */
+	/* struct stat *statobj = g_new(struct stat, 1); */
+	/* //open /proc */
+	/* GDir *procdir = g_dir_open("/proc", 0, NULL); */
+	/* //go through directories that are numbers */
+	/* while((temp = g_dir_read_name(procdir))) */
+	/* { */
+	/* 	pid = atoi(temp); */
+	/* 	if (!pid) */
+	/* 		continue; */
+	/* 	// /proc/{pid}/stat contains lots of juicy info */
+	/* 	stat_path = g_strdup_printf("/proc/%d/stat", pid); */
+	/* 	fh = fopen(stat_path, "r"); */
+	/* 	if (!fh) */
+	/* 	{ */
+	/* 		g_free(stat_path); */
+	/* 		continue; */
+	/* 	} */
+	/* 	pid = fscanf(fh, "%*d (%15[^)]", exec_name); */
+	/* 	fclose(fh); */
+	/* 	if (!g_str_equal(exec_name, "skype")) */
+	/* 	{ */
+	/* 		g_free(stat_path); */
+	/* 		continue; */
+	/* 	} */
+	/* 	//get uid/owner of stat file by using fstat() */
+	/* 	g_stat(stat_path, statobj); */
+	/* 	g_free(stat_path); */
+	/* 	//compare uid/owner of stat file (in g_stat->st_uid) to getuid(); */
+	/* 	if (statobj->st_uid == getuid()) */
+	/* 	{ */
+	/* 		//this copy of skype was started by us */
+	/* 		g_dir_close(procdir); */
+	/* 		g_free(statobj); */
+	/* 		return TRUE; */
+	/* 	} */
+	/* } */
+	/* g_dir_close(procdir); */
+	/* g_free(statobj); */
+    
+}
+
+void SkypeCommon::processX11Message(int win, const QString &message) {
     if ( win == skype_win ) emit newMsgFromSkype( message );
 }
 
 
-// #include "skypeComm.moc"
+// #include "SkypeCommon.moc"
 #endif /* Q_WS_X11 */

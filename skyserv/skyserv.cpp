@@ -39,6 +39,10 @@ SkyServ::SkyServ(QObject *parent)
                      this, SLOT(onSipCallIncomingMediaServerReady(unsigned short)));
 
     this->mSkype = new Skype("karia2");
+    QObject::connect(this->mSkype, SIGNAL(connected(QString)),
+                     this, SLOT(onSkypeConnected(QString)));
+    QObject::connect(this->mSkype, SIGNAL(connectionLost(QString)),
+                     this, SLOT(onSkypeDisconnected(QString)));
     QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
                      this, SLOT(onSkypeError(int, QString)));
     this->mSkype->connectToSkype();
@@ -71,12 +75,12 @@ void SkyServ::onSkypeError(int errNo, QString msg)
 
 void SkyServ::onSkypeConnected(QString skypeName)
 {
-
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<skypeName;
 }
 
 void SkyServ::onSkypeDisconnected(QString skypeName)
 {
-
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<skypeName;
 }
 
 void SkyServ::onNewStreamCreated(QString contactName, int stream)

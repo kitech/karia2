@@ -20,8 +20,8 @@
 enum SkypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ, 
                       SK_DATA, SK_DATAGRAM, SK_STREAMS, SK_UNKNOWN, SK_NO_COMMAND, 
                       SK_STATUS, SK_ECHO, SK_END_OF_DATA, SK_CLOSE_STREAM, 
-                      SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST,
-                      SK_PROTOCOL,SK_CALL,
+                      SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST, SK_GROUP,
+                      SK_PROTOCOL,SK_CALL, SK_CONNSTATUS, SK_USER, SK_USERSTATUS,
                       SK_CURRENTUSERHANDLE
 };
 
@@ -31,7 +31,7 @@ enum SkypeCommands{
 };
 
 enum SkypeStatus {
-    SS_OFFLINE, SS_INVISIBLE, SS_DND, SS_AWAY, SS_ONLINE
+    SS_OFFLINE, SS_INVISIBLE, SS_DND, SS_NA, SS_AWAY, SS_SKYPEME, SS_ONLINE, SS_UNKNOWN
 };
 
 class SkypeResponse {
@@ -41,7 +41,13 @@ private:
     enum SkypeCommands cmd;
     QString Msg;
 
+    // connection object
+    int StatusType;
+    QString StatusText;
+
     // user object
+
+    // group object
 
     // message object
 
@@ -69,6 +75,9 @@ public:
     bool parseApp(QString msg);
     bool parseCall(QString msg);
 
+    int statusType() { return this->StatusType; }
+    QString statusText() { return this->StatusText; }
+
     QString responseID() {return ResponseID;};
     int protocolNum() {return ProtocolNum;};
     int streamNum() {return StreamNum;};
@@ -92,7 +101,7 @@ class SkypeCommand {
 private:
     static int ID;
 public:
-    static QString CONNECT_TO_SKYPE(QString AppName);
+    static QString PUBLISH_SA_NAME(QString AppName);
     static QString CREATE_AP2AP(QString appName);
     static QString DELETE_AP2AP(QString AppObject);
     static QString CONNECT_AP2AP(QString appName, QString contactName);

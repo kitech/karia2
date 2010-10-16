@@ -19,13 +19,16 @@
 #include "skype.h"
 #include "skypecommand.h"
 
-Skype::Skype(QString AppName): appPrefix(AppName) {
+Skype::Skype(QString AppName): appPrefix(AppName) 
+{
     this->mConnected = false;
     TimeOut = 10000;
     pingTimer = new QTimer(this);
     contactsUpToDate = false;
 
     QObject::connect(this, SIGNAL(connected(QString)), this, SLOT(onConnected(QString)));
+    QObject::connect(this, SIGNAL(connectionLost(QString)), this, SLOT(onDisconnected(QString)));
+    connect( pingTimer, SIGNAL( timeout() ), this, SLOT( ping() ) );
 }
 
 Skype::~Skype()
@@ -77,8 +80,8 @@ void Skype::processMessage(const QString &message) {
     }
 
     if ( waitingForResponse && cmd.responseID() == waitForResponseID ) {
-        qDebug() << "Received event "<<cmd.responseID() <<" we've been waiting for.";
-        qDebug() << "Response received:"<<message;
+        qDebug() << "Received event "<<message<< cmd.responseID() <<" we've been waiting for.";
+        // qDebug() << "Response received:"<<message;
         localEventLoop.exit(0);
         return;
     }
@@ -103,7 +106,7 @@ void Skype::processMessage(const QString &message) {
         this->appName = "skynet_" + this->appPrefix;// + "_" + cmd.contactName();
         qDebug()<<"unique appName:"<<this->appName;
 
-        emit connected(cmd.contactName());
+        // emit connected(cmd.contactName());
 
         this->skypeName = cmd.contactName();
         bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
@@ -187,6 +190,15 @@ void Skype::processMessage(const QString &message) {
         return;
     }
 
+    if (cmd.type() == SK_CONNSTATUS) {
+        if (cmd.statusType() == SS_ONLINE) {
+            emit this->connected(this->skypeName);
+        } else if(cmd.statusType() == SS_OFFLINE) {
+            emit this->connectionLost(this->skypeName);
+        }
+        return;
+    }
+
     if (cmd.type() == SK_CLOSE_STREAM) {
         // qDebug()<<__FILE__<<__LINE__<<"Maybe stream disconnected:"<<cmd.streamNum();
         emit this->streamClosed();
@@ -237,13 +249,9 @@ bool Skype::connectToSkype()
     if ( this->mConnected ) return true;
     if ( ! sk.attachToSkype() ) return false;
     QObject::connect(&sk, SIGNAL(newMsgFromSkype(const QString)), this, SLOT(processMessage(const QString)));
-    // if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
-    if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(this->appPrefix) ) ) return false;
-    if ( ! doCommand( SkypeCommand::PROTOCOL(50) ) ) return false;
-    // if ( ! doCommand( SkypeCommand::CREATE_AP2AP(appName) ) ) return false;
-    connect( pingTimer, SIGNAL( timeout() ), this, SLOT( ping() ) );
-    pingTimer->start(20000);
-    this->mConnected = true;
+    if (!doCommand( SkypeCommand::PUBLISH_SA_NAME(this->appPrefix), true)) return false;
+    doCommand( SkypeCommand::PROTOCOL(50), true);
+    
     return true;
 }
 
@@ -362,6 +370,21 @@ void Skype::onConnected(QString skypeName)
     Q_UNUSED(skypeName);
     // bool ok = doCommand( SkypeCommand::CREATE_AP2AP(appName) );
     // Q_ASSERT(ok); 
+
+    // if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
+ 
+    
+
+    // if ( ! doCommand( SkypeCommand::CREATE_AP2AP(appName) ) ) return false;
+
+    pingTimer->start(20000);
+    this->mConnected = true;
+}
+
+void Skype::onDisconnected(QString skypeName) 
+{
+    this->pingTimer->stop();
+    this->mConnected = false;
 }
 
 // #include "skype.moc"

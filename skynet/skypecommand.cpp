@@ -25,7 +25,7 @@ QString SkypeCommand::PING() {
     return "PING";
 }
 
-QString SkypeCommand::CONNECT_TO_SKYPE(QString appName) { 
+QString SkypeCommand::PUBLISH_SA_NAME(QString appName) { 
     return "NAME " + appName;
 }
 
@@ -184,6 +184,39 @@ bool SkypeResponse::parse(QString msg) {
 
     if ( msg.indexOf("PONG") == 0 ) { 
         Type = SK_PING;
+        return true;
+    }
+
+    // TODO less match should put at end
+    if (msg.indexOf("CONNSTATUS") == 0) {
+        Type = SK_CONNSTATUS;
+        this->StatusText = msg.split(" ").at(1);
+        if (msg.indexOf("ONLINE") != -1) {
+            this->StatusType = SS_ONLINE;
+        } else if (msg.indexOf("OFFLINE") != -1) {
+            this->StatusType = SS_OFFLINE;
+        } else if (msg.indexOf("AWAY") != -1) {
+            this->StatusType = SS_AWAY;
+        } else if (msg.indexOf("INVISIBLE") != -1) {
+            this->StatusType = SS_INVISIBLE;
+        } else {
+            this->StatusType = SS_UNKNOWN;
+        }
+        return true;
+    }
+
+    if (msg.indexOf("USER ") == 0) {
+        this->Type = SK_USER;
+        return true;
+    }
+
+    if (msg.indexOf("GROUP ") == 0) {
+        this->Type = SK_GROUP;
+        return true;
+    }
+
+    if (msg.indexOf("USERSTATUS") == 0) {
+        this->Type = SK_USERSTATUS;
         return true;
     }
 
