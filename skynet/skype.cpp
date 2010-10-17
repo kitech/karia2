@@ -373,8 +373,6 @@ void Skype::onConnected(QString skypeName)
 
     // if ( ! doCommand( SkypeCommand::CONNECT_TO_SKYPE(appName) ) ) return false;
  
-    
-
     // if ( ! doCommand( SkypeCommand::CREATE_AP2AP(appName) ) ) return false;
 
     pingTimer->start(20000);
