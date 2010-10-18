@@ -102,6 +102,30 @@ QString SkypeCommand::ALTER_CALL_SET_OUTPUT_PORT(QString callID, QString port)
     return QString("ALTER CALL %1 SET_OUTPUT PORT=\"%2\"").arg(callID).arg(port);
 }
 
+// static 
+QString SkypeCommand::ALTER_CALL_SET_INPUT_SOUNDCARD(QString callID, QString card)
+{
+    return QString("ALTER CALL %1 SET_INPUT SOUNDCARD=\"%2\"").arg(callID).arg(card);
+}
+
+// static 
+QString SkypeCommand::ALTER_CALL_SET_OUTPUT_SOUNDCARD(QString callID, QString card)
+{
+    return QString("ALTER CALL %1 SET_OUTPUT SOUNDCARD=\"%2\"").arg(callID).arg(card);
+}
+
+//static
+QString SkypeCommand::ALTER_CALL_SET_INPUT_FILE(QString callID, QString file)
+{
+    return QString("ALTER CALL %1 SET_INPUT FILE=\"%2\"").arg(callID).arg(file);
+}
+
+// static
+QString SkypeCommand::ALTER_CALL_SET_OUTPUT_FILE(QString callID, QString file)
+{
+    return QString("ALTER CALL %1 SET_OUTPUT FILE=\"%2\"").arg(callID).arg(file);
+}
+
 
 QString SkypeCommand::prependID(QString command, QString myID) { 
     return "#"+myID+" "+command;

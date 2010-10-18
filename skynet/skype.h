@@ -82,6 +82,7 @@ public:
     int setCallHangup(QString callID);
     int setCallMediaInputPort(QString callID, unsigned short port);
     int setCallMediaOutputPort(QString callID, unsigned short port);
+    int setCallInputNull(QString callID);                                                                    int setCallOutputNull(QString callID);   
 
 public slots:
     void onCommandRequest(QString cmd);

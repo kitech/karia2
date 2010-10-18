@@ -340,6 +340,17 @@ int Skype::setCallMediaOutputPort(QString callID, unsigned short port)
     return 0;
 }
 
+int Skype::setCallInputNull(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_SET_INPUT_SOUNDCARD(callID, QString("NULL")));
+    return ok;
+}
+int Skype::setCallOutputNull(QString callID)
+{
+    int ok = doCommand(SkypeCommand::ALTER_CALL_SET_OUTPUT_SOUNDCARD(callID, QString("NULL")));
+    return ok;
+}
+
 bool Skype::sendPackage(QString contactName, int streamNum, QString data)
 {
     QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, streamNum, data);

@@ -119,6 +119,10 @@ public:
     static QString ALTER_CALL_STATUS(QString callID, QString propName);
     static QString ALTER_CALL_SET_INPUT_PORT(QString callID, QString port);
     static QString ALTER_CALL_SET_OUTPUT_PORT(QString callID, QString port);
+    static QString ALTER_CALL_SET_INPUT_SOUNDCARD(QString callID, QString card);
+    static QString ALTER_CALL_SET_OUTPUT_SOUNDCARD(QString callID, QString card);
+    static QString ALTER_CALL_SET_INPUT_FILE(QString callID, QString file);
+    static QString ALTER_CALL_SET_OUTPUT_FILE(QString callID, QString file);
     static QString prependID(QString command, QString myID);
     static QString prependID(QString command);
     static QString nextID();

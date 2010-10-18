@@ -100,6 +100,8 @@ void SkyServ::onNewCallArrived(QString callerName, QString calleeName, int callI
         qDebug()<<"Error: call pair not found.";
         return;
     }
+    this->mSkype->setCallInputNull(QString("%1").arg(callID));
+    this->mSkype->setCallOutputNull(QString("%1").arg(callID));
     // accept
     this->mSkype->answerCall(QString("%1").arg(callID));
 
