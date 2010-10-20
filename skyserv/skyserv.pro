@@ -75,7 +75,7 @@ LIBS += -lm \
     -lssl \
     -lasound
 
-PJSIP_LIBS=$$system("cat /serv/stow/pjsip/lib/pkgconfig/libpjproject.pc | grep Libs | awk -F\"}\" '{print $2}'")
+PJSIP_LIBS=$$system("cat /serv/stow/pjsip/lib/pkgconfig/libpjproject.pc | grep Libs | awk -F} '{print $2}'")
 # message($$PJSIP_LIBS)
 
 LIBS += $$PJSIP_LIBS
