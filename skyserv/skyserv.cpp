@@ -51,9 +51,9 @@ SkyServ::SkyServ(QObject *parent)
     QObject::connect(this->mSkype, SIGNAL(newCallArrived(QString, QString, int)),
                      this, SLOT(onNewCallArrived(QString, QString, int)));
     QObject::connect(this->mSkype, SIGNAL(callHangup(QString, QString, int)),
-                     this, SLOT(onCallHangup(QString, QString, int)));
+                     this, SLOT(onSkypeCallHangup(QString, QString, int)));
     QObject::connect(this->mSkype, SIGNAL(callAnswered(int)),
-                     this, SLOT(onCallAnswered(int)));
+                     this, SLOT(onSkypeCallAnswered(int)));
 
 
     // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
@@ -100,8 +100,12 @@ void SkyServ::onNewCallArrived(QString callerName, QString calleeName, int callI
         qDebug()<<"Error: call pair not found.";
         return;
     }
-    this->mSkype->setCallInputNull(QString("%1").arg(callID));
-    this->mSkype->setCallOutputNull(QString("%1").arg(callID));
+    // this->mSkype->setCallInputNull(QString("%1").arg(callID));
+    // this->mSkype->setCallOutputNull(QString("%1").arg(callID));
+    this->mSkype->setCallInputFile(QString("%1").arg(callID), QString("/home/gzleo/SKYPE1.wav"));
+    // this->mSkype->setCallInputFile(QString("%1").arg(callID), QString("/dev/zero"));
+    this->mSkype->setCallOutputFile(QString("%1").arg(callID), QString("/dev/null"));
+    
     // accept
     this->mSkype->answerCall(QString("%1").arg(callID));
 
@@ -112,13 +116,26 @@ void SkyServ::onNewCallArrived(QString callerName, QString calleeName, int callI
 
 }
 
-void SkyServ::onCallHangup(QString contactName, QString calleeName, int callID)
+void SkyServ::onSkypeCallHangup(QString contactName, QString calleeName, int callID)
 {
     qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<contactName<<callID;
-    
+    int ret = 0;
+
+    // check if call_id is match
+    if (callID != hSip->payload_id) {
+        qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<"Not matched callid: calling "<<hSip->payload_id
+                <<" hangup:"<<callID;
+        return;
+    }
+
+    // release gateway resouce
+    ret = this->db->releaseGateway(calleeName, contactName);
+
+    // hangup sip now
+    hSip->hangup_call();
 }
 
-void SkyServ::onCallAnswered(int callID)
+void SkyServ::onSkypeCallAnswered(int callID)
 {
     qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<callID;
     // set call output port

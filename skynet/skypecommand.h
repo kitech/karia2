@@ -22,7 +22,7 @@ enum SkypeResponses { SK_OK, SK_ERROR, SK_INFO, SK_READY_TO_READ,
                       SK_STATUS, SK_ECHO, SK_END_OF_DATA, SK_CLOSE_STREAM, 
                       SK_PARSE_ERROR, SK_PING, SK_CONTACT_LIST, SK_GROUP,
                       SK_PROTOCOL,SK_CALL, SK_CONNSTATUS, SK_USER, SK_USERSTATUS,
-                      SK_CURRENTUSERHANDLE
+                      SK_CURRENTUSERHANDLE, SK_FILETRANSFER, SK_CHAT, SK_SMS
 };
 
 enum SkypeCommands{
@@ -31,7 +31,13 @@ enum SkypeCommands{
 };
 
 enum SkypeStatus {
-    SS_OFFLINE, SS_INVISIBLE, SS_DND, SS_NA, SS_AWAY, SS_SKYPEME, SS_ONLINE, SS_UNKNOWN
+    SS_UNKNOWN, SS_OFFLINE, SS_INVISIBLE, SS_DND, SS_NA, SS_AWAY, SS_SKYPEME, SS_ONLINE
+};
+
+enum SkypeObject {
+    SO_UNKNOWN, SO_USER, SO_PROFILE, SO_CHAT, SO_CALL, SO_MESSAGE /* dep, by CHATMESSAGE*/, 
+    SO_CHATMEMBER, SO_CHATMESSAGE, SO_VOICEMAIL, SO_SMS, SO_APPLICATION,
+    SO_GROUP, SO_FILETRANSFER
 };
 
 class SkypeResponse {
@@ -113,6 +119,7 @@ public:
     static QString DISCONNECT_AP2AP(QString appName, QString contactName, int streamNum);
     static QString PING();
     static QString PROTOCOL(int protocolNum);
+    static QString SET_AUTOAWAY(bool auto_away);
     static QString CALL(QString contactName);
     static QString GET_CALL_PROP(QString callID, QString propName);
     static QString SET_CALL_PROP(QString callID, QString propName, QString propValue);

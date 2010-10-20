@@ -41,6 +41,12 @@ QString SkypeCommand::PROTOCOL(int protocolNum) {
     return "PROTOCOL "+QString::number(protocolNum);
 }
 
+// static 
+QString SkypeCommand::SET_AUTOAWAY(bool auto_away)
+{
+    return QString("SET AUTOAWAY %1").arg(auto_away ? "ON" : "OFF");
+}
+
 QString SkypeCommand::CONNECT_AP2AP(QString appName, QString contactName) { 
     return "ALTER APPLICATION "+appName+" CONNECT "+ contactName;
 }

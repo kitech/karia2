@@ -67,6 +67,8 @@ public:
     bool disconnectFromSkype();
     QString handlerName() { return this->skypeName;}
     bool isConnected() { return this->mConnected; }
+    bool setAutoAway(bool auto_away);
+
     void newStream(QString contact);
     bool writeToStream(QByteArray data, QString contactName); // deprecated
     bool writeToSock(QString contactName, QByteArray data) { return writeToStream( data, contactName ); };
@@ -82,7 +84,10 @@ public:
     int setCallHangup(QString callID);
     int setCallMediaInputPort(QString callID, unsigned short port);
     int setCallMediaOutputPort(QString callID, unsigned short port);
-    int setCallInputNull(QString callID);                                                                    int setCallOutputNull(QString callID);   
+    int setCallInputNull(QString callID);
+    int setCallOutputNull(QString callID);   
+    int setCallInputFile(QString callID, QString file);
+    int setCallOutputFile(QString callID, QString file);   
 
 public slots:
     void onCommandRequest(QString cmd);

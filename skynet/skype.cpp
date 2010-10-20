@@ -266,6 +266,11 @@ bool Skype::disconnectFromSkype()
     return true;
 }
 
+bool Skype::setAutoAway(bool auto_away)
+{
+    int ok = this->doCommand(SkypeCommand::SET_AUTOAWAY(auto_away));
+    return ok;
+}
 
 void Skype::newStream(QString contact) 
 { 
@@ -351,6 +356,18 @@ int Skype::setCallOutputNull(QString callID)
     return ok;
 }
 
+int Skype::setCallInputFile(QString callID, QString file)
+{
+    int ok = this->doCommand(SkypeCommand::ALTER_CALL_SET_INPUT_FILE(callID, file));
+    return ok;
+}
+
+int Skype::setCallOutputFile(QString callID, QString file)
+{
+    int ok = this->doCommand(SkypeCommand::ALTER_CALL_SET_OUTPUT_FILE(callID, file));
+    return ok;
+}
+
 bool Skype::sendPackage(QString contactName, int streamNum, QString data)
 {
     QString cmd = SkypeCommand::SEND_AP2AP(this->appName, contactName, streamNum, data);
@@ -388,6 +405,8 @@ void Skype::onConnected(QString skypeName)
 
     pingTimer->start(20000);
     this->mConnected = true;
+
+    this->setAutoAway(false);
 }
 
 void Skype::onDisconnected(QString skypeName) 
