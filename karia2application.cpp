@@ -28,13 +28,22 @@ Karia2Application::~Karia2Application()
 }
 
 #if defined(Q_OS_WIN)
+bool Karia2Application::eventHandled=false;
+long Karia2Application::eventResult=0;
+
 bool Karia2Application::winEventFilter ( MSG * msg, long * result )
 {
 	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
 
 	//qDebug()<<msg->message ;
+    eventHandled=false;
+    emit winMessage( msg );
+    if ( eventHandled )
+      *result = eventResult;
+    return eventHandled;
 
-	return QApplication::winEventFilter(msg,result);
+
+    //	return QApplication::winEventFilter(msg,result);
 
 }
 #elif defined(Q_OS_MAC)

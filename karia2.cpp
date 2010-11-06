@@ -255,7 +255,9 @@ void Karia2::firstShowHandler()
     this->mSkype = new Skype("karia2");
     // QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
     //                  this, SLOT(onSkypeError(int, QString)));
-    // this->mSkype->connectToSkype();
+    bool cok = this->mSkype->connectToSkype();
+    qDebug()<<"skype connect status:"<<cok;
+
     QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
                      this, SLOT(onShowSkypeTracer(bool)));
     QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),

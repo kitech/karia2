@@ -364,12 +364,12 @@ bool SkypeResponse::parse(QString msg) {
 }
 bool SkypeResponse::parseMisc(QString msg)
 {
-    
+  return false;
 }
 
 bool SkypeResponse::parseApp(QString msg)
 {
-    
+  return false;    
 }
 
 bool SkypeResponse::parseCall(QString msg)

@@ -21,7 +21,16 @@ public:
     ~Karia2Application();
 
 #if defined(Q_OS_WIN)
+    // virtual bool winEventFilter ( MSG * msg, long * result );
+
+        // for skype
+	static bool eventHandled;
+	static long eventResult;
+
 	virtual bool winEventFilter ( MSG * msg, long * result );
+ signals:
+	void winMessage( MSG *msg );
+
 #elif defined(Q_OS_MAC)
     virtual bool macEventFilter(EventHandlerCallRef caller, EventRef event ) ;
 #else

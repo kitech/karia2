@@ -11,52 +11,163 @@
  * CHANGES:
  ***************************************************************/
 #include <QtGui/QApplication>
+#include <QtCore>
 #include "skypecommon.h"
+#include "../karia2application.h"
 
 #ifdef Q_WS_WIN
 
+enum {
+  SKYPE_ATTACH_SUCCESS=0,
+  SKYPE_TRY_NOW=0x8001,
+  SKYPE_REFUSED=2,
+  SKYPE_PENDING_AUTHORIZATION=1,
+  SKYPE_TRY_AGAIN=3
+};
+
+UINT SkypeCommon::attachMSG = 0;
+UINT SkypeCommon::discoverMSG = 0;
+QWidget *SkypeCommon::mainWin = NULL;
+WId SkypeCommon::main_window = 0;
+
+
 static const char *skypemsg = "SKYPECONTROLAPI_MESSAGE";
 
-skypeComm::skypeComm() { 
-    // msg = new XMessages( skypemsg, (QWidget *) QApplication::desktop() );
-    // connect( msg, SIGNAL( gotMessage(int, const QString &) ), this, SLOT( processX11Message(int, const QString &) ) );
-    // skype_win = 0;
+SkypeCommon::SkypeCommon() { 
+  if ( attachMSG == 0 || discoverMSG == 0 ) { 
+    // attachMSG = RegisterWindowMessage((LPCWSTR)"SkypeControlAPIAttach");
+    // discoverMSG = RegisterWindowMessage((LPCWSTR)"SkypeControlAPIDiscover");
+    attachMSG = RegisterWindowMessageA("SkypeControlAPIAttach");
+    discoverMSG = RegisterWindowMessageA("SkypeControlAPIDiscover");
+
+  }
+  if ( mainWin == NULL ) {
+      mainWin = new QWidget();
+      main_window = mainWin->winId();
+  }
+
+  connect( qApp, SIGNAL( winMessage( MSG *) ), this, SLOT( processWINMessage( MSG *) ) );
+  skype_win=0;
+  connected = false;
+  refused = false;
+  tryLater = false;
+  TimeOut = 10000;
 }
+SkypeCommon::~SkypeCommon()
+{
 
-void skypeComm::sendMsgToSkype(const QString &message) {
-    // if ( skype_win > 0 ) msg->sendMessage(skype_win,skypemsg, message);
-}
-
-bool skypeComm::attachToSkype() {
-    // Atom skype_inst = XInternAtom(QX11Info::display(), "_SKYPE_INSTANCE", True);
-    // Atom type_ret;
-    // int format_ret;
-    // unsigned long nitems_ret;
-    // unsigned long bytes_after_ret;
-    // unsigned char *prop;
-    // int status;
-    // QString dbgMsg;
-
-    // status = XGetWindowProperty(QX11Info::display(), QX11Info::appRootWindow(), skype_inst, 0, 1, False, XA_WINDOW, &type_ret, &format_ret, &nitems_ret, &bytes_after_ret, &prop);
-
-    // // sanity check
-    // if(status != Success || format_ret != 32 || nitems_ret != 1) {
-    //     skype_win = (WId) -1;
-    //     qDebug("skype::connectToInstance(): Skype not detected, status %d\n", status );
-    //     return false;
-    // } else  {
-    //     // skype_win = * (const unsigned long *) prop & 0xffffffff;
-    //     skype_win = * (const unsigned long *) prop & 0xffffffffffffffff; // test for x64
-    //     qDebug("skype::connectToInstance(): Skype instance found, window id %d\n", skype_win);
-    //     return true;
-    // }
 }
 
 
-void skypeComm::processX11Message(int win, const QString &message) {
+void SkypeCommon::sendMsgToSkype(const QString &message) {
+  COPYDATASTRUCT copyData;
+  QByteArray tmp;
+  qDebug()<<"SENDING MESSAGE:"<<message;
+
+  if ( refused || tryLater ) return;
+  if ( ! connected ) attachToSkype();
+  if ( ! connected ) return;
+  
+  tmp.append(message);
+
+
+  copyData.dwData=0;
+  copyData.lpData=tmp.data();
+  copyData.cbData=tmp.size()+1;
+
+  SendMessage( skype_win, WM_COPYDATA, (WPARAM) main_window, (LPARAM) &copyData );
+  qDebug()<<"MESSAGE SENT:"<<message<<" to"<<skype_win;
+
+
+}
+
+bool SkypeCommon::attachToSkype() {
+  if ( connected ) return true;
+  if ( refused || tryLater ) return false;
+  waitingForConnect = true;
+  SendMessage( HWND_BROADCAST, discoverMSG, (WPARAM) main_window, 0 );
+  QTimer *timer = new QTimer(this);
+  QTimer::singleShot(TimeOut, this, SLOT(timeOut()));
+  int result = localEventLoop.exec();
+  waitingForConnect = false;
+  return connected;
+  return false;
+}
+
+void SkypeCommon::timeOut()
+{
+  if ( waitingForConnect ) localEventLoop.exit(1);
+}
+
+void SkypeCommon::processWINMessage( MSG *msg )
+{
+  QByteArray tmp;
+  char *data=NULL;
+  COPYDATASTRUCT *copyData;
+  // qDebug() << "ProcessWINMessage:" << msg->message;
+  // application::eventHandled=true;
+  //  application::eventResult=1;
+  Karia2Application::eventHandled = true;
+  Karia2Application::eventResult = 1;
+
+  switch ( msg->message ) { 
+	  case WM_COPYDATA:
+		  if ( skype_win != (WId) msg->wParam ) {
+		    qDebug() << "Message not from skype";
+		    return;
+		  }
+		  copyData = (COPYDATASTRUCT *)msg->lParam;
+		  data = new char[ copyData->cbData ];
+		  data = qstrncpy( data, (char *) copyData->lpData, copyData->cbData );
+		  tmp.append(data);
+		  Q_ASSERT( data != NULL );
+		  delete data;
+		  qDebug() << "WM_COPYDATA:" << tmp;
+		  emit newMsgFromSkype( tmp );
+		  return;
+	  default:
+	    if ( msg->message == attachMSG ) {
+	      qDebug() << "Attach status";
+		  switch ( msg->lParam ) {
+			  case SKYPE_ATTACH_SUCCESS:
+				  connected=true;
+				  tryLater=false;
+				  skype_win = (WId) msg->wParam;
+				  qDebug() << "Attached to "<<skype_win;
+				  if ( waitingForConnect ) localEventLoop.quit();
+				  return;
+			  case SKYPE_TRY_NOW:
+				  qDebug() << "Try to attach now";
+				  tryLater=false;
+				  attachToSkype();
+				  return;
+			  case SKYPE_REFUSED:
+				  qDebug() << "Refused";
+				  refused=true;
+				  return;
+			  case SKYPE_PENDING_AUTHORIZATION:
+				  qDebug() << "Pending authorization";
+				  return;
+			  case SKYPE_TRY_AGAIN:
+				  qDebug() << "Try Again";
+				  tryLater=true;
+				  if ( waitingForConnect ) localEventLoop.quit();
+				  return;
+			  default: 
+				  qDebug() <<"WEIRD STATUS:"<<msg->lParam;
+				  return;
+		  }
+		  
+	    }
+  }
+  // application::eventHandled=false;
+  Karia2Application::eventHandled = false;
+}
+
+// void SkypeCommon::processX11Message(int win, const QString &message) {
     // if ( win == skype_win ) emit newMsgFromSkype( message );
-}
+  // }
 
 
-// #include "skypeComm.moc"
+// #include "SkypeCommon.moc"
 #endif /* Q_WS_WIN */

@@ -66,7 +66,7 @@ win32 {
 
       #      LIBPATH += Z:/librarys/vc-ssl/lib Z:/librarys/vc-zlib/lib
       # INCLUDEPATH += Z:/librarys/vc-ssl/include/
-      LIBS += -lqtmain -lzlib -llibeay32 -lssleay32 -ladvapi32 -luser32 -lpsapi -lws2_32
+      LIBS += -lqtmain -lzlibstat -llibeay32 -lssleay32 -ladvapi32 -luser32 -lpsapi -lws2_32
       RESOURCES = karia2.rc
       # QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:console
     }

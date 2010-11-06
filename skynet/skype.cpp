@@ -251,7 +251,6 @@ bool Skype::connectToSkype()
     QObject::connect(&sk, SIGNAL(newMsgFromSkype(const QString)), this, SLOT(processMessage(const QString)));
     if (!doCommand( SkypeCommand::PUBLISH_SA_NAME(this->appPrefix), true)) return false;
     doCommand( SkypeCommand::PROTOCOL(50), true);
-    
     return true;
 }
 
