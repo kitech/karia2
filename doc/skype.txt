@@ -1,5 +1,12 @@
-即使用户不在好友列表中也可使用skype API发送消息，并且能正常接收到, 隐私设置中的允许任何人联系我开启才行。
-使用ap2ap的问题，两边需要预先创建一个统一名字的application, 程序复杂一些。在一端关闭连接的时候，另一羰的关闭通知太简单，没有任何区分信息，不好回收资源。可以使用公共app建立连接，两方协商创建新的应用，在新的应用上传递数据。
-另一种方法，在主动关闭方关闭连接前向对方发送关闭通知，其后双方各自关闭自己管理的连接，是否可以。还是这种方法简单些。
-使用IM发送消息的方式，需要弹出窗口，无法隐藏或者关闭，不友好。
-skype的stream会在某时间后自动断开，目前还不知道是多长时间。
+* 即使用户不在好友列表中也可使用skype API发送消息，并且能正常接收到, 隐私设置中的允许任何人联系我开启才行。
+使用ap2ap的问题，两边需要预先创建一个统一名字的application, 程序复杂一些。在一端关闭连接的时候，另一羰的关闭通知太简单，没有任何区分信息，** 不好回收资源。可以使用公共app建立连接，两方协商创建新的应用，在新的应用上传递数据。
+* 另一种方法，在主动关闭方关闭连接前向对方发送关闭通知，其后双方各自关闭自己管理的连接，是否可以。还是这种方法简单些。
+* 使用IM发送消息的方式，需要弹出窗口，无法隐藏或者关闭，不友好。
+* skype的stream会在某时间后自动断开，目前还不知道是多长时间, 在8分钟左右。
+* skype拨打电话,skype2skype的codec是SILK, skypeout是g729
+* skype呼叫带宽占用,Between 30 and 70 kbps, http://forum.skype.com/index.php?showtopic=32510 ?????
+Skype claims bandwidth for calls varies from 3-16 kbps.??? https://support.skype.com/faq/FA151/How-much-bandwidth-does-Skype-use-while-I-m-in-a-call
+* forward和transfer的区别
+* 即使skype有一路通话,该skype也能执行转换任务,alter call xx transfer yy
+* 一个账号多处登陆,接收呼叫时,如果有一个answer, 其他的账号接收到的呼叫自动断开.
+

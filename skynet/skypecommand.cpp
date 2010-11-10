@@ -29,6 +29,11 @@ QString SkypeCommand::PUBLISH_SA_NAME(QString appName) {
     return "NAME " + appName;
 }
 
+QString SkypeCommand::GET_CURRENTUSERHANDLE()
+{
+    return QString("GET CURRENTUSERHANDLE");
+}
+
 QString SkypeCommand::CREATE_AP2AP(QString appName) { 
     return "CREATE APPLICATION " + appName;
 }

@@ -108,6 +108,7 @@ private:
     static int ID;
 public:
     static QString PUBLISH_SA_NAME(QString AppName);
+    static QString GET_CURRENTUSERHANDLE();
     static QString CREATE_AP2AP(QString appName);
     static QString DELETE_AP2AP(QString AppObject);
     static QString CONNECT_AP2AP(QString appName, QString contactName);

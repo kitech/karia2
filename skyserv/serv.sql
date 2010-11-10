@@ -35,3 +35,49 @@ CREATE TABLE mirror_hosts (
        PRIMARY KEY (hid),
        UNIQUE (host_name)
 );
+
+DROP TABLE IF EXISTS skype_gateways;
+CREATE TABLE skype_gateways (
+       skype_id varchar(100) not null,
+       in_use integer not null default 0,
+       lock_time timestamp,
+       caller_name varchar(100),
+       callee_phone varchar(100),
+       PRIMARY KEY (skype_id)
+);
+CREATE INDEX on skype_gateways(caller_name);
+
+DROP TABLE IF EXISTS skype_callpairs;
+CREATE TABLE skype_callpairs (
+       skype_id varchar(100) not null,
+       callee_phone varchar(100) not null,
+       lock_time timestamp,
+       delete_flag integer not null default 0,
+       PRIMARY KEY (skype_id)
+);
+
+DROP FUNCTION merge_replace_skype_callpairs (text, text);
+CREATE OR REPLACE FUNCTION merge_replace_skype_call_pairs(p_skype_id TEXT, p_callee_phone TEXT) RETURNS VOID AS
+$$
+BEGIN
+    LOOP
+        -- first try to update the key
+        UPDATE skype_callpairs SET callee_phone = p_callee_phone,lock_time=NOW(), delete_flag=0
+                WHERE skype_id = p_skype_id;
+        IF found THEN
+            RETURN;
+        END IF;
+        -- not there, so try to insert the key
+        -- if someone else inserts the same key concurrently,
+        -- we could get a unique-key failure
+        BEGIN
+            INSERT INTO skype_callpairs(skype_id, callee_phone, lock_time, delete_flag)
+                    VALUES (p_skype_id, p_callee_phone, NOW(), 0);
+            RETURN;
+        EXCEPTION WHEN unique_violation THEN
+            -- do nothing, and loop to try the UPDATE again
+        END;
+    END LOOP;
+END;
+$$
+LANGUAGE plpgsql;
