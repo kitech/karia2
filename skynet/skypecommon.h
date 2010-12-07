@@ -73,6 +73,10 @@ protected slots:
     void processWINMessage( MSG *msg );
 #endif
 
+#ifdef Q_WS_MAC
+#endif
+
+
 };
 
 

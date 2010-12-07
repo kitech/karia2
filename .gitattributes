@@ -230,6 +230,7 @@ skynet/skype.h -text
 skynet/skypecommand.cpp -text
 skynet/skypecommand.h -text
 skynet/skypecommon.h -text
+skynet/skypecommon_mac.cpp -text
 skynet/skypecommon_win.cpp -text
 skynet/skypecommon_x11.cpp -text
 skynet/xmessages.cpp -text
