@@ -57,128 +57,7 @@
         <property name="windowTitle">
          <string>User Feedback</string>
         </property>
-        <widget class="QWidget" name="dockWidgetContents">
-         <widget class="QPushButton" name="pushButton">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>86</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Chat with ...</string>
-          </property>
-          <property name="text">
-           <string>connect a2a</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="lineEdit">
-          <property name="geometry">
-           <rect>
-            <x>90</x>
-            <y>0</y>
-            <width>113</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>drswinghead</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>20</y>
-            <width>86</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>send package</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton_3">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>40</y>
-            <width>86</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="toolButton">
-          <property name="geometry">
-           <rect>
-            <x>90</x>
-            <y>30</y>
-            <width>31</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="toolButton_2">
-          <property name="geometry">
-           <rect>
-            <x>120</x>
-            <y>30</y>
-            <width>31</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="toolButton_3">
-          <property name="geometry">
-           <rect>
-            <x>160</x>
-            <y>30</y>
-            <width>31</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>70</y>
-            <width>86</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Call</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="lineEdit_2">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>70</y>
-            <width>141</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>+9086013567890</string>
-          </property>
-         </widget>
-        </widget>
+        <widget class="QWidget" name="dockWidgetContents"/>
        </widget>
       </widget>
       <widget class="QSplitter" name="splitter_2">
@@ -202,7 +81,7 @@
         </property>
         <widget class="QTabWidget" name="mui_tw_segment_graph_log">
          <property name="currentIndex">
-          <number>5</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab_5">
           <attribute name="title">

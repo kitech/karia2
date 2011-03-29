@@ -9,4 +9,5 @@ Skype claims bandwidth for calls varies from 3-16 kbps.??? https://support.skype
 * forward和transfer的区别
 * 即使skype有一路通话,该skype也能执行转换任务,alter call xx transfer yy
 * 一个账号多处登陆,接收呼叫时,如果有一个answer, 其他的账号接收到的呼叫自动断开.
+* skypekit与Qt一起用,需要用到多继承,并且,Qt的类要放在继承顺序开始位置
 

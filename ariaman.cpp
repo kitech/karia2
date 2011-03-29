@@ -79,9 +79,9 @@ AriaMan::AriaMan(QObject *parent)
 #endif
     
     this->mStartArgs << "--no-conf"
-                     << "--enable-xml-rpc=true"
-                     << "--xml-rpc-listen-all=false"
-                     << QString("--xml-rpc-listen-port=%1").arg(this->currentRpcPort)
+                     << "--enable-rpc=true"
+                     << "--rpc-listen-all=false"
+                     << QString("--rpc-listen-port=%1").arg(this->currentRpcPort)
                      << "--listen-port=6881-6999"
                      << "--enable-dht=true"
                      << QString("--dht-file-path=%1").arg(dhtFilePath)

@@ -29,7 +29,7 @@ UI_DIR = tmp
 OBJECTS_DIR = tmp
 #CONFIG += qtestlib
 
-VERSION = 0.1.61
+VERSION = 0.1.62
 
 #########################
 INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet

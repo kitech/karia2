@@ -255,19 +255,19 @@ void Karia2::firstShowHandler()
     this->mSkype = new Skype("karia2");
     // QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
     //                  this, SLOT(onSkypeError(int, QString)));
-    bool cok = this->mSkype->connectToSkype();
-    qDebug()<<"skype connect status:"<<cok;
+    // bool cok = this->mSkype->connectToSkype();
+    // qDebug()<<"skype connect status:"<<cok;
 
-    QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
-                     this, SLOT(onShowSkypeTracer(bool)));
-    QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
-                     this, SLOT(onChatWithSkype()));
-    QObject::connect(this->mainUI.pushButton_2, SIGNAL(clicked()),
-                     this, SLOT(onSendPackage()));
-    QObject::connect(this->mainUI.pushButton_4, SIGNAL(clicked()),
-                     this, SLOT(onCallSkype()));
-    SkypeTunnel *tun = new SkypeTunnel(this);
-    tun->setSkype(this->mSkype);
+    // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
+    //                  this, SLOT(onShowSkypeTracer(bool)));
+    // QObject::connect(this->mainUI.pushButton, SIGNAL(clicked()),
+    //                  this, SLOT(onChatWithSkype()));
+    // QObject::connect(this->mainUI.pushButton_2, SIGNAL(clicked()),
+    //                  this, SLOT(onSendPackage()));
+    // QObject::connect(this->mainUI.pushButton_4, SIGNAL(clicked()),
+    //                  this, SLOT(onCallSkype()));
+    // SkypeTunnel *tun = new SkypeTunnel(this);
+    // tun->setSkype(this->mSkype);
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -4222,27 +4222,27 @@ void Karia2::onSkypeError(int errNo, QString msg)
 
 void Karia2::onShowSkypeTracer(bool checked)
 {
-    if (this->mSkypeTracer == NULL) {
-        this->mSkypeTracer = new SkypeTracer(this);
-        QObject::connect(this->mSkype, SIGNAL(commandRequest(QString)),
-                         this->mSkypeTracer, SLOT(onCommandRequest(QString)));
-        QObject::connect(this->mSkype, SIGNAL(commandResponse(QString)),
-                         this->mSkypeTracer, SLOT(onCommandResponse(QString)));
-        QObject::connect(this->mSkypeTracer, SIGNAL(commandRequest(QString)),
-                         this->mSkype, SLOT(onCommandRequest(QString)));
-    }
+    // if (this->mSkypeTracer == NULL) {
+    //     this->mSkypeTracer = new SkypeTracer(this);
+    //     QObject::connect(this->mSkype, SIGNAL(commandRequest(QString)),
+    //                      this->mSkypeTracer, SLOT(onCommandRequest(QString)));
+    //     QObject::connect(this->mSkype, SIGNAL(commandResponse(QString)),
+    //                      this->mSkypeTracer, SLOT(onCommandResponse(QString)));
+    //     QObject::connect(this->mSkypeTracer, SIGNAL(commandRequest(QString)),
+    //                      this->mSkype, SLOT(onCommandRequest(QString)));
+    // }
 
-    this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
+    // this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
 }
 
 void Karia2::onChatWithSkype()
 {
-    QString skypeName = this->mainUI.lineEdit->text();
+    // QString skypeName = this->mainUI.lineEdit->text();
     
-    QStringList contacts = this->mSkype->getContacts();
-    qDebug()<<skypeName<<contacts;
+    // QStringList contacts = this->mSkype->getContacts();
+    // qDebug()<<skypeName<<contacts;
 
-    this->mSkype->newStream(skypeName);
+    // this->mSkype->newStream(skypeName);
     // this->mSkype->newStream("drswinghead");
 }
 
@@ -4257,32 +4257,32 @@ void Karia2::onSendPackage()
     mu.valid = true;
     mu.mtime = 1234556789;
 
-    QString muStr = mu.toString();
+    // QString muStr = mu.toString();
     
-    SkypePackage sp;
-    sp.seq = SkypeCommand::nextID().toInt();
-    sp.type = SkypePackage::SPT_MU_ADD;
-    sp.data = muStr;
+    // SkypePackage sp;
+    // sp.seq = SkypeCommand::nextID().toInt();
+    // sp.type = SkypePackage::SPT_MU_ADD;
+    // sp.data = muStr;
     
-    QString spStr = sp.toString();
+    // QString spStr = sp.toString();
     
-    qDebug()<<muStr<<spStr;
+    // qDebug()<<muStr<<spStr;
 
-    this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
+    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 }
 
 void Karia2::onCallSkype()
 {
-    QString num = this->mainUI.lineEdit_2->text();
+    // QString num = this->mainUI.lineEdit_2->text();
     
-    SkypePackage sp;
-    sp.seq = SkypeCommand::nextID().toInt();
-    sp.type = SkypePackage::SPT_GW_SELECT;
-    sp.data = num;
+    // SkypePackage sp;
+    // sp.seq = SkypeCommand::nextID().toInt();
+    // sp.type = SkypePackage::SPT_GW_SELECT;
+    // sp.data = num;
 
-    QString spStr = sp.toString();
-    qDebug()<<spStr;
-    this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
+    // QString spStr = sp.toString();
+    // qDebug()<<spStr;
+    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 }
 
 
