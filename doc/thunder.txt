@@ -1,0 +1,19 @@
+迅雷加密的下载链接地址，使用了。BASE64加密算法。BASE64算法是一个可逆的算法，所以可以用来进行简单的加密！
+
+我们在下载一些网络资源的时候，常常会见到类似于如下的链接地址：
+thunder://QUFodHRwOi8vaW1hZ2UyLnNpbmEuY29tLmNuL2Jsb2cvdG1wbC92My9pbWFnZXMvbG9nby5naWZaWg==
+在Windows中如果安装了迅雷，就可以正确解析这样的地址，其实这样一串字符就是用BASE64算法经加密后得到的，我用“ http://image2.sina.com.cn/blog/tmpl/v3/images/logo.gif”作为例说明一下整个加密和解密的过程。
+
+加密：
+在完整的下载链接前冠以“AA”，后缀以“ZZ”：
+AA http://image2.sina.com.cn/blog/tmpl/v3/images/logo.gifZZ
+用BASE64算法进行加密，得到：
+QUFodHRwOi8vaW1hZ2UyLnNpbmEuY29tLmNuL2Jsb2cvdG1wbC92My9pbWFnZXMvbG9nby5naWZaWg==
+在前面加上迅雷自己的协议头：
+thunder://QUFodHRwOi8vaW1hZ2UyLnNpbmEuY29tLmNuL2Jsb2cvdG1wbC92My9pbWFnZXMvbG9nby5naWZaWg==
+大功告成！
+
+解密：
+把以上过程逆向一下就可以了：
+去掉迅雷协议头；用BASE64算法解密；去掉“AA”、“ZZ”！
+

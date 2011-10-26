@@ -1,0 +1,267 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>RulesManDlgClass</class>
+ <widget class="QDialog" name="RulesManDlgClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>516</width>
+    <height>385</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>RulesManDlg</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>Select your conditions and Actions first , then specify the values in the Description.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2" >
+     <property name="text" >
+      <string>1.Select the condition for your rule:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>GroupBox</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="checkBox" >
+        <property name="text" >
+         <string>Where the file is from specific site</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_2" >
+        <property name="text" >
+         <string>Where the filename extention is specific string</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3" >
+     <property name="text" >
+      <string>2.Select the action for your rule:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>GroupBox</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="checkBox_3" >
+        <property name="text" >
+         <string>Move it to specifid category</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4" >
+     <property name="text" >
+      <string>3.Rule description:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="title" >
+      <string>GroupBox</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButton_3" />
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_5" >
+     <property name="text" >
+      <string>4.Name of the rule:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="lineEdit" >
+     <property name="text" >
+      <string>New Download rules #1</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>RulesManDlgClass</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>384</x>
+     <y>362</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>205</x>
+     <y>372</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>RulesManDlgClass</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>474</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>410</x>
+     <y>272</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBox_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>103</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>103</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>145</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>148</x>
+     <y>77</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_3</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pushButton_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>68</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>75</x>
+     <y>280</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,144 @@
+diff --git a/src/HttpRequest.cc b/src/HttpRequest.cc
+index c6c0afb..dfc981f 100644
+--- a/src/HttpRequest.cc
++++ b/src/HttpRequest.cc
+@@ -218,9 +218,10 @@ std::string HttpRequest::createRequest()
+     builtinHds.push_back(std::make_pair("Referer:", getPreviousURI()));
+   }
+   if(!_cookieStorage.isNull()) {
++      std::string baseDomain = util::getBaseDomainName(getHost());
+     std::string cookiesValue;
+     std::vector<Cookie> cookies =
+-      _cookieStorage->criteriaFind(getHost(),
++        _cookieStorage->criteriaFind(baseDomain, // getHost(),
+                                    getDir(),
+                                    Time().getTime(),
+                                    getProtocol() == Request::PROTO_HTTPS ?
+@@ -235,15 +236,25 @@ std::string HttpRequest::createRequest()
+   }
+   for(std::vector<std::pair<std::string, std::string> >::const_iterator i =
+         builtinHds.begin(), eoi = builtinHds.end(); i != eoi; ++i) {
+-    std::vector<std::string>::const_iterator j = _headers.begin();
+-    std::vector<std::string>::const_iterator jend = _headers.end();
++    // std::vector<std::string>::const_iterator j = _headers.begin();
++    // std::vector<std::string>::const_iterator jend = _headers.end();
++    std::vector<std::string>::iterator j = _headers.begin();
++    std::vector<std::string>::iterator jend = _headers.end();
+     for(; j != jend; ++j) {
+       if(util::startsWith(*j, (*i).first)) {
+         break;
+       }
+     }
++    // hacked by liuguangzhao@users.sf.net
++    // if user header is not cookie, override it, or leave it there no touched.
++    // for this case, the best methord is combine to cookies part to one Cookie: header line
+     if(j == jend) {
+       strappend(requestLine, (*i).first, " ", (*i).second, A2STR::CRLF);
++    } else {
++        // combine the new cookie to header line
++        if (util::startsWith((*i).first, "Cookie") && !util::endsWith(*j, (*i).second)) {
++            (*j) += ";" + (*i).second;
++        }
+     }
+   }
+   // append additional headers given by user.
+diff --git a/src/HttpResponse.cc b/src/HttpResponse.cc
+index 6957fe9..79de4bd 100644
+--- a/src/HttpResponse.cc
++++ b/src/HttpResponse.cc
+@@ -116,11 +116,13 @@ std::string HttpResponse::determinFilename() const
+ 
+ void HttpResponse::retrieveCookie()
+ {
++    // hacked by liuguangzhao@users.sf.net
++    std::string baseDomain = util::getBaseDomainName(httpRequest->getHost());
+   std::vector<std::string> v = httpHeader->get(HttpHeader::SET_COOKIE);
+   for(std::vector<std::string>::const_iterator itr = v.begin(), eoi = v.end();
+       itr != eoi; ++itr) {
+     httpRequest->getCookieStorage()->parseAndStore(*itr,
+-                                                   httpRequest->getHost(),
++                                                   baseDomain, // httpRequest->getHost(),
+                                                    httpRequest->getDir());
+   }
+ }
+diff --git a/src/Request.cc b/src/Request.cc
+index 9fbba5a..4204c0a 100644
+--- a/src/Request.cc
++++ b/src/Request.cc
+@@ -125,7 +125,8 @@ void Request::setReferer(const std::string& uri)
+ }
+ 
+ bool Request::redirectUri(const std::string& uri) {
+-  _previousUri = A2STR::NIL;
++    // _previousUri = A2STR::NIL;
++    _previousUri = _uri;  // hacked by liuguangzhao@users.sf.net
+   _supportsPersistentConnection = true;
+   ++_redirectCount;
+   std::string redirectedUri;
+diff --git a/src/util.cc b/src/util.cc
+index 58a37d4..bb10bdc 100644
+--- a/src/util.cc
++++ b/src/util.cc
+@@ -1305,6 +1305,48 @@ void removeMetalinkContentTypes(const SharedHandle<RequestGroup>& group)
+   }
+ }
+ 
++// hacked by liuguangzhao@users.sf.net
++/*
++  only leave the last 2 or three domain parts
++ */
++    std::string getBaseDomainName(const std::string &s)
++    {
++        std::string baseDomain;
++        std::string ts = s;
++        if (util::isNumericHost(s)) {
++            return s;
++        }
++        size_t colonPos = ts.find(':');
++        if (colonPos != std::string::npos) {
++            ts.resize(colonPos);
++        }
++
++        std::vector<std::string> domParts;
++        std::string delims(".");
++        util::split(ts, std::back_inserter(domParts), delims);
++        
++        int minDomParts = 2;
++        int domLevel = domParts.size();
++        if (domParts.at(domLevel - 1) == "cn"
++            || domParts.at(domLevel - 1) == "cc"
++            || domParts.at(domLevel - 1) == "us") {
++            if (domParts.at(domLevel - 2) == "org"
++                || domParts.at(domLevel - 2) == "com"
++                || domParts.at(domLevel - 2) == "net"
++                || domParts.at(domLevel - 2) == "info") {
++                minDomParts = 3;
++            }
++        }
++
++        baseDomain = domParts.at(domLevel - 2) + "." + domParts.at(domLevel - 1);
++        if (minDomParts == 3) {
++            baseDomain = domParts.at(domLevel - 3) + "." + baseDomain;
++        }
++
++        return baseDomain;
++    }
++
++
+ } // namespace util
+ 
+ } // namespace aria2
+diff --git a/src/util.h b/src/util.h
+index 9e1c2a5..01b6a1c 100644
+--- a/src/util.h
++++ b/src/util.h
+@@ -395,6 +395,9 @@ bool inSameCidrBlock(const std::string& ip1, const std::string& ip2, int bits);
+ 
+ void removeMetalinkContentTypes(const SharedHandle<RequestGroup>& group);
+ 
++    // hacked by liuguangzhao@users.sf.net
++    std::string getBaseDomainName(const std::string &s);
++
+ } // namespace util
+ 
+ } // namespace aria2

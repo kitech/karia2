@@ -1,0 +1,1 @@
+exec /usr/share/karia2/karia2

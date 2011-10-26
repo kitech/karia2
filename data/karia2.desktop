@@ -1,0 +1,11 @@
+[Desktop Entry]
+Categories=Qt;Net;
+Comment=A QT4 GUI for aria2 download manager
+Comment[zh]=用QT4编写的aria2图形界面下载管理器
+Exec=karia2
+GenericName=Karia2
+GenericName[zh]=Karia2 下载程序
+Icon=karia2
+Name=Karia2
+Type=Application
+X-KDE-StartupNotify=false
