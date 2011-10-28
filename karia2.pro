@@ -80,6 +80,7 @@ include(./install.pri)
 DEFINES += NXDATADIR=\"\\\"$$DATADIR\\\"\"
 DEFINES += NXPKGDATADIR=\"\\\"$$PKGDATADIR\\\"\"
 DEFINES += THREADSAFE=1   # for sqlite thread-safe feature
+DEFINES += HAVE_CONFIG_H # for aria2c source code.
 
 #添加这一块可以使得在windows上编译出来的程序有图标
 win32 {

@@ -7,7 +7,9 @@
 // Version: $Id$
 // 
 
-#include "aria2c-config.h"
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <signal.h>
 
@@ -50,3 +52,41 @@ void test_emaria2c()
 
     aria2::DownloadEngineHandle de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
 }
+
+EAria2Man *EAria2Man::m_instance = NULL;
+EAria2Man::EAria2Man(QObject *parent)
+    :QObject(parent)
+{
+
+}
+
+EAria2Man::~EAria2Man()
+{
+
+}
+
+EAria2Man *EAria2Man::instance()
+{
+    if (EAria2Man::m_instance == NULL) {
+        EAria2Man::m_instance = new EAria2Man();
+    }
+    return EAria2Man::m_instance;
+}
+
+/////////////////
+
+EAria2Worker::EAria2Worker(QObject *parent)
+    : QThread(parent)
+{
+}
+
+EAria2Worker::~EAria2Worker()
+{
+
+}
+
+void EAria2Worker::run()
+{
+
+}
+

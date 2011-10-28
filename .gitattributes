@@ -13,6 +13,7 @@ Resources/nullget-1.png -text
 /aboutdialog.ui -text
 /abstractstorage.cpp -text
 /abstractstorage.h -text
+aria2-1.13.0/src/config.h -text
 /ariaman.cpp -text
 /ariaman.h -text
 /batchjobmandlg.cpp -text
