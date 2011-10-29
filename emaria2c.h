@@ -19,7 +19,7 @@
 
 #include <QtCore>
 
-
+class TaskOption;
 class EAria2Worker;
 class EAria2Man;
 
@@ -28,13 +28,23 @@ class EAria2Man : public QObject
     Q_OBJECT;
 protected:
     static EAria2Man *m_instance;
+    static QMutex m_inst_mutex;
     EAria2Man(QObject *parent = 0);
 public:
-    EAria2Man *instance();
+    static EAria2Man *instance();
     virtual ~EAria2Man();
 
+public slots:
+    // int addTask(QString url);
+    int addUri(int task_id, const QString &url, TaskOption *to);
+
+private:
+    int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
+                           int argc, char* argv[]);
 protected:
     QHash<int, EAria2Worker*> m_tasks;
+    int m_argc;
+    char m_argv[32][256];
 };
 
 class EAria2Worker : public QThread

@@ -4,85 +4,83 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../aboutdialog.ui" line="14"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="140"/>
         <source>About Dialog</source>
-        <translation>关于 NullGet</translation>
+        <translation type="obsolete">关于 NullGet</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="30"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="155"/>
+        <location filename="../aboutdialog.ui" line="24"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="164"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
-    <message utf8="true">
-        <location filename="../aboutdialog.ui" line="45"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="141"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;ææ³é©¿æ­£é»&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;宋体&apos;;&quot;&gt;When I study Qt,I write this program.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;宋体&apos;;&quot;&gt;It is very rought.But I will update it Continusely.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;宋体&apos;;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;宋体&apos;;&quot;&gt;Thank for Trolltech&apos;s Open Source Qt library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
     <message>
-        <location filename="../aboutdialog.ui" line="65"/>
+        <location filename="../aboutdialog.ui" line="14"/>
         <location filename="../GeneratedFiles/ui_aboutdialog.h" line="150"/>
-        <source>NullGet(SwiftGet)</source>
+        <source>About Karia2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="142"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="154"/>
+        <location filename="../aboutdialog.ui" line="44"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="151"/>
+        <source>Karia2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="51"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="152"/>
         <source>1.0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="78"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="151"/>
+        <location filename="../aboutdialog.ui" line="89"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="155"/>
         <source>2005-2010</source>
         <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../aboutdialog.ui" line="99"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="156"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;ææ³é©¿æ­£é»&apos;; font-size:9pt;&quot;&gt;A QT4 GUI for aria2 download manager.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Buble</source>
         <translation type="obsolete">泡泡</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="159"/>
-        <location filename="../aboutdialog.cpp" line="35"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="156"/>
         <source>&amp;FullScreen</source>
-        <translation>全屏显示</translation>
+        <translation type="obsolete">全屏显示</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="182"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="157"/>
+        <location filename="../aboutdialog.ui" line="140"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="165"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="189"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="158"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="obsolete">取消</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="32"/>
         <source>&amp;Normal</source>
-        <translation>恢复(&amp;)</translation>
+        <translation type="obsolete">恢复(&amp;)</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="91"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="152"/>
+        <location filename="../aboutdialog.ui" line="60"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="153"/>
         <source>Author: flyfish</source>
         <translation>作者: flyfish</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="110"/>
-        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="153"/>
+        <location filename="../aboutdialog.ui" line="73"/>
+        <location filename="../GeneratedFiles/ui_aboutdialog.h" line="154"/>
         <source>&lt;a href=&quot;http://www.qtchina.net&quot;&gt;http://www.qtchina.net&lt;/a&gt;</source>
         <translation></translation>
     </message>
@@ -320,32 +318,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CategoryModel</name>
     <message>
-        <location filename="../viewmodel.cpp" line="333"/>
         <source>Cat Name</source>
-        <translation>名称</translation>
+        <translation type="obsolete">名称</translation>
     </message>
     <message>
-        <location filename="../viewmodel.cpp" line="337"/>
-        <source>Cat Attributes</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../viewmodel.cpp" line="335"/>
         <source>Cat Path</source>
-        <translation>路径</translation>
+        <translation type="obsolete">路径</translation>
     </message>
 </context>
 <context>
     <name>ColumnsManDlg</name>
     <message>
-        <location filename="../columnsmandlg.ui" line="14"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="175"/>
         <source>ColumnsManDlg</source>
-        <translation type="unfinished">任务栏目编辑窗口</translation>
+        <translation type="obsolete">任务栏目编辑窗口</translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="14"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="188"/>
+        <source>Task Column Show/Hide/Order Editor [*]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../columnsmandlg.ui" line="26"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="176"/>
+        <location filename="../columnsmandlg.ui" line="32"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="189"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -358,32 +353,44 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;选择/不选择，可以在主任务视图中以选定的顺序显示选定的栏目。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="56"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="181"/>
+        <location filename="../columnsmandlg.ui" line="62"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="194"/>
         <source>&amp;Show</source>
         <translation type="unfinished">显示(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="63"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="182"/>
+        <location filename="../columnsmandlg.ui" line="69"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="195"/>
         <source>&amp;Hide</source>
         <translation type="unfinished">隐藏(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="70"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="183"/>
+        <location filename="../columnsmandlg.ui" line="76"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="196"/>
         <source>Move &amp;Up</source>
         <translation type="unfinished">上移</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="77"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="184"/>
+        <location filename="../columnsmandlg.ui" line="83"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="197"/>
         <source>Move Do&amp;wn</source>
         <translation type="unfinished">下移</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="177"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="190"/>
+        <location filename="../columnsmandlg.ui" line="90"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="198"/>
+        <source>Check All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="97"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="199"/>
+        <source>Revert Select</source>
+        <translation type="unfinished">反选</translation>
+    </message>
+    <message>
+        <location filename="../columnsmandlg.ui" line="197"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="205"/>
         <source>&amp;Apply</source>
         <translation type="unfinished">应用(&amp;A)</translation>
     </message>
@@ -392,32 +399,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">默认设置(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="96"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="185"/>
+        <location filename="../columnsmandlg.ui" line="116"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="200"/>
         <source>The selected column should be show</source>
         <translation type="unfinished">要显示的列</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="126"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="186"/>
+        <location filename="../columnsmandlg.ui" line="146"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="201"/>
         <source>pixel width.</source>
         <translation type="unfinished">显示宽度.</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="143"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="187"/>
+        <location filename="../columnsmandlg.ui" line="163"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="202"/>
         <source>&amp;Restore Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="163"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="188"/>
+        <location filename="../columnsmandlg.ui" line="183"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="203"/>
         <source>OK</source>
         <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../columnsmandlg.ui" line="170"/>
-        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="189"/>
+        <location filename="../columnsmandlg.ui" line="190"/>
+        <location filename="../GeneratedFiles/ui_columnsmandlg.h" line="204"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -494,6 +501,1238 @@ p, li { white-space: pre-wrap; }
         <location filename="../GeneratedFiles/ui_dlrules.h" line="133"/>
         <source>&amp;Cancel</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>Karia2</name>
+    <message>
+        <location filename="../karia2.ui" line="20"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="989"/>
+        <source>Karia2 Download Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="58"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1173"/>
+        <source>User Feedback</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="88"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1186"/>
+        <source>Summary</source>
+        <translation type="unfinished">任务概要</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="99"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1174"/>
+        <source>FType</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="116"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1176"/>
+        <source>File Size:</source>
+        <translation type="unfinished">文件大小:</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="142"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1178"/>
+        <source>Speed</source>
+        <translation type="unfinished">平均速度</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="159"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1180"/>
+        <source>Block</source>
+        <translation type="unfinished">活动块：</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="166"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1181"/>
+        <source>n/n </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="176"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1182"/>
+        <source>Dest Dir</source>
+        <translation type="unfinished">保存目录：</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="204"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1184"/>
+        <source>Refer</source>
+        <translation type="unfinished">引用页：</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="263"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1187"/>
+        <source>Servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="273"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1188"/>
+        <source>Log</source>
+        <translation type="unfinished">日志</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="308"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1189"/>
+        <source>Graph</source>
+        <translation type="unfinished">图表</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="313"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1190"/>
+        <source>Peers</source>
+        <translation type="unfinished">对等点</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="327"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1191"/>
+        <source>Files</source>
+        <translation type="unfinished">文件</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="344"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1192"/>
+        <source>Trackers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="362"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1197"/>
+        <source>The raw aria2 backend log with little filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="385"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1199"/>
+        <source>&amp;Search</source>
+        <translation type="unfinished">搜索(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="390"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1200"/>
+        <source>&amp;View</source>
+        <translation type="unfinished">查看(&amp;V)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="394"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1201"/>
+        <source>Style</source>
+        <translation type="unfinished">风格</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="403"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1202"/>
+        <source>Language</source>
+        <translation type="unfinished">语言</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="413"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1203"/>
+        <source>Skin</source>
+        <translation type="unfinished">皮肤</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="425"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1204"/>
+        <source>Toolbar</source>
+        <translation type="unfinished">工具栏</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="450"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1205"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">编辑(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="461"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1206"/>
+        <source>&amp;Category</source>
+        <translation type="unfinished">类别(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="471"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1207"/>
+        <source>&amp;File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="497"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1208"/>
+        <source>&amp;Jobs</source>
+        <translation type="unfinished">任务(&amp;J)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="501"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1209"/>
+        <source>&amp;Rename</source>
+        <translation type="unfinished">重命名</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="533"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1210"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="545"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1211"/>
+        <source>&amp;Plugins</source>
+        <translation type="unfinished">插件(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="555"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1212"/>
+        <source>&amp;Tools</source>
+        <translation type="unfinished">工具(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="563"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1213"/>
+        <source>Speed &amp;Limit Mode</source>
+        <translation type="unfinished">速度限制</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="602"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1214"/>
+        <source>Main ToolBar</source>
+        <translation type="unfinished">主工具栏</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="641"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1218"/>
+        <source>Speed Histogram ToolBar Carrier </source>
+        <translation type="unfinished">速度指示图</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="668"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="990"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished">退出</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="671"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="992"/>
+        <source>Quit Karia2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="680"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="994"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished">保存</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="689"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="995"/>
+        <source>User &amp;Manual</source>
+        <translation type="unfinished">用户手册</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="694"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="996"/>
+        <source>&amp;New Cagegory ...</source>
+        <translation type="unfinished">新建分类</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="699"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="997"/>
+        <source>&amp;Move to ...</source>
+        <translation type="unfinished">移至...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="708"/>
+        <location filename="../karia2.ui" line="1261"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="998"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1108"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="713"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="999"/>
+        <source>&amp;Properties ...</source>
+        <translation type="unfinished">属性...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="722"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1000"/>
+        <source>&amp;Paste URL</source>
+        <translation type="unfinished">粘贴 URL</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="725"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1001"/>
+        <source>Ctrl+V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="730"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1002"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished">全选</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="733"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1003"/>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="738"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1004"/>
+        <source>&amp;Invert Selection</source>
+        <translation type="unfinished">反选</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="747"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1005"/>
+        <source>&amp;Find ...</source>
+        <translation type="unfinished">查找...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="750"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1007"/>
+        <source>Find Task</source>
+        <translation type="unfinished">查找任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="753"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1009"/>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="762"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1010"/>
+        <source>Find &amp;Next</source>
+        <translation type="unfinished">查找下一个</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="765"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1012"/>
+        <source>Find Next Task</source>
+        <translation type="unfinished">查找下一个任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="768"/>
+        <location filename="../karia2.ui" line="1170"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1014"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1083"/>
+        <source>F3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="779"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1015"/>
+        <source>&amp;Detail</source>
+        <translation type="unfinished">详细信息</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="790"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1016"/>
+        <source>Drop &amp;Zone</source>
+        <translation type="unfinished">悬浮窗</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="801"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1017"/>
+        <source>Show Text</source>
+        <translation type="unfinished">显示文本</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="806"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1018"/>
+        <source>Buttons ...</source>
+        <translation type="unfinished">按钮...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="811"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1019"/>
+        <source>&amp;Columns ...</source>
+        <translation type="unfinished">栏目</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="822"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1020"/>
+        <source>&amp;Grid</source>
+        <translation type="unfinished">网格</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="833"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1021"/>
+        <source>(None)</source>
+        <translation type="unfinished">禁止窗口样式</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="838"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1022"/>
+        <source>Get Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="849"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1023"/>
+        <source>Chinese(&amp;Simple)</source>
+        <translation type="unfinished">简体中文</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="857"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1024"/>
+        <source>&amp;English</source>
+        <translation type="unfinished">英文</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="865"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1025"/>
+        <source>Chinese(&amp;Trad)</source>
+        <translation type="unfinished">繁体中文</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="870"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1026"/>
+        <source>&amp;Site Explorer</source>
+        <translation type="unfinished">站点探测器</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="873"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1027"/>
+        <source>F7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="881"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1028"/>
+        <source>&amp;Shut Down When Done</source>
+        <translation type="unfinished">完成后关机</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="889"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1029"/>
+        <source>&amp;Hang Up When Done</source>
+        <translation type="unfinished">完成后挂起</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="894"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1030"/>
+        <source>&amp;Download Rules</source>
+        <translation type="unfinished">下载规则</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="903"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1031"/>
+        <source>&amp;Options...</source>
+        <translation type="unfinished">选项...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="906"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1033"/>
+        <source>Change Options</source>
+        <translation type="unfinished">修改选项</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="909"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1035"/>
+        <source>Alt+0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="920"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1036"/>
+        <source>&amp;Unlimited</source>
+        <translation type="unfinished">无限制</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="928"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1037"/>
+        <source>&amp;Manual</source>
+        <translation type="unfinished">手动</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="936"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1038"/>
+        <source>&amp;Automatic</source>
+        <translation type="unfinished">自动</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="944"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1039"/>
+        <source>&amp;Remember</source>
+        <translation type="unfinished">记住设置</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="953"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1040"/>
+        <source>C&amp;heck for a new version</source>
+        <translation type="unfinished">检查新版本</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="962"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1041"/>
+        <source>&amp;About Karia2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="965"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1043"/>
+        <source>About Karia2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="974"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1045"/>
+        <source>&amp;Go to Karia2 Home Page -&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="983"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1046"/>
+        <source>FAQ in Internet</source>
+        <translation type="unfinished">在线常见问题</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="992"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1047"/>
+        <source>&amp;User Manual in Internet</source>
+        <translation type="unfinished">在线用户手册</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="997"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1048"/>
+        <source>&amp;New Database</source>
+        <translation type="unfinished">新数据库</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1000"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1049"/>
+        <source>Ctrl+N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1005"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1050"/>
+        <source>&amp;Open Database...</source>
+        <translation type="unfinished">打开数据库...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1008"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1051"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1013"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1052"/>
+        <source>&amp;Merge Database...</source>
+        <translation type="unfinished">合并数据库...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1022"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1053"/>
+        <source>&amp;Save Database</source>
+        <translation type="unfinished">保存数据库</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1025"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1054"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1034"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1055"/>
+        <source>Save &amp;As...</source>
+        <translation type="unfinished">另存为...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1039"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1056"/>
+        <source>Import &amp;Previous File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1044"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1057"/>
+        <source>Import Previous &amp;Batch File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1049"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1058"/>
+        <source>&amp;Export Information...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1054"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1059"/>
+        <source>&amp;Export...</source>
+        <translation type="unfinished">导出...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1059"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1060"/>
+        <source>Import Broken D&amp;ownloads...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1064"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1061"/>
+        <source>Import &amp;list...</source>
+        <translation type="unfinished">导入列表...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1067"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1062"/>
+        <source>Ctrl+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1072"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1063"/>
+        <source>&amp;Export list...</source>
+        <translation type="unfinished">导出列表...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1077"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1064"/>
+        <source>Process &amp;Web Page File...</source>
+        <translation type="unfinished">处理网页文件...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1080"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1065"/>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1089"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1066"/>
+        <source>&amp;Recently Downloaded Files</source>
+        <translation type="unfinished">最近下载的文件</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1092"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1067"/>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1100"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1068"/>
+        <source>Custom Background...</source>
+        <translation type="unfinished">自定义背景...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1108"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1069"/>
+        <source>XP_Luna</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1116"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1070"/>
+        <source>XP_Luna(Gradient)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1124"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1071"/>
+        <source>Skype(Gradient)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1132"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1072"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1140"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1073"/>
+        <source>ImageBk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1149"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1074"/>
+        <source>&amp;New Download...</source>
+        <translation type="unfinished">新建任务...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1152"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1076"/>
+        <source>Create a New Task</source>
+        <translation type="unfinished">创建新任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1155"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1078"/>
+        <source>F2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1164"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1079"/>
+        <source>&amp;New Bittorrent...</source>
+        <translation type="unfinished">新建 BitTorrent 任务...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1167"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1081"/>
+        <source>Create a New Bittorrent Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1179"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1084"/>
+        <source>&amp;New Metalink...</source>
+        <translation type="unfinished">新建 Metalink 任务...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1182"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1086"/>
+        <source>Create a New Metalink Task</source>
+        <translation type="unfinished">新建 Metalink 任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1185"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1088"/>
+        <source>F4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1190"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1089"/>
+        <source>Add &amp;batch download...</source>
+        <translation type="unfinished">添加批量任务...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1199"/>
+        <location filename="../karia2.ui" line="1391"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1090"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1146"/>
+        <source>&amp;Start</source>
+        <translation type="unfinished">开始</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1202"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1092"/>
+        <source>Start The Selected Task</source>
+        <translation type="unfinished">开始选中的任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1205"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1094"/>
+        <source>F5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1214"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1095"/>
+        <source>&amp;Pause</source>
+        <translation type="unfinished">暂停</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1217"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1097"/>
+        <source>Pause The Selected Task</source>
+        <translation type="unfinished">暂停选中的任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1220"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1099"/>
+        <source>F6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1225"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1100"/>
+        <source>&amp;Start All</source>
+        <translation type="unfinished">全部开始</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1228"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1101"/>
+        <source>F8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1233"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1102"/>
+        <source>Pause &amp;All</source>
+        <translation type="unfinished">全部暂停</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1236"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1103"/>
+        <source>F9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1241"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1104"/>
+        <source>&amp;Schedule</source>
+        <translation type="unfinished">计划</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1244"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1105"/>
+        <source>Alt+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1249"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1106"/>
+        <source>&amp;Move To...</source>
+        <translation type="unfinished">移至...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1252"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1107"/>
+        <source>Ctrl+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1264"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1110"/>
+        <source>Delete The Selected Task</source>
+        <translation type="unfinished">删除选中的任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1267"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1112"/>
+        <source>Alt+Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1272"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1113"/>
+        <source>&amp;Rename...</source>
+        <translation type="unfinished">重命名...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1277"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1114"/>
+        <source>&amp;Comment As Filename</source>
+        <translation type="unfinished">注释作为文件名</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1286"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1115"/>
+        <source>&amp;Properties...</source>
+        <translation type="unfinished">属性...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1289"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1117"/>
+        <source>View The Selected Task&apos;s Property</source>
+        <translation type="unfinished">查看选中的任务属性</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1292"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1119"/>
+        <source>Alt+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1301"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1120"/>
+        <source>Move &amp;Up</source>
+        <translation type="unfinished">上移</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1304"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1122"/>
+        <source>Move Up The Selected Task</source>
+        <translation type="unfinished">上移</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1307"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1124"/>
+        <source>Alt+Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1316"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1125"/>
+        <source>Move &amp;Down</source>
+        <translation type="unfinished">下移</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1319"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1127"/>
+        <source>Move Down The Selected Task</source>
+        <translation type="unfinished">下移</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1322"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1129"/>
+        <source>Alt+Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1327"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1130"/>
+        <source>&amp;Check for update</source>
+        <translation type="unfinished">检查更新</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1332"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1131"/>
+        <source>&amp;Download Again</source>
+        <translation type="unfinished">重新下载</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1341"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1132"/>
+        <source>Open/Exec download &amp;file</source>
+        <translation type="unfinished">打开/运行己下载的文件</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1344"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1134"/>
+        <source>Execute Selected Task</source>
+        <translation type="unfinished">执行选中的任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1347"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1136"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1356"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1137"/>
+        <source>Open de&amp;stination directory</source>
+        <translation type="unfinished">打开下载的文件目录</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1359"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1139"/>
+        <source>Open The Selected Task directory</source>
+        <translation type="unfinished">打开选中的文件目录</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1362"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1141"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1371"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1142"/>
+        <source>About Qt</source>
+        <translation type="unfinished">关于 Qt</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1376"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1143"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1381"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1144"/>
+        <source>&amp;Select All</source>
+        <translation type="unfinished">全选</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1386"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1145"/>
+        <source>Save to file ...</source>
+        <translation type="unfinished">保存到文件...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1396"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1147"/>
+        <source>S&amp;top</source>
+        <translation type="unfinished">停止</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1401"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1148"/>
+        <source>&amp;Restart</source>
+        <translation type="unfinished">重启动</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1406"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1149"/>
+        <source>&amp;Increase split parts</source>
+        <translation type="unfinished">添加下载块数</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1411"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1150"/>
+        <source>&amp;Decrease split parts</source>
+        <translation type="unfinished">减少下载块数</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1422"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1151"/>
+        <source>&amp;Show/Hide Main Widow</source>
+        <translation type="unfinished">打开/隐藏 NullGet</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1433"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1152"/>
+        <source>&amp;Monitor Clipboard</source>
+        <translation type="unfinished">监视剪贴板</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1441"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1153"/>
+        <source>&amp;Disable Browser Monitor</source>
+        <translation type="unfinished">禁止监视浏览器点击</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1446"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1154"/>
+        <source>Move &amp;top</source>
+        <translation type="unfinished">上移到顶部</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1451"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1155"/>
+        <source>Move &amp;bottom</source>
+        <translation type="unfinished">下移到底部</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1456"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1156"/>
+        <source>Site &amp;Properties...</source>
+        <translation type="unfinished">站点属性...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1461"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1157"/>
+        <source>&amp;Comment...</source>
+        <translation type="unfinished">注释...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1466"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1158"/>
+        <source>Browse &amp;Referer</source>
+        <translation type="unfinished">浏览引用页</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1471"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1159"/>
+        <source>Browse With Site &amp;Explorer</source>
+        <translation type="unfinished">使用站点探测器浏览</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1476"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1160"/>
+        <source>&amp;Copy URL To ClipBoard</source>
+        <translation type="unfinished">复制 URL 到剪贴板</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1481"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1161"/>
+        <source>C&amp;lear Log</source>
+        <translation type="unfinished">清空日志</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1486"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1162"/>
+        <source>&amp;Walk Site</source>
+        <translation type="unfinished">整站下载</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1494"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1163"/>
+        <source>&amp;Cleanlooks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1502"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1164"/>
+        <source>&amp;NorwegianWood</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1513"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1165"/>
+        <source>&amp;Default Palette</source>
+        <translation type="unfinished">默认面板(&amp;Y)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1518"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1166"/>
+        <source>&amp;Plugins...</source>
+        <translation type="unfinished">插件(&amp;P)...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1523"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1167"/>
+        <source>TestWidgetPlugin</source>
+        <translation type="unfinished">测试物件插件(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1528"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1168"/>
+        <source>File&amp;Splitter</source>
+        <translation type="unfinished">文件分隔器(&amp;SP)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1533"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1169"/>
+        <source>&amp;MediaFileModifier</source>
+        <translation type="unfinished">媒体文件修改器(&amp;M)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1541"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1170"/>
+        <source>ffff</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1552"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1171"/>
+        <source>Aria2 Raw Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.ui" line="1560"/>
+        <location filename="../GeneratedFiles/ui_karia2.h" line="1172"/>
+        <source>Skype Tracer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="559"/>
+        <source>karia2 Icon Tray Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1079"/>
+        <location filename="../karia2.cpp" line="1095"/>
+        <source>Location: %1</source>
+        <translation type="unfinished">位置：%1</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1424"/>
+        <source>Delete Task .</source>
+        <translation type="unfinished">删除任务</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1425"/>
+        <source>Delete permanently. TaskId: %1</source>
+        <translation type="unfinished">永久删除。任务：%1</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1432"/>
+        <source>Move Task .</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1432"/>
+        <source>Move To Trash Now. TaskId: %1</source>
+        <translation type="unfinished">移动到回收站，任务ID： %1</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1619"/>
+        <source>Delete Category:</source>
+        <translation type="unfinished">删除类别：</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1620"/>
+        <source>Delete the Category and All sub Category?</source>
+        <translation type="unfinished">确认要删除该类另及其所有子类别吗？</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1897"/>
+        <source>Open a .torrent file...</source>
+        <translation type="unfinished">打开 .torrent 文件...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1898"/>
+        <source>Torrent File (*.torrent)</source>
+        <translation type="unfinished">Torrent 文件(*.torrent)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1968"/>
+        <source>Open a .metalink file...</source>
+        <translation type="unfinished">打开 .metalink 文件...</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="1969"/>
+        <source>Metalink File (*.metalink)</source>
+        <translation type="unfinished">Metalink 文件(*.metalink)</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="2133"/>
+        <location filename="../karia2.cpp" line="2174"/>
+        <source>Process Weg Page :</source>
+        <translation type="unfinished">处理网页文件：</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="2133"/>
+        <source>No URL(s) Found In the Weg Page File/Given URL</source>
+        <translation type="unfinished">在所给的网页文件中没有发现URL。</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="2174"/>
+        <source>No URL(s) Selected</source>
+        <translation type="unfinished">没有选定的URL。</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="2268"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: .%4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;文件大小： %3&lt;br&gt;文件类型： .%4&lt;br&gt;完成比例：: %5&lt;br&gt;-------------------------------&lt;br&gt;保存位置： %6&lt;br&gt;超链接： %7&lt;br&gt;引用页： %8&lt;br&gt;注释： %9&lt;br&gt;-------------------------------&lt;br&gt;创建时间： %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3066"/>
+        <location filename="../karia2.cpp" line="3109"/>
+        <location filename="../karia2.cpp" line="3135"/>
+        <source>No Task Selected</source>
+        <translation type="unfinished">没有选定的URL。</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3066"/>
+        <location filename="../karia2.cpp" line="3109"/>
+        <location filename="../karia2.cpp" line="3135"/>
+        <source>Please Select a Task For Operation</source>
+        <translation type="unfinished">请选择一个要执行的任务。</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3099"/>
+        <source>Notice:</source>
+        <translation type="unfinished">注意!</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3100"/>
+        <source>File &lt;b&gt;%1&lt;/b&gt; not found, has it downloaded already?</source>
+        <translation type="unfinished">没有找到文件 &lt;b&gt;%1&lt;/b&gt; ，是否已经下载了？</translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3396"/>
+        <source>Aria2 backend error :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3397"/>
+        <source>Can not start aria2. Are you already installed it properly?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3442"/>
+        <source>Click to apply reselected files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2.cpp" line="3454"/>
+        <source>No Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../karia2_standalone_aria2.cpp" line="211"/>
+        <source>pause</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -598,430 +1837,244 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">剩余大小</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="58"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1196"/>
-        <source>User Feedback</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="88"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1209"/>
         <source>Summary</source>
-        <translation type="unfinished">任务概要</translation>
+        <translation type="obsolete">任务概要</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="99"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1197"/>
-        <source>FType</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="116"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1199"/>
         <source>File Size:</source>
-        <translation type="unfinished">文件大小:</translation>
+        <translation type="obsolete">文件大小:</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="142"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1201"/>
         <source>Speed</source>
-        <translation type="unfinished">平均速度</translation>
+        <translation type="obsolete">平均速度</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="159"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1203"/>
         <source>Block</source>
-        <translation type="unfinished">活动块：</translation>
+        <translation type="obsolete">活动块：</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="166"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1204"/>
-        <source>n/n </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="176"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1205"/>
         <source>Dest Dir</source>
-        <translation type="unfinished">保存目录：</translation>
+        <translation type="obsolete">保存目录：</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="204"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1207"/>
         <source>Refer</source>
-        <translation type="unfinished">引用页：</translation>
+        <translation type="obsolete">引用页：</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="263"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1210"/>
         <source>Log</source>
-        <translation type="unfinished">日志</translation>
+        <translation type="obsolete">日志</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="298"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1211"/>
         <source>Graph</source>
-        <translation type="unfinished">图表</translation>
+        <translation type="obsolete">图表</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="303"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1212"/>
         <source>Peers</source>
-        <translation type="unfinished">对等点</translation>
+        <translation type="obsolete">对等点</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="317"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1213"/>
         <source>Files</source>
-        <translation type="unfinished">文件</translation>
+        <translation type="obsolete">文件</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="334"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1214"/>
-        <source>Trackers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="352"/>
-        <location filename="../nullget.ui" line="355"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1216"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1219"/>
         <source>Current task&apos;s connection list</source>
-        <translation type="unfinished">当前任务网络连接列表。</translation>
+        <translation type="obsolete">当前任务网络连接列表。</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="387"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1221"/>
         <source>&amp;Plugins</source>
-        <translation type="unfinished">插件(&amp;P)</translation>
+        <translation type="obsolete">插件(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="397"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1222"/>
         <source>&amp;Search</source>
-        <translation type="unfinished">搜索(&amp;S)</translation>
+        <translation type="obsolete">搜索(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="407"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1223"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished">工具(&amp;T)</translation>
+        <translation type="obsolete">工具(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="415"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1224"/>
         <source>Speed &amp;Limit Mode</source>
-        <translation type="unfinished">速度限制</translation>
+        <translation type="obsolete">速度限制</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="440"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1225"/>
         <source>&amp;View</source>
-        <translation type="unfinished">查看(&amp;V)</translation>
+        <translation type="obsolete">查看(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="444"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1226"/>
         <source>Style</source>
-        <translation type="unfinished">风格</translation>
+        <translation type="obsolete">风格</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="453"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1227"/>
         <source>Language</source>
-        <translation type="unfinished">语言</translation>
+        <translation type="obsolete">语言</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="463"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1228"/>
         <source>Skin</source>
-        <translation type="unfinished">皮肤</translation>
+        <translation type="obsolete">皮肤</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="475"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1229"/>
         <source>Toolbar</source>
-        <translation type="unfinished">工具栏</translation>
+        <translation type="obsolete">工具栏</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="497"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1230"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished">编辑(&amp;E)</translation>
+        <translation type="obsolete">编辑(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="508"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1231"/>
         <source>&amp;Category</source>
-        <translation type="unfinished">类别(&amp;C)</translation>
+        <translation type="obsolete">类别(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="544"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1233"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">帮助(&amp;H)</translation>
+        <translation type="obsolete">帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="558"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1234"/>
         <source>&amp;Jobs</source>
-        <translation type="unfinished">任务(&amp;J)</translation>
+        <translation type="obsolete">任务(&amp;J)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="562"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1235"/>
         <source>&amp;Rename</source>
-        <translation type="unfinished">重命名</translation>
+        <translation type="obsolete">重命名</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="611"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1236"/>
         <source>Main ToolBar</source>
-        <translation type="unfinished">主工具栏</translation>
+        <translation type="obsolete">主工具栏</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="651"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1240"/>
         <source>Speed Histogram ToolBar Carrier </source>
-        <translation type="unfinished">速度指示图</translation>
+        <translation type="obsolete">速度指示图</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="678"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1004"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished">退出</translation>
+        <translation type="obsolete">退出</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="681"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1006"/>
         <source>Quit NullGet</source>
-        <translation type="unfinished">退出 NullGet</translation>
+        <translation type="obsolete">退出 NullGet</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="690"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1008"/>
         <source>&amp;Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation type="obsolete">保存</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="699"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1009"/>
         <source>User &amp;Manual</source>
-        <translation type="unfinished">用户手册</translation>
+        <translation type="obsolete">用户手册</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="704"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1010"/>
         <source>&amp;New Cagegory ...</source>
-        <translation type="unfinished">新建分类</translation>
+        <translation type="obsolete">新建分类</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="709"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1011"/>
         <source>&amp;Move to ...</source>
-        <translation type="unfinished">移至...</translation>
+        <translation type="obsolete">移至...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="718"/>
-        <location filename="../nullget.ui" line="1332"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1012"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1134"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished">删除</translation>
+        <translation type="obsolete">删除</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="723"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1013"/>
         <source>&amp;Properties ...</source>
-        <translation type="unfinished">属性...</translation>
+        <translation type="obsolete">属性...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="732"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1014"/>
         <source>&amp;Paste URL</source>
-        <translation type="unfinished">粘贴 URL</translation>
+        <translation type="obsolete">粘贴 URL</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="735"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1015"/>
-        <source>Ctrl+V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="740"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1016"/>
         <source>Select &amp;All</source>
-        <translation type="unfinished">全选</translation>
+        <translation type="obsolete">全选</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="743"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1017"/>
-        <source>Ctrl+A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="748"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1018"/>
         <source>&amp;Invert Selection</source>
-        <translation type="unfinished">反选</translation>
+        <translation type="obsolete">反选</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="757"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1019"/>
         <source>&amp;Find ...</source>
-        <translation type="unfinished">查找...</translation>
+        <translation type="obsolete">查找...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="760"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1021"/>
         <source>Find Task</source>
-        <translation type="unfinished">查找任务</translation>
+        <translation type="obsolete">查找任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="763"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1023"/>
-        <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="772"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1024"/>
         <source>Find &amp;Next</source>
-        <translation type="unfinished">查找下一个</translation>
+        <translation type="obsolete">查找下一个</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="775"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1026"/>
         <source>Find Next Task</source>
-        <translation type="unfinished">查找下一个任务</translation>
+        <translation type="obsolete">查找下一个任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="778"/>
-        <location filename="../nullget.ui" line="1241"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1028"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1109"/>
-        <source>F3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="789"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1029"/>
         <source>&amp;Detail</source>
-        <translation type="unfinished">详细信息</translation>
+        <translation type="obsolete">详细信息</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="800"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1030"/>
         <source>Drop &amp;Zone</source>
-        <translation type="unfinished">悬浮窗</translation>
+        <translation type="obsolete">悬浮窗</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="811"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1031"/>
         <source>Show Text</source>
-        <translation type="unfinished">显示文本</translation>
+        <translation type="obsolete">显示文本</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="816"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1032"/>
         <source>Buttons ...</source>
-        <translation type="unfinished">按钮...</translation>
+        <translation type="obsolete">按钮...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="821"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1033"/>
         <source>&amp;Columns ...</source>
-        <translation type="unfinished">栏目</translation>
+        <translation type="obsolete">栏目</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="832"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1034"/>
         <source>&amp;Grid</source>
-        <translation type="unfinished">网格</translation>
+        <translation type="obsolete">网格</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="843"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1035"/>
         <source>(None)</source>
-        <translation type="unfinished">禁止窗口样式</translation>
+        <translation type="obsolete">禁止窗口样式</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="848"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1036"/>
-        <source>Get Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="859"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1037"/>
         <source>Chinese(&amp;Simple)</source>
-        <translation type="unfinished">简体中文</translation>
+        <translation type="obsolete">简体中文</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="867"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1038"/>
         <source>&amp;English</source>
-        <translation type="unfinished">英文</translation>
+        <translation type="obsolete">英文</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="875"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1039"/>
         <source>Chinese(&amp;Trad)</source>
-        <translation type="unfinished">繁体中文</translation>
+        <translation type="obsolete">繁体中文</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="884"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1040"/>
         <source>&amp;Connect/Disconnect</source>
-        <translation type="unfinished">连接/挂断</translation>
+        <translation type="obsolete">连接/挂断</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="887"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1042"/>
         <source>Connect/Disconnect The Selected Task</source>
-        <translation type="unfinished">连接/挂断网络</translation>
+        <translation type="obsolete">连接/挂断网络</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="892"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1044"/>
         <source>&amp;Site Explorer</source>
-        <translation type="unfinished">站点探测器</translation>
+        <translation type="obsolete">站点探测器</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="895"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1045"/>
-        <source>F7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="903"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1046"/>
         <source>&amp;Shut Down When Done</source>
-        <translation type="unfinished">完成后关机</translation>
+        <translation type="obsolete">完成后关机</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="911"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1047"/>
         <source>&amp;Hang Up When Done</source>
-        <translation type="unfinished">完成后挂起</translation>
+        <translation type="obsolete">完成后挂起</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="919"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1048"/>
         <source>Redial if Disconnected</source>
-        <translation type="unfinished">断线重拨</translation>
+        <translation type="obsolete">断线重拨</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="924"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1049"/>
         <source>&amp;Download Rules</source>
-        <translation type="unfinished">下载规则</translation>
+        <translation type="obsolete">下载规则</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="933"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1050"/>
         <source>&amp;Save as default</source>
-        <translation type="unfinished">存为默认设置...</translation>
+        <translation type="obsolete">存为默认设置...</translation>
     </message>
     <message>
         <source>Default Download &amp;Properties</source>
@@ -1032,702 +2085,320 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">默认下载属性</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="942"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1051"/>
         <source>&amp;Options...</source>
-        <translation type="unfinished">选项...</translation>
+        <translation type="obsolete">选项...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="945"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1053"/>
         <source>Change Options</source>
-        <translation type="unfinished">修改选项</translation>
+        <translation type="obsolete">修改选项</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="948"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1055"/>
-        <source>Alt+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="959"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1056"/>
         <source>&amp;Unlimited</source>
-        <translation type="unfinished">无限制</translation>
+        <translation type="obsolete">无限制</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="967"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1057"/>
         <source>&amp;Manual</source>
-        <translation type="unfinished">手动</translation>
+        <translation type="obsolete">手动</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="975"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1058"/>
         <source>&amp;Automatic</source>
-        <translation>自动</translation>
+        <translation type="obsolete">自动</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="983"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1059"/>
         <source>&amp;Remember</source>
-        <translation>记住设置</translation>
+        <translation type="obsolete">记住设置</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="992"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1060"/>
-        <source>&amp;MP3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="995"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1061"/>
-        <source>F10</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1000"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1062"/>
         <source>&amp;Software</source>
-        <translation>软件</translation>
+        <translation type="obsolete">软件</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1005"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1063"/>
         <source>&amp;Game</source>
-        <translation>游戏</translation>
+        <translation type="obsolete">游戏</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1015"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1065"/>
         <source>&amp;Page</source>
-        <translation>网页</translation>
+        <translation type="obsolete">网页</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1024"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1066"/>
         <source>C&amp;heck for a new version</source>
-        <translation>检查新版本</translation>
+        <translation type="obsolete">检查新版本</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1033"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1067"/>
         <source>&amp;About NullGet</source>
-        <translation type="unfinished">关于 NullGet</translation>
+        <translation type="obsolete">关于 NullGet</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1036"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1069"/>
         <source>About NullGet</source>
-        <translation type="unfinished">关于 NullGet</translation>
+        <translation type="obsolete">关于 NullGet</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1045"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1071"/>
         <source>&amp;Go to NullGet Home Page -&gt;</source>
-        <translation type="unfinished">NullGet 主页</translation>
+        <translation type="obsolete">NullGet 主页</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1054"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1072"/>
         <source>FAQ in Internet</source>
-        <translation type="unfinished">在线常见问题</translation>
+        <translation type="obsolete">在线常见问题</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1063"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1073"/>
         <source>&amp;User Manual in Internet</source>
-        <translation type="unfinished">在线用户手册</translation>
+        <translation type="obsolete">在线用户手册</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1068"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1074"/>
         <source>&amp;New Database</source>
-        <translation type="unfinished">新数据库</translation>
+        <translation type="obsolete">新数据库</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1071"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1075"/>
-        <source>Ctrl+N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1076"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1076"/>
         <source>&amp;Open Database...</source>
-        <translation type="unfinished">打开数据库...</translation>
+        <translation type="obsolete">打开数据库...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1079"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1077"/>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1084"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1078"/>
         <source>&amp;Merge Database...</source>
-        <translation type="unfinished">合并数据库...</translation>
+        <translation type="obsolete">合并数据库...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1093"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1079"/>
         <source>&amp;Save Database</source>
-        <translation type="unfinished">保存数据库</translation>
+        <translation type="obsolete">保存数据库</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1096"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1080"/>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1105"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1081"/>
         <source>Save &amp;As...</source>
-        <translation type="unfinished">另存为...</translation>
+        <translation type="obsolete">另存为...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1110"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1082"/>
-        <source>Import &amp;Previous File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1115"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1083"/>
-        <source>Import Previous &amp;Batch File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1120"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1084"/>
-        <source>&amp;Export Information...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1125"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1085"/>
         <source>&amp;Export...</source>
-        <translation type="unfinished">导出...</translation>
+        <translation type="obsolete">导出...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1130"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1086"/>
-        <source>Import Broken D&amp;ownloads...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1135"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1087"/>
         <source>Import &amp;list...</source>
-        <translation type="unfinished">导入列表...</translation>
+        <translation type="obsolete">导入列表...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1138"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1088"/>
-        <source>Ctrl+</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1143"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1089"/>
         <source>&amp;Export list...</source>
-        <translation type="unfinished">导出列表...</translation>
+        <translation type="obsolete">导出列表...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1148"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1090"/>
         <source>Process &amp;Web Page File...</source>
-        <translation type="unfinished">处理网页文件...</translation>
+        <translation type="obsolete">处理网页文件...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1151"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1091"/>
-        <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1160"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1092"/>
         <source>&amp;Recently Downloaded Files</source>
-        <translation type="unfinished">最近下载的文件</translation>
+        <translation type="obsolete">最近下载的文件</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1163"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1093"/>
-        <source>Ctrl+R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1171"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1094"/>
         <source>Custom Background...</source>
-        <translation type="unfinished">自定义背景...</translation>
+        <translation type="obsolete">自定义背景...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1179"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1095"/>
-        <source>XP_Luna</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1187"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1096"/>
-        <source>XP_Luna(Gradient)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1195"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1097"/>
-        <source>Skype(Gradient)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1203"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1098"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1211"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1099"/>
-        <source>ImageBk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1220"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1100"/>
         <source>&amp;New Download...</source>
-        <translation type="unfinished">新建任务...</translation>
+        <translation type="obsolete">新建任务...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1223"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1102"/>
         <source>Create a New Task</source>
-        <translation type="unfinished">创建新任务</translation>
+        <translation type="obsolete">创建新任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1256"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1114"/>
-        <source>F4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1235"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1105"/>
         <source>&amp;New Bittorrent...</source>
-        <translation type="unfinished">新建 BitTorrent 任务...</translation>
+        <translation type="obsolete">新建 BitTorrent 任务...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="20"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1003"/>
-        <source>Karia2 Download Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1226"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1104"/>
-        <source>F2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1238"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1107"/>
-        <source>Create a New Bittorrent Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1250"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1110"/>
         <source>&amp;New Metalink...</source>
-        <translation type="unfinished">新建 Metalink 任务...</translation>
+        <translation type="obsolete">新建 Metalink 任务...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1253"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1112"/>
         <source>Create a New Metalink Task</source>
-        <translation type="unfinished">新建 Metalink 任务</translation>
+        <translation type="obsolete">新建 Metalink 任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1261"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1115"/>
         <source>Add &amp;batch download...</source>
-        <translation type="unfinished">添加批量任务...</translation>
+        <translation type="obsolete">添加批量任务...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1270"/>
-        <location filename="../nullget.ui" line="1462"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1116"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1172"/>
         <source>&amp;Start</source>
-        <translation type="unfinished">开始</translation>
+        <translation type="obsolete">开始</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1273"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1118"/>
         <source>Start The Selected Task</source>
-        <translation type="unfinished">开始选中的任务</translation>
+        <translation type="obsolete">开始选中的任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1276"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1120"/>
-        <source>F5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1285"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1121"/>
         <source>&amp;Pause</source>
-        <translation type="unfinished">暂停</translation>
+        <translation type="obsolete">暂停</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1288"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1123"/>
         <source>Pause The Selected Task</source>
-        <translation type="unfinished">暂停选中的任务</translation>
+        <translation type="obsolete">暂停选中的任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1291"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1125"/>
-        <source>F6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1296"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1126"/>
         <source>&amp;Start All</source>
-        <translation type="unfinished">全部开始</translation>
+        <translation type="obsolete">全部开始</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1299"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1127"/>
-        <source>F8</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1304"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1128"/>
         <source>Pause &amp;All</source>
-        <translation type="unfinished">全部暂停</translation>
+        <translation type="obsolete">全部暂停</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1307"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1129"/>
-        <source>F9</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1312"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1130"/>
         <source>&amp;Schedule</source>
-        <translation type="unfinished">计划</translation>
+        <translation type="obsolete">计划</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1315"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1131"/>
-        <source>Alt+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1320"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1132"/>
         <source>&amp;Move To...</source>
-        <translation type="unfinished">移至...</translation>
+        <translation type="obsolete">移至...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1323"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1133"/>
-        <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1335"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1136"/>
         <source>Delete The Selected Task</source>
-        <translation type="unfinished">删除选中的任务</translation>
+        <translation type="obsolete">删除选中的任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1338"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1138"/>
-        <source>Alt+Del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1343"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1139"/>
         <source>&amp;Rename...</source>
-        <translation type="unfinished">重命名...</translation>
+        <translation type="obsolete">重命名...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1348"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1140"/>
         <source>&amp;Comment As Filename</source>
-        <translation type="unfinished">注释作为文件名</translation>
+        <translation type="obsolete">注释作为文件名</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1357"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1141"/>
         <source>&amp;Properties...</source>
-        <translation type="unfinished">属性...</translation>
+        <translation type="obsolete">属性...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1360"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1143"/>
         <source>View The Selected Task&apos;s Property</source>
-        <translation type="unfinished">查看选中的任务属性</translation>
+        <translation type="obsolete">查看选中的任务属性</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1363"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1145"/>
-        <source>Alt+Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1372"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1146"/>
         <source>Move &amp;Up</source>
-        <translation type="unfinished">上移</translation>
+        <translation type="obsolete">上移</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1375"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1148"/>
         <source>Move Up The Selected Task</source>
-        <translation type="unfinished">上移</translation>
+        <translation type="obsolete">上移</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1378"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1150"/>
-        <source>Alt+Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1387"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1151"/>
         <source>Move &amp;Down</source>
-        <translation type="unfinished">下移</translation>
+        <translation type="obsolete">下移</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1390"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1153"/>
         <source>Move Down The Selected Task</source>
-        <translation type="unfinished">下移</translation>
+        <translation type="obsolete">下移</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1393"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1155"/>
-        <source>Alt+Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1398"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1156"/>
         <source>&amp;Check for update</source>
-        <translation type="unfinished">检查更新</translation>
+        <translation type="obsolete">检查更新</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1403"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1157"/>
         <source>&amp;Download Again</source>
-        <translation type="unfinished">重新下载</translation>
+        <translation type="obsolete">重新下载</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1412"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1158"/>
         <source>Open/Exec download &amp;file</source>
-        <translation type="unfinished">打开/运行己下载的文件</translation>
+        <translation type="obsolete">打开/运行己下载的文件</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1415"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1160"/>
         <source>Execute Selected Task</source>
-        <translation type="unfinished">执行选中的任务</translation>
+        <translation type="obsolete">执行选中的任务</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1418"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1162"/>
-        <source>Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1427"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1163"/>
         <source>Open de&amp;stination directory</source>
-        <translation type="unfinished">打开下载的文件目录</translation>
+        <translation type="obsolete">打开下载的文件目录</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1430"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1165"/>
         <source>Open The Selected Task directory</source>
-        <translation type="unfinished">打开选中的文件目录</translation>
+        <translation type="obsolete">打开选中的文件目录</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1433"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1167"/>
-        <source>Ctrl+Enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1442"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1168"/>
         <source>About Qt</source>
-        <translation type="unfinished">关于 Qt</translation>
+        <translation type="obsolete">关于 Qt</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1447"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1169"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1452"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1170"/>
         <source>&amp;Select All</source>
-        <translation type="unfinished">全选</translation>
+        <translation type="obsolete">全选</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1457"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1171"/>
         <source>Save to file ...</source>
-        <translation type="unfinished">保存到文件...</translation>
+        <translation type="obsolete">保存到文件...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1467"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1173"/>
         <source>S&amp;top</source>
-        <translation type="unfinished">停止</translation>
+        <translation type="obsolete">停止</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1472"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1174"/>
         <source>&amp;Restart</source>
-        <translation type="unfinished">重启动</translation>
+        <translation type="obsolete">重启动</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1477"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1175"/>
         <source>&amp;Increase split parts</source>
-        <translation type="unfinished">添加下载块数</translation>
+        <translation type="obsolete">添加下载块数</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1482"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1176"/>
         <source>&amp;Decrease split parts</source>
-        <translation type="unfinished">减少下载块数</translation>
+        <translation type="obsolete">减少下载块数</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1493"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1177"/>
         <source>&amp;Show/Hide Main Widow</source>
-        <translation type="unfinished">打开/隐藏 NullGet</translation>
+        <translation type="obsolete">打开/隐藏 NullGet</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1504"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1178"/>
         <source>&amp;Monitor Clipboard</source>
-        <translation type="unfinished">监视剪贴板</translation>
+        <translation type="obsolete">监视剪贴板</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1512"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1179"/>
         <source>&amp;Disable Browser Monitor</source>
-        <translation type="unfinished">禁止监视浏览器点击</translation>
+        <translation type="obsolete">禁止监视浏览器点击</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1517"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1180"/>
         <source>Move &amp;top</source>
-        <translation type="unfinished">上移到顶部</translation>
+        <translation type="obsolete">上移到顶部</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1522"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1181"/>
         <source>Move &amp;bottom</source>
-        <translation type="unfinished">下移到底部</translation>
+        <translation type="obsolete">下移到底部</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1527"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1182"/>
         <source>Site &amp;Properties...</source>
-        <translation type="unfinished">站点属性...</translation>
+        <translation type="obsolete">站点属性...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1532"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1183"/>
         <source>&amp;Comment...</source>
-        <translation type="unfinished">注释...</translation>
+        <translation type="obsolete">注释...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1537"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1184"/>
         <source>Browse &amp;Referer</source>
-        <translation type="unfinished">浏览引用页</translation>
+        <translation type="obsolete">浏览引用页</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1542"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1185"/>
         <source>Browse With Site &amp;Explorer</source>
-        <translation type="unfinished">使用站点探测器浏览</translation>
+        <translation type="obsolete">使用站点探测器浏览</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1547"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1186"/>
         <source>&amp;Copy URL To ClipBoard</source>
-        <translation type="unfinished">复制 URL 到剪贴板</translation>
+        <translation type="obsolete">复制 URL 到剪贴板</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1552"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1187"/>
         <source>C&amp;lear Log</source>
-        <translation type="unfinished">清空日志</translation>
+        <translation type="obsolete">清空日志</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1557"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1188"/>
         <source>&amp;Walk Site</source>
-        <translation type="unfinished">整站下载</translation>
+        <translation type="obsolete">整站下载</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1565"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1189"/>
-        <source>&amp;Cleanlooks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1573"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1190"/>
-        <source>&amp;NorwegianWood</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.ui" line="1584"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1191"/>
         <source>&amp;Default Palette</source>
-        <translation type="unfinished">默认面板(&amp;Y)</translation>
+        <translation type="obsolete">默认面板(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1589"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1192"/>
         <source>&amp;Plugins...</source>
-        <translation type="unfinished">插件(&amp;P)...</translation>
+        <translation type="obsolete">插件(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1594"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1193"/>
         <source>TestWidgetPlugin</source>
-        <translation type="unfinished">测试物件插件(&amp;T)</translation>
+        <translation type="obsolete">测试物件插件(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1599"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1194"/>
         <source>File&amp;Splitter</source>
-        <translation type="unfinished">文件分隔器(&amp;SP)</translation>
+        <translation type="obsolete">文件分隔器(&amp;SP)</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="1604"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1195"/>
         <source>&amp;MediaFileModifier</source>
-        <translation type="unfinished">媒体文件修改器(&amp;M)</translation>
+        <translation type="obsolete">媒体文件修改器(&amp;M)</translation>
     </message>
     <message>
         <source>Retry</source>
@@ -1758,9 +2429,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">确认删除未完成的任务吗?</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1760"/>
         <source>Task Done.</source>
-        <translation>任务完成。</translation>
+        <translation type="obsolete">任务完成。</translation>
     </message>
     <message>
         <source>Move It To Done Table Now.
@@ -1769,164 +2439,108 @@ TaskId: %1</source>
 任务ID：%1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1900"/>
         <source>Delete Category:</source>
-        <translation>删除类别：</translation>
+        <translation type="obsolete">删除类别：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1900"/>
         <source>Delete the Category and All sub Category?</source>
-        <translation>确认要删除该类另及其所有子类别吗？</translation>
+        <translation type="obsolete">确认要删除该类另及其所有子类别吗？</translation>
     </message>
     <message>
         <source>Music Search </source>
         <translation type="obsolete">音乐搜索</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2296"/>
-        <source>pause</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="2913"/>
-        <location filename="../nullget.cpp" line="2954"/>
         <source>Process Weg Page :</source>
-        <translation>处理网页文件：</translation>
+        <translation type="obsolete">处理网页文件：</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2913"/>
         <source>No URL(s) Found In the Weg Page File/Given URL</source>
-        <translation>在所给的网页文件中没有发现URL。</translation>
+        <translation type="obsolete">在所给的网页文件中没有发现URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2954"/>
         <source>No URL(s) Selected</source>
-        <translation>没有选定的URL。</translation>
+        <translation type="obsolete">没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3049"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: .%4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;文件大小： %3&lt;br&gt;文件类型： .%4&lt;br&gt;完成比例：: %5&lt;br&gt;-------------------------------&lt;br&gt;保存位置： %6&lt;br&gt;超链接： %7&lt;br&gt;引用页： %8&lt;br&gt;注释： %9&lt;br&gt;-------------------------------&lt;br&gt;创建时间： %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;文件大小： %3&lt;br&gt;文件类型： .%4&lt;br&gt;完成比例：: %5&lt;br&gt;-------------------------------&lt;br&gt;保存位置： %6&lt;br&gt;超链接： %7&lt;br&gt;引用页： %8&lt;br&gt;注释： %9&lt;br&gt;-------------------------------&lt;br&gt;创建时间： %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3832"/>
-        <location filename="../nullget.cpp" line="3876"/>
-        <location filename="../nullget.cpp" line="3920"/>
         <source>No Task Selected</source>
-        <translation>没有选定的URL。</translation>
+        <translation type="obsolete">没有选定的URL。</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3832"/>
-        <location filename="../nullget.cpp" line="3876"/>
-        <location filename="../nullget.cpp" line="3920"/>
         <source>Please Select a Task For Operation</source>
-        <translation>请选择一个要执行的任务。</translation>
+        <translation type="obsolete">请选择一个要执行的任务。</translation>
     </message>
     <message>
-        <location filename="../nullget.ui" line="518"/>
-        <location filename="../nullget.ui" line="1010"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1064"/>
-        <location filename="../GeneratedFiles/ui_nullget.h" line="1232"/>
         <source>&amp;File</source>
-        <translation type="unfinished">文件</translation>
+        <translation type="obsolete">文件</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1494"/>
         <source>Delete Task .</source>
-        <translation>删除任务</translation>
+        <translation type="obsolete">删除任务</translation>
     </message>
     <message>
         <source>Move It To Deleted Table Now. TaskId: %1</source>
         <translation type="obsolete">移动到删除列表。任务ID： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="563"/>
-        <source>karia2 Icon Tray Control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="1059"/>
-        <location filename="../nullget.cpp" line="1061"/>
         <source>Location: %1</source>
-        <translation type="unfinished">位置：%1</translation>
+        <translation type="obsolete">位置：%1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1495"/>
         <source>Delete permanently. TaskId: %1</source>
-        <translation type="unfinished">永久删除。任务：%1</translation>
+        <translation type="obsolete">永久删除。任务：%1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1500"/>
-        <source>Move Task .</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="1500"/>
         <source>Move To Trash Now. TaskId: %1</source>
-        <translation type="unfinished">移动到回收站，任务ID： %1</translation>
+        <translation type="obsolete">移动到回收站，任务ID： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="1760"/>
         <source>Move It To Done Table Now. TaskId: %1</source>
-        <translation>移动到完成列表。任务ID： %1</translation>
+        <translation type="obsolete">移动到完成列表。任务ID： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2679"/>
         <source>Open a .torrent file...</source>
-        <translation type="unfinished">打开 .torrent 文件...</translation>
+        <translation type="obsolete">打开 .torrent 文件...</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2680"/>
         <source>Torrent File (*.torrent)</source>
-        <translation type="unfinished">Torrent 文件(*.torrent)</translation>
+        <translation type="obsolete">Torrent 文件(*.torrent)</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2748"/>
         <source>Open a .metalink file...</source>
-        <translation type="unfinished">打开 .metalink 文件...</translation>
+        <translation type="obsolete">打开 .metalink 文件...</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="2749"/>
         <source>Metalink File (*.metalink)</source>
-        <translation type="unfinished">Metalink 文件(*.metalink)</translation>
+        <translation type="obsolete">Metalink 文件(*.metalink)</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3867"/>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found, has it downloaded already?</source>
-        <translation type="unfinished">没有找到文件 &lt;b&gt;%1&lt;/b&gt; ，是否已经下载了？</translation>
+        <translation type="obsolete">没有找到文件 &lt;b&gt;%1&lt;/b&gt; ，是否已经下载了？</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;File Size: %3&lt;br&gt;File Type: %4&lt;br&gt;Completed: %5&lt;br&gt;-------------------------------&lt;br&gt;Save Postion: %6&lt;br&gt;URL: %7&lt;br&gt;Refferer: %8&lt;br&gt;Comment: %9&lt;br&gt;-------------------------------&lt;br&gt;Create Time: %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:å®ä½; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;table  width=&quot;100%&quot;  height=&quot;100%&quot; border=&quot;1&quot;&gt;  &lt;tr&gt;    &lt;td width=&quot;97&quot;&gt;&amp;nbsp;&lt;img name=&quot;&quot; src=&quot;%1&quot; width=&quot;80&quot; height=&quot;80&quot; alt=&quot;&quot;&gt;&lt;/td&gt;    &lt;td  height=&quot;100%&quot; &gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;-------------------------------&lt;br&gt;文件大小： %3&lt;br&gt;文件类型： %4&lt;br&gt;完成比例：: %5&lt;br&gt;-------------------------------&lt;br&gt;保存位置： %6&lt;br&gt;超链接： %7&lt;br&gt;引用页： %8&lt;br&gt;注释： %9&lt;br&gt;-------------------------------&lt;br&gt;创建时间： %10&lt;br&gt;------------------------------- &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3866"/>
         <source>Notice:</source>
-        <translation>注意!</translation>
+        <translation type="obsolete">注意!</translation>
     </message>
     <message>
         <source>File &lt;b&gt;%1&lt;/b&gt; not found,has it downloaded already?</source>
         <translation type="obsolete">没有找到文件 &lt;b&gt;%1&lt;/b&gt; ，是否已经下载了？</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3971"/>
         <source>Allocating File Space: %1</source>
-        <translation>正在分配文件空间： %1</translation>
+        <translation type="obsolete">正在分配文件空间： %1</translation>
     </message>
     <message>
-        <location filename="../nullget.cpp" line="3980"/>
         <source>Waiting ...</source>
-        <translation>请稍后...</translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="4235"/>
-        <source>Aria2 backend error :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../nullget.cpp" line="4236"/>
-        <source>Can not start aria2. Are you already installed it properly?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">请稍后...</translation>
     </message>
 </context>
 <context>
@@ -2561,530 +3175,43 @@ TaskId: %1</source>
 <context>
     <name>OptionDlgClass</name>
     <message>
-        <location filename="../optiondlg.ui" line="16"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1948"/>
         <source>OptionDlg</source>
-        <translation>选项</translation>
+        <translation type="obsolete">选项</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="32"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1967"/>
         <source>General</source>
-        <translation>常规</translation>
+        <translation type="obsolete">常规</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="44"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1949"/>
-        <source>Start main window minimized</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="51"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1950"/>
-        <source>Still download from non-resumable sites</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="76"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1952"/>
-        <source>If error occurs stop download</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="106"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1953"/>
-        <source>Auto save listed file every</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="116"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1954"/>
-        <source>Write data to disk ervery</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="126"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1955"/>
-        <source>200</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="133"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1956"/>
-        <source>10</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="140"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1957"/>
         <source>Minutes</source>
-        <translation>分钟</translation>
+        <translation type="obsolete">分钟</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="147"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1958"/>
-        <source> KB</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="156"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1959"/>
-        <source>Get File Date and Time From Server</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="166"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1960"/>
-        <source>Start downloading on startup</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="173"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1961"/>
-        <source>Use &quot;ng!&quot; as file extension till download is finished</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="183"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1962"/>
-        <source>Auto backup download database erery day</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="193"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1963"/>
-        <source>Write individual *.log file for each download file</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="200"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1964"/>
-        <source>Move or Delete Log file when moving or deleting downloaded file</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="215"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1965"/>
-        <source>Min segment size</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="232"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1966"/>
-        <source>  KB</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="242"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1976"/>
         <source>Proxy</source>
-        <translation>代理服务器</translation>
+        <translation type="obsolete">代理服务器</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="265"/>
-        <location filename="../optiondlg.ui" line="272"/>
-        <location filename="../optiondlg.ui" line="279"/>
-        <location filename="../optiondlg.ui" line="286"/>
-        <location filename="../optiondlg.ui" line="293"/>
-        <location filename="../optiondlg.ui" line="839"/>
-        <location filename="../optiondlg.ui" line="924"/>
-        <location filename="../optiondlg.ui" line="1052"/>
-        <location filename="../optiondlg.ui" line="1312"/>
-        <location filename="../optiondlg.ui" line="1424"/>
-        <location filename="../optiondlg.ui" line="1902"/>
-        <location filename="../optiondlg.ui" line="1909"/>
-        <location filename="../optiondlg.ui" line="1916"/>
-        <location filename="../optiondlg.ui" line="1962"/>
-        <location filename="../optiondlg.ui" line="1969"/>
-        <location filename="../optiondlg.ui" line="1976"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1968"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1969"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1970"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1971"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1972"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2010"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2016"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2027"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2045"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2056"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2090"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2091"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2092"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2094"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2095"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2096"/>
-        <source>PushButton</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="310"/>
-        <location filename="../optiondlg.ui" line="320"/>
-        <location filename="../optiondlg.ui" line="361"/>
-        <location filename="../optiondlg.ui" line="384"/>
-        <location filename="../optiondlg.ui" line="407"/>
-        <location filename="../optiondlg.ui" line="440"/>
-        <location filename="../optiondlg.ui" line="473"/>
-        <location filename="../optiondlg.ui" line="541"/>
-        <location filename="../optiondlg.ui" line="577"/>
-        <location filename="../optiondlg.ui" line="597"/>
-        <location filename="../optiondlg.ui" line="634"/>
-        <location filename="../optiondlg.ui" line="644"/>
-        <location filename="../optiondlg.ui" line="703"/>
-        <location filename="../optiondlg.ui" line="710"/>
-        <location filename="../optiondlg.ui" line="936"/>
-        <location filename="../optiondlg.ui" line="993"/>
-        <location filename="../optiondlg.ui" line="1003"/>
-        <location filename="../optiondlg.ui" line="1038"/>
-        <location filename="../optiondlg.ui" line="1076"/>
-        <location filename="../optiondlg.ui" line="1096"/>
-        <location filename="../optiondlg.ui" line="1116"/>
-        <location filename="../optiondlg.ui" line="1163"/>
-        <location filename="../optiondlg.ui" line="1183"/>
-        <location filename="../optiondlg.ui" line="1196"/>
-        <location filename="../optiondlg.ui" line="1203"/>
-        <location filename="../optiondlg.ui" line="1292"/>
-        <location filename="../optiondlg.ui" line="1302"/>
-        <location filename="../optiondlg.ui" line="1457"/>
-        <location filename="../optiondlg.ui" line="1470"/>
-        <location filename="../optiondlg.ui" line="1477"/>
-        <location filename="../optiondlg.ui" line="1553"/>
-        <location filename="../optiondlg.ui" line="1567"/>
-        <location filename="../optiondlg.ui" line="1593"/>
-        <location filename="../optiondlg.ui" line="1600"/>
-        <location filename="../optiondlg.ui" line="1607"/>
-        <location filename="../optiondlg.ui" line="1625"/>
-        <location filename="../optiondlg.ui" line="1877"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1973"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1974"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1978"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1979"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1980"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1982"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1983"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1987"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1988"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1989"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1992"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1993"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1997"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1998"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2017"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2021"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2022"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2025"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2029"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2030"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2031"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2035"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2036"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2037"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2038"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2043"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2044"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2057"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2058"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2059"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2065"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2067"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2068"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2069"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2070"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2071"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2089"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="329"/>
-        <location filename="../optiondlg.ui" line="483"/>
-        <location filename="../optiondlg.ui" line="505"/>
-        <location filename="../optiondlg.ui" line="654"/>
-        <location filename="../optiondlg.ui" line="679"/>
-        <location filename="../optiondlg.ui" line="722"/>
-        <location filename="../optiondlg.ui" line="766"/>
-        <location filename="../optiondlg.ui" line="773"/>
-        <location filename="../optiondlg.ui" line="804"/>
-        <location filename="../optiondlg.ui" line="811"/>
-        <location filename="../optiondlg.ui" line="818"/>
-        <location filename="../optiondlg.ui" line="825"/>
-        <location filename="../optiondlg.ui" line="832"/>
-        <location filename="../optiondlg.ui" line="856"/>
-        <location filename="../optiondlg.ui" line="900"/>
-        <location filename="../optiondlg.ui" line="974"/>
-        <location filename="../optiondlg.ui" line="1016"/>
-        <location filename="../optiondlg.ui" line="1023"/>
-        <location filename="../optiondlg.ui" line="1045"/>
-        <location filename="../optiondlg.ui" line="1061"/>
-        <location filename="../optiondlg.ui" line="1128"/>
-        <location filename="../optiondlg.ui" line="1244"/>
-        <location filename="../optiondlg.ui" line="1268"/>
-        <location filename="../optiondlg.ui" line="1275"/>
-        <location filename="../optiondlg.ui" line="1406"/>
-        <location filename="../optiondlg.ui" line="1484"/>
-        <location filename="../optiondlg.ui" line="1501"/>
-        <location filename="../optiondlg.ui" line="1526"/>
-        <location filename="../optiondlg.ui" line="1560"/>
-        <location filename="../optiondlg.ui" line="1728"/>
-        <location filename="../optiondlg.ui" line="1735"/>
-        <location filename="../optiondlg.ui" line="1742"/>
-        <location filename="../optiondlg.ui" line="1749"/>
-        <location filename="../optiondlg.ui" line="1756"/>
-        <location filename="../optiondlg.ui" line="1763"/>
-        <location filename="../optiondlg.ui" line="1770"/>
-        <location filename="../optiondlg.ui" line="1795"/>
-        <location filename="../optiondlg.ui" line="1846"/>
-        <location filename="../optiondlg.ui" line="1853"/>
-        <location filename="../optiondlg.ui" line="1860"/>
-        <location filename="../optiondlg.ui" line="1870"/>
-        <location filename="../optiondlg.ui" line="2022"/>
-        <location filename="../optiondlg.ui" line="2029"/>
-        <location filename="../optiondlg.ui" line="2036"/>
-        <location filename="../optiondlg.ui" line="2043"/>
-        <location filename="../optiondlg.ui" line="2050"/>
-        <location filename="../optiondlg.ui" line="2229"/>
-        <location filename="../optiondlg.ui" line="2236"/>
-        <location filename="../optiondlg.ui" line="2243"/>
-        <location filename="../optiondlg.ui" line="2250"/>
-        <location filename="../optiondlg.ui" line="2257"/>
-        <location filename="../optiondlg.ui" line="2264"/>
-        <location filename="../optiondlg.ui" line="2284"/>
-        <location filename="../optiondlg.ui" line="2291"/>
-        <location filename="../optiondlg.ui" line="2298"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1975"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1984"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1985"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1994"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1996"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1999"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2002"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2003"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2005"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2006"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2007"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2008"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2009"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2011"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2015"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2019"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2023"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2024"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2026"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2028"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2032"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2040"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2041"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2042"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2055"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2060"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2061"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2063"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2066"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2074"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2075"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2076"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2077"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2078"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2079"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2080"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2082"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2085"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2086"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2087"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2088"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2098"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2099"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2100"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2101"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2102"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2117"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2118"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2119"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2120"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2121"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2122"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2124"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2125"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2126"/>
-        <source>CheckBox</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="337"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1990"/>
-        <source>Connection</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="349"/>
-        <location filename="../optiondlg.ui" line="420"/>
-        <location filename="../optiondlg.ui" line="515"/>
-        <location filename="../optiondlg.ui" line="622"/>
-        <location filename="../optiondlg.ui" line="667"/>
-        <location filename="../optiondlg.ui" line="745"/>
-        <location filename="../optiondlg.ui" line="784"/>
-        <location filename="../optiondlg.ui" line="981"/>
-        <location filename="../optiondlg.ui" line="1148"/>
-        <location filename="../optiondlg.ui" line="1213"/>
-        <location filename="../optiondlg.ui" line="1334"/>
-        <location filename="../optiondlg.ui" line="1370"/>
-        <location filename="../optiondlg.ui" line="1533"/>
-        <location filename="../optiondlg.ui" line="1664"/>
-        <location filename="../optiondlg.ui" line="1783"/>
-        <location filename="../optiondlg.ui" line="1834"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1977"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1981"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1986"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1991"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="1995"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2001"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2004"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2020"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2034"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2039"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2047"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2051"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2064"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2073"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2081"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2084"/>
-        <source>GroupBox</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="610"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2000"/>
-        <source>Protocol</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="733"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2018"/>
-        <source>Monitor</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="886"/>
-        <location filename="../optiondlg.ui" line="893"/>
-        <location filename="../optiondlg.ui" line="1346"/>
-        <location filename="../optiondlg.ui" line="1353"/>
-        <location filename="../optiondlg.ui" line="1360"/>
-        <location filename="../optiondlg.ui" line="1382"/>
-        <location filename="../optiondlg.ui" line="1389"/>
-        <location filename="../optiondlg.ui" line="1396"/>
-        <location filename="../optiondlg.ui" line="2115"/>
-        <location filename="../optiondlg.ui" line="2122"/>
-        <location filename="../optiondlg.ui" line="2129"/>
-        <location filename="../optiondlg.ui" line="2157"/>
-        <location filename="../optiondlg.ui" line="2164"/>
-        <location filename="../optiondlg.ui" line="2171"/>
-        <location filename="../optiondlg.ui" line="2191"/>
-        <location filename="../optiondlg.ui" line="2198"/>
-        <location filename="../optiondlg.ui" line="2205"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2013"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2014"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2048"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2049"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2050"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2052"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2053"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2054"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2104"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2105"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2106"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2108"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2109"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2110"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2112"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2113"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2114"/>
-        <source>RadioButton</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="962"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2033"/>
-        <source>Mirrors</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1136"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2046"/>
-        <source>Graph/Log</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1322"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2062"/>
-        <source>File Manager</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1514"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2072"/>
-        <source>Dail-Up Networking </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1652"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2083"/>
         <source>Schedule</source>
-        <translation>计划</translation>
+        <translation type="obsolete">计划</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="1822"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2093"/>
-        <source>Sound</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1939"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2097"/>
-        <source>Site Manager</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="1986"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2128"/>
-        <source>Other</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="2010"/>
-        <location filename="../optiondlg.ui" line="2103"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2103"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2107"/>
-        <source>Page 1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="2079"/>
-        <location filename="../optiondlg.ui" line="2145"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2111"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2116"/>
-        <source>Page 2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="2179"/>
-        <location filename="../optiondlg.ui" line="2217"/>
-        <location filename="../optiondlg.ui" line="2272"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2115"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2123"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2127"/>
-        <source>Page</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../optiondlg.ui" line="2347"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2129"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation type="obsolete">确定</translation>
     </message>
     <message>
-        <location filename="../optiondlg.ui" line="2354"/>
-        <location filename="../GeneratedFiles/ui_optiondlg.h" line="2130"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="obsolete">取消</translation>
+    </message>
+</context>
+<context>
+    <name>OptionManager</name>
+    <message>
+        <location filename="../optionmanager.h" line="97"/>
+        <location filename="../optionmanager.h" line="98"/>
+        <location filename="../optionmanager.h" line="99"/>
+        <location filename="../optionmanager.h" line="100"/>
+        <source>Direct</source>
+        <translation type="unfinished">直连</translation>
     </message>
 </context>
 <context>
@@ -3655,40 +3782,44 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="193"/>
+        <location filename="../preferencesdialog.cpp" line="196"/>
         <source>Proxy Name</source>
         <translation type="unfinished">代理名称</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="193"/>
+        <location filename="../preferencesdialog.cpp" line="196"/>
         <source>Host Name</source>
         <translation type="unfinished">主机名</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="193"/>
+        <location filename="../preferencesdialog.cpp" line="196"/>
         <source>Port</source>
         <translation type="unfinished">端口</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="194"/>
+        <location filename="../preferencesdialog.cpp" line="197"/>
         <source>Proxy Type</source>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="194"/>
+        <location filename="../preferencesdialog.cpp" line="197"/>
         <source>User Name</source>
         <translation type="unfinished">用户名</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="194"/>
+        <location filename="../preferencesdialog.cpp" line="197"/>
         <source>Password</source>
         <translation type="unfinished">密码</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="632"/>
-        <location filename="../preferencesdialog.cpp" line="899"/>
+        <location filename="../preferencesdialog.cpp" line="678"/>
+        <location filename="../preferencesdialog.cpp" line="946"/>
+        <source>Download By karia2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Download By NullGet</source>
-        <translation type="unfinished">使用 NullGet 下载</translation>
+        <translation type="obsolete">使用 NullGet 下载</translation>
     </message>
 </context>
 <context>
@@ -3884,7 +4015,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SeedFileModel</name>
     <message>
-        <location filename="../seedfilemodel.cpp" line="17"/>
+        <location filename="../seedfilemodel.cpp" line="18"/>
         <source>index, selected, path, length</source>
         <translation type="unfinished">序号, 状态, 路径, 长度</translation>
     </message>
@@ -4044,12 +4175,683 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>SkyServ</name>
+    <message>
+        <location filename="../skyserv/skyserv.ui" line="13"/>
+        <source>SkyServ</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SkypeClientWndClass</name>
     <message>
         <location filename="../skypeclientwnd.ui" line="16"/>
         <location filename="../GeneratedFiles/ui_skypeclientwnd.h" line="40"/>
         <source>SkypeClientWnd</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>SkypeTracer</name>
+    <message>
+        <location filename="../skypetracer.ui" line="14"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="260"/>
+        <source>Skype Protocol Tracer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="39"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="261"/>
+        <source>...</source>
+        <translation type="unfinished">打开</translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="52"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="262"/>
+        <source>PushButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="63"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="263"/>
+        <source>..A..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="70"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="264"/>
+        <source>..B..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="77"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="265"/>
+        <source>..C..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="84"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="266"/>
+        <source>..D..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="91"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="267"/>
+        <source>..E..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="98"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="268"/>
+        <source>..F..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="118"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="269"/>
+        <source>z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="129"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="274"/>
+        <source>ALTER APPLICATION &lt;appname&gt; CONNECT &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="134"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="276"/>
+        <source>ALTER APPLICATION &lt;appname&gt; DATAGRAM &lt;username&gt;:&lt;id&gt; &lt;text&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="139"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="278"/>
+        <source>ALTER APPLICATION &lt;appname&gt; DISCONNECT &lt;username&gt;:&lt;id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="144"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="280"/>
+        <source>ALTER APPLICATION &lt;appname&gt; READ &lt;username&gt;:&lt;id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="149"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="282"/>
+        <source>ALTER APPLICATION &lt;appname&gt; WRITE &lt;username&gt;:&lt;id&gt; &lt;text&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="154"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="284"/>
+        <source>ALTER CALL &lt;id&gt; &lt;status&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="159"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="286"/>
+        <source>ALTER CALL &lt;id&gt; SET_INPUT PORT=&quot;&lt;port&gt;&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="164"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="288"/>
+        <source>ALTER CALL &lt;id&gt; SET_OUTPUT PORT=&quot;&lt;port&gt;&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="169"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="290"/>
+        <source>ALTER CHAT &lt;chat_id&gt; ADDMEMBERS &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="174"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="292"/>
+        <source>ALTER CHAT &lt;chat_id&gt; LEAVE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="179"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="294"/>
+        <source>ALTER CHAT &lt;chat_id&gt; SETTOPIC &lt;topic&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="184"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="296"/>
+        <source>ALTER GROUP &lt;id&gt; ADDUSER &lt;userhandle|PSTN&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="189"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="298"/>
+        <source>ALTER GROUP &lt;id&gt; REMOVEUSER &lt;userhandle|PSTN&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="194"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="300"/>
+        <source>ALTER VOICEMAIL &lt;id&gt; &lt;action&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="199"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="302"/>
+        <source>APPLICATION &lt;appname&gt; &lt;property&gt; &lt;value&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="204"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="304"/>
+        <source>BTN_PRESSED &lt;btn&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="209"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="306"/>
+        <source>BTN_RELEASED &lt;btn&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="214"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="308"/>
+        <source>CALL &lt;id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="219"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="310"/>
+        <source>CHAT CREATE &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="224"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="312"/>
+        <source>CHATMESSAGE &lt;chat_id&gt; &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="229"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="314"/>
+        <source>CLEAR CALLHISTORY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="234"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="316"/>
+        <source>CLEAR CHATHISTORY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="239"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="318"/>
+        <source>CLEAR VOICEMAILHISTORY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="244"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="320"/>
+        <source>CONTACTS FOCUSED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="249"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="322"/>
+        <source>CONTACTS FOCUSED &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="254"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="324"/>
+        <source>CREATE APPLICATION &lt;appname&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="259"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="326"/>
+        <source>CREATE GROUP &lt;Group|id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="264"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="328"/>
+        <source>DELETE APPLICATION &lt;appname&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="269"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="330"/>
+        <source>DELETE GROUP &lt;id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="274"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="332"/>
+        <source>GET AGC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="279"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="334"/>
+        <source>GET AUDIO_IN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="284"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="336"/>
+        <source>GET AUDIO_OUT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="289"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="338"/>
+        <source>GET CALL &lt;id&gt; &lt;property&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="294"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="340"/>
+        <source>GET CHAT &lt;chat_id&gt; &lt;property&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="299"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="342"/>
+        <source>GET CHAT &lt;chat_id&gt; CHATMESSAGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="304"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="344"/>
+        <source>GET CHAT &lt;chat_id&gt; RECENTCHATMESSAGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="309"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="346"/>
+        <source>GET CONNSTATUS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="314"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="348"/>
+        <source>GET CURRENTUSERHANDLE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="319"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="350"/>
+        <source>GET GROUP &lt;id&gt; property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="324"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="352"/>
+        <source>GET MESSAGE &lt;id&gt; &lt;peroperty&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="329"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="354"/>
+        <source>GET MUTE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="334"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="356"/>
+        <source>GET PRIVILEGE &lt;user_privilege&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="339"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="358"/>
+        <source>GET PROFILE &lt;profile_property&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="344"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="360"/>
+        <source>GET PROFILE &lt;profile&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="349"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="362"/>
+        <source>GET RINGER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="354"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="364"/>
+        <source>GET SKYPEVERSION</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="359"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="366"/>
+        <source>GET USER &lt;username&gt; &lt;property&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="364"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="368"/>
+        <source>GET USERSTATUS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="369"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="370"/>
+        <source>GET VIDEO_IN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="374"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="372"/>
+        <source>HOOK &lt;ON|OFF&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="379"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="374"/>
+        <source>MESSAGE &lt;id&gt; &lt;property&gt; &lt;value&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="384"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="376"/>
+        <source>MINIMIZE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="389"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="378"/>
+        <source>MUTE &lt;ON|OFF&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="394"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="380"/>
+        <source>OPEN ADDAFRIEND &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="399"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="382"/>
+        <source>OPEN AUTHORIZATION &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="404"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="384"/>
+        <source>OPEN BLOCKEDUSERS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="409"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="386"/>
+        <source>OPEN CALLHISTORY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="414"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="388"/>
+        <source>OPEN CHAT &lt;chat_id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="419"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="390"/>
+        <source>OPEN CONTACTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="424"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="392"/>
+        <source>OPEN DIALPAD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="429"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="394"/>
+        <source>OPEN FILETRANSFER &lt;username&gt; IN &lt;folder&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="434"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="396"/>
+        <source>OPEN GETTINGSTARTED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="439"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="398"/>
+        <source>OPEN IM &lt;username&gt; &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="444"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="400"/>
+        <source>OPEN IMPORTCONTACTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="449"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="402"/>
+        <source>OPEN OPTIONS &lt;page&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="454"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="404"/>
+        <source>OPEN PROFILE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="459"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="406"/>
+        <source>OPEN SEARCH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="464"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="408"/>
+        <source>OPEN SENDCONTACTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="469"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="410"/>
+        <source>OPEN USERINFO &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="474"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="412"/>
+        <source>OPEN VIDEOTEST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="479"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="414"/>
+        <source>OPEN VOICEMAIL &lt;id&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="484"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="416"/>
+        <source>PING</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="489"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="418"/>
+        <source>PROTOCOL &lt;version&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="494"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="420"/>
+        <source>SEARCH ACTIVECALLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="499"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="422"/>
+        <source>SEARCH BOOKMARKEDCHATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="504"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="424"/>
+        <source>SEARCH CALLS &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="509"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="426"/>
+        <source>SEARCH CHATMESSAGES &lt;username&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="514"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="428"/>
+        <source>SEARCH CHATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="519"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="430"/>
+        <source>SEARCH FRIENDS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="524"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="432"/>
+        <source>SEARCH GROUPS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="529"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="434"/>
+        <source>SEARCH MESSAGES &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="534"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="436"/>
+        <source>SEARCH MISSEDCALLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="539"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="438"/>
+        <source>SEARCH MISSEDCHATMESSAGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="544"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="440"/>
+        <source>SEARCH RECENTCHATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="549"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="442"/>
+        <source>SEARCH USERS &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="554"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="444"/>
+        <source>SEARCH USERSWAITINGMYAUTHORIZATION</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="559"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="446"/>
+        <source>SEARCH VOICEMAILS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="564"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="448"/>
+        <source>SET AUDIO_IN &lt;device_name&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="569"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="450"/>
+        <source>SET AUDIO_OUT &lt;device_name&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="574"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="452"/>
+        <source>SET CALL &lt;id&gt; property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="579"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="454"/>
+        <source>SET CHATMESSAGE &lt;id&gt; SEEN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="584"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="456"/>
+        <source>SET MESSAGE &lt;id&gt; SEEN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="589"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="458"/>
+        <source>SET MUTE &lt;ON|OFF&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="594"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="460"/>
+        <source>SET PROFILE &lt;profile_property&gt; &lt;value&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="599"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="462"/>
+        <source>SET PROFILE &lt;profile&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="604"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="464"/>
+        <source>SET PROFILE MOOD_TEXT &lt;text&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="609"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="466"/>
+        <source>SET RINGER &lt;device_name&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="614"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="468"/>
+        <source>SET USER &lt;username&gt; &lt;property&gt; &lt;value&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="619"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="470"/>
+        <source>SET USERSTATUS &lt;value&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../skypetracer.ui" line="624"/>
+        <location filename="../GeneratedFiles/ui_skypetracer.h" line="472"/>
+        <source>SET SILENT MODE &lt;ON|OFF&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4826,22 +5628,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>taskinfodlg</name>
     <message>
-        <location filename="../taskinfodlg.cpp" line="420"/>
+        <location filename="../taskinfodlg.cpp" line="419"/>
         <source>Please input URL.</source>
         <translation type="unfinished">没有输入URL。</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="422"/>
+        <location filename="../taskinfodlg.cpp" line="421"/>
         <source>Not a valide URL.</source>
         <translation type="unfinished">输入的URL不合法。</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="493"/>
+        <location filename="../taskinfodlg.cpp" line="492"/>
         <source>Expand</source>
         <translation type="unfinished">展开</translation>
     </message>
     <message>
-        <location filename="../taskinfodlg.cpp" line="576"/>
+        <location filename="../taskinfodlg.cpp" line="575"/>
         <source>Input mirror URL:</source>
         <translation type="unfinished">输入镜像地址:</translation>
     </message>
@@ -4860,7 +5662,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../taskinfodlg.ui" line="56"/>
         <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="465"/>
-        <location filename="../taskinfodlg.cpp" line="576"/>
+        <location filename="../taskinfodlg.cpp" line="575"/>
         <source>URL:</source>
         <translation type="unfinished">网址(&amp;U):</translation>
     </message>
@@ -4879,7 +5681,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../taskinfodlg.ui" line="98"/>
         <location filename="../GeneratedFiles/ui_taskinfodlg.h" line="468"/>
-        <location filename="../taskinfodlg.cpp" line="502"/>
+        <location filename="../taskinfodlg.cpp" line="501"/>
         <source>Collapse</source>
         <translation type="unfinished">收起</translation>
     </message>

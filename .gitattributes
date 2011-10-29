@@ -16,6 +16,8 @@ Resources/nullget-1.png -text
 aria2-1.13.0/src/config.h -text
 /ariaman.cpp -text
 /ariaman.h -text
+/asyncdatabase.cpp -text
+/asyncdatabase.h -text
 /batchjobmandlg.cpp -text
 /batchjobmandlg.h -text
 /batchjobmandlg.ui -text
@@ -29,6 +31,8 @@ browser/opera_go_to_page.dat -text
 /catpropdlg.ui -text
 /columnsmandlg.ui -text
 data/karia2.desktop -text
+/databaseworker.cpp -text
+/databaseworker.h -text
 /dircompletermodel.cpp -text
 /dircompletermodel.h -text
 /dlrules.cpp -text
@@ -115,6 +119,7 @@ images/woodbutton.png -text
 /karia2.qrc -text
 /karia2.rc -text
 /karia2.ui -text
+/karia2_standalone_aria2.cpp -text
 /karia2application.cpp -text
 /karia2application.h -text
 /labspace.cpp -text
@@ -227,6 +232,8 @@ qxmlrpc/xmlrpctest/xmlrpctest.pro -text
 /segmentlogmodel.h -text
 /serverswitcher.cpp -text
 /serverswitcher.h -text
+/simplelog.cpp -text
+/simplelog.h -text
 skynet/libskynet.pri -text
 skynet/skype.cpp -text
 skynet/skype.h -text
@@ -258,6 +265,8 @@ skyserv/skyserv.pro.user -text
 skyserv/skyserv.ui -text
 skyserv/skyservapplication.cpp -text
 skyserv/skyservapplication.h -text
+sqlite/sqlite3.h -text
+sqlite/sqlite3ext.h -text
 /sqlitecategorymodel.cpp -text
 /sqlitecategorymodel.h -text
 /sqlitesegmentmodel.cpp -text

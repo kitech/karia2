@@ -23,11 +23,13 @@ class DropZone;
 class TaskQueue;
 class InstantSpeedHistogramWnd;
 class WalkSiteWndEx;  //网站遍历窗口类。
-class AriaMan;
-class MaiaXmlRpcClient;
+//class AriaMan;
+//class MaiaXmlRpcClient;
 class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
+
+class EAria2Man;
 
 class Skype;
 class SkypeTracer;
@@ -37,7 +39,7 @@ class Karia2 : public QMainWindow
     Q_OBJECT;
 public:
     Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
-    ~Karia2();
+    virtual ~Karia2();
     void initialMainWindow();
     void testFunc();
     void testFunc2();
@@ -163,14 +165,18 @@ private:
     QString mCustomTaskShowColumns;
 
     TaskQueue *mTaskMan;
-    AriaMan  *mAriaMan;
-    QTimer mAriaUpdater;
-    QTimer mAriaGlobalUpdater;
-    QTimer mAriaTorrentUpdater;
-    QHash<int, QString> mRunningMap; // <taskId, ariaGID> 
-    QHash<int, QString> mTorrentMap; // <taskId, ariaGID>
-    QHash<QTimer*, QVariant> mTorrentWaitRemoveConfirm;  // <timer*, payload>
-    MaiaXmlRpcClient *mAriaRpc;
+    // depcreated
+//    AriaMan  *mAriaMan;
+//    QTimer mAriaUpdater;
+//    QTimer mAriaGlobalUpdater;
+//    QTimer mAriaTorrentUpdater;
+//    QHash<int, QString> mRunningMap; // <taskId, ariaGID>
+//    QHash<int, QString> mTorrentMap; // <taskId, ariaGID>
+//    QHash<QTimer*, QVariant> mTorrentWaitRemoveConfirm;  // <timer*, payload>
+//    MaiaXmlRpcClient *mAriaRpc;
+
+    //////// using embeded aria2c procedue
+    EAria2Man *mEAria2Man;
 
     Skype *mSkype;
     SkypeTracer *mSkypeTracer;
@@ -328,8 +334,8 @@ private:	//method
 	void hideUnimplementUiElement();
 	void hideUnneededUiElement();
 
-    void initXmlRpc();
-    QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
+//    void initXmlRpc();
+//    QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
     QString showCommandLineArguments();
 

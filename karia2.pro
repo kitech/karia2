@@ -20,6 +20,9 @@ win32 {
       CONFIG += release
 } else {
       CONFIG += debug
+   #QMAKE_CC = clang
+   #QMAKE_CXX = clang++
+   QMAKE_CXXFLAGS += -std=c++0x
 }
 
 DESTDIR = ./bin
@@ -151,6 +154,9 @@ HEADERS += aboutdialog.h \
            taskitemdelegate.h \
            skypetracer.h \
            skypetunnel.h \
+           simplelog.h \
+           asyncdatabase.h \
+           databaseworker.h \
            emaria2c.h
 
 win32{
@@ -173,6 +179,7 @@ SOURCES += aboutdialog.cpp \
            nullcontroller.cpp \
            karia2.cpp \
            karia2application.cpp \
+           karia2_standalone_aria2.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \
@@ -208,7 +215,10 @@ SOURCES += aboutdialog.cpp \
            skypetracer.cpp \
            metauri.cpp \
            skypetunnel.cpp \
-           emaria2c.cpp
+           simplelog.cpp \
+           asyncdatabase.cpp \
+           databaseworker.cpp \
+           emaria2c.cpp # aria2-1.13.0/src/option_processing.cc
 win32{
         SOURCES += DiskInfo.cpp
 }  
