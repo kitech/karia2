@@ -56,6 +56,7 @@
 #include "NullOutputFile.h"
 
 #include "emaria2c.h"
+#include "karia2statcalc.h"
 
 #include "simplelog.h"
 #include "taskinfodlg.h"
@@ -138,9 +139,11 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     std::vector<std::string> args;
 
     eaw = new EAria2Worker();
-    eaw->m_wid = task_id;
+    eaw->m_tid = task_id;
     eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
     this->m_tasks[task_id] = eaw;
+    QObject::connect(eaw, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
@@ -350,9 +353,16 @@ EAria2Worker::~EAria2Worker()
 void EAria2Worker::run()
 {
     aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
+//    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
+//                                            getStatCalc(this->option_),
+//                                            getSummaryOut(this->option_))
+
+    statCalc_.reset(new Karia2StatCalc(this->m_tid, this->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
+    QObject::connect(statCalc_.get(), SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
     exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-                                            getStatCalc(this->option_),
-                                            getSummaryOut(this->option_))
+                                            statCalc_, getSummaryOut(this->option_))
             .execute();
+    exit_status = exitStatus;
 }
 

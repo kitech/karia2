@@ -122,6 +122,8 @@ images/woodbutton.png -text
 /karia2_standalone_aria2.cpp -text
 /karia2application.cpp -text
 /karia2application.h -text
+/karia2statcalc.cpp -text
+/karia2statcalc.h -text
 /labspace.cpp -text
 /labspace.h -text
 /labspace.ui -text

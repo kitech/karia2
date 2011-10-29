@@ -22,6 +22,7 @@
 class TaskOption;
 class EAria2Worker;
 class EAria2Man;
+class Karia2StatCalc;
 
 class EAria2Man : public QObject
 {
@@ -41,6 +42,11 @@ public slots:
 private:
     int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
                            int argc, char* argv[]);
+
+signals:
+    void progressState(int tid, quint32 gid, quint64 total_length,
+                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+                   quint32 num_conns, quint32 eta);
 protected:
     QHash<int, EAria2Worker*> m_tasks;
     int m_argc;
@@ -59,12 +65,20 @@ public:
 protected:
     friend class EAria2Man;
 
-    int m_wid;
+    int m_tid;
     std::vector<aria2::SharedHandle<aria2::RequestGroup> > requestGroups_;
 
     aria2::SharedHandle<aria2::Option> option_;
     // aria2::SharedHandle<aria2::StatCalc> statCalc_;
     // aria2::SharedHandle<aria2::OutputFile> summaryOut_;
+    aria2::SharedHandle<Karia2StatCalc> statCalc_;
+    aria2::DownloadEngine *e;
+    int exit_status;
+
+signals:
+    void progressState(int tid, quint32 gid, quint64 total_length,
+                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+                   quint32 num_conns, quint32 eta);
 };
 
 #endif /* _EMARIA2C_H_ */

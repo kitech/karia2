@@ -223,6 +223,10 @@ void Karia2::firstShowHandler()
 
     //// start embeded backed
     this->mEAria2Man = EAria2Man::instance();
+    QObject::connect(this->mEAria2Man, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+                     this->mTaskMan, SLOT(onProgressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+
+
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();

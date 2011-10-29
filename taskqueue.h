@@ -101,6 +101,9 @@ public slots:
 
 	// void onStartSegment(int pTaskId,int pSegId);
 	// void onPauseSegment(int pTaskId,int pSegId);
+    void onProgressState(int tid, quint32 gid, quint64 total_length,
+                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+                   quint32 num_conns, quint32 eta);
 
 	void onMemoryOverLoad();
 
