@@ -223,9 +223,10 @@ void Karia2::firstShowHandler()
 
     //// start embeded backed
     this->mEAria2Man = EAria2Man::instance();
-    QObject::connect(this->mEAria2Man, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-                     this->mTaskMan, SLOT(onProgressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
-
+//    QObject::connect(this->mEAria2Man, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+//                     this->mTaskMan, SLOT(onProgressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+    QObject::connect(this->mEAria2Man, SIGNAL(progressState(Aria2StatCollector*)),
+                     this->mTaskMan, SLOT(onProgressState(Aria2StatCollector*)));
 
 	///////
 	this->hideUnimplementUiElement();
@@ -326,7 +327,7 @@ void Karia2::initialMainWindow()
 	splitSize = this->mainUI.splitter->sizes();
 	//qDebug()<<splitSize;
 	splitSize[0] += 80;
-	splitSize[1] -= 80;
+    // splitSize[1] -= 80; // no log section now
 	this->mainUI.splitter->setSizes(splitSize);
 
 	//this->onSwitchToWindowsXPStyle(true);	
@@ -3395,27 +3396,12 @@ void Karia2::onShowWalkSiteWindow()
 
 }
 
-void Karia2::onAriaProcError(QProcess::ProcessError error)
-{
-    if (error == QProcess::FailedToStart) {
-        // this->mAriaGlobalUpdater.stop();
-        QMessageBox::warning(this, tr("Aria2 backend error :"), 
-                             tr("Can not start aria2. Are you already installed it properly?"));
-    }
-}
-
-void Karia2::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
-{
-    Q_UNUSED(exitCode);
-    Q_UNUSED(exitStatus);
-}
-
 void Karia2::onTaskLogArrived(QString log)
 {
     if (log.length() <= 2) {
         return;
     }
-    this->mainUI.plainTextEdit->appendPlainText(log.trimmed());
+    // this->mainUI.plainTextEdit->appendPlainText(log.trimmed());
 }
 
 void Karia2::onTaskShowColumnsChanged(QString columns)

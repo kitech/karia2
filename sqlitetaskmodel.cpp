@@ -125,6 +125,7 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
         return rv;
         break;
     case ng::tasks::current_speed:
+    case ng::tasks::average_speed:
         rv = QString("%1 KB/s").arg(QString::number(cellData.toString().toInt() / 1000.0));
         return rv;
         break;

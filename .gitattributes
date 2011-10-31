@@ -60,6 +60,8 @@ doc/skype.txt -text svneol=unset#application/octet-stream
 doc/thunder.txt -text
 /dropzone.cpp -text
 /dropzone.h -text
+/earia2wrapper.cpp -text
+/earia2wrapper.h -text
 /emaria2c.cpp -text
 /emaria2c.h -text
 /genmk.bat -text

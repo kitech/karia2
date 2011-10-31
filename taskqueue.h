@@ -23,6 +23,7 @@ class TorrentPeerModel;
 class TaskServerModel;
 class SeedFileModel;
 class TorrentTrackerModel;
+class Aria2StatCollector;
 
 class Task  {
 public:
@@ -101,9 +102,10 @@ public slots:
 
 	// void onStartSegment(int pTaskId,int pSegId);
 	// void onPauseSegment(int pTaskId,int pSegId);
-    void onProgressState(int tid, quint32 gid, quint64 total_length,
-                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
-                   quint32 num_conns, quint32 eta);
+//    void onProgressState(int tid, quint32 gid, quint64 total_length,
+//                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+//                   quint32 num_conns, quint32 eta);
+    void onProgressState(Aria2StatCollector *stats);
 
 	void onMemoryOverLoad();
 
@@ -113,7 +115,7 @@ public slots:
 	QString getRealUrlModel(int pTaskId,int cat_id);
 	int getActiveSegCount(int pTaskId, int cat_id);
 
-    QBitArray getCompletionBitArray(int taskId);
+    QBitArray getCompletionBitArray(int taskId, QString &bitStr);
 
     // void onTaskLogArrived(QString cuid, QString itime, QString log);
 

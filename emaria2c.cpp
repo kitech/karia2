@@ -1,4 +1,4 @@
-// emaria2c.cpp --- 
+// emaria2c.cpp ---
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
@@ -142,8 +142,11 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw->m_tid = task_id;
     eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
     this->m_tasks[task_id] = eaw;
-    QObject::connect(eaw, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+//    QObject::connect(eaw, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+//                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+    QObject::connect(eaw, SIGNAL(progressState(Aria2StatCollector*)),
+                     this, SIGNAL(progressState(Aria2StatCollector*)));
+    QObject::connect(eaw, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
@@ -338,6 +341,34 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
     return 0;
 }
 
+void EAria2Man::onWorkerFinished()
+{
+    int tid;
+    EAria2Worker *eaw = static_cast<EAria2Worker*>(sender());\
+    aria2::SharedHandle<aria2::RequestGroup> rg;
+
+    tid = eaw->m_tid;
+    for (int i = 0; i < eaw->requestGroups_.size(); ++i) {
+        rg = eaw->requestGroups_.at(i);
+
+        switch(eaw->exit_status) {
+        case aria2::error_code::FINISHED:
+            break;
+        case aria2::error_code::IN_PROGRESS:
+            break;
+        case aria2::error_code::REMOVED:
+            break;
+        default:
+            break;
+        }
+
+        emit this->taskFinished(tid, eaw->exit_status);
+    }
+
+    this->m_tasks.remove(tid);
+    eaw->deleteLater();
+}
+
 /////////////////
 
 EAria2Worker::EAria2Worker(QObject *parent)
@@ -358,11 +389,18 @@ void EAria2Worker::run()
 //                                            getSummaryOut(this->option_))
 
     statCalc_.reset(new Karia2StatCalc(this->m_tid, this->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-    QObject::connect(statCalc_.get(), SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+//    QObject::connect(statCalc_.get(), SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
+//                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
+    QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
+                     this, SIGNAL(progressState(Aria2StatCollector*)));
     exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
                                             statCalc_, getSummaryOut(this->option_))
             .execute();
     exit_status = exitStatus;
+
+    for (int i = 0; i < this->requestGroups_.size(); ++i) {
+        aria2::SharedHandle<aria2::RequestGroup> rg = this->requestGroups_.at(i);
+        qLogx()<<rg->downloadFinished()<<exit_status;
+    }
 }
 

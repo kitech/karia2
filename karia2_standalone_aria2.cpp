@@ -584,3 +584,17 @@ void Karia2::onAriaTorrentReselectFileMachineFault(int code, QString reason, QVa
 
 }
 
+void Karia2::onAriaProcError(QProcess::ProcessError error)
+{
+    if (error == QProcess::FailedToStart) {
+        // this->mAriaGlobalUpdater.stop();
+        QMessageBox::warning(this, tr("Aria2 backend error :"),
+                             tr("Can not start aria2. Are you already installed it properly?"));
+    }
+}
+
+void Karia2::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    Q_UNUSED(exitCode);
+    Q_UNUSED(exitStatus);
+}

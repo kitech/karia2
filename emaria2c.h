@@ -23,6 +23,7 @@ class TaskOption;
 class EAria2Worker;
 class EAria2Man;
 class Karia2StatCalc;
+class Aria2StatCollector;
 
 class EAria2Man : public QObject
 {
@@ -39,14 +40,20 @@ public slots:
     // int addTask(QString url);
     int addUri(int task_id, const QString &url, TaskOption *to);
 
+    //// from backend
+    void onWorkerFinished();
+
 private:
     int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
                            int argc, char* argv[]);
 
 signals:
-    void progressState(int tid, quint32 gid, quint64 total_length,
-                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
-                   quint32 num_conns, quint32 eta);
+//    void progressState(int tid, quint32 gid, quint64 total_length,
+//                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+//                   quint32 num_conns, quint32 eta);
+    void progressState(Aria2StatCollector *stats);
+    void taskFinished(int tid, int code);
+
 protected:
     QHash<int, EAria2Worker*> m_tasks;
     int m_argc;
@@ -76,9 +83,10 @@ protected:
     int exit_status;
 
 signals:
-    void progressState(int tid, quint32 gid, quint64 total_length,
-                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
-                   quint32 num_conns, quint32 eta);
+//    void progressState(int tid, quint32 gid, quint64 total_length,
+//                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
+//                   quint32 num_conns, quint32 eta);
+    void progressState(Aria2StatCollector *stats);
 };
 
 #endif /* _EMARIA2C_H_ */

@@ -354,17 +354,6 @@
           </layout>
          </widget>
         </widget>
-        <widget class="QPlainTextEdit" name="plainTextEdit">
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="statusTip">
-          <string>The raw aria2 backend log with little filter</string>
-         </property>
-         <property name="maximumBlockCount">
-          <number>500</number>
-         </property>
-        </widget>
        </widget>
       </widget>
      </widget>
@@ -377,7 +366,7 @@
      <x>0</x>
      <y>0</y>
      <width>820</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Search">
