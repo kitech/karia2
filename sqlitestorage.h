@@ -11,6 +11,8 @@
 #define SQLITESTORAGE_H
 
 #include <cassert>
+#include <memory>
+
 #include <QtCore>
 #include <QtGui>
 #include <QVector>
@@ -48,7 +50,12 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include <boost/shared_ptr.hpp>
+
 #include "abstractstorage.h"
+
+class AsyncDatabase;
+class SqlRequest;
 
 namespace ng
 {
@@ -108,21 +115,26 @@ public:
 
 	virtual bool open();
 	virtual bool close();
-	//bool isOpened();
+    bool isOpened();
 
     virtual bool transaction();
     virtual bool commit();
     virtual bool rollback();
 
 	bool initDefaultOptions();
-	bool initDefaultTasks();
+    bool initDefaultTasks(QMap<QString, QString> &createSqls, QHash<QString, QStringList> &cinitSqls);
 	
-	bool dumpDefaultOptions();
-	bool dumpDefaultTasks();
+    bool dumpDefaultOptions();
+    bool dumpDefaultOptionsDone(boost::shared_ptr<SqlRequest> req);
+    bool dumpDefaultTasks();
+    bool dumpDefaultTasksDone(boost::shared_ptr<SqlRequest> req);
 
     bool addDefaultOption(QString key, QString value, QString type);
+    bool addDefaultOptionDone(boost::shared_ptr<SqlRequest> req);
 	bool addUserOption(QString key , QString value , QString type);
+    bool addUserOptionDone(boost::shared_ptr<SqlRequest> req);
 	bool deleteUserOption( QString key );
+    bool deleteUserOptionDone(boost::shared_ptr<SqlRequest> req);
     QString getDefaultOption(QString key);
     QString getUserOption(QString key);
     QVector<QPair<QString, QString> > getUserOptionsByType(QString type); // for proxy
@@ -163,11 +175,14 @@ public:
                  QString file_length_abtained ,
                  QString dirty
                  );
+    bool addTaskDone(boost::shared_ptr<SqlRequest> req);
 
     bool updateTask(QHash<QString, QString> taskHash); // new 
 	bool updateTask(int task_id , 
                     QString file_size, QString retry_times, QString create_time, QString current_speed, QString average_speed, QString eclapsed_time, QString abtained_length, QString left_length, QString split_count, QString block_activity, QString total_block_count, QString active_block_count, QString user_cat_id, QString comment, QString sys_cat_id, QString save_path, QString file_name, QString select_file, QString abtained_percent, QString org_url, QString real_url, QString referer, QString redirect_times, QString finish_time, QString task_status, QString total_packet, QString abtained_packet, QString left_packet, QString total_timestamp, QString abtained_timestamp, QString left_timestamp, QString file_length_abtained, QString dirty, QString aria_gid
                     );
+    bool updateTaskDone(boost::shared_ptr<SqlRequest> req);
+
 	bool addSegment(int seg_id, int task_id, 
                     QString start_offset      ,
                     QString create_time       ,
@@ -186,6 +201,7 @@ public:
                     QString left_timestamp    ,
                     QString dirty							
                     ) ;
+    bool addSegmentDone(boost::shared_ptr<SqlRequest> req);
 	bool updateSegment(int seg_id , int task_id ,
                        QString start_offset      ,
                        QString create_time       ,
@@ -204,11 +220,16 @@ public:
                        QString left_timestamp    ,
                        QString dirty					
                        ) ;
+    bool updateSegmentDone(boost::shared_ptr<SqlRequest> req);
 	bool addCategory(int cat_id, QString display_name, QString raw_name, QString folder, QString path, 
                      QString can_child, QString parent_cat_id, QString create_time, QString delete_flag);
+    bool addCategoryDone(boost::shared_ptr<SqlRequest> req);
 	bool deleteTask(int task_id);
+    bool deleteTaskDone(boost::shared_ptr<SqlRequest> req);
 	bool deleteSegment(int task_id, int seg_id);
+    bool deleteSegmentDone(boost::shared_ptr<SqlRequest> req);
 	bool deleteCategory(int cat_id, bool deleteChild);
+    bool deleteCategoryDone(boost::shared_ptr<SqlRequest> req);
 
 	QString getSavePathByCatId(int cat_id);
 
@@ -236,17 +257,29 @@ public:
 
 	quint64 getFileSizeById( int task_id);
 
+public slots:
+    void onAdbStarted(bool started);
+    // database exec callbacks
+    void onSqlExecuteDone(const QList<QSqlRecord> & results, int reqno, bool eret,
+                  const QString &estr, const QVariant &eval);
+
 private slots: 
     void onTaskDBNotification(const QString &name);
     void onOptionDBNotification(const QString &name);
 
+signals:
+    void opened();
+
 private:
    static SqliteStorage *mHandle;
 
-	QSqlDatabase  mOptionsDB;
-	QSqlDatabase  mTasksDB;
+//	QSqlDatabase  mOptionsDB;
+//	QSqlDatabase  mTasksDB;
 	//QSqlDatabase  mLogsDB;
 	//QSqlDatabase  mMirrorsDB;
+//    AsyncDatabase *madb;
+    boost::shared_ptr<AsyncDatabase> m_adb;
+    QHash<int, boost::shared_ptr<SqlRequest> > mRequests;
 
 	QString optInsSql ;
 	QString catInsSql ;

@@ -18,9 +18,10 @@ class DatabaseWorker : public QObject
 {
     Q_OBJECT;
 public:
-    explicit DatabaseWorker( QObject* parent = 0);
+    explicit DatabaseWorker(QObject* parent = 0);
     virtual ~DatabaseWorker();
 
+    void setInitSqls(QMap<QString, QString> creates, QHash<QString, QStringList> cinits);
     bool connectDatabase();                             
 
     // utils
@@ -40,6 +41,8 @@ signals:
 
 private:
     // QSqlDatabase m_database;
+    QMap<QString, QString> createSqls; // table_name -> create table
+    QHash<QString, QStringList> cinitSqls; // table_name -> insert after create table
 };
 
 /*

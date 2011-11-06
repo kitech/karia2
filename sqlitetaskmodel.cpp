@@ -48,7 +48,7 @@ SqliteTaskModel::SqliteTaskModel(int cat_id , QObject *parent)
 {
 	this->mCatID = cat_id ;
 	this->mStorage = SqliteStorage::instance(parent);
-	this->mStorage->open();
+//	this->mStorage->open();
 	this->mModelData = this->mStorage->getTaskSet( this->mCatID );
 	mTasksTableColumns = this->mStorage->getInternalTasksColumns();
 

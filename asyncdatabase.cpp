@@ -39,6 +39,12 @@ AsyncDatabase::~AsyncDatabase()
     delete m_worker;
 }
 
+void AsyncDatabase::setInitSqls(QMap<QString, QString> creates, QHash<QString, QStringList> cinits)
+{
+    this->createSqls = creates;
+    this->cinitSqls = cinits;
+}
+
 void AsyncDatabase::onConnected() { 
     this->m_connected = true; 
     emit this->connected();
@@ -81,6 +87,7 @@ void AsyncDatabase::run()
 
     // Create worker object within the context of the new thread
     m_worker = new DatabaseWorker();
+    m_worker->setInitSqls(this->createSqls, this->cinitSqls);
     QObject::connect(m_worker, SIGNAL(connected()),
                      this, SLOT(onConnected()));
 

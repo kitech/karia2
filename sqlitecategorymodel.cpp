@@ -29,8 +29,9 @@ SqliteCategoryModel * SqliteCategoryModel::instance(QObject *parent)
 SqliteCategoryModel::SqliteCategoryModel( QObject *parent)
   : QAbstractItemModel(parent) 
 {
-	mStorage = new SqliteStorage(parent);
-	this->mStorage->open();
+//	mStorage = new SqliteStorage(parent);
+    mStorage =  SqliteStorage::instance();
+    // this->mStorage->open();
 	mModelData = mStorage->getCatSet();
 	mCatsTableColumns = mStorage->getCatsColumns();
 

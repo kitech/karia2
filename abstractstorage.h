@@ -27,6 +27,7 @@ public:
 
 	virtual bool open() = 0;
 	virtual bool close() = 0;
+    virtual bool isOpened() = 0;
 
     virtual bool transaction() = 0;
     virtual bool commit() = 0;

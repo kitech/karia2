@@ -31,6 +31,11 @@
 
 #include <QSqlRecord>
 
+#include <boost/bind.hpp>
+
+#include "simplelog.h"
+#include "asyncdatabase.h"
+
 #include "sqlitestorage.h"
 
 //static 
@@ -79,150 +84,210 @@ SqliteStorage::SqliteStorage(QObject *parent)
     this->tasksModelColumnsOrder = this->mTaskColumnStr;
     this->catsModelColumnsOrder = this->mCatColumnStr;
     this->segsModelColumnsOrder = this->mSegColumnStr;
+
+    this->m_adb.reset(new AsyncDatabase());
+    QObject::connect(this->m_adb.get(), SIGNAL(ready(bool)), this, SLOT(onAdbStarted(bool)));
 }
 
 SqliteStorage::~SqliteStorage()
 {
-
 }
 
 bool SqliteStorage::open()
 {
+    QMap<QString, QString> createSqls; // table_name -> create table
+    QHash<QString, QStringList> cinitSqls; // table_name -> insert after create table
+    QString tname, tcsql;
+    QStringList cisqls;
+
+    //// t1
+    tname = "default_options";
+    tcsql = "CREATE TABLE default_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
+
+    QString insSql  = this->optInsSql;
+    QMap<QString, QString>::const_iterator mit;
+
+    for (mit = this->defaultOptions.begin() ; mit != this->defaultOptions.end() ; mit ++) {
+        QString sql = insSql.arg("default_options").arg(mit.key()).arg(mit.value()).arg("string").arg("false");
+        //qLogx()<< sql ;
+       cisqls.append(sql);
+    }
+    createSqls.insert(tname, tcsql);
+    cinitSqls.insert(tname, cisqls);
+
+    //// t2
+    tname = "user_options";
+    tcsql = "CREATE TABLE user_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
+    createSqls.insert(tname, tcsql);
+
+    //// t3
+    this->initDefaultTasks(createSqls, cinitSqls);
+
+    this->m_adb->setInitSqls(createSqls, cinitSqls);
+    if (!this->m_adb->isRunning()) {
+        this->m_adb->start();
+    }
 	//QSqlDatabase::addDatabase("QSQLITE");
 
-    QSqlDriver *drv = NULL;
-	if (! QSqlDatabase::contains(this->optionsPrefixName)) {
-		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", this->optionsPrefixName);
-        drv = db.driver();
-        QObject::connect(drv, SIGNAL(notification(const QString&)),
-                         this, SLOT(onOptionDBNotification(const QString&)));
-    }
-	if (! QSqlDatabase::contains(this->tasksPrefixName)) {
-		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", this->tasksPrefixName);
-        drv = db.driver();
-        QObject::connect(drv, SIGNAL(notification(const QString&)),
-                         this, SLOT(onTaskDBNotification(const QString&)));
-    }
-	//QSqlDatabase::addDatabase("QSQLITE",this->logsPrefixName);
-	//QSqlDatabase::addDatabase("QSQLITE",this->mirrorsPrefixName);
+//    QSqlDriver *drv = NULL;
+//	if (! QSqlDatabase::contains(this->optionsPrefixName)) {
+//		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", this->optionsPrefixName);
+//        drv = db.driver();
+//        QObject::connect(drv, SIGNAL(notification(const QString&)),
+//                         this, SLOT(onOptionDBNotification(const QString&)));
+//    }
+//	if (! QSqlDatabase::contains(this->tasksPrefixName)) {
+//		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", this->tasksPrefixName);
+//        drv = db.driver();
+//        QObject::connect(drv, SIGNAL(notification(const QString&)),
+//                         this, SLOT(onTaskDBNotification(const QString&)));
+//    }
+//	//QSqlDatabase::addDatabase("QSQLITE",this->logsPrefixName);
+//	//QSqlDatabase::addDatabase("QSQLITE",this->mirrorsPrefixName);
 
-	this->mOptionsDB = QSqlDatabase::database(this->optionsPrefixName, false);
-	this->mTasksDB = QSqlDatabase::database(this->tasksPrefixName, false);
-	//this->mLogsDB = QSqlDatabase::database(this->logsPrefixName);
-	//this->mMirrorsDB = QSqlDatabase::database(this->mirrorsPrefixName);
+//	this->mOptionsDB = QSqlDatabase::database(this->optionsPrefixName, false);
+//	this->mTasksDB = QSqlDatabase::database(this->tasksPrefixName, false);
+//	//this->mLogsDB = QSqlDatabase::database(this->logsPrefixName);
+//	//this->mMirrorsDB = QSqlDatabase::database(this->mirrorsPrefixName);
 
-	this->mOptionsDB.setDatabaseName(this->optionDBName);
-	this->mTasksDB.setDatabaseName(this->taskDBName);
-	qDebug()<< this->optionDBName ;
-	qDebug()<< this->taskDBName ;
+//	this->mOptionsDB.setDatabaseName(this->optionDBName);
+//	this->mTasksDB.setDatabaseName(this->taskDBName);
+//	qLogx()<< this->optionDBName ;
+//	qLogx()<< this->taskDBName ;
 
-	if (QFile::exists(this->optionDBName)) {
-		this->mOptionsDB.open();
-		//this->initDefaultOptions();
-		//dumpDefaultOptions () ;
-	} else {
-		this->mOptionsDB.open();
-		if (this->mOptionsDB.isValid()) {
-			this->mOptionsDB.close();
-			QFile::remove(this->optionDBName);
-			this->mOptionsDB.open();
-			this->initDefaultOptions();
-		}
-	}
+//	if (QFile::exists(this->optionDBName)) {
+//		this->mOptionsDB.open();
+//		//this->initDefaultOptions();
+//		//dumpDefaultOptions () ;
+//	} else {
+//		this->mOptionsDB.open();
+//		if (this->mOptionsDB.isValid()) {
+//			this->mOptionsDB.close();
+//			QFile::remove(this->optionDBName);
+//			this->mOptionsDB.open();
+//			this->initDefaultOptions();
+//		}
+//	}
 
-	if (QFile::exists(this->taskDBName)) {
-		this->mTasksDB.open();
-		//this->dumpDefaultTasks();
-	} else {
-		this->mTasksDB.open();
-		if (this->mTasksDB.isValid()) {
-			this->mTasksDB.close();
-			QFile::remove(this->optionDBName);
-			this->mTasksDB.open();
-			this->initDefaultTasks();
-		}
-	}
+//	if (QFile::exists(this->taskDBName)) {
+//		this->mTasksDB.open();
+//		//this->dumpDefaultTasks();
+//	} else {
+//		this->mTasksDB.open();
+//		if (this->mTasksDB.isValid()) {
+//			this->mTasksDB.close();
+//			QFile::remove(this->optionDBName);
+//			this->mTasksDB.open();
+//			this->initDefaultTasks();
+//		}
+//	}
 
 	return true;
 }
 
 bool SqliteStorage::close()
 {
-	if (this->mOptionsDB.isValid() && this->mOptionsDB.isOpen())
-		this->mOptionsDB.close();
-	if (this->mTasksDB.isValid() && this->mTasksDB.isOpen())
-		this->mTasksDB.close();
+//	if (this->mOptionsDB.isValid() && this->mOptionsDB.isOpen())
+//		this->mOptionsDB.close();
+//	if (this->mTasksDB.isValid() && this->mTasksDB.isOpen())
+//		this->mTasksDB.close();
 	//this->mLogsDB.close();
 	//this->mMirrorsDB.close();
 	return true;
 }
 
+bool SqliteStorage::isOpened()
+{
+    return this->m_adb->isConnected();
+}
+
 bool SqliteStorage::transaction()
 {
-    this->mTasksDB.transaction();
+//    this->mTasksDB.transaction();
     return true;
 }
 
 bool SqliteStorage::commit()
 {
-    this->mTasksDB.commit();
+//    this->mTasksDB.commit();
     return true;
 }
 
 bool SqliteStorage::rollback()
 {
-    this->mTasksDB.rollback();
+//    this->mTasksDB.rollback();
     return true;
 }
 
 bool SqliteStorage::initDefaultOptions () 
 {
-	char *createSql = "CREATE TABLE default_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
+//	char *createSql = "CREATE TABLE default_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
 
-    this->mOptionsDB.transaction();
+//    this->mOptionsDB.transaction();
 
-	QSqlQuery q(this->mOptionsDB);
-	q.exec(createSql);
+//	QSqlQuery q(this->mOptionsDB);
+//	q.exec(createSql);
 
-	QString insSql  = this->optInsSql;
-	QMap<QString, QString>::const_iterator mit;
+//	QString insSql  = this->optInsSql;
+//	QMap<QString, QString>::const_iterator mit;
 
-	for (mit = this->defaultOptions.begin() ; mit != this->defaultOptions.end() ; mit ++) {
-		QString sql = insSql.arg("default_options").arg(mit.key()).arg(mit.value()).arg("string").arg("false");
-		//qDebug()<< sql ;
-		q.exec(sql);
-	}
+//	for (mit = this->defaultOptions.begin() ; mit != this->defaultOptions.end() ; mit ++) {
+//		QString sql = insSql.arg("default_options").arg(mit.key()).arg(mit.value()).arg("string").arg("false");
+//		//qLogx()<< sql ;
+//		q.exec(sql);
+//	}
 
-	createSql = "CREATE TABLE user_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
-	q.exec(createSql);
+//	createSql = "CREATE TABLE user_options(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false')";
+//	q.exec(createSql);
 
-    this->mOptionsDB.commit();
+//    this->mOptionsDB.commit();
 
 	return true;
 }
 
-bool SqliteStorage::dumpDefaultOptions () 
+bool SqliteStorage::dumpDefaultOptions ()
 {
 	QString sql = "SELECT * FROM default_options";
 
-	QSqlQuery q(this->mOptionsDB);
-	q.exec(sql);
+//	QSqlQuery q(this->mOptionsDB);
+//	q.exec(sql);
 
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		//qDebug()<< " field Count : "<< rec.count() ;
-		//for( int  i = 0 ; i < rec.count() ; i ++)
-		{
-			qDebug()<< rec.fieldName(0)<<"="<< rec.value(0) << " ," 
-                    << rec.fieldName(1)<<"="<< rec.value(1) << " ," 
-                    << rec.fieldName(2)<<"="<< rec.value(2) ;
-		}
-	}
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		//qLogx()<< " field Count : "<< rec.count() ;
+//		//for( int  i = 0 ; i < rec.count() ; i ++)
+//		{
+//			qLogx()<< rec.fieldName(0)<<"="<< rec.value(0) << " ,"
+//                    << rec.fieldName(1)<<"="<< rec.value(1) << " ,"
+//                    << rec.fieldName(2)<<"="<< rec.value(2) ;
+//		}
+//	}
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::dumpDefaultOptionsDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
 
 	return true;
 }
 
-bool SqliteStorage::initDefaultTasks() 
+bool SqliteStorage::dumpDefaultOptionsDone(boost::shared_ptr<SqlRequest> req)
+{
+    qLogx()<<req->mRet;
+
+    this->mRequests.remove(req->mReqno);
+    return true;
+}
+
+bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<QString, QStringList> &cinitSqls)
 {
 	QString createSql = "CREATE TABLE tasks (%1)"; 
 	
@@ -240,13 +305,14 @@ bool SqliteStorage::initDefaultTasks()
 		if (i < sl.count() - 1) tempSql += " , ";
 	}
 	createSql = createSql.arg(tempSql);
-	qDebug()<<createSql;
+    qLogx()<<createSql;
+    createSqls.insert("tasks", createSql);
 
-	QSqlQuery q( this->mTasksDB );
+//	QSqlQuery q( this->mTasksDB );
     // 
-    this->mTasksDB.transaction();
+//    this->mTasksDB.transaction();
 
-	q.exec(createSql);
+//	q.exec(createSql);
 
 	createSql = "CREATE TABLE segments (%1, PRIMARY KEY (seg_id, task_id))";
 	sl = QString(this->mSegColumnStr).split(", ");
@@ -260,8 +326,9 @@ bool SqliteStorage::initDefaultTasks()
 		if (i < sl.count() - 1) tempSql += " , ";
 	}
 	createSql = createSql.arg(tempSql);
-	q.exec(createSql);
-	qDebug()<<createSql;
+//	q.exec(createSql);
+    qLogx()<<createSql;
+    createSqls.insert("segments", createSql);
 
 	createSql = "CREATE TABLE categorys (%1) ";
 	sl = QString(this->mCatColumnStr).split(",");
@@ -278,11 +345,12 @@ bool SqliteStorage::initDefaultTasks()
 		if (i < sl.count() - 1) tempSql += " , ";
 	}
 	createSql = createSql.arg(tempSql);
-	q.exec(createSql);
-	qDebug()<<createSql;
+//	q.exec(createSql);
+    qLogx()<<createSql;
+    createSqls.insert("categorys", createSql);
 
 	QString insSql = this->catInsSql;
-
+    QStringList insSqls;
 	for (int cnt = 0 ; cnt < this->defaultCategorys.count() ;  cnt ++) {
 		QMap<QString , QString> onecat = this->defaultCategorys.at(cnt);
 		QString realSql = QString(insSql)
@@ -296,68 +364,153 @@ bool SqliteStorage::initDefaultTasks()
 			.arg(onecat["create_time"])
 			.arg(onecat["delete_flag"]) 
 			.arg(onecat["dirty"]) ;
-		q.exec(realSql);
+        insSqls.append(realSql);
+//		q.exec(realSql);
 	}
+    cinitSqls.insert("categorys", insSqls);
 
 	createSql = "CREATE TABLE seq_tasks (seq_id INTEGER PRIMARY KEY AUTOINCREMENT, seq_null INTEGER)";
+    createSqls.insert("seq_tasks", createSql);
+//	q.exec(createSql);
 
-	q.exec(createSql);
-
-    this->mTasksDB.commit();
+//    this->mTasksDB.commit();
 
 	return true ;
 }
 
-bool SqliteStorage::dumpDefaultTasks() 
+bool SqliteStorage::dumpDefaultTasks()
 {
 	QString sql = "SELECT * FROM categorys ";
 	
-	QSqlQuery q(this->mTasksDB);
-	q.exec(sql);
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		//qDebug()<< " field Count : "<< rec.count() ;
-		for (int  i = 0 ; i < rec.count() ; i ++) {
-			qDebug()<< rec.fieldName(i)<<"="<< rec.value(i);
-		}
-	}
-	qDebug()<< q.lastError()<<": " << sql ;
+//	QSqlQuery q(this->mTasksDB);
+//	q.exec(sql);
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		//qLogx()<< " field Count : "<< rec.count() ;
+//		for (int  i = 0 ; i < rec.count() ; i ++) {
+//			qLogx()<< rec.fieldName(i)<<"="<< rec.value(i);
+//		}
+//	}
+//	qLogx()<< q.lastError()<<": " << sql ;
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::dumpDefaultTasksDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
 
 	return true ;
+}
+
+bool SqliteStorage::dumpDefaultTasksDone(boost::shared_ptr<SqlRequest> req)
+{
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::addDefaultOption(QString key, QString value, QString type)
 {
 	QString sql = this->optInsSql.arg("default_options").arg(key).arg(value).arg(type).arg("false");
 	
-	QSqlQuery q(this->mOptionsDB);
-	q.exec(sql);
+//	QSqlQuery q(this->mOptionsDB);
+//	q.exec(sql);
 
-	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql;
+//	qLogx()<<__FUNCTION__<< q.lastError()<<": " << sql;
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::dumpDefaultTasksDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
 
 	return true;
+}
+
+bool SqliteStorage::addDefaultOptionDone(boost::shared_ptr<SqlRequest> req)
+{
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::addUserOption(QString key, QString value, QString type)
 {
 	QString sql = this->optInsSql.arg("user_options").arg(key).arg(value).arg(type).arg("false");
 	
-	QSqlQuery q ( this->mOptionsDB);
-	q.exec(sql );
+//	QSqlQuery q ( this->mOptionsDB);
+//	q.exec(sql );
 
-	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql ;
+//	qLogx()<<__FUNCTION__<< q.lastError()<<": " << sql ;
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::addUserOptionDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
 
 	return true ;
 }
+
+bool SqliteStorage::addUserOptionDone(boost::shared_ptr<SqlRequest> req)
+{
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
+}
+
 bool SqliteStorage::deleteUserOption( QString key )
 {
 	QString sql = QString("DELETE FROM user_options WHERE option_name='%1'").arg(key);
 
-	QSqlQuery q ( this->mOptionsDB);
-	q.exec(sql );
+//	QSqlQuery q ( this->mOptionsDB);
+//	q.exec(sql );
 	
-	qDebug()<< q.lastError()<<": " << sql ;
+//	qLogx()<< q.lastError()<<": " << sql ;
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::deleteUserOptionDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
 	return true ;
+}
+
+bool SqliteStorage::deleteUserOptionDone(boost::shared_ptr<SqlRequest> req)
+{
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 QString SqliteStorage::getDefaultOption(QString key)
@@ -365,23 +518,23 @@ QString SqliteStorage::getDefaultOption(QString key)
     QString sql = QString("SELECT option_value FROM default_options WHERE option_name='%1'").arg(key);
     QString ov = QString::null;
 
-    QSqlQuery q(this->mOptionsDB);
-    q.exec(sql);
-	if (q.next()) {
-        QSqlRecord rec = q.record();
+//    QSqlQuery q(this->mOptionsDB);
+//    q.exec(sql);
+//	if (q.next()) {
+//        QSqlRecord rec = q.record();
 
-        // qDebug()<<__FUNCTION__<<rec;
-        //assert( rec.count() == 1 );
-        if (rec.count() == 1) {
-            ov = rec.value(0).toString();
-        } else {
-            //result = (quint64)(-1);
-            // assert( 1 == 2 );
-        }
-    } else {
-        // qDebug()<<__FUNCTION__<<"no result set";
-    }
-    // qDebug()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
+//        // qLogx()<<__FUNCTION__<<rec;
+//        //assert( rec.count() == 1 );
+//        if (rec.count() == 1) {
+//            ov = rec.value(0).toString();
+//        } else {
+//            //result = (quint64)(-1);
+//            // assert( 1 == 2 );
+//        }
+//    } else {
+//        // qLogx()<<__FUNCTION__<<"no result set";
+//    }
+    // qLogx()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
 
 	return ov;
 }
@@ -391,24 +544,24 @@ QString SqliteStorage::getUserOption(QString key)
     QString sql = QString("SELECT option_value FROM user_options WHERE option_name='%1'").arg(key);
     QString ov = QString::null;
 
-    QSqlQuery q(this->mOptionsDB);
-    q.exec(sql);
-	if (q.next()) {
-        QSqlRecord rec = q.record();
+//    QSqlQuery q(this->mOptionsDB);
+//    q.exec(sql);
+//	if (q.next()) {
+//        QSqlRecord rec = q.record();
 
-        // qDebug()<<__FUNCTION__<<rec;
-        //assert( rec.count() == 1 );
-        if (rec.count() == 1) {
-            ov = rec.value(0).toString();
-        } else {
-            //result = (quint64)(-1);
-            // assert( 1 == 2 );
-        }
-    } else {
-        // qDebug()<<__FUNCTION__<<"no result set";
-    }
+//        // qLogx()<<__FUNCTION__<<rec;
+//        //assert( rec.count() == 1 );
+//        if (rec.count() == 1) {
+//            ov = rec.value(0).toString();
+//        } else {
+//            //result = (quint64)(-1);
+//            // assert( 1 == 2 );
+//        }
+//    } else {
+//        // qLogx()<<__FUNCTION__<<"no result set";
+//    }
 
-	// qDebug()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
+    // qLogx()<< __FUNCTION__<<q.lastError()<<": " << sql  ;
 
 	return ov;   
 }
@@ -419,12 +572,12 @@ QVector<QPair<QString, QString> > SqliteStorage::getUserOptionsByType(QString ty
 
     QString sql = QString("SELECT option_name, option_value FROM user_options WHERE option_type='%1'").arg(type);
 
-    QSqlQuery query(this->mOptionsDB);
-    query.exec(sql);
-    while (query.next()) {
-        QSqlRecord rec = query.record();
-        options.append(QPair<QString, QString>(rec.value(0).toString(), rec.value(1).toString()));
-    }
+//    QSqlQuery query(this->mOptionsDB);
+//    query.exec(sql);
+//    while (query.next()) {
+//        QSqlRecord rec = query.record();
+//        options.append(QPair<QString, QString>(rec.value(0).toString(), rec.value(1).toString()));
+//    }
     return options;
 }
 
@@ -480,20 +633,42 @@ bool SqliteStorage::addTask(int task_id ,
            << redirect_times<< finish_time<< task_status<< total_packet<< abtained_packet
            << left_packet<< total_timestamp<< abtained_timestamp<< left_timestamp
            << file_length_abtained <<"false" <<"0";
-    // qDebug()<<"values count:"<<values.count();
+    // qLogx()<<"values count:"<<values.count();
     QString valueStr = values.join("','");
     valueStr = "'" + valueStr + "'";
     
     QString sql = this->taskInsSql;
     sql.replace("__VALUES_PLEACE__", valueStr);
 
-    this->mTasksDB.transaction();
-	QSqlQuery q (this->mTasksDB);
-	bool eok = q.exec(sql );
-    this->mTasksDB.commit();
+//    this->mTasksDB.transaction();
+//	QSqlQuery q (this->mTasksDB);
+//	bool eok = q.exec(sql );
+//    this->mTasksDB.commit();
 
-	qDebug()<<__FUNCTION__<<eok<<q.lastError()<<": " << sql ;
+//	qLogx()<<__FUNCTION__<<eok<<q.lastError()<<": " << sql ;
+
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::addTaskDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
 	return true ;
+}
+
+bool SqliteStorage::addTaskDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::updateTask(QHash<QString, QString> taskHash)
@@ -548,14 +723,34 @@ bool SqliteStorage::updateTask(int task_id,
 
 	// sql = sql.arg(file_size).arg(retry_times).arg(create_time).arg(current_speed).arg(average_speed).arg(eclapsed_time).arg(abtained_length).arg(left_length).arg(block_activity).arg(total_block_count).arg(active_block_count).arg(user_cat_id).arg(comment).arg(sys_cat_id).arg(file_name).arg(abtained_percent).arg(org_url).arg(real_url).arg(referer).arg(redirect_times).arg(finish_time).arg(task_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(abtained_timestamp).arg(left_timestamp).arg(file_length_abtained).arg("false").arg(aria_gid).arg(task_id) ;
 
-    this->mTasksDB.transaction();
-	QSqlQuery q(this->mTasksDB);
-	q.exec(sql );
-    this->mTasksDB.commit();
+//    this->mTasksDB.transaction();
+//	QSqlQuery q(this->mTasksDB);
+//	q.exec(sql );
+//    this->mTasksDB.commit();
 
-	qDebug()<<__FUNCTION__<< q.lastError()<<": " << sql ;
-	return true ;
+//	qLogx()<<__FUNCTION__<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
 
+    req->mCbFunctor = boost::bind(&SqliteStorage::updateTaskDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
+}
+
+bool SqliteStorage::updateTaskDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::addSegment ( int seg_id , int task_id , 
@@ -579,11 +774,32 @@ bool SqliteStorage::addSegment ( int seg_id , int task_id ,
 {
 	QString sql = this->segInsSql.arg(seg_id).arg(task_id).arg(start_offset).arg(create_time).arg(finish_time).arg(total_length).arg(abtained_length).arg(current_speed).arg(average_speed).arg(abtained_percent).arg(segment_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(finish_timestamp).arg(left_timestamp).arg(dirty) ;
 
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+    //qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::addSegmentDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
+}
+
+bool SqliteStorage::addSegmentDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::updateSegment( int seg_id , int task_id , 								  
@@ -609,11 +825,32 @@ bool SqliteStorage::updateSegment( int seg_id , int task_id ,
 		.arg(start_offset).arg(create_time).arg(finish_time).arg(total_length).arg(abtained_length).arg(current_speed).arg(average_speed).arg(abtained_percent).arg(segment_status).arg(total_packet).arg(abtained_packet).arg(left_packet).arg(total_timestamp).arg(finish_timestamp).arg(left_timestamp).arg("fasle")
 		.arg(task_id).arg(seg_id) ;
 
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+    //qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::updateSegmentDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
+}
+
+bool SqliteStorage::updateSegmentDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 bool SqliteStorage::addCategory( int cat_id , QString display_name , QString raw_name , QString folder , 
@@ -624,41 +861,128 @@ bool SqliteStorage::addCategory( int cat_id , QString display_name , QString raw
 	QString sql = this->catInsSql.arg(cat_id).arg(display_name).arg(raw_name).arg(folder)
 		.arg(path).arg(can_child).arg(parent_cat_id).arg(create_time).arg(delete_flag).arg("false") ;
 
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+//	qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::addCategoryDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
 }
+
+bool SqliteStorage::addCategoryDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
+}
+
 bool SqliteStorage::deleteTask( int task_id )
 {
 	QString sql = QString("DELETE FROM tasks WHERE task_id='%1' ").arg(task_id) ;
 
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+    //qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::deleteTaskDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
 }
+
+bool SqliteStorage::deleteTaskDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
+}
+
 bool SqliteStorage::deleteSegment( int task_id ,  int seg_id )
 {
 	QString sql = QString("DELETE FROM segments WHERE task_id='%1' AND seg_id='%2' ").arg(task_id).arg(seg_id) ;
 
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+    //qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::deleteSegmentDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
 }
+
+bool SqliteStorage::deleteSegmentDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
+}
+
 bool SqliteStorage::deleteCategory( int cat_id , bool deleteChild )
 {
 	QString sql = QString("DELETE FROM categorys WHERE cat_id='%1' ").arg(cat_id) ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	//qDebug()<< q.lastError()<<": " << sql ;
-	return true ;
+    //qLogx()<< q.lastError()<<": " << sql ;
+    boost::shared_ptr<SqlRequest> req(new SqlRequest());
+
+    req->mCbFunctor = boost::bind(&SqliteStorage::deleteCategoryDone, this, _1);
+    // req->mCbObject = this;
+    // req->mCbSlot = SLOT(onAddContactDone(boost::shared_ptr<SqlRequest>));
+    // req->mSql = QString("INSERT INTO kp_contacts (group_id,phone_number) VALUES (%1, '%2')")
+    //     .arg(pc->mGroupId).arg(pc->mPhoneNumber);
+    req->mSql = sql;
+    req->mReqno = this->m_adb->execute(req->mSql);
+    this->mRequests.insert(req->mReqno, req);
+
+    qLogx()<<req->mSql;
+
+    return true ;
+}
+
+bool SqliteStorage::deleteCategoryDone(boost::shared_ptr<SqlRequest> req)
+{
+
+    qLogx()<<req->mRet;
+    this->mRequests.remove(req->mReqno);
+    return true;
 }
 
 QVector<QSqlRecord> SqliteStorage::getCatSet()
@@ -669,14 +993,20 @@ QVector<QSqlRecord> SqliteStorage::getCatSet()
 	// 还有排序的问题。
 	QString sql = "SELECT " + this->catsModelColumnsOrder+ " FROM categorys ORDER BY parent_cat_id, cat_id ";
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		dataSet.append(rec);
-	}
-	//qDebug()<< q.lastError()<<": " << sql ;
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		dataSet.append(rec);
+//	}
+    //qLogx()<< q.lastError()<<": " << sql ;
+
+    QList<QSqlRecord> recs;
+    this->m_adb->syncExecute(sql, recs);
+    for (int i = 0; i < recs.count(); ++i) {
+        dataSet.append(recs.at(i));
+    }
 	
 	return dataSet ;
 }
@@ -685,20 +1015,20 @@ QVector<QSqlRecord> SqliteStorage::getTaskSet( int cat_id )
 {
 	QVector<QSqlRecord> dataSet ;
 
-	QSqlQuery q ( this->mTasksDB );
+//	QSqlQuery q ( this->mTasksDB );
 
 	//
 	//视图中显示的顺序与这里的顺序有直接的关系，可以说是一样的
 	//还有排序的问题。
 	QString sql = QString("SELECT " + QString(this->tasksModelColumnsOrder) +" FROM tasks WHERE sys_cat_id='%1' OR sys_cat_id IN (SELECT cat_id FROM categorys WHERE parent_cat_id='%1') ORDER BY task_id DESC").arg(cat_id);
 	
-	q.exec(sql );
+//	q.exec(sql );
 
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		dataSet.append(rec);
-	}
-	//qDebug()<< q.lastError()<<": " << sql  ;
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		dataSet.append(rec);
+//	}
+    //qLogx()<< q.lastError()<<": " << sql  ;
 	
 	return dataSet ;
 }
@@ -710,14 +1040,14 @@ QVector<QSqlRecord> SqliteStorage::getSementSet( int task_id )
 	//还有排序的问题。
 	QString sql = QString( "SELECT * FROM segments WHERE task_id = '%1' ORDER BY seg_id ASC " ) .arg(task_id) ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		dataSet.append(rec);
-	}
-	//qDebug()<< q.lastError()<<": " << sql ;
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		dataSet.append(rec);
+//	}
+    //qLogx()<< q.lastError()<<": " << sql ;
 	
 	return dataSet ;
 }
@@ -726,23 +1056,24 @@ int SqliteStorage::getNextValidTaskID()
 {
 	
 	QString sql = "INSERT INTO seq_tasks (seq_null) VALUES (0)";
-	QSqlQuery q( this->mTasksDB );
-	q.exec(sql);
+//	QSqlQuery q( this->mTasksDB );
+//	q.exec(sql);
 
-	qDebug()<< q.lastError()<<": " << sql ;
+//	qLogx()<< q.lastError()<<": " << sql ;
 
 	sql = "SELECT MAX(seq_id) AS max_seq_id FROM seq_tasks ";
 
-	q.exec(sql);
+//	q.exec(sql);
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );
+//	assert( rec.count() == 1 );
 
-	int max_task_id = rec.value(0).toInt();
+    int max_task_id = 0;
+//	int max_task_id = rec.value(0).toInt();
 
-	//qDebug()<< q.lastError()<<": " << sql << max_task_id ;
+    //qLogx()<< q.lastError()<<": " << sql << max_task_id ;
 
 	return (max_task_id);
 
@@ -757,7 +1088,7 @@ QVector<QString> SqliteStorage::getCatsColumns()
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
 	}
-	//qDebug()<< this->catsModelColumnsOrderShow ;
+    //qLogx()<< this->catsModelColumnsOrderShow ;
 
 	return result ;
 }
@@ -773,7 +1104,7 @@ QVector<QString> SqliteStorage::getTasksColumns()
 	for (int i = 0 ; i < ll.count() ; i ++) {		
 		result.append( ll.at(i).trimmed());
 	}
-	//qDebug()<< this->tasksModelColumnsOrderShow ;
+    //qLogx()<< this->tasksModelColumnsOrderShow ;
 
 	return result ;
 }
@@ -804,7 +1135,7 @@ QVector<QString> SqliteStorage::getInternalCatsColumns()
 	{		
 		result.append( ll.at(i).trimmed() );
 	}
-	//qDebug()<< this->catsModelColumnsOrderShow ;
+    //qLogx()<< this->catsModelColumnsOrderShow ;
 
 	return result ;
 }
@@ -821,7 +1152,7 @@ QVector<QString> SqliteStorage::getInternalTasksColumns()
 	{		
 		result.append( ll.at(i).trimmed() );
 	}
-	//qDebug()<< this->tasksModelColumnsOrderShow ;
+    //qLogx()<< this->tasksModelColumnsOrderShow ;
 
 	return result ;
 }
@@ -843,26 +1174,26 @@ bool SqliteStorage::containsTask(int task_id)
 {
 	QString sql = QString("SELECT count(*) AS task_count FROM tasks WHERE task_id = '%1' " ).arg(task_id);
 	
-	QSqlQuery q(this->mTasksDB);
-	q.exec(sql);
+//	QSqlQuery q(this->mTasksDB);
+//	q.exec(sql);
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );
+//	assert( rec.count() == 1 );
 
-	qDebug()<< q.lastError()<<": " << sql << rec.value(0).toInt();
+//	qLogx()<< q.lastError()<<": " << sql << rec.value(0).toInt();
 
-	if( rec.value(0).toInt() == 1 )
-		return true;
-	else if( rec.value(0).toInt() > 1 ) {
-		assert( 1==2);
-	} else if( rec.value(0).toInt() == 0 ) {
-		return false ;
-	} else {
-		assert( 1==2);
-	}
-	qDebug()<< q.lastError()<<": "<< sql;
+//	if( rec.value(0).toInt() == 1 )
+//		return true;
+//	else if( rec.value(0).toInt() > 1 ) {
+//		assert( 1==2);
+//	} else if( rec.value(0).toInt() == 0 ) {
+//		return false ;
+//	} else {
+//		assert( 1==2);
+//	}
+//	qLogx()<< q.lastError()<<": "<< sql;
 
 	return false ;
 }
@@ -874,26 +1205,26 @@ bool SqliteStorage::containsSegment(int task_id, int seg_id)
 	QString sql = QString("SELECT COUNT(*) AS segment_count FROM segments WHERE task_id = '%1' AND seg_id='%2'")
 		.arg(task_id) .arg( seg_id) ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );
+//	assert( rec.count() == 1 );
 
-	qDebug()<< q.lastError()<<": " << sql << rec.value(0).toInt() ;
+//	qLogx()<< q.lastError()<<": " << sql << rec.value(0).toInt() ;
 
-	if (rec.value(0).toInt() == 1)
-		return true;
-	else if (rec.value(0).toInt() > 1) {
-		assert( 1==2);
-	} else if (rec.value(0).toInt() == 0) {
-		return false;
-	} else {
-		assert( 1==2);
-	}
-	qDebug()<< q.lastError()<<": " << sql;
+//	if (rec.value(0).toInt() == 1)
+//		return true;
+//	else if (rec.value(0).toInt() > 1) {
+//		assert( 1==2);
+//	} else if (rec.value(0).toInt() == 0) {
+//		return false;
+//	} else {
+//		assert( 1==2);
+//	}
+//	qLogx()<< q.lastError()<<": " << sql;
 
 
 	return false;
@@ -905,17 +1236,17 @@ int SqliteStorage::getSubCatCountById(int cat_id)
 	QString sql = QString("SELECT COUNT(*) AS subcat_count FROM categorys WHERE parent_cat_id = '%1'" )
 		.arg(cat_id);
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );	
+//	assert( rec.count() == 1 );
 
-	result = rec.value(0).toInt();
+//	result = rec.value(0).toInt();
 
-	qDebug()<< q.lastError()<<": " << sql  ;
+//	qLogx()<< q.lastError()<<": " << sql  ;
 	return result ;
 }
 int SqliteStorage::getTotalFileCountById(int cat_id)
@@ -924,17 +1255,17 @@ int SqliteStorage::getTotalFileCountById(int cat_id)
 	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE sys_cat_id = '%1'" )
 		.arg(cat_id)  ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );
+//	assert( rec.count() == 1 );
 
-	result = rec.value(0).toInt();
+//	result = rec.value(0).toInt();
 
-	qDebug()<< q.lastError()<<": " << sql  ;
+//	qLogx()<< q.lastError()<<": " << sql  ;
 	return result ;
 }
 int SqliteStorage::getDownloadedFileCountById( int cat_id )
@@ -943,17 +1274,17 @@ int SqliteStorage::getDownloadedFileCountById( int cat_id )
 	QString sql = QString("SELECT COUNT(*) AS file_count FROM tasks WHERE sys_cat_id = '%1'"  )
 		.arg(cat_id)  ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	assert( rec.count() == 1 );
+//	assert( rec.count() == 1 );
 
-	result = rec.value(0).toInt();
+//	result = rec.value(0).toInt();
 
-	qDebug()<< q.lastError()<<": " << sql  ;
+//	qLogx()<< q.lastError()<<": " << sql  ;
 	return result ;
 }
 long SqliteStorage::getTotalDownloadedLength( int cat_id)
@@ -961,15 +1292,15 @@ long SqliteStorage::getTotalDownloadedLength( int cat_id)
 	long result = 0 ;
 	QString sql = QString("SELECT file_size FROM tasks WHERE sys_cat_id = '%1'").arg(cat_id);
 	
-	QSqlQuery q(this->mTasksDB);
-	q.exec(sql);
+//	QSqlQuery q(this->mTasksDB);
+//	q.exec(sql);
 
-	while (q.next()) {
-		QSqlRecord rec = q.record();
-		result += rec.value(0).toLongLong();
-	}
+//	while (q.next()) {
+//		QSqlRecord rec = q.record();
+//		result += rec.value(0).toLongLong();
+//	}
 	
-	qDebug()<< q.lastError()<<": " << sql  ;
+//	qLogx()<< q.lastError()<<": " << sql  ;
 	return result ;
 }
 
@@ -979,21 +1310,21 @@ quint64 SqliteStorage::getFileSizeById( int task_id)
 	QString sql = QString("SELECT file_size AS file_count FROM tasks WHERE task_id = '%1'"  )
 		.arg(task_id)  ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	//assert( rec.count() == 1 );
+//	//assert( rec.count() == 1 );
 
-	if (rec.count() == 1) {
-		result = rec.value(0).toULongLong() ;
-	} else {
-		result = (quint64)(-1);
-	}
+//	if (rec.count() == 1) {
+//		result = rec.value(0).toULongLong() ;
+//	} else {
+//		result = (quint64)(-1);
+//	}
 
-	qDebug()<< q.lastError()<<": " << sql;
+//	qLogx()<< q.lastError()<<": " << sql;
 	return result;
 }
 
@@ -1004,33 +1335,69 @@ QString SqliteStorage::getSavePathByCatId( int cat_id)
 	QString sql = QString("SELECT path FROM categorys WHEre cat_id = '%1'"  )
 		.arg(cat_id)  ;
 	
-	QSqlQuery q ( this->mTasksDB );
-	q.exec(sql );
+//	QSqlQuery q ( this->mTasksDB );
+//	q.exec(sql );
 
-	q.next();
-	QSqlRecord rec = q.record();
+//	q.next();
+//	QSqlRecord rec = q.record();
 
-	//assert( rec.count() == 1 );
+//	//assert( rec.count() == 1 );
 
-	if (rec.count() == 1) {
-		path = rec.value(0).toString();
-	} else {
-		//result = (quint64)(-1);
-		assert( 1 == 2 );
-	}
+//	if (rec.count() == 1) {
+//		path = rec.value(0).toString();
+//	} else {
+//		//result = (quint64)(-1);
+//		assert( 1 == 2 );
+//	}
 
-	//qDebug()<< q.lastError()<<": " << sql  ;
+    //qLogx()<< q.lastError()<<": " << sql  ;
 
 	return path;
 }
 
 void SqliteStorage::onTaskDBNotification(const QString &name)
 {
-    qDebug()<<__FUNCTION__<<name;
+    qLogx()<<__FUNCTION__<<name;
 }
 
 void SqliteStorage::onOptionDBNotification(const QString &name)
 {
-    qDebug()<<__FUNCTION__<<name;
+    qLogx()<<__FUNCTION__<<name;
+}
+
+void SqliteStorage::onAdbStarted(bool started)
+{
+    qLogx()<<started;
+    if (started) {
+        emit this->opened();
+    }
+}
+
+void SqliteStorage::onSqlExecuteDone(const QList<QSqlRecord> & results, int reqno, bool eret, const QString &estr, const QVariant &eval)
+{
+    qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<reqno;
+
+    QObject *cb_obj = NULL;
+    const char *cb_slot = NULL;
+    boost::function<bool(boost::shared_ptr<SqlRequest>)> cb_functor;
+    boost::shared_ptr<SqlRequest> req;
+    bool bret = false;
+    // QGenericReturnArgument qret;
+    // QGenericArgument qarg;
+    bool qret;
+    QMetaMethod qmethod;
+    char raw_method_name[32] = {0};
+
+    if (this->mRequests.contains(reqno)) {
+        req = this->mRequests[reqno];
+        req->mRet = eret;
+        req->mErrorString = estr;
+        req->mExtraValue = eval;
+        req->mResults = results;
+
+        // 实现方法太多，还要随机使用一种方法，找麻烦
+        cb_functor = req->mCbFunctor;
+        bret = cb_functor(req);
+    }
 }
 

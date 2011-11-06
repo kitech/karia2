@@ -45,6 +45,7 @@ public:
     void testFunc2();
 
 public slots:
+    void onStorageOpened();
     int createTask(TaskOption*option);
     int createTask(int taskId, TaskOption*option);
 

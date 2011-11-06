@@ -53,6 +53,8 @@
 #include <X11/extensions/XTest.h>
 #endif
 
+#include "simplelog.h"
+
 //#include "ariaman.h"
 //#include "maiaXmlRpcClient.h"
 
@@ -144,39 +146,20 @@ void Karia2::firstShowHandler()
 	///////	
 	// init base storage db 
     this->mStorage = SqliteStorage::instance(this);
+    QObject::connect(this->mStorage, SIGNAL(opened()), this, SLOT(onStorageOpened()));
 	this->mStorage->open();
 
     //
-	this->mCatView = this->mainUI.mui_tv_category;
-	this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
-	this->mCatViewModel = SqliteCategoryModel::instance(0);
-	this->mCatView->setModel(this->mCatViewModel);
-    this->mCatView->setRootIndex(this->mCatViewModel->index(0, 0)); // root is the topest node
-	this->mCatView->expandAll();
-
-    this->update();
+    this->mCatView = this->mainUI.mui_tv_category;
 
     ////
-	this->mTaskListView = this->mainUI.mui_tv_task_list;
-    this->mTaskItemDelegate = new TaskItemDelegate();
-    this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
-	// this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
+    this->mTaskListView = this->mainUI.mui_tv_task_list;
 
-	// this->mTaskListView->setModel(this->mTaskTreeViewModel);
-	this->mTaskListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	this->mTaskListView->setAlternatingRowColors(true);
-	// QObject::connect(this->mTaskListView->selectionModel(),
-    //                  SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
-    //                  this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
+    this->mSegListView = this->mainUI.mui_tv_seg_list;
 
-	this->mSegListView = this->mainUI.mui_tv_seg_list;
-	this->mSegListView->setSelectionMode(QAbstractItemView::SingleSelection );
-	this->mSegListView->setAlternatingRowColors(true);
-	//this->mSegListView ->setModel(mdl);
 
-	this->mSegLogListView = this->mainUI.mui_tv_seg_log_list;
-	this->mSegLogListView->setSelectionMode(QAbstractItemView::ExtendedSelection );
+    this->mSegLogListView = this->mainUI.mui_tv_seg_log_list;
+
 
     // 初始化任务队列管理实例
     this->mTaskMan = TaskQueue::instance();
@@ -231,31 +214,6 @@ void Karia2::firstShowHandler()
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
-
-
-    // select the default cat model
-    {
-        // cacl the downloading model index
-        QItemSelection readySelect, readDeselect;
-        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
-        qDebug()<<topCatIdx.data();
-        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
-        qDebug()<<l2RowCount;
-        for (int r = 0 ; r < l2RowCount ; r ++) {
-            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
-            qDebug()<<currCatIdx;
-            if (currCatIdx.data().toInt() == ng::cats::downloading) {
-                // for (int c = 0; c <= ng::cats::dirty; c ++) {
-                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
-                //     readySelect.select(readyIndex, readyIndex);
-                // }
-                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx), 
-                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
-                break;
-            }
-        }
-        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
-    }
 
 
     this->initUserOptionSetting();
@@ -696,9 +654,6 @@ void Karia2::connectAllSignalAndSlog()
 	QObject::connect(this->mainUI.action_Seg_Log_Save_To_File, SIGNAL(triggered()), this, SLOT(onSaveSegLog()));
 	QObject::connect(this->mainUI.action_Clear_Seg_Log, SIGNAL(triggered()), this, SLOT(onClearSegLog()));
 
-	//cat view
-	QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
-		this, SLOT(onCatListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 
 	//toolbar	//在UI设计器中将信号传递到标准菜单中。
 	//QObject::connect(this->mainUI.mui_tb_properties, SIGNAL(triggered()), this, SLOT(onShowTaskProperty()));
@@ -783,6 +738,70 @@ void Karia2::hideUnimplementUiElement()
 	this->mainUI.action_Seg_List_Restart->setVisible(false);
 }
 
+void Karia2::onStorageOpened()
+{
+    qLogx()<<"";
+    //
+    this->mCatView = this->mainUI.mui_tv_category;
+    this->mCatView->setSelectionMode(QAbstractItemView::SingleSelection );
+    this->mCatViewModel = SqliteCategoryModel::instance(0);
+    this->mCatView->setModel(this->mCatViewModel);
+    this->mCatView->setRootIndex(this->mCatViewModel->index(0, 0)); // root is the topest node
+    this->mCatView->expandAll();
+
+    this->update();
+
+    ////
+    this->mTaskListView = this->mainUI.mui_tv_task_list;
+    this->mTaskItemDelegate = new TaskItemDelegate();
+    this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
+    // this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
+
+    // this->mTaskListView->setModel(this->mTaskTreeViewModel);
+    this->mTaskListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    this->mTaskListView->setAlternatingRowColors(true);
+    // QObject::connect(this->mTaskListView->selectionModel(),
+    //                  SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+    //                  this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
+
+    this->mSegListView = this->mainUI.mui_tv_seg_list;
+    this->mSegListView->setSelectionMode(QAbstractItemView::SingleSelection );
+    this->mSegListView->setAlternatingRowColors(true);
+    //this->mSegListView ->setModel(mdl);
+
+    this->mSegLogListView = this->mainUI.mui_tv_seg_log_list;
+    this->mSegLogListView->setSelectionMode(QAbstractItemView::ExtendedSelection );
+
+    //cat view
+    QObject::connect(this->mCatView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
+        this, SLOT(onCatListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
+
+    // select the default cat model
+    {
+        // cacl the downloading model index
+        QItemSelection readySelect, readDeselect;
+        QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
+        qDebug()<<topCatIdx.data();
+        int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
+        qDebug()<<l2RowCount;
+        for (int r = 0 ; r < l2RowCount ; r ++) {
+            QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
+            qDebug()<<currCatIdx;
+            if (currCatIdx.data().toInt() == ng::cats::downloading) {
+                // for (int c = 0; c <= ng::cats::dirty; c ++) {
+                //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
+                //     readySelect.select(readyIndex, readyIndex);
+                // }
+                readySelect.select(this->mCatViewModel->index(r, 0, topCatIdx),
+                                   this->mCatViewModel->index(r, ng::cats::dirty, topCatIdx));
+                break;
+            }
+        }
+        this->mCatView->selectionModel()->select(readySelect, QItemSelectionModel::Select);
+    }
+}
+
 void Karia2::hideUnneededUiElement()
 {
 
@@ -838,7 +857,8 @@ int Karia2::getNextValidTaskId()
 	int taskId = -1;
 
 	SqliteStorage * storage = SqliteStorage::instance(this);
-	storage->open();
+
+    // storage->open();
 
 	taskId = storage->getNextValidTaskID();
 

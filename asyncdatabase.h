@@ -26,8 +26,8 @@ public:
         this->mReqno = -1;
         this->mRet = false;
         this->mErrCnt = 0;
-        this->mCbObject = nullptr;
-        this->mCbSlot = nullptr;
+        // this->mCbObject = nullptr;
+        // this->mCbSlot = nullptr;
 
         this->mCbData = nullptr;
     }
@@ -49,8 +49,8 @@ public:
     boost::function<bool(boost::shared_ptr<SqlRequest>)> mCbFunctor;
 
     // call back of qt slot
-    QObject *mCbObject;
-    const char *mCbSlot;
+    // QObject *mCbObject;
+    // const char *mCbSlot;
 
     int mCbId;
     void *mCbData;
@@ -63,6 +63,8 @@ class AsyncDatabase : public QThread
 public:
     explicit AsyncDatabase(QObject *parent = 0);
     virtual ~AsyncDatabase();
+
+    void setInitSqls(QMap<QString, QString> creates, QHash<QString, QStringList> cinits);
 
     bool isConnected() { return this->m_connected; }
     int execute(const QString &query); // 返回一个执行号码
@@ -96,6 +98,9 @@ private:
 
     // std::atomic<bool> m_connected;
     bool m_connected;
+
+    QMap<QString, QString> createSqls; // table_name -> create table
+    QHash<QString, QStringList> cinitSqls; // table_name -> insert after create table
 
 };
 

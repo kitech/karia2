@@ -21,8 +21,8 @@
 #define DATABASE_USER "magdalena"
 #define DATABASE_PASS "deedee"
 // #define DATABASE_NAME "asynchdbtest.db"
-#define SESSDB_CONN_NAME "AsyncWorkerDatatbase"
-#define DATABASE_NAME "kitsession.edb"
+#define SESSDB_CONN_NAME "AsyncWorkerDatatbase_karia2"
+#define DATABASE_NAME "karia2.edb"
 #define DATABASE_HOST ""
 #define DATABASE_DRIVER "QSQLITE"
 #define SAMPLE_RECORDS 100000
@@ -32,6 +32,13 @@
 #define TABLE_OPTIONS "kp_options"
 #define TABLE_GROUPS "kp_groups"
 #define TABLE_ACCOUNTS "kp_accounts"
+
+#define TABLE_KARIA2_DEFAULT_OPTIONS "default_options"
+#define TABLE_KARIA2_USER_OPTIONS "user_options"
+#define TABLE_KARIA2_TASKS "tasks"
+#define TABLE_KARIA2_SEGMENTS "segments"
+#define TABLE_KARIA2_CATEGORYS "categorys"
+#define TABLE_KARIA2_SEQ_TASKS "seq_tasks"
 
 //
 DatabaseWorker::DatabaseWorker( QObject* parent )
@@ -50,7 +57,13 @@ DatabaseWorker::~DatabaseWorker()
     // QSqlDatabasePrivate::removeDatabase: connection 'WorkerDatabase' is still in use, all queries will cease to work.
     // this->m_database = QSqlDatabase::addDatabase(DATABASE_DRIVER, "database_driver_destructor");
 
-    QSqlDatabase::removeDatabase("WorkerDatabase");
+    QSqlDatabase::removeDatabase(SESSDB_CONN_NAME);
+}
+
+void DatabaseWorker::setInitSqls(QMap<QString, QString> creates, QHash<QString, QStringList> cinits)
+{
+    this->createSqls = creates;
+    this->cinitSqls = cinits;
 }
 
 bool DatabaseWorker::connectDatabase()
@@ -59,9 +72,9 @@ bool DatabaseWorker::connectDatabase()
 #ifdef WIN32
     QString db_file_path = qApp->applicationDirPath() + "/" + DATABASE_NAME;
 #else
-    QString db_file_path = QDir::homePath() + "/.kitphone/" + DATABASE_NAME;
-    if (!QDir().exists(QDir::homePath() + "/.kitphone/")) {
-        QDir().mkdir(QDir::homePath() + "/.kitphone/");
+    QString db_file_path = QDir::homePath() + "/.karia2/" + DATABASE_NAME;
+    if (!QDir().exists(QDir::homePath() + "/.karia2/")) {
+        QDir().mkdir(QDir::homePath() + "/.karia2/");
     }
     // for test
     db_file_path = qApp->applicationDirPath() + "/" + DATABASE_NAME;
@@ -75,7 +88,7 @@ bool DatabaseWorker::connectDatabase()
     }
 
     QSqlDatabase m_database = QSqlDatabase::addDatabase( DATABASE_DRIVER, 
-                                            "WorkerDatabase" ); // named connection
+                                            SESSDB_CONN_NAME ); // named connection
     // m_database.setDatabaseName( DATABASE_NAME );
     m_database.setDatabaseName(db_file_path);
     m_database.setHostName( DATABASE_HOST );
@@ -92,13 +105,40 @@ bool DatabaseWorker::connectDatabase()
     bool has_new_created_table = false;
     bool bok;
     QSqlQuery q;
-    if (!m_database.tables().contains(TABLE_OPTIONS)) {
-        // some data
-        QString sql = QString("CREATE TABLE %1 (key VARCHAR(20) PRIMARY KEY, value VARCHAR(32));").arg(TABLE_OPTIONS);
-        // m_database.exec( "create table item(id int, name varchar);" );
-        q = m_database.exec(sql);
-        qDebug()<<TABLE_OPTIONS<<q.lastQuery()<<q.lastError();
+    QString ctable_name, ctable_sql, ins_sql;
+    QStringList ctable_inserts;
+    QMap<QString, QString>::iterator it;
+    for (it = this->createSqls.begin(); it != this->createSqls.end(); ++it) {
+        ctable_name = it.key();
+        ctable_sql = it.value();
+
+        if (m_database.tables().contains(ctable_name)) {
+            continue;
+        } else {
+            has_new_created_table = true;
+        }
+
+        q = m_database.exec(ctable_sql);
+        qDebug()<<ctable_name<<q.lastQuery()<<q.lastError();
+
+        if (this->cinitSqls.contains(ctable_name)) {
+            ctable_inserts = this->cinitSqls.value(ctable_name);
+            QSqlQuery query(m_database);
+            for (int i = 0; i < ctable_inserts.count(); ++i) {
+                ins_sql = ctable_inserts.at(i);
+                bok = query.exec(ins_sql);
+                qDebug()<<ctable_name<<bok<<query.lastQuery()<<query.lastError();
+            }
+        }
     }
+//    if (!m_database.tables().contains(TABLE_KARIA2_DEFAULT_OPTIONS)) {
+//        // some data
+//        QString sql = QString("CREATE TABLE %1(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false');")
+//                .arg(TABLE_KARIA2_DEFAULT_OPTIONS);
+//        // m_database.exec( "create table item(id int, name varchar);" );
+//        q = m_database.exec(sql);
+//        qDebug()<<TABLE_OPTIONS<<q.lastQuery()<<q.lastError();
+//    }
 
     /*
       CREATE TABLE TABLE_GROUPS (
@@ -106,36 +146,37 @@ bool DatabaseWorker::connectDatabase()
       group_name VARCHAR(100) UNIQUE NOT NULL
       );
      */
-    if (!m_database.tables().contains(TABLE_GROUPS)) {
-        has_new_created_table = true;
-        // some data
-        QString sql = QString("CREATE TABLE %1 (gid INTEGER PRIMARY KEY AUTOINCREMENT, group_name VARCHAR(100) UNIQUE);").arg(TABLE_GROUPS);
-        // m_database.exec( "create table item(id int, name varchar);" );
-        q = m_database.exec(sql);
-        qDebug()<<TABLE_GROUPS<<q.lastQuery()<<q.lastError();
+//    if (!m_database.tables().contains(TABLE_KARIA2_USER_OPTIONS)) {
+//        has_new_created_table = true;
+//        // some data
+//        QString sql = QString("CREATE TABLE %1(option_name VARCHAR(32) PRIMARY KEY, option_value VARCHAR(64), option_type VARCHAR(32), dirty VARCHAR(8) DEFAULT 'false');")
+//                .arg(TABLE_KARIA2_USER_OPTIONS);
+//        // m_database.exec( "create table item(id int, name varchar);" );
+//        q = m_database.exec(sql);
+//        qDebug()<<TABLE_GROUPS<<q.lastQuery()<<q.lastError();
 
-        QSqlQuery query(m_database);
-        query.prepare(QString("INSERT INTO %1 (gid,group_name) VALUES (?,?)").arg(TABLE_GROUPS));
+//        QSqlQuery query(m_database);
+//        query.prepare(QString("INSERT INTO %1 (gid,group_name) VALUES (?,?)").arg(TABLE_GROUPS));
 
-        query.addBindValue(1);
-        query.addBindValue("Family");
-        query.exec();
+//        query.addBindValue(1);
+//        query.addBindValue("Family");
+//        query.exec();
 
-        query.addBindValue(2);
-        query.addBindValue("Friends");
-        query.exec();
+//        query.addBindValue(2);
+//        query.addBindValue("Friends");
+//        query.exec();
 
-        query.addBindValue(3);
-        query.addBindValue("Others");
-        query.exec();
+//        query.addBindValue(3);
+//        query.addBindValue("Others");
+//        query.exec();
 
-        m_database.commit();
+//        m_database.commit();
 
-        qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
+//        qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
 
-        // query.exec(QString("INSERT INTO %1 (group_name) VALUES ('vvvvvvvvvvvvvv')").arg(TABLE_GROUPS));
-        // qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
-    }
+//        // query.exec(QString("INSERT INTO %1 (group_name) VALUES ('vvvvvvvvvvvvvv')").arg(TABLE_GROUPS));
+//        // qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
+//    }
     /*
       CREATE TABLE TABLE_CONTACTS (
       cid INTEGER PRIMARY KEY ,
@@ -144,14 +185,14 @@ bool DatabaseWorker::connectDatabase()
       phone_number VARCHAR(100) UNIQUE
       );
      */
-    if (!m_database.tables().contains(TABLE_CONTACTS)) {
-        has_new_created_table = true;
-        // some data
-        QString sql = QString("CREATE TABLE %1 (cid INTEGER PRIMARY KEY AUTOINCREMENT, group_id INTERGER NOT NULL, display_name VARCHAR(100) UNIQUE, phone_number VARCHAR(100) UNIQUE);").arg(TABLE_CONTACTS);
-        // m_database.exec( "create table item(id int, name varchar);" );
-        q = m_database.exec(sql);
-        qDebug()<<TABLE_CONTACTS<<q.lastQuery()<<q.lastError();
-    }
+//    if (!m_database.tables().contains(TABLE_CONTACTS)) {
+//        has_new_created_table = true;
+//        // some data
+//        QString sql = QString("CREATE TABLE %1 (cid INTEGER PRIMARY KEY AUTOINCREMENT, group_id INTERGER NOT NULL, display_name VARCHAR(100) UNIQUE, phone_number VARCHAR(100) UNIQUE);").arg(TABLE_CONTACTS);
+//        // m_database.exec( "create table item(id int, name varchar);" );
+//        q = m_database.exec(sql);
+//        qDebug()<<TABLE_CONTACTS<<q.lastQuery()<<q.lastError();
+//    }
 
     /*
       Basically, create a column of type INTEGER PRIMARY KEY or a column called ROWID, then don't specify the value when inserting a row.
@@ -165,14 +206,14 @@ bool DatabaseWorker::connectDatabase()
       );
      */
 
-    if (!m_database.tables().contains(TABLE_HISTORIES)) {
-        has_new_created_table = true;
-        // some data
-        QString sql = QString("CREATE TABLE %1 (hid INTEGER PRIMARY KEY AUTOINCREMENT, contact_id INTEGER NOT NULL, phone_number VARCHAR(100), call_status INTEGER, call_ctime VARCHAR(100), call_etime VARCHAR(100));").arg(TABLE_HISTORIES);
-        // m_database.exec( "create table item(id int, name varchar);" );
-        q = m_database.exec(sql);
-        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
-    }
+//    if (!m_database.tables().contains(TABLE_HISTORIES)) {
+//        has_new_created_table = true;
+//        // some data
+//        QString sql = QString("CREATE TABLE %1 (hid INTEGER PRIMARY KEY AUTOINCREMENT, contact_id INTEGER NOT NULL, phone_number VARCHAR(100), call_status INTEGER, call_ctime VARCHAR(100), call_etime VARCHAR(100));").arg(TABLE_HISTORIES);
+//        // m_database.exec( "create table item(id int, name varchar);" );
+//        q = m_database.exec(sql);
+//        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
+//    }
  
     // for account manager
     /*
@@ -188,14 +229,14 @@ bool DatabaseWorker::connectDatabase()
       );
      */
 
-    if (!m_database.tables().contains(TABLE_ACCOUNTS)) {
-        has_new_created_table = true;
-        // some data
-        QString sql = QString("CREATE TABLE %1 (aid INTEGER PRIMARY KEY AUTOINCREMENT, account_name VARCHAR(100) NOT NULL, account_password VARCHAR(100), display_name VARCHAR(100) NOT NULL UNIQUE, serv_addr VARCHAR(100) NOT NULL, account_status INTEGER, account_ctime VARCHAR(100), account_mtime VARCHAR(100));").arg(TABLE_ACCOUNTS);
-        // m_database.exec( "create table item(id int, name varchar);" );
-        q = m_database.exec(sql);
-        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
-    }
+//    if (!m_database.tables().contains(TABLE_ACCOUNTS)) {
+//        has_new_created_table = true;
+//        // some data
+//        QString sql = QString("CREATE TABLE %1 (aid INTEGER PRIMARY KEY AUTOINCREMENT, account_name VARCHAR(100) NOT NULL, account_password VARCHAR(100), display_name VARCHAR(100) NOT NULL UNIQUE, serv_addr VARCHAR(100) NOT NULL, account_status INTEGER, account_ctime VARCHAR(100), account_mtime VARCHAR(100));").arg(TABLE_ACCOUNTS);
+//        // m_database.exec( "create table item(id int, name varchar);" );
+//        q = m_database.exec(sql);
+//        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
+//    }
 
     // 如果有新创建的表，则关闭再打开。否则可能调用端查询不到数据。
     if (has_new_created_table == true) {
@@ -234,7 +275,7 @@ QString DatabaseWorker::escapseString(const QString &str)
     QSqlField fld("haha", QVariant::String);
     fld.setValue(str);
 
-    QSqlDatabase m_database = QSqlDatabase::database("WorkerDatabase");
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
     estr = m_database.driver()->formatValue(fld);
 
     qLogx()<<"Fmt1:"<<estr<< (estr == str);
@@ -289,7 +330,7 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
     QSqlError edb;
     QList<QSqlRecord> recs;
 
-    QSqlDatabase m_database = QSqlDatabase::database("WorkerDatabase");
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
 
     QSqlQuery dbq(m_database);
     QStringList qelms;
@@ -354,7 +395,7 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
     QSqlError edb;
     QList<QSqlRecord> recs;
 
-    QSqlDatabase m_database = QSqlDatabase::database("WorkerDatabase");
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
 
     QSqlQuery dbq(m_database);
     QStringList qelms;
@@ -435,7 +476,7 @@ int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records
     QSqlError edb;
     QList<QSqlRecord> recs;
 
-    QSqlDatabase m_database = QSqlDatabase::database("WorkerDatabase");
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
 
     QSqlQuery dbq(m_database);
     QStringList qelms;

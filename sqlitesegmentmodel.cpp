@@ -65,8 +65,9 @@ bool SqliteSegmentModel::containsInstance( int task_id )
 SqliteSegmentModel::SqliteSegmentModel( int task_id , QObject *parent)
 	: QAbstractItemModel(parent)
 {
-	this->mStorage = new SqliteStorage( parent );
-	this->mStorage->open();
+//	this->mStorage = new SqliteStorage( parent );
+//	this->mStorage->open();
+    this->mStorage = SqliteStorage::instance();
 	this->mSegmentsTableColumns = this->mStorage->getInternalSegmentsColumns();
 
 	this->mModelData = this->mStorage->getSementSet( task_id );
