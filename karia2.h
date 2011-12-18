@@ -31,8 +31,8 @@ class OptionManager;
 
 class EAria2Man;
 
-class Skype;
-class SkypeTracer;
+// class Skype;
+// class SkypeTracer;
 
 class Karia2 : public QMainWindow
 {
@@ -179,8 +179,8 @@ private:
     //////// using embeded aria2c procedue
     EAria2Man *mEAria2Man;
 
-    Skype *mSkype;
-    SkypeTracer *mSkypeTracer;
+    // Skype *mSkype;
+    // SkypeTracer *mSkypeTracer;
 
 public slots:
 	void onSwitchWindowStyle(QAction *action);
@@ -249,12 +249,12 @@ public slots:
 	void onObjectDestroyed(QObject *object = 0);
 
     // skype related
-    void onShowSkypeTracer(bool checked);
-    void onSkypeError(int errNo, QString msg);
+    // void onShowSkypeTracer(bool checked);
+    // void onSkypeError(int errNo, QString msg);
     // skype related test
-    void onChatWithSkype();
-    void onSendPackage();
-    void onCallSkype();
+    // void onChatWithSkype();
+    // void onSendPackage();
+    // void onCallSkype();
 
 private slots:
     // aria2rpc related

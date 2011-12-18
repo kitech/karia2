@@ -80,7 +80,7 @@ EAria2Man::EAria2Man(QObject *parent)
 
 EAria2Man::~EAria2Man()
 {
-
+    qLogx()<<"";
 }
 
 EAria2Man *EAria2Man::instance()
@@ -344,7 +344,7 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
 void EAria2Man::onWorkerFinished()
 {
     int tid;
-    EAria2Worker *eaw = static_cast<EAria2Worker*>(sender());\
+    EAria2Worker *eaw = static_cast<EAria2Worker*>(sender());
     aria2::SharedHandle<aria2::RequestGroup> rg;
 
     tid = eaw->m_tid;
@@ -378,7 +378,7 @@ EAria2Worker::EAria2Worker(QObject *parent)
 
 EAria2Worker::~EAria2Worker()
 {
-
+    qLogx()<<"";
 }
 
 void EAria2Worker::run()

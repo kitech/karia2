@@ -15,6 +15,8 @@
 #include <QTranslator>
 #include <QLocale>
 
+#include "simplelog.h"
+
 #include "karia2application.h"
 #include "karia2.h"
 
@@ -45,7 +47,8 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
     
     cmdLine = args.join(" ");
     
-    qDebug()<<__FUNCTION__<<cmdLine;
+    qLogx()<<cmdLine;
+    // qDebug()<<__FUNCTION__<<cmdLine;
     return cmdLine;
 }
 // unpack is not need, because getopt4 support QStringList format cmdLine.
@@ -60,7 +63,7 @@ int main(int argc, char *argv[])
 	app.setQuitOnLastWindowClosed(false);
 
     if (app.isRunning()) {
-        qDebug()<<"Another instance of karia2 is running.";
+        qLogx()<<"Another instance of karia2 is running.";
         QString msg("sayhello: hi master, are you ok?");
         bool sendok = app.sendMessage(msg);
         msg = "cmdline:" + packArguments(&app, argc, argv);

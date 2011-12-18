@@ -53,12 +53,12 @@ bool Karia2Application::macEventFilter(EventHandlerCallRef caller, EventRef even
 }
 #else
 #include <X11/Xlib.h>
-#include "xmessages.h"
+// #include "xmessages.h"
 bool Karia2Application::x11EventFilter(XEvent *event)
 {
     switch(event->type) {
     case ClientMessage:
-        XMessages::processXMessages(event);
+        // XMessages::processXMessages(event);
         break;
     }
     // return FALSE;

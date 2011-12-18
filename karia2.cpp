@@ -61,9 +61,9 @@
 #include "emaria2c.h"
 
 #include "metauri.h"
-#include "skype.h"
-#include "skypetunnel.h"
-#include "skypetracer.h"
+//#include "skype.h"
+//#include "skypetunnel.h"
+//#include "skypetracer.h"
 
 extern QHash<QString, QString> gMimeHash;
 
@@ -75,7 +75,7 @@ Karia2::Karia2(QWidget *parent, Qt::WFlags flags)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
     , mEAria2Man(NULL)
-    , mSkypeTracer(NULL)
+//    , mSkypeTracer(NULL)
 {
     //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
 	mainUI.setupUi(this);	
@@ -220,7 +220,7 @@ void Karia2::firstShowHandler()
     // process arguments 
     this->handleArguments();
 
-    this->mSkype = new Skype("karia2");
+    // this->mSkype = new Skype("karia2");
     // QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
     //                  this, SLOT(onSkypeError(int, QString)));
     // bool cok = this->mSkype->connectToSkype();
@@ -3223,9 +3223,10 @@ void Karia2::paintEvent (QPaintEvent * event )
  */
 void Karia2::closeEvent (QCloseEvent * event )
 {
-	qDebug()<<__FUNCTION__ << this->sender();
+    qLogx()<<this->sender();
 	//qDebug()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
-	if (this->sender() == 0) { // 点击右上角的X号,将该行为转成窗口最小化，隐藏到系统托盘区域
+    if (this->sender() == 0) {
+        // 点击右上角的X号, 或者Alt+F4，将该行为转成窗口最小化，隐藏到系统托盘区域
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		event->setAccepted(false);
 	} else {//通过点击退出菜单，可认为用户是想退出的。
@@ -3700,75 +3701,75 @@ void Karia2::onObjectDestroyed(QObject *obj)
 	obj->dumpObjectTree ();
 }
 
-void Karia2::onSkypeError(int errNo, QString msg)
-{
-    qDebug()<<errNo<<msg;
-}
+//void Karia2::onSkypeError(int errNo, QString msg)
+//{
+//    qDebug()<<errNo<<msg;
+//}
 
-void Karia2::onShowSkypeTracer(bool checked)
-{
-    // if (this->mSkypeTracer == NULL) {
-    //     this->mSkypeTracer = new SkypeTracer(this);
-    //     QObject::connect(this->mSkype, SIGNAL(commandRequest(QString)),
-    //                      this->mSkypeTracer, SLOT(onCommandRequest(QString)));
-    //     QObject::connect(this->mSkype, SIGNAL(commandResponse(QString)),
-    //                      this->mSkypeTracer, SLOT(onCommandResponse(QString)));
-    //     QObject::connect(this->mSkypeTracer, SIGNAL(commandRequest(QString)),
-    //                      this->mSkype, SLOT(onCommandRequest(QString)));
-    // }
+//void Karia2::onShowSkypeTracer(bool checked)
+//{
+//    // if (this->mSkypeTracer == NULL) {
+//    //     this->mSkypeTracer = new SkypeTracer(this);
+//    //     QObject::connect(this->mSkype, SIGNAL(commandRequest(QString)),
+//    //                      this->mSkypeTracer, SLOT(onCommandRequest(QString)));
+//    //     QObject::connect(this->mSkype, SIGNAL(commandResponse(QString)),
+//    //                      this->mSkypeTracer, SLOT(onCommandResponse(QString)));
+//    //     QObject::connect(this->mSkypeTracer, SIGNAL(commandRequest(QString)),
+//    //                      this->mSkype, SLOT(onCommandRequest(QString)));
+//    // }
 
-    // this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
-}
+//    // this->mSkypeTracer->setVisible(!this->mSkypeTracer->isVisible());
+//}
 
-void Karia2::onChatWithSkype()
-{
-    // QString skypeName = this->mainUI.lineEdit->text();
+//void Karia2::onChatWithSkype()
+//{
+//    // QString skypeName = this->mainUI.lineEdit->text();
     
-    // QStringList contacts = this->mSkype->getContacts();
-    // qDebug()<<skypeName<<contacts;
+//    // QStringList contacts = this->mSkype->getContacts();
+//    // qDebug()<<skypeName<<contacts;
 
-    // this->mSkype->newStream(skypeName);
-    // this->mSkype->newStream("drswinghead");
-}
+//    // this->mSkype->newStream(skypeName);
+//    // this->mSkype->newStream("drswinghead");
+//}
 
-void Karia2::onSendPackage()
-{
-    MetaUri mu;
-    mu.url = "http://sourceforge.net/projects/nullfxp/files/nullfxp/nullfxp-2.0.2/nullfxp-2.0.2.tar.bz2/download";
-    mu.nameMd5 = "aceo732lksdf93sf32983rwe";
-    mu.contentMd5 = "is832rj9dvsdklfwwewfwf8sd2";
-    mu.fileSize = 12342432812LL;
-    mu.owner = "liuguangzhao";
-    mu.valid = true;
-    mu.mtime = 1234556789;
+//void Karia2::onSendPackage()
+//{
+//    MetaUri mu;
+//    mu.url = "http://sourceforge.net/projects/nullfxp/files/nullfxp/nullfxp-2.0.2/nullfxp-2.0.2.tar.bz2/download";
+//    mu.nameMd5 = "aceo732lksdf93sf32983rwe";
+//    mu.contentMd5 = "is832rj9dvsdklfwwewfwf8sd2";
+//    mu.fileSize = 12342432812LL;
+//    mu.owner = "liuguangzhao";
+//    mu.valid = true;
+//    mu.mtime = 1234556789;
 
-    // QString muStr = mu.toString();
+//    // QString muStr = mu.toString();
     
-    // SkypePackage sp;
-    // sp.seq = SkypeCommand::nextID().toInt();
-    // sp.type = SkypePackage::SPT_MU_ADD;
-    // sp.data = muStr;
+//    // SkypePackage sp;
+//    // sp.seq = SkypeCommand::nextID().toInt();
+//    // sp.type = SkypePackage::SPT_MU_ADD;
+//    // sp.data = muStr;
     
-    // QString spStr = sp.toString();
+//    // QString spStr = sp.toString();
     
-    // qDebug()<<muStr<<spStr;
+//    // qDebug()<<muStr<<spStr;
 
-    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
-}
+//    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
+//}
 
-void Karia2::onCallSkype()
-{
-    // QString num = this->mainUI.lineEdit_2->text();
+//void Karia2::onCallSkype()
+//{
+//    // QString num = this->mainUI.lineEdit_2->text();
     
-    // SkypePackage sp;
-    // sp.seq = SkypeCommand::nextID().toInt();
-    // sp.type = SkypePackage::SPT_GW_SELECT;
-    // sp.data = num;
+//    // SkypePackage sp;
+//    // sp.seq = SkypeCommand::nextID().toInt();
+//    // sp.type = SkypePackage::SPT_GW_SELECT;
+//    // sp.data = num;
 
-    // QString spStr = sp.toString();
-    // qDebug()<<spStr;
-    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
-}
+//    // QString spStr = sp.toString();
+//    // qDebug()<<spStr;
+//    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
+//}
 
 
 //QAXFACTORY_DEFAULT(Karia2,

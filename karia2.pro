@@ -39,7 +39,7 @@ INCLUDEPATH += ./libmaia/ ./qtsingleapplication ./skynet
 
 # karia2 realy need this?
 unix{
-	LIBS += -lssl    	
+    LIBS += -lssl -lX11
 }
 win32 {
 	win32-g++ {
@@ -75,7 +75,7 @@ win32 {
     }
 } else {
     INCLUDEPATH += ./aria2-1.13.0/src/
-    LIBS += -L./aria2-1.13.0/src/ -laria2c -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
+    LIBS += -L./aria2-1.13.0/src/ -laria2c -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
@@ -100,7 +100,7 @@ QTSAPP_HEADERS = qtsingleapplication/qtsingleapplication.h qtsingleapplication/q
 QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
 
 ## libskynet
-include(./skynet/libskynet.pri)
+# include(./skynet/libskynet.pri)
 
 ## qtxmlrpc library
 include(./qxmlrpc/client/client.pri)
@@ -126,7 +126,7 @@ HEADERS += aboutdialog.h \
            rulesmandlg.h \
            segmentlogmodel.h \
            serverswitcher.h \
-           skypeclientwnd.h \
+           # skypeclientwnd.h \
            sqlitecategorymodel.h \
            sqlitesegmentmodel.h \
            sqlitestorage.h \
@@ -152,8 +152,8 @@ HEADERS += aboutdialog.h \
            seedfilemodel.h \
            seedfilesdialog.h \  
            taskitemdelegate.h \
-           skypetracer.h \
-           skypetunnel.h \
+#           skypetracer.h \
+#           skypetunnel.h \
            simplelog.h \
            asyncdatabase.h \
            databaseworker.h \
@@ -184,7 +184,7 @@ SOURCES += aboutdialog.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \
            serverswitcher.cpp \
-           skypeclientwnd.cpp \
+#           skypeclientwnd.cpp \
            sqlitecategorymodel.cpp \
            sqlitesegmentmodel.cpp \
            sqlitestorage.cpp \
@@ -212,9 +212,9 @@ SOURCES += aboutdialog.cpp \
            seedfilesdialog.cpp \
            taskitemdelegate.cpp \
            mimetypeshash.cpp \
-           skypetracer.cpp \
+#           skypetracer.cpp \
            metauri.cpp \
-           skypetunnel.cpp \
+#           skypetunnel.cpp \
            simplelog.cpp \
            asyncdatabase.cpp \
            databaseworker.cpp \
@@ -231,7 +231,7 @@ FORMS += aboutdialog.ui \
          dlrules.ui \
          karia2.ui \
          rulesmandlg.ui \
-         skypeclientwnd.ui \
+         # skypeclientwnd.ui \
          taskinfodisgestwnd.ui \
          taskinfodlg.ui \
          walksitewnd.ui \
@@ -242,8 +242,8 @@ FORMS += aboutdialog.ui \
          labspace.ui				\
          preferencesdialog.ui  \
          seedfilesdialog.ui \
-         proxyinfodialog.ui \
-         skypetracer.ui
+         proxyinfodialog.ui
+         # skypetracer.ui
 
 HEADERS += $$MAIA_HEADERS 
 SOURCES += $$MAIA_SOURCES 
