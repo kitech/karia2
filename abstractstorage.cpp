@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 21:03:15 +0800
-// Version: $Id: abstractstorage.cpp 110 2010-05-02 08:06:00Z drswinghead $
+// Version: $Id: abstractstorage.cpp 194 2013-01-28 15:33:29Z drswinghead $
 // 
 
 #include <QtCore>

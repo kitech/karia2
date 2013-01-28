@@ -10,8 +10,11 @@
 #ifndef KARIA2_H
 #define KARIA2_H
 
+#include <X11/Xlib.h>
+
 #include <QtCore>
 #include <QtGui>
+#include <QtWidgets>
 
 #include "ui_karia2.h"
 #include "taskinfodlg.h"  // class TaskParameter
@@ -38,7 +41,8 @@ class Karia2 : public QMainWindow
 {
     Q_OBJECT;
 public:
-    Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
+    // Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
+    Karia2(QWidget *parent = 0);
     virtual ~Karia2();
     void initialMainWindow();
     void testFunc();

@@ -21,8 +21,9 @@ class DropZone : public QWidget
 {
 	Q_OBJECT;
 public:
-	DropZone(QWidget *parent = 0,Qt::WFlags f = 0 ) ;
-    ~DropZone();
+	// DropZone(QWidget *parent = 0,Qt::WFlags f = 0 ) ;
+    DropZone(QWidget *parent = 0) ;
+    virtual ~DropZone();
 
 public slots:
 	//用于更新任务完成状态的槽

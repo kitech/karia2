@@ -5,7 +5,7 @@
 #include <QAbstractItemModel>
 #include <QStringListModel>
 #include <QtNetwork>
-#include <QHttpHeader>
+// #include <QHttpHeader>
 #include <QHostAddress>
 #include <QHostInfo>
 #include <QStringList>

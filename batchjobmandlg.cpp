@@ -66,9 +66,9 @@ void BatchJobManDlg::onWildcardOptionChanged( QString u )
 		sfrom = ui.bjmd_le_wildcard_begin->text();
 		sto = ui.bjmd_le_wildcard_end->text();
 
-		if( sfrom.toAscii().at(0) < sto.toAscii().at(0) )
+		if( sfrom.toLocal8Bit().at(0) < sto.toLocal8Bit().at(0) )
 		{
-			for( char i = sfrom.toAscii().at(0) ; i <= sto.toAscii().at(0) ; ++i)
+			for( char i = sfrom.toLocal8Bit().at(0) ; i <= sto.toLocal8Bit().at(0) ; ++i)
 			{				
 				wildstr = QString("%1").arg(i) ;
 				//qDebug()<<"for"<<wildstr;
