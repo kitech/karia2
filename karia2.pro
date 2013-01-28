@@ -11,7 +11,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = karai2
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
 QT = core gui xml network sql
@@ -22,7 +22,7 @@ win32 {
       CONFIG += debug
    #QMAKE_CC = clang
    #QMAKE_CXX = clang++
-   QMAKE_CXXFLAGS += -std=c++0x
+   QMAKE_CXXFLAGS += -std=c++11
 }
 
 DESTDIR = ./bin
@@ -76,6 +76,7 @@ win32 {
 } else {
     INCLUDEPATH += ./aria2-1.13.0/src/
     LIBS += -L./aria2-1.13.0/src/ -laria2c -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
+    LIBS += -lgcrypt
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
@@ -103,7 +104,10 @@ QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication
 # include(./skynet/libskynet.pri)
 
 ## qtxmlrpc library
-include(./qxmlrpc/client/client.pri)
+# include(./qxmlrpc/client/client.pri)
+
+## qjson library
+include (./qjson/qjson.pri)
 
 # Input
 HEADERS += aboutdialog.h \
