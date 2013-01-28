@@ -67,15 +67,15 @@ AbstractStorage::AbstractStorage(QObject *parent)
 	///////////////////////
 	///////////////////////
 	char *rawcat[256] = {
-		"cat_id=0,display_name=NullGet,raw_name=NullGet,folder=no,path=,can_child=true,parent_cat_id=-1,create_time=,delete_flag=false,dirty=false"                       ,
-		"cat_id=1,display_name=Download,raw_name=Download,folder=no,path="SAVE_PREFIX_STR"/NGDownload,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false"         ,
-		"cat_id=2,display_name=Downloaded,raw_name=Downloaded,folder=no,path="SAVE_PREFIX_STR"/NGDownload,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false,dirty=false"         ,
-		"cat_id=3,display_name=software,raw_name=software,folder=no,path="SAVE_PREFIX_STR"/NGDownload/software,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false",
-		"cat_id=4,display_name=game,raw_name=game,folder=no,path="SAVE_PREFIX_STR"/NGDownload/game,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"            ,
-		"cat_id=5,display_name=music,raw_name=music,folder=no,path="SAVE_PREFIX_STR"/NGDownload/music,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"         ,
-		"cat_id=6,display_name=movie,raw_name=movie,folder=no,path="SAVE_PREFIX_STR"/NGDownload/movie,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"    ,
-		"cat_id=8,display_name=documents,raw_name=documents,folder=no,path="SAVE_PREFIX_STR"/NGDownload/documents,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"   ,
-		"cat_id=7,display_name=deleted,raw_name=deleted,folder=no,path="SAVE_PREFIX_STR"/NGDownload/deleted,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false" 
+		"cat_id=0,display_name=NullGet,raw_name=NullGet,folder=no,path=,can_child=true,parent_cat_id=-1,create_time=,delete_flag=false,dirty=false"                      ,
+		"cat_id=1,display_name=Download,raw_name=Download,folder=no,path=" SAVE_PREFIX_STR "/NGDownload,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false"         ,
+		"cat_id=2,display_name=Downloaded,raw_name=Downloaded,folder=no,path=" SAVE_PREFIX_STR "/NGDownload,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false,dirty=false"         ,
+		"cat_id=3,display_name=software,raw_name=software,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/software,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false",
+		"cat_id=4,display_name=game,raw_name=game,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/game,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"            ,
+		"cat_id=5,display_name=music,raw_name=music,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/music,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"         ,
+		"cat_id=6,display_name=movie,raw_name=movie,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/movie,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"    ,
+		"cat_id=8,display_name=documents,raw_name=documents,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/documents,can_child=true,parent_cat_id=2,create_time=,delete_flag=false,dirty=false"   ,
+		"cat_id=7,display_name=deleted,raw_name=deleted,folder=no,path=" SAVE_PREFIX_STR "/NGDownload/deleted,can_child=true,parent_cat_id=0,create_time=,delete_flag=false,dirty=false" 
 	};
 	
 	for (int line = 0 ; line < 9; line ++) {
