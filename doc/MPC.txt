@@ -1,0 +1,40 @@
+对于RSTP协议，它有一个session timout机制，这个timeout由server响应给客户端，向客户端指示它在接受RTSP命令的最大间隔，如果这个间隔中客户端没有发送RTSP命令，则服务器就会关闭该session.
+
+如何编译MPC（作者）：
+	因为VS在管理多个小工程的时候变成了海龟，我没有把所有的程序及他们之间的依赖关系都放在一个解决方案里面。
+可以按照下面的顺序来编译。
+
+1. deccs
+2. dsutil
+3. ui (run \lib\ui.bat to merge them)
+4. subpic
+5. subtitles
+6. filters (for mpc only build those configurations which output a lib, the rest outputs stand-alone filters)
+
+依赖的开发库：
+- DirectX 9 SDK (you may need to add "Debug Unicode" and "Release Unicode" configs to the project file of the directshow baseclasses)
+- Platform SDK
+- Windows Media Format SDK 9
+
+建议在其他操作前把 DX9的头文件和库文件目录加入到VS中：
+- include:
+<DXSDK>\Samples\C++\DirectShow\BaseClasses
+<DXSDK>\Include
+...
+
+- lib:
+<DXSDK>\lib
+...
+
+其他头文件被直接包含进来了，如果你安装目录不同请修改源码中的路径。 (但是不要 COMMIT 到 CVS!　中)
+
+Debug编译使用的动态链接，Release 编译使用的是标准C/C++和MFC静态链接。不要忘记在基类中修改一下。同样重要的： 添加 winmm.lib 到基类否则以后你可以会遇到一些 unresolved externals 。
+
+Subresync and Submux aren't working yet, they are just there because I might convert them to fit the new libs someday.
+	
+实际编译环境及步骤描述（by me)：
+
+
+ffmpeg:
+在mingw32上编译ffmpeg库成功了。但还少一个SDL，所以不能编译出来ffplay播放器。
+	

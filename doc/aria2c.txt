@@ -1,0 +1,22 @@
+XML-RPC:
+        aria2.tellStatus
+                bitfield: 下载进度，以十六进制表示，FFFF 格式，2字节，最高位代表index为0的piece。如果其中一位置位表示，已经下载，否则没有。空闲的位在最低位，为0。
+                          aria2以切片的方式表示进度。哪块下载完成，哪块没下载完成都用这个表示，可以转为绘成圆点的表示形式。
+
+重复添加一个torrent文件的时候，出现这个错误:
+        InfoHash c8c4a3cf526db97b244deddc87c0d00fe14aa080 is already registered.
+
+
+log中的CUID#nn应该是TCP连接号。但是现在无法判断这个连接属于哪个任务的。
+        对于HTTP(S)协议，可以通过GET / HTTP/1.x这一行解析出来该CUID属于哪个任务。
+
+目前的版本在redirect的时候不会使用之前的cookie和referer，所以有许多的链接下载出问题。原来这是标准规定的啊。
+The HTTP 1.0 standard per http://www.w3.org/Protocols/rfc2109/rfc2109 in section "4.3.5 Sending Cookies in Unverifiable Transactions" says that cookies should not be set from unverifiable transactions. It states specifically that "Unverifiable transactions typically arise when a user agent automatically requests inlined or embedded entities or when it resolves redirection (3xx) responses from an origin server." So, "Set-Cookie" is not to be acted upon by browsers / user agents for 3xx redirects. Nothing in HTTP 1.1 changes this part of HTTP.
+
+考虑对aria2的hack,需要在记录cookie的时候对域名进行处理，只保留有二级域名, 在查找cookie的时候也只是使用二级域名进行查询。
+在做redirect的时候，仍旧按照服务器的响应记录cookie, 并在redirect请求中使用这些cookie。
+在做redirect的时候，使用本次地址作为引用发送给服务器。
+用户在--header参数中传递的Cookie会覆盖aria2c获得的Cookie,需要处理。
+
+当一个url指向的是一个.torrent文件，aria2有一个参数--follow-torrent=true|false|mem, 如果为true，则会继续分析这个.torrent文件并下载。
+否则停止任务。

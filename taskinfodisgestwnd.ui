@@ -1,0 +1,189 @@
+<ui version="4.0" >
+ <class>TaskInfoDisgestWndClass</class>
+ <widget class="QWidget" name="TaskInfoDisgestWndClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>385</width>
+    <height>212</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>TaskInfo Disgest Window</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QGraphicsView" name="graphicsView" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>0</hsizetype>
+         <vsizetype>0</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize" >
+        <size>
+         <width>95</width>
+         <height>95</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>File Name: %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_3" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
+        <string>File Size : %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3" >
+       <property name="text" >
+        <string>File Type: %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4" >
+       <property name="text" >
+        <string>Completed: %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_2" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5" >
+       <property name="text" >
+        <string>Save Position: %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_6" >
+       <property name="focusPolicy" >
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="autoFillBackground" >
+        <bool>false</bool>
+       </property>
+       <property name="frameShape" >
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="text" >
+        <string>URL: &lt;a href="%1">%1&lt;/a></string>
+       </property>
+       <property name="textFormat" >
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="openExternalLinks" >
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags" >
+        <enum>Qt::LinksAccessibleByMouse</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_7" >
+       <property name="text" >
+        <string>Refferer: &lt;a href="%1">%1&lt;/a></string>
+       </property>
+       <property name="textFormat" >
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="openExternalLinks" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_8" >
+       <property name="text" >
+        <string>Comment: %1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_17" >
+       <property name="text" >
+        <string>Create Time: %1</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources/>
+ <connections/>
+</ui>

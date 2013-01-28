@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <link rel="icon" href="http://www.qtsoftware.com/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="http://www.qtsoftware.com/favicon.ico" type="image/x-icon" />
+  
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Qt - QtCodingStyle - Open wiki - Qt by Nokia</title>
+<link href="/stylesheets/all.css?1274447446" media="screen" rel="stylesheet" type="text/css" />
+<script src="/javascripts/all.js?1274442990" type="text/javascript"></script>  <link href="/qt/pages.atom" rel="alternate" title="ATOM" type="application/atom+xml" /><!--[if IE 8]>
+<link rel="stylesheet" href="/stylesheets/ie8.css" type="text/css">
+<![endif]-->
+<!--[if IE 7]>
+<link rel="stylesheet" href="/stylesheets/ie7.css" type="text/css">
+<![endif]-->
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-52238-3']);
+_gaq.push(['_setDomainName', '.gitorious.org'])
+_gaq.push(['_trackPageview']);
+(function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+</script>
+  <link href="/stylesheets/sites/qt/qt.css?1274442995" media="screen" rel="stylesheet" type="text/css" /></head>
+
+<body id="pages">
+<div id="wrapper">
+    <ul id="user-nav">
+	<li><a href="/">Dashboard</a></li>
+	
+    	<li class="secondary"><a href="/users/new">Register</a></li>
+    <li class="secondary"><a href="/login">Login</a></li>
+  </ul>
+  <div id="header">
+    <h1 id="logo">
+      <a href="/"><img alt="Logo" src="/images/sites/qt/logo.png?1274442995" /></a> 
+    </h1>
+
+    <ul id="menu">
+                    <li class="activity"><a href="/activities">Activities</a></li>
+        <li class="projects"><a href="/projects">Projects</a></li>
+        <li class="teams"><a href="/teams">Teams</a></li>
+          </ul>
+
+  </div>
+  
+	<div id="top-bar">
+    <ul id="breadcrumbs">
+      <li class="project"><a href="/qt">Qt</a></li><li class="wiki"><a href="/qt/pages">Wiki</a></li><li class="file"><a href="/qt/pages/QtCodingStyle">QtCodingStyle</a></li>    </ul>
+          <div id="searchbox">
+        
+
+
+<div class="search_bar">
+<form action="http://gitorious.org/search" method="get"><p>
+  <input class="text search-field round-5" id="q" name="q" type="text" /> 
+  <input type="submit" value="Search" class="search-submit round-5" />
+</p>  
+<p class="hint search-hint" style="display: none;">
+  eg. 'wrapper', 'category:python' or '"document database"'
+  </p>
+</form></div>
+      </div>
+      </div>
+
+  <div id="container" class="">
+    <div id="content" class="">
+      
+      
+
+
+<div class="page-header">
+  <h1>
+    QtCodingStyle 
+  </h1>
+</div>
+
+<div class="page wiki-page"><div class="toc">
+ <ul>
+ <li><a href="#Qt+Coding+Style">Qt Coding Style</a>
+  <ul>
+  <li><a href="#Indentation">Indentation</a>  </li>
+  <li><a href="#Declaring+variables">Declaring variables</a>  </li>
+  <li><a href="#Whitespace">Whitespace</a>  </li>
+  <li><a href="#Braces">Braces</a>  </li>
+  <li><a href="#Parentheses">Parentheses</a>  </li>
+  <li><a href="#Switch+statements">Switch statements</a>  </li>
+  <li><a href="#Line+breaks">Line breaks</a>  </li>
+  <li><a href="#General+exception">General exception</a>  </li>
+  </ul>
+ </li>
+ </ul>
+</div><div class="page-content"><h1>Qt Coding Style</h1>
+
+<p>This is a overview of the coding convention we use when writing Qt code.<br />
+The data has been gathered by mining the Qt sources, discussion forums,<br />
+email threads and through collaboration of the developers.</p>
+
+<h2>Indentation</h2>
+
+<ul>
+<li> 4 spaces are used for indentation<br />
+</li>
+<li> Spaces, not tabs!</li>
+</ul>
+
+
+<h2>Declaring variables</h2>
+
+<ul>
+<li> Declare each variable on a separate line<br />
+</li>
+<li> Avoid short (e.g. &ldquo;a&rdquo;, &ldquo;rbarr&rdquo;, &ldquo;nughdeget&rdquo;) names whenever possible<br />
+</li>
+<li> Single character variable names are only okay for counters and temporaries, where the purpose of the variable is obvious<br />
+</li>
+<li><p> Wait with declaring a variable until it is needed</p>
+
+<pre><code>// Wrong
+int a, b;  
+char *c, *d;  
+
+// Correct  
+int height;  
+int width;  
+char *nameOfThis;  
+char *nameOfThat;  
+</code></pre></li>
+<li><p> Variables and functions start with a small letter. Each consecive word in a variable&rsquo;s<br />
+ name starts with a capital letter</p></li>
+<li><p> Avoid abbreviations</p>
+
+<pre><code>// Wrong
+short Cntr;  
+char ITEM_DELIM = '\t';  
+
+// Correct  
+short counter;  
+char itemDelimiter = '\t';  
+</code></pre></li>
+<li><p> Classes always start with a big letter. Public classes start with a &lsquo;Q&rsquo; (QRgb). Public functions most often start with a &lsquo;q&rsquo; (qRgb).</p></li>
+</ul>
+
+
+<h2>Whitespace</h2>
+
+<ul>
+<li> Use blank lines to group statements together where suited<br />
+</li>
+<li> Always use only one blank line<br />
+</li>
+<li><p> Always use a single space after a keyword, and before a curly brace.</p>
+
+<pre><code>// Wrong
+if(foo){  
+}  
+
+// Correct  
+if (foo) {  
+}  
+</code></pre></li>
+<li><p> For pointers or references, always use a single space between the type and &lsquo;*&rsquo; or &lsquo;&amp;&rsquo;, but no space between the &lsquo;*&rsquo; or &lsquo;&amp;&rsquo; and the variable name.</p>
+
+<pre><code>char *x;
+const QString &amp;myString;  
+const char * const y = "hello";
+</code></pre></li>
+<li><p> No space after a cast.<br />
+</p></li>
+<li><p> Avoid C-style casts when possible.</p>
+
+<pre><code>// Wrong
+char* blockOfMemory = (char* ) malloc(data.size());  
+
+// Correct  
+char *blockOfMemory = (char *)malloc(data.size());  
+char *blockOfMemory = reinterpret_cast&lt;char *&gt;(malloc(data.size()));  
+</code></pre></li>
+</ul>
+
+
+<h2>Braces</h2>
+
+<ul>
+<li><p> As a base rule, the left curly brace goes on the same line as the start of the statement:</p>
+
+<pre><code>// Wrong
+if (codec)  
+{  
+}  
+
+// Correct  
+if (codec) {  
+}  
+</code></pre></li>
+<li><p> Exception: Function implementations and class declarations always have the left brace on the start of a line:</p>
+
+<pre><code>static void foo(int g)
+{  
+    qDebug("foo: %i", g);  
+}  
+
+class Moo  
+{  
+};  
+</code></pre></li>
+<li><p> Use curly braces when the body of a conditional statement contains more than one line,<br />
+ and also if a single line statement is somewhat complex.</p>
+
+<pre><code>// Wrong
+if (address.isEmpty()) {  
+    return false;  
+}  
+
+for (int i = 0; i &lt; 10; ++i) {  
+    qDebug("%i", i);  
+}  
+
+// Correct  
+if (address.isEmpty())  
+    return false;  
+
+for (int i = 0; i &lt; 10; ++i)  
+    qDebug("%i", i);  
+</code></pre></li>
+<li><p> Exception 1: Use braces also if the parent statement covers several lines / wraps</p>
+
+<pre><code>// Correct
+if (address.isEmpty() || !isValid()  
+    || !codec) {  
+    return false;  
+}  
+</code></pre></li>
+<li><p> Exception 2: Use braces also in if-then-else blocks where either the if-code or the else-code covers several lines</p>
+
+<pre><code>// Wrong
+if (address.isEmpty())  
+    return false;  
+else {  
+    qDebug("%s", qPrintable(address));  
+    ++it;  
+}  
+
+// Correct  
+if (address.isEmpty()) {  
+    return false;  
+} else {  
+    qDebug("%s", qPrintable(address));  
+    ++it;  
+}  
+
+// Wrong  
+if (a)  
+    if (b)  
+        ...  
+    else  
+        ...  
+
+// Correct  
+if (a) {  
+    if (b)  
+        ...  
+    else  
+        ...  
+}  
+</code></pre></li>
+<li><p> Use curly braces when the body of a conditional statement is empty</p>
+
+<pre><code>// Wrong
+while (a);  
+
+// Correct  
+while (a) {}  
+</code></pre></li>
+</ul>
+
+
+<h2>Parentheses</h2>
+
+<ul>
+<li><p> Use parentheses to group expressions:</p>
+
+<pre><code>// Wrong
+if (a &amp;&amp; b || c)  
+
+// Correct  
+if ((a &amp;&amp; b) || c)  
+
+// Wrong  
+a + b &amp; c  
+
+// Correct  
+(a + b) &amp; c  
+</code></pre></li>
+</ul>
+
+
+<h2>Switch statements</h2>
+
+<ul>
+<li> The case labels are on the same column as the switch<br />
+</li>
+<li><p> Every case must have a break (or return) statement at the end or a comment to indicate that there&rsquo;s intentionally no break</p>
+
+<pre><code>switch (myEnum) {
+case Value1:  
+    doSomething();  
+    break;  
+case Value2:  
+    doSomethingElse();  
+    // fall through  
+default:  
+    defaultHandling();  
+    break;  
+}  
+</code></pre></li>
+</ul>
+
+
+<h2>Line breaks</h2>
+
+<ul>
+<li><p> Keep lines shorter than 100 characters; insert breaks if necessary.</p></li>
+<li><p> Commas go at the end of a broken line; operators start at the beginning of the new line. The operator is at the end of the line to avoid having to scroll if your editor is too narrow.</p>
+
+<pre><code>// Correct
+if (longExpression  
+    + otherLongExpression  
+    + otherOtherLongExpression) {  
+}  
+
+// Wrong  
+if (longExpression +  
+    otherLongExpression +  
+    otherOtherLongExpression) {  
+}  
+</code></pre></li>
+</ul>
+
+
+<h2>General exception</h2>
+
+<ul>
+<li> Feel free to break a rule if it makes your code look bad.</li>
+</ul>
+
+</div></div>
+<div class="page-meta">
+  
+<ul class="page-actions">
+  </ul>  <p>
+                  25 Feb 15:59  </p>
+</div>
+    </div>
+      </div>
+	<div id="footer">
+      
+<div class="powered-by">
+	<a href="http://www.shortcut.no"><img alt="Shortcut" src="/images/../img/shortcut.png?1274270660" title="A product from Shortcut" /></a>  	<a href="http://gitorious.org"><img alt="Poweredby" src="/images/../img/poweredby.png?1274270660" title="Powered by Gitorious" /></a></div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-52238-3']);
+_gaq.push(['_setDomainName', '.gitorious.org'])
+_gaq.push(['_trackPageview']);
+(function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+</script>	<div id="footer-links">
+		<h3>Gitorious</h3>
+		<ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/faq">FAQ</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="http://qt.nokia.com/">Qt by Nokia</a></li>
+    </ul>
+          <ul>
+        <li><a href="http://en.gitorious.org/tos">Terms of Service</a></li>
+        <li><a href="http://en.gitorious.org/privacy_policy">Privacy Policy</a></li>
+      </ul>
+    	</div>
+
+      <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>
