@@ -60,15 +60,18 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 {
     aria2::TransferStat stat;
 
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> > rgs, wrgs, frgs;
-    aria2::SharedHandle<aria2::RequestGroup> rg;
+    aria2::RequestGroupList rgs, wrgs, frgs;
+    // aria2::SharedHandle<aria2::RequestGroup> rg;
+    // aria2::RequestGroup* rg; //xxx
+    aria2::RequestGroupList::SeqType::iterator it;
     aria2::SharedHandle<aria2::PieceStorage> ps;
     aria2::SharedHandle<aria2::SegmentMan> sm;
     std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
     aria2::SharedHandle<aria2::PeerStat> psts;
     aria2::SharedHandle<aria2::DownloadContext> dctx;
-    std::deque<aria2::SharedHandle<aria2::DownloadResult> > dres;
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+    aria2::DownloadResultList dres;
+    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+
 
     const unsigned char *bfptr;
     int bflen;
@@ -89,27 +92,27 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     if (rgs.size() > 0) {
         for (it = rgs.begin(); it != rgs.end(); ++it) {
-            rg = *it;
+            auto rg = *it;
             stat = e->getRequestGroupMan()->calculateStat();
 
             Aria2StatCollector *sclt = new Aria2StatCollector();
             sclt->tid = this->m_tid;
-            sclt->globalDownloadSpeed = stat.getDownloadSpeed();
-            sclt->globalUploadSpeed = stat.getUploadSpeed();
+            // sclt->globalDownloadSpeed = stat.getDownloadSpeed();
+        //     sclt->globalUploadSpeed = stat.getUploadSpeed();
             sclt->numActive = rgs.size();
             sclt->numWaiting = wrgs.size();
             sclt->numStopped = dres.size();
 
             {
                 // status
-                if (rg->isPauseRequested()) {
-                    sclt->status = std::string("paused");
-                } else {
-                    sclt->status = std::string("active");
-                }
+                // if (rg.isPauseRequested()) {
+                //     sclt->status = std::string("paused");
+                // } else {
+                //     sclt->status = std::string("active");
+                // }
             }
 
-            this->setBaseStat(e, rg, sclt);
+        //        this->setBaseStat(e, rg, sclt);
             //            emit this->progressState(this->m_tid, gid, total_length, curr_length,
             //                                     down_speed, up_speed, num_conns, eta);
             emit this->progressState(sclt);
@@ -143,21 +146,21 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
         pss = sm->getPeerStats();
     dctx = rg->getDownloadContext();
 
-    sclt->gid = rg->getGID();
-    sclt->totalLength = rg->getTotalLength();
-    sclt->completedLength = rg->getCompletedLength();
-    sclt->uploadLength = 0; // ???????
-    stat = rg->calculateStat();
-    sclt->downloadSpeed = stat.getDownloadSpeed();
-    sclt->uploadSpeed = stat.getUploadSpeed();
-    if(rg->getTotalLength() > 0 && stat.getDownloadSpeed() > 0) {
-        sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.getDownloadSpeed();
-    }
-    sclt->connections = rg->getNumConnection();
-    if (dctx.get()) {
-        sclt->numPieces = dctx->getNumPieces();
-        sclt->pieceLength = dctx->getPieceLength();
-    }
+    // sclt->gid = rg->getGID();
+    // sclt->totalLength = rg->getTotalLength();
+    // sclt->completedLength = rg->getCompletedLength();
+    // sclt->uploadLength = 0; // ???????
+    // stat = rg->calculateStat();
+    // sclt->downloadSpeed = stat.getDownloadSpeed();
+    // sclt->uploadSpeed = stat.getUploadSpeed();
+    // if(rg->getTotalLength() > 0 && stat.getDownloadSpeed() > 0) {
+    //     sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.getDownloadSpeed();
+    // }
+    // sclt->connections = rg->getNumConnection();
+    // if (dctx.get()) {
+    //     sclt->numPieces = dctx->getNumPieces();
+    //     sclt->pieceLength = dctx->getPieceLength();
+    // }
 
     std::cout<<sclt->gid<<":"<<sclt->totalLength<<" "<<sclt->completedLength
             <<" "<<sclt->downloadSpeed<<" "<<sclt->uploadSpeed

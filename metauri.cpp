@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-02 11:02:47 +0800
-// Version: $Id: metauri.cpp 153 2010-07-04 05:37:05Z drswinghead $
+// Version: $Id: metauri.cpp 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
 #include "metauri.h"

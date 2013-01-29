@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-10 21:28:08 +0800
-// Version: $Id: webpagelinkdlg.cpp 56 2010-04-16 08:50:28Z drswinghead $
+// Version: $Id: webpagelinkdlg.cpp 195 2013-01-29 01:42:42Z drswinghead $
 // 
 #include <QtCore>
 #include <QtGui>

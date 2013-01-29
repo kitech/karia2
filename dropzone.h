@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-19 23:00:46 +0800
-// Version: $Id: dropzone.h 85 2010-04-25 03:02:52Z drswinghead $
+// Version: $Id: dropzone.h 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
 #ifndef DROPZONE_H

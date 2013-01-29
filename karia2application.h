@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-09 00:16:45 +0000
-// Version: $Id: karia2application.h 180 2010-11-06 04:39:16Z drswinghead $
+// Version: $Id: karia2application.h 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
 #ifndef KARIA2APPLICATION_H

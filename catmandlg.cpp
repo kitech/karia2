@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-14 16:19:49 +0800
-// Version: $Id: catmandlg.cpp 113 2010-05-04 09:08:30Z drswinghead $
+// Version: $Id: catmandlg.cpp 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
 #include <QtGui>

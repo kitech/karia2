@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 11:21:17 +0800
-// Version: $Id: sqlitetaskmodel.cpp 191 2011-11-06 10:03:22Z drswinghead $
+// Version: $Id: sqlitetaskmodel.cpp 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
 #include "sqlitetaskmodel.h"
