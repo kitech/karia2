@@ -154,7 +154,7 @@ bool AriaMan::start()
 #else
         QFile pidFile(this->mPidFile);
         pidFile.open(QIODevice::WriteOnly);
-        pidFile.write(QString("%1").arg(this->mAriaPid).toAscii());
+        pidFile.write(QString("%1").arg(this->mAriaPid).toLatin1());
 #endif
 
         this->mCodec = QTextCodec::codecForLocale();
@@ -230,7 +230,7 @@ void AriaMan::onAriaProcReadyReadStdout()
             emit taskLogReady(logLine);
         }
 
-        this->mLogFile->write(logLine.toAscii());
+        this->mLogFile->write(logLine.toLatin1());
     }
 }
 
@@ -272,7 +272,7 @@ void AriaMan::onAriaProcReadyReadStdoutWithParser()
                             msg += logLine;
                         }
                     }
-                    umsg = this->mCodec->toUnicode(msg.toAscii());
+                    umsg = this->mCodec->toUnicode(msg.toLatin1());
 
                     // qDebug()<<"LOG-PART:"<<cuid<<itime<<umsg;
                     emit this->taskLogReady(cuid, itime, umsg);
@@ -284,7 +284,7 @@ void AriaMan::onAriaProcReadyReadStdoutWithParser()
             }
         }
 
-        this->mLogFile->write(logLine.toAscii());
+        this->mLogFile->write(logLine.toLatin1());
     }
 }
 

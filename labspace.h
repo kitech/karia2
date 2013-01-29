@@ -15,6 +15,8 @@
 #include <QPrintDialog>
 #include <QWidget>
 #include <QDialog>
+#include <QtWidgets>
+#include <QtPrintSupport>
 
 #include "ui_labspace.h"
 

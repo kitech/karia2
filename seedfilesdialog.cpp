@@ -7,6 +7,8 @@
 // Version: $Id: seedfilesdialog.cpp 124 2010-05-18 13:42:28Z drswinghead $
 // 
 
+#include <QtWidgets>
+
 #include "sqlitestorage.h"
 #include "sqlitecategorymodel.h"
 #include "seedfilemodel.h"

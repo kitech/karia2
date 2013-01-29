@@ -10,7 +10,7 @@
 #ifndef KARIA2_H
 #define KARIA2_H
 
-#include <X11/Xlib.h>
+// #include <X11/Xlib.h>
 
 #include <QtCore>
 #include <QtGui>
@@ -42,7 +42,7 @@ class Karia2 : public QMainWindow
     Q_OBJECT;
 public:
     // Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
-    Karia2(QWidget *parent = 0);
+    Karia2(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     virtual ~Karia2();
     void initialMainWindow();
     void testFunc();
@@ -351,7 +351,7 @@ protected:
 	void showEvent(QShowEvent *event);
 	bool firstShowEvent;
 	
-	
+    /*	
 #if defined(Q_OS_WIN32)
 	virtual bool winEvent(MSG *message, long *result);
 #elif defined(Q_OS_MAC)
@@ -360,6 +360,8 @@ protected:
 	virtual bool x11Event(XEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
 #endif
+    */
+    virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 
 };
 #endif // KARIA2_H

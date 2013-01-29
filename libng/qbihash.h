@@ -26,6 +26,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QMap>
+#include <QtCore/QMapData>
 
 #include <QtCore/QDebug>
 

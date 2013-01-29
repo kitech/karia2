@@ -27,6 +27,7 @@ Karia2Application::~Karia2Application()
 
 }
 
+/*
 #if defined(Q_OS_WIN)
 bool Karia2Application::eventHandled=false;
 long Karia2Application::eventResult=0;
@@ -65,6 +66,14 @@ bool Karia2Application::x11EventFilter(XEvent *event)
 	return QApplication::x11EventFilter(event);
 }
 #endif
+*/
+
+/*
+bool Karia2Application::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+    return QApplication::nativeEvent(eventType, message, result);
+}
+*/
 
 void Karia2Application::handleMessage(const QString &msg)
 {

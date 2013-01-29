@@ -58,7 +58,7 @@ class MaiaXmlRpcServerConnection : public QObject {
 
 		QTcpSocket *clientConnection;
 		QString headerString;
-		QHttpRequestHeader *header;
+    // QHttpRequestHeader *header;
 		
 };
 

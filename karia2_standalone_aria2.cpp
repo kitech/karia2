@@ -36,7 +36,6 @@
 #include "instantspeedhistogramwnd.h"
 #include "walksitewndex.h"
 
-#include "norwegianwoodstyle.h"
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
 #include "seedfilemodel.h"
