@@ -154,7 +154,8 @@ QModelIndex SegmentLogModel::index(int row, int column, const QModelIndex &paren
 	//qDebug()<<__FUNCTION__ ;
 
 
-	QModelIndex mix = this->createIndex( row , column , 0 ) ;
+	// QModelIndex mix = this->createIndex( row , column , (void*)0 ) ;
+	QModelIndex mix = this->createIndex( row , column , (quintptr)0 ) ;
 	
 	return mix ;
 	//int parentCatID = -1 ;

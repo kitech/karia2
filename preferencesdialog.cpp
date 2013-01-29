@@ -7,6 +7,8 @@
 // Version: $Id$
 // 
 
+#include <QtWidgets>
+
 #include "sqlitestorage.h"
 
 #include "optionmanager.h"
@@ -727,7 +729,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
             }
             if (checked) {
                 mfile.write(codec->fromUnicode(key));
-                // mfile.write(QString("=%1\n").arg(execProgramValue).toAscii());
+                // mfile.write(QString("=%1\n").arg(execProgramValue).toLatin1());
                 mfile.write(QByteArray("=") + itemValue);
             } 
 
@@ -753,7 +755,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
                 popMenus << line;
                 while (!mfile.atEnd()) {
                     line = mfile.readLine();
-                    if (line.trimmed().startsWith(key.toAscii())) {
+                    if (line.trimmed().startsWith(key.toLatin1())) {
                     } else if (line.startsWith("[")) {
                         overrideEnd = mfile.pos() - line.length();
                         break;
@@ -790,7 +792,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
             mfile.write(popMenus.at(i));
         }
         mfile.write(codec->fromUnicode(key));
-        mfile.write(QString("=%1\n").arg(value).toAscii());
+        mfile.write(QString("=%1\n").arg(value).toLatin1());
             
     }
 
@@ -864,7 +866,7 @@ void PreferencesDialog::onMonitorOpera(bool checked)
         }
         if (checked) {
             mfile.write(codec->fromUnicode(key));
-            mfile.write(QString("=%1\n").arg(value).toAscii());
+            mfile.write(QString("=%1\n").arg(value).toLatin1());
         }
     }
 
@@ -995,7 +997,7 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
             }
             if (checked) {
                 mfile.write(codec->fromUnicode(key));
-                mfile.write(QString("=%1\n").arg(execProgramValue).toAscii());
+                mfile.write(QString("=%1\n").arg(execProgramValue).toLatin1());
             } 
 
         }
@@ -1020,7 +1022,7 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
                 popMenus << line;
                 while (!mfile.atEnd()) {
                     line = mfile.readLine();
-                    if (line.trimmed().startsWith(key.toAscii())) {
+                    if (line.trimmed().startsWith(key.toLatin1())) {
                     } else if (line.startsWith("[")) {
                         overrideEnd = mfile.pos() - line.length();
                         break;
@@ -1057,7 +1059,7 @@ void PreferencesDialog::onMonitorOpera_2(bool checked)
             mfile.write(popMenus.at(i));
         }
         mfile.write(codec->fromUnicode(key));
-        mfile.write(QString("=%1\n").arg(value).toAscii());
+        mfile.write(QString("=%1\n").arg(value).toLatin1());
             
     }
 
@@ -1111,7 +1113,7 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
             file.write(QByteArray("user_pref(\"flashgot.custom\", \"karia2\");\n"));
 #if defined(Q_OS_WIN)
             file.write(QByteArray("user_pref(\"flashgot.custom.karia2.exe\", \"")
-                       + QByteArray(QCoreApplication::applicationFilePath().toAscii())
+                       + QByteArray(QCoreApplication::applicationFilePath().toLatin1())
                        + QByteArray("\");\n"));
             file.write(QByteArray("user_pref(\"flashgot.custom.karia2.args\", \" --uri [URL] --refer [REFERER]\");\n"));
 #else
@@ -1120,7 +1122,7 @@ void PreferencesDialog::onMonitorFirefox(bool checked)
 
             file.write(QByteArray("user_pref(\"flashgot.custom.karia2.exe\", \"/usr/bin/xterm\");\n"));
             file.write(QByteArray("user_pref(\"flashgot.custom.karia2.args\", \"-e ")
-                       + QByteArray(QCoreApplication::applicationFilePath().toAscii())
+                       + QByteArray(QCoreApplication::applicationFilePath().toLatin1())
                        + QByteArray(" --uri [URL] --refer [REFERER]\");\n"));
 #endif
 

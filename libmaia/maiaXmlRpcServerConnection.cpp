@@ -29,7 +29,7 @@
 #include "maiaXmlRpcServer.h"
 
 MaiaXmlRpcServerConnection::MaiaXmlRpcServerConnection(QTcpSocket *connection, QObject* parent) : QObject(parent) {
-	header = NULL;
+	// header = NULL;
 	clientConnection = connection;
 	connect(clientConnection, SIGNAL(readyRead()), this, SLOT(readFromSocket()));
     connect(clientConnection, SIGNAL(disconnected()), this, SLOT(deleteLater()));
@@ -37,48 +37,50 @@ MaiaXmlRpcServerConnection::MaiaXmlRpcServerConnection(QTcpSocket *connection, Q
 
 MaiaXmlRpcServerConnection::~MaiaXmlRpcServerConnection() {
 	clientConnection->deleteLater();
-	delete header;
+	// delete header;
 }
 
 void MaiaXmlRpcServerConnection::readFromSocket() {
 	QString lastLine;
 
-	while(clientConnection->canReadLine() && !header) {
-		lastLine = clientConnection->readLine();
-		headerString += lastLine;
-		if(lastLine == "\r\n") { /* http header end */
-			header = new QHttpRequestHeader(headerString);
-			if(!header->isValid()) {
-				/* return http error */
-				qDebug() << "Invalid Header";
-				return;
-			} else if(header->method() != "POST") {
-				/* return http error */
-				qDebug() << "No Post!";
-				return;
-			} else if(!header->contentLength()) {
-				/* return fault */
-				qDebug() << "No Content Length";
-				return;
-			}
-		}
-	}
+
+	// while(clientConnection->canReadLine() && !header) {
+	// 	lastLine = clientConnection->readLine();
+	// 	headerString += lastLine;
+	// 	if(lastLine == "\r\n") { /* http header end */
+	// 		header = new QHttpRequestHeader(headerString);
+	// 		if(!header->isValid()) {
+	// 			/* return http error */
+	// 			qDebug() << "Invalid Header";
+	// 			return;
+	// 		} else if(header->method() != "POST") {
+	// 			/* return http error */
+	// 			qDebug() << "No Post!";
+	// 			return;
+	// 		} else if(!header->contentLength()) {
+	// 			/* return fault */
+	// 			qDebug() << "No Content Length";
+	// 			return;
+	// 		}
+	// 	}
+	// }
 	
-	if(header) {
-        if(header->contentLength() <= clientConnection->bytesAvailable()) {
-			/* all data complete */
-			parseCall(clientConnection->readAll());
-		}
-    }
+	// if(header) {
+    //     if(header->contentLength() <= clientConnection->bytesAvailable()) {
+	// 		/* all data complete */
+	// 		parseCall(clientConnection->readAll());
+	// 	}
+    // }
 }
 
 void MaiaXmlRpcServerConnection::sendResponse(QString content) {
-	QHttpResponseHeader header(200, "Ok");
+	// QHttpResponseHeader header(200, "Ok");
 	QByteArray block;
-	header.setValue("Server", "MaiaXmlRpc/0.3");
-	header.setValue("Content-Type", "text/xml");
-	header.setValue("Connection","close");
-	block.append(header.toString().toUtf8());
+
+	// header.setValue("Server", "MaiaXmlRpc/0.3");
+	// header.setValue("Content-Type", "text/xml");
+	// header.setValue("Connection","close");
+	// block.append(header.toString().toUtf8());
 	block.append(content.toUtf8());
 	clientConnection->write(block);
 	clientConnection->disconnectFromHost();
@@ -196,7 +198,7 @@ QByteArray MaiaXmlRpcServerConnection::getReturnType(const QMetaObject *obj,
 			const QByteArray &method, const QList<QByteArray> argTypes) {
 	for(int n = 0; n < obj->methodCount(); ++n) {
 		QMetaMethod m = obj->method(n);
-		QByteArray sig = m.signature();
+		QByteArray sig;// = m.signature();
 		int offset = sig.indexOf('(');
 		if(offset == -1)
 			continue;

@@ -36,7 +36,7 @@
 #include "instantspeedhistogramwnd.h"
 #include "walksitewndex.h"
 
-#include "norwegianwoodstyle.h"
+// #include "norwegianwoodstyle.h"
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
 #include "seedfilemodel.h"
@@ -70,7 +70,7 @@ extern QHash<QString, QString> gMimeHash;
 ////////////////////////////////////////////////
 //main window 
 ////////////////////////////////////////////////
-Karia2::Karia2(QWidget *parent, Qt::WFlags flags)
+Karia2::Karia2(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
@@ -1783,7 +1783,7 @@ QString decodeThunderUrl(QString enUrl)
     QTextCodec *u8codec = QTextCodec::codecForName("GBK");
 	Q_ASSERT(u8codec != NULL);
 
-    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 10).toAscii());
+    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 10).toLatin1());
     QString deUrl = (u8codec == NULL) ? bUrl : u8codec->toUnicode(bUrl);
     deUrl = deUrl.mid(2, deUrl.length() - 4);
     return deUrl;
@@ -1801,7 +1801,7 @@ QString decodeQQdlUrl(QString enUrl)
         enArgs = enUrl.right(enUrl.length() - pos);
         enUrl = enUrl.left(pos);
     }
-    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 7).toAscii());
+    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 7).toLatin1());
 	
     QString deUrl = (u8codec == NULL) ? bUrl : u8codec->toUnicode(bUrl);
     deUrl = deUrl.mid(7, deUrl.length() - 15);
@@ -1823,7 +1823,7 @@ QString decodeFlashgetUrl(QString enUrl)
         enArgs = enUrl.right(enUrl.length() - pos);
         enUrl = enUrl.left(pos);
     }
-    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 11).toAscii());
+    QByteArray bUrl = QByteArray::fromBase64(enUrl.right(enUrl.length() - 11).toLatin1());
 	
     QString deUrl = (u8codec == NULL) ? bUrl : u8codec->toUnicode(bUrl);
     deUrl = deUrl.mid(10, deUrl.length() - 20);
@@ -2132,7 +2132,7 @@ void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接
 				}
 				//test
 				linkCount = 0;
-				linkList = html_parse_get_all_link(htmlcode.toAscii().data() , &linkCount );
+				linkList = html_parse_get_all_link(htmlcode.toLatin1().data() , &linkCount );
 				qDebug()<<linkCount;
 				for (int j = 0; j < linkCount; j ++ )
 				{
@@ -2829,7 +2829,7 @@ void Karia2::onSaveSegLog()
 		{
 			QFile fi(fname);
 			fi.open(QIODevice::WriteOnly|QIODevice::Unbuffered);			
-			fi.write(text.toAscii());
+			fi.write(text.toLatin1());
 			//fi.waitForBytesWritten();
 			fi.close();
 		}
@@ -2918,9 +2918,9 @@ void Karia2::onSwitchWindowStyle(QAction * action )
 	if (action->data().toString() == "norwegianwood") {
 		//qDebug()<<"NorwegianWood style";
         if (this->mNorStyle == NULL) {
-            this->mNorStyle = new NorwegianWoodStyle();
+            // this->mNorStyle = new NorwegianWoodStyle();
         }
-		QApplication::setStyle(this->mNorStyle);
+		// QApplication::setStyle(this->mNorStyle);
 	} else {
 		QApplication::setStyle(action->data().toString());
 	}
@@ -3269,6 +3269,7 @@ void Karia2::showEvent (QShowEvent * event )
 	}
 }
 
+/*
 #if defined(Q_OS_WIN)
 bool Karia2::winEvent (MSG * msg, long * result )
 {
@@ -3317,6 +3318,12 @@ void Karia2::keyReleaseEvent (QKeyEvent * event )
     return QMainWindow::keyReleaseEvent(event);
 }
 #endif
+*/
+bool Karia2::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+    return QMainWindow::nativeEvent(eventType, message, result);
+}
+
 
 void Karia2::shootScreen() 
 {
@@ -3330,7 +3337,7 @@ void Karia2::shootScreen()
 		ff.open(QIODevice::ReadWrite|QIODevice::Unbuffered);
 		ff.close();
 	}
-	if (! screenSnapShot.save(fileName, format.toAscii())) {
+	if (! screenSnapShot.save(fileName, format.toLatin1())) {
 		qDebug()<< "save screen snap shot error:"<<fileName;
 	}
 }
@@ -3471,8 +3478,9 @@ void Karia2::applyReselectFile()
 
 void Karia2::handleArguments()
 {
-    int argc = qApp->argc();
-    char **argv = qApp->argv();
+    QStringList args = qApp->arguments();
+    int argc = args.count();
+    char **argv = NULL; // qApp->argv();
 
     this->handleArguments(argc, argv);
 }
@@ -3652,7 +3660,7 @@ void Karia2::handleArguments(QStringList args)
     char *argv[100] = {0};
     
     for (int i = 0; i < argc; i ++) {
-        argv[i] = strdup(args.at(i).toAscii().data());
+        argv[i] = strdup(args.at(i).toLatin1().data());
     }
     this->handleArguments(argc, argv);
 

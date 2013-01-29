@@ -34,11 +34,11 @@ QString MetaUri::toString()
     QString str;
 
     str = "MetaUri";
-    str += "|" + this->url.toAscii().toHex();
+    str += "|" + this->url.toLatin1().toHex();
     str += "|" + this->nameMd5;
     str += "|" + this->contentMd5;
     str += "|" + QString("%1").arg(this->fileSize);
-    str += "|" + owner.toAscii();
+    str += "|" + owner.toLatin1();
     str += "|" + QString("%1").arg(this->valid ? "T" : "F");
     str += "|" + QString("%1").arg(this->mtime);
 
@@ -48,7 +48,7 @@ QString MetaUri::toString()
 
 MetaUri MetaUri::fromString(QString str)
 {
-    QByteArray ba = str.toAscii();
+    QByteArray ba = str.toLatin1();
     QList<QByteArray> elts = ba.split('|');
     if (elts.count() != 9 || elts.at(0) != "MetaUri") {
         qDebug()<<"Invalid MetaUri package.";

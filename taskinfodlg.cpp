@@ -8,6 +8,7 @@
 // 
 #include <QtCore>
 #include <QtGui>
+#include <QtWidgets>
 #include <QUrl>
 #include <QFileInfo>
 #include <QFileDialog>
@@ -144,10 +145,10 @@ QByteArray TaskOption::toRawData()
     QByteArray ba;
 
     ba = "TaskOption";
-    ba += '|' + this->mTaskUrl.toAscii().toHex();
-    ba += '|' + this->mReferer.toAscii().toHex();
-    ba += '|' + this->mCookies.toAscii().toHex();
-    ba += '|' + this->mAgent.toAscii().toHex();
+    ba += '|' + this->mTaskUrl.toLatin1().toHex();
+    ba += '|' + this->mReferer.toLatin1().toHex();
+    ba += '|' + this->mCookies.toLatin1().toHex();
+    ba += '|' + this->mAgent.toLatin1().toHex();
 
     return ba;
 }
@@ -180,7 +181,7 @@ TaskOption TaskOption::fromRawData(QByteArray ba)
 // static 
 TaskOption TaskOption::fromBase64Data(QString data)
 {
-    QByteArray ba = QByteArray::fromBase64(data.toAscii());
+    QByteArray ba = QByteArray::fromBase64(data.toLatin1());
     return TaskOption::fromRawData(ba);
 }
 

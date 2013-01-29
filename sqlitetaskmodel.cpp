@@ -172,7 +172,8 @@ QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &paren
 	//int parentCatID = -1 ;
 
 		//int taskID = this->mModelData.at(row).value("task_id").toInt(); 
-		return createIndex( row , column , 0 );
+    // return createIndex( row , column , (void*)0 );
+    return createIndex( row , column , (quintptr)0 );
 
 	if (parent.isValid() == false) {
 

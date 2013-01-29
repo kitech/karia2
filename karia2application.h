@@ -20,6 +20,7 @@ public:
     Karia2Application(int & argc, char ** argv);
     ~Karia2Application();
 
+    /*
 #if defined(Q_OS_WIN)
     // virtual bool winEventFilter ( MSG * msg, long * result );
 
@@ -31,11 +32,14 @@ public:
  signals:
 	void winMessage( MSG *msg );
 
+
 #elif defined(Q_OS_MAC)
     virtual bool macEventFilter(EventHandlerCallRef caller, EventRef event ) ;
 #else
 	virtual bool x11EventFilter ( XEvent * event ) ;
 #endif
+    */
+    // virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 
 public slots:
     void handleMessage(const QString &msg);

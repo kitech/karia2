@@ -12,7 +12,7 @@
 
 #include <QtCore>
 #include <QtGui>
-
+#include <QtWidgets>
 
 #include "ui_seedfilesdialog.h"
 

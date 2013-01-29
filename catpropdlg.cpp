@@ -57,7 +57,8 @@ void CatPropDlg::onOpenDefaultCategoryDirectory()
 	}
 	else
 	{
-		this->ui.cpd_le_cat_directory->setText(QDir::convertSeparators(path));
+		// this->ui.cpd_le_cat_directory->setText(QDir::convertSeparators(path));
+        this->ui.cpd_le_cat_directory->setText(path);
 	}
 }
 

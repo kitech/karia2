@@ -241,6 +241,7 @@ qjson/tests/serializer/CMakeLists.txt -text
 qjson/tests/serializer/testserializer.cpp -text
 qtsingleapplication/QtLockedFile -text
 qtsingleapplication/QtSingleApplication -text
+qtsingleapplication/common.pri -text
 qtsingleapplication/qtlocalpeer.cpp -text
 qtsingleapplication/qtlocalpeer.h -text
 qtsingleapplication/qtlockedfile.cpp -text
@@ -249,6 +250,11 @@ qtsingleapplication/qtlockedfile_unix.cpp -text
 qtsingleapplication/qtlockedfile_win.cpp -text
 qtsingleapplication/qtsingleapplication.cpp -text
 qtsingleapplication/qtsingleapplication.h -text
+qtsingleapplication/qtsingleapplication.pri -text
+qtsingleapplication/qtsingleapplication.pro -text
+qtsingleapplication/qtsinglecoreapplication.cpp -text
+qtsingleapplication/qtsinglecoreapplication.h -text
+qtsingleapplication/qtsinglecoreapplication.pri -text
 qxmlrpc/client/client.pri -text
 qxmlrpc/client/src/clientprotocol.cpp -text
 qxmlrpc/client/src/clientprotocol.h -text

@@ -14,7 +14,7 @@ TEMPLATE = app
 TARGET = karai2
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
-QT = core gui xml network sql
+QT = core gui xml network sql widgets printsupport
 
 win32 {
       CONFIG += release
@@ -121,7 +121,7 @@ HEADERS += aboutdialog.h \
            hash.h \
            instantspeedhistogramwnd.h \
            labspace.h \
-           norwegianwoodstyle.h \
+#           norwegianwoodstyle.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
@@ -179,7 +179,7 @@ SOURCES += aboutdialog.cpp \
            instantspeedhistogramwnd.cpp \
            labspace.cpp \
            main.cpp \
-           norwegianwoodstyle.cpp \
+#           norwegianwoodstyle.cpp \
            nullcontroller.cpp \
            karia2.cpp \
            karia2application.cpp \

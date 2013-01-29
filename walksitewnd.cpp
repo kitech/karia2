@@ -1,5 +1,6 @@
 #include <QtCore>
 #include <QtGui>
+#include <QtWidgets>
 #include <QAction>
 #include <QToolBar>
 #include <QTreeView>
@@ -13,7 +14,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QUrlInfo>
+// #include <QUrlInfo>
 #include <QFileInfo>
 #include <QList>
 #include <QDataStream>
@@ -451,17 +452,19 @@ void WalkSiteWnd::onCtrlSockConnected()
 	qDebug()<<__FUNCTION__;
 	QTcpSocket * tmpSock = 0 ;
 	struct rtqueue * rq = 0 ;
-	QHttpRequestHeader hrh ;
+	// QHttpRequestHeader hrh ;
 
 	tmpSock = static_cast<QTcpSocket*>(this->sender());
 	rq = this->mRTList[tmpSock->objectName().toInt()];
 
 	QUrl url(rq->mrUrl);
 	
-
+    /*
 	hrh.setValue("Host",url.host() ) ;		
 	hrh.setValue("Range", QString("bytes=%1-").arg(0) ) ;
-	hrh.setValue("Accept","*/*");
+    */
+    //	hrh.setValue("Accept","*/*");
+    /*
 	hrh.setValue("User-Agent","Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)");
 	hrh.setValue("Pragma","no-cache");
 	hrh.setValue("Cache-Control","no-cache");
@@ -471,12 +474,13 @@ void WalkSiteWnd::onCtrlSockConnected()
 	else
 			hrh.setRequest("GET",url.path());
 	hrh.setValue("Connection", "close" ) ;		
+    */
 
 	rq->mrReadHeaderFinished = false ;
 	rq->mrHttpHeader.clear();
 	rq->mrHFile = 0 ;
 	rq->mrHtmlCode.clear();
-	tmpSock->write(hrh.toString().toAscii());
+	// tmpSock->write(hrh.toString().toLatin1());
 
 }
 
@@ -647,7 +651,7 @@ void WalkSiteWnd::parseWebPage( QString & currUrl , QString & htmlcode)
 	//QString absUrl = QString("%1://%2:%3/%4/").arg(uu.scheme()).arg(uu.host()).arg(uu.port(80)).arg(uu.path()) ;
 
 	linkCount = 0;
-	linkList = html_parse_get_all_link(htmlcode.toAscii().data() , &linkCount );
+	linkList = html_parse_get_all_link(htmlcode.toLatin1().data() , &linkCount );
 	qDebug()<<linkCount ;
 	for( int j = 0 ; j < linkCount ; j ++ )
 	{
@@ -668,7 +672,7 @@ void WalkSiteWnd::parseWebPage( QString & currUrl , QString & htmlcode)
 
 	//fetch the image of this page
 	linkCount = 0 ;
-	linkList = html_parse_get_all_image(htmlcode.toAscii().data() , &linkCount );
+	linkList = html_parse_get_all_image(htmlcode.toLatin1().data() , &linkCount );
 	qDebug()<<"iamge tag count:"<< linkCount ;
 	for( int j = 0 ; j < linkCount ; j ++ )
 	{

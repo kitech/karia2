@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QDir>
 #include <QFileInfo>
+#include <QFileDialog>
 
 // #include "viewmodel.h"
 #include "catmandlg.h"
@@ -99,7 +100,8 @@ void CatManDlg::onModifyCategoryDefaultDirectory( )
 
 	if(newpath.isEmpty()) {
 	} else {
-		newpath = QDir::convertSeparators(newpath);
+		// newpath = QDir::convertSeparators(newpath);
+        newpath = newpath;
 		this->uiwin.cmd_le_default_directory->setText(newpath+QDir::separator());
 	}
 }

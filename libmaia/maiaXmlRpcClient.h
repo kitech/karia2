@@ -53,13 +53,13 @@ public:
 	
 private slots:
     void httpRequestDone(int id, bool error);
-    void responseHeaderReceived(QHttpResponseHeader header);
+    // qvoid responseHeaderReceived(QHttpResponseHeader header);
 
 private:
     QUrl m_url;
     // in qt 4.6.2, this class is marked as obsolete. also QFtp. 
     // Use which class now? QNetworkAccessManager?
-    QHttp *http;
+    // QHttp *http;
     QMap<int, MaiaObject*> callmap;
     QString cookie;
 };

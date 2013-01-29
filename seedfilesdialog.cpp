@@ -7,6 +7,8 @@
 // Version: $Id$
 // 
 
+#include <QtWidgets>
+
 #include "sqlitestorage.h"
 #include "sqlitecategorymodel.h"
 #include "seedfilemodel.h"

@@ -16,7 +16,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QUrlInfo>
+// #include <QUrlInfo>
 #include <QUrl>
 #include <QFileInfo>
 #include <QList>

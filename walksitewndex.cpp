@@ -13,7 +13,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QUrlInfo>
+//#include <QUrlInfo>
 #include <QFileInfo>
 #include <QList>
 #include <QDataStream>
@@ -118,7 +118,7 @@ void WalkSiteThread::run()
 		this->mUrlAccessMutex.lock();	//取出来下一个URL
 		//this->mUrlHashList[this->mCurrUrl] = 'D' ;
 		this->mUrlHashList.remove(this->mCurrUrl) ;
-		this->mUrlHashList[ qtMD5(this->mCurrUrl.toAscii())] = 'D' ;			
+		this->mUrlHashList[ qtMD5(this->mCurrUrl.toLatin1())] = 'D' ;			
 		this->mUrlAccessMutex.unlock();
 	}
 	//
@@ -174,11 +174,14 @@ void WalkSiteThread::crawlUrl()
 		return ;
 	}
 	//////////////
+    /*
 	QHttpRequestHeader hrh ;
 
 	hrh.setValue("Host",uu.host() ) ;
 	hrh.setValue("Range", QString("bytes=%1-").arg(0) ) ;
-	hrh.setValue("Accept","*/*");
+    */
+	// hrh.setValue("Accept","*/*");
+    /*
 	hrh.setValue("User-Agent","Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)");
 	hrh.setValue("Pragma","no-cache");
 	hrh.setValue("Cache-Control","no-cache");
@@ -188,8 +191,9 @@ void WalkSiteThread::crawlUrl()
 	else
 			hrh.setRequest("GET",uu.path());
 	hrh.setValue("Connection", "close" ) ;
+    */
 
-	this->mCtrlSock->write(hrh.toString().toAscii());
+	// this->mCtrlSock->write(hrh.toString().toLatin1());
 	if( ! this->mCtrlSock->waitForBytesWritten(waits) )
 	{
 		return ;
@@ -200,7 +204,7 @@ void WalkSiteThread::crawlUrl()
 	char chBuff[8096] = {0};
 	int readyBytes = 0 ;
 	int oldReadBuffSize = 0 ;
-	QHttpResponseHeader hsh ;
+	// QHttpResponseHeader hsh ;
 	
 	//	
 	if(! this->mCtrlSock->waitForReadyRead(waits ) )
@@ -222,6 +226,7 @@ void WalkSiteThread::crawlUrl()
 		}
 	}
 	this->mCtrlSock->setReadBufferSize(oldReadBuffSize);	// reset the buff size to default value 
+    /*
 	hsh = strBuff ;
 	if( hsh.statusCode() < 200 || hsh.statusCode() >= 400 )
 	{
@@ -233,6 +238,7 @@ void WalkSiteThread::crawlUrl()
 		//作为一个新的URL
 		return ;
 	}
+    */
 
 	//打开文件
 	//取得文件要存储的路径，如果路径不存在则创建之，并创建该文件句柄
@@ -377,7 +383,7 @@ void WalkSiteThread::parseWebPage( QString & currUrl , QString & htmlcode)
 	//QString absUrl = QString("%1://%2:%3/%4/").arg(uu.scheme()).arg(uu.host()).arg(uu.port(80)).arg(uu.path()) ;
 
 	linkCount = 0;
-	linkList = html_parse_get_all_link(htmlcode.toAscii().data() , &linkCount );
+	linkList = html_parse_get_all_link(htmlcode.toLatin1().data() , &linkCount );
 	qDebug()<<linkCount ;
 	QHash<QString, char>::const_iterator hit ; 
 	for( int j = 0 ; j < linkCount ; j ++ )
@@ -392,10 +398,10 @@ void WalkSiteThread::parseWebPage( QString & currUrl , QString & htmlcode)
 			tmpUrl = QUrl(tmpUrl.toString().left(tmpUrl.toString().length() - tmpUrl.fragment().length() -1) ) ;
 		}
 		this->mUrlAccessMutex.lock();	//取出来下一个URL
-		//::MD5Encode(tmpUrl.toString().toAscii().data(),md5val)  ;
+		//::MD5Encode(tmpUrl.toString().toLatin1().data(),md5val)  ;
 		
 		//qDebug()<< "Caller str: "<< md5str << __FILE__<<__LINE__ ;
-		hit = this->mUrlHashList.find( ::qtMD5(tmpUrl.toString().toAscii()) );
+		hit = this->mUrlHashList.find( ::qtMD5(tmpUrl.toString().toLatin1()) );
 		if( hit != this->mUrlHashList.end() )
 		{
 			this->mUrlAccessMutex.unlock();	//取出来下一个URL
@@ -417,7 +423,7 @@ void WalkSiteThread::parseWebPage( QString & currUrl , QString & htmlcode)
 
 	//fetch the image of this page
 	linkCount = 0 ;
-	linkList = html_parse_get_all_image(htmlcode.toAscii().data() , &linkCount );
+	linkList = html_parse_get_all_image(htmlcode.toLatin1().data() , &linkCount );
 	qDebug()<<"iamge tag count:"<< linkCount ;
 	for( int j = 0 ; j < linkCount ; j ++ )
 	{
@@ -433,7 +439,7 @@ void WalkSiteThread::parseWebPage( QString & currUrl , QString & htmlcode)
 		}
 		
 		this->mUrlAccessMutex.lock();	//取出来下一个URL
-		hit = this->mUrlHashList.find( ::qtMD5(tmpUrl.toString().toAscii() ) );
+		hit = this->mUrlHashList.find( ::qtMD5(tmpUrl.toString().toLatin1() ) );
 		if( hit != this->mUrlHashList.end() )
 		{
 			this->mUrlAccessMutex.unlock();	//取出来下一个URL

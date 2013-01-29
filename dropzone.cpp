@@ -23,7 +23,8 @@
 #include "karia2.h"
 
 //f|Qt::ToolTip|Qt::WindowStaysOnTopHint
-DropZone::DropZone(QWidget *parent,Qt::WFlags f )
+// DropZone::DropZone(QWidget *parent,Qt::WFlags f )
+DropZone::DropZone(QWidget *parent)
 : QWidget(parent,Qt::ToolTip|Qt::WindowStaysOnTopHint ) , mParentMainWindow(parent)
 {
 	this->mOpque = 0.6;

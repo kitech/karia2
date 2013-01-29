@@ -1,5 +1,6 @@
 // 2010年 03月 18日 星期四 13:36:31 CST
 #include <QHash>
+#include <QString>
 
 QHash<QString, QString> gMimeHash;
 

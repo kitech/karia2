@@ -159,7 +159,7 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     this->m_argc++;
 
     snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
-             "%s", url.toAscii().data());
+             "%s", url.toLatin1().data());
     this->m_argc++;
 
     args.push_back(url.toStdString());

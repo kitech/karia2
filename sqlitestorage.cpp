@@ -16,7 +16,7 @@
 #include <QMessageBox>
 #include <QDialog>
 #include <QFileDialog>
-#include <QUrlInfo>
+// #include <QUrlInfo>
 #include <QFileInfo>
 #include <QList>
 #include <QToolTip>

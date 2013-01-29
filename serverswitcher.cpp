@@ -56,7 +56,7 @@ void ServerSwitcher::run()
 			"Connection: close\r\n"
 			"\r\n";
 		tmp = tmp.arg(this->mRequest).arg(url.host());
-		sock.write(tmp.toAscii());
+		sock.write(tmp.toLatin1());
 		if( sock.waitForBytesWritten() )
 		{
 			QByteArray ball ;
