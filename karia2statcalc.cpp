@@ -7,7 +7,9 @@
 // Version: $Id$
 // 
 
+#include "simplelog.h"
 #include "karia2statcalc.h"
+
 
 #ifdef HAVE_TERMIOS_H
 #include <termios.h>
@@ -93,12 +95,17 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     if (rgs.size() > 0) {
         for (it = rgs.begin(); it != rgs.end(); ++it) {
             auto rg = *it;
+            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
+            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
             stat = e->getRequestGroupMan()->calculateStat();
+            stat = rg2.second->calculateStat();
 
             Aria2StatCollector *sclt = new Aria2StatCollector();
             sclt->tid = this->m_tid;
             // sclt->globalDownloadSpeed = stat.getDownloadSpeed();
         //     sclt->globalUploadSpeed = stat.getUploadSpeed();
+            sclt->globalUploadSpeed = stat.uploadSpeed;
+            sclt->globalDownloadSpeed = stat.downloadSpeed;
             sclt->numActive = rgs.size();
             sclt->numWaiting = wrgs.size();
             sclt->numStopped = dres.size();
@@ -115,7 +122,13 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
         //        this->setBaseStat(e, rg, sclt);
             //            emit this->progressState(this->m_tid, gid, total_length, curr_length,
             //                                     down_speed, up_speed, num_conns, eta);
-            emit this->progressState(sclt);
+            qLogx()<<"stat intval:"<<sclt->tid<<sclt->numActive<<sclt->numWaiting
+                   <<sclt->numStopped << sclt->downloadSpeed << sclt->uploadSpeed
+                   << stat.sessionDownloadLength << rg2.first
+                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
+                   << rg2.second->getNumConnection()
+                ;
+            emit this->progressStat(sclt);
         }
     }
 

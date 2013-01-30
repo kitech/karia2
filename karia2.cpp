@@ -1910,6 +1910,7 @@ void Karia2::showNewDownloadDialog()
 //            QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
 //            this->mAriaUpdater.start();
 //        }
+        this->mEAria2Man->addUri(taskId, url, to);
 	} else {
 		delete to; to = 0;
 	}

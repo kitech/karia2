@@ -43,7 +43,7 @@ signals:
 //                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
 //                   quint32 num_conns, quint32 eta);
     // TODO dont emit pointer via qt signal
-    void progressState(Aria2StatCollector *stats);
+    void progressStat(Aria2StatCollector *stats);
 
 private:
     int setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
