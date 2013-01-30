@@ -125,6 +125,7 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
+           asynctask.h \
            radarscanner.h \
            resource.h \
            rulesmandlg.h \
@@ -184,6 +185,7 @@ SOURCES += aboutdialog.cpp \
            karia2.cpp \
            karia2application.cpp \
            karia2_standalone_aria2.cpp \
+           asynctask.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \

@@ -41,8 +41,7 @@ class Karia2 : public QMainWindow
 {
     Q_OBJECT;
 public:
-    // Karia2(QWidget *parent = 0, Qt::WFlags flags = 0);
-    Karia2(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    Karia2(int argc, char **argv, QWidget *parent = 0, Qt::WindowFlags flags = 0);
     virtual ~Karia2();
     void initialMainWindow();
     void testFunc();
@@ -343,6 +342,8 @@ private:	//method
 //    QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
     QString showCommandLineArguments();
+    int m_argc;
+    char **m_argv;
 
 protected:
 	virtual void paintEvent(QPaintEvent *event);

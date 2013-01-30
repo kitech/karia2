@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    Karia2 win;
+    Karia2 win(argc, argv);
 
 	//这种方法只能在启动的时候用，其他时候更改无效。
 	//QTranslator translator;
