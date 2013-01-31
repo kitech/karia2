@@ -59,6 +59,7 @@
 //#include "maiaXmlRpcClient.h"
 
 #include "emaria2c.h"
+#include "karia2statcalc.h"
 
 #include "metauri.h"
 //#include "skype.h"
@@ -70,11 +71,12 @@ extern QHash<QString, QString> gMimeHash;
 ////////////////////////////////////////////////
 //main window 
 ////////////////////////////////////////////////
-Karia2::Karia2(QWidget *parent, Qt::WindowFlags flags)
+Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
     , mEAria2Man(NULL)
+    , m_argc(argc), m_argv(argv)
 //    , mSkypeTracer(NULL)
 {
     //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
@@ -87,7 +89,7 @@ Karia2::Karia2(QWidget *parent, Qt::WindowFlags flags)
 	//dynamic language switch
 	qmLocale = QLocale::system().name();
 	qmPath = qApp->applicationDirPath() + QString("/translations");
-	qDebug()<<"Switch Langague to: "<<qmLocale;
+	qLogx()<<"Switch Langague to: "<<qmLocale;
 	qApp->installTranslator(&appTranslator);
 	qApp->installTranslator(&qtTranslator);
 	appTranslator.load(QString("karia2_") + qmLocale , qmPath );
@@ -104,6 +106,7 @@ Karia2::Karia2(QWidget *parent, Qt::WindowFlags flags)
 }
 /**
  * first show adjust window layout
+ * TODO 改进，主线程加载界面组件，异步任务线程加载数据组件，初始化非gui对象。
  */
 void Karia2::firstShowHandler()
 {
@@ -224,7 +227,7 @@ void Karia2::firstShowHandler()
     // QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
     //                  this, SLOT(onSkypeError(int, QString)));
     // bool cok = this->mSkype->connectToSkype();
-    // qDebug()<<"skype connect status:"<<cok;
+    // qLogx()<<"skype connect status:"<<cok;
 
     // QObject::connect(this->mainUI.actionSkype_Tracer_2, SIGNAL(triggered(bool)),
     //                  this, SLOT(onShowSkypeTracer(bool)));
@@ -245,7 +248,7 @@ void Karia2::firstShowHandler()
 #ifdef Q_OS_WIN32
 	// register system hot key 
 	if (!::RegisterHotKey(this->winId(), 'C', MOD_CONTROL|MOD_SHIFT, 'C')) {
-		qDebug()<<"::RegisterHotKey faild";
+		qLogx()<<"::RegisterHotKey faild";
 	}
 #else	
 #endif
@@ -263,7 +266,7 @@ Karia2::~Karia2()
  */
 void Karia2::initialMainWindow()
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 	//set split on humanable postion , but not middle
 	QList<int> splitSize;
 	splitSize = this->mainUI.splitter_4->sizes();	
@@ -283,7 +286,7 @@ void Karia2::initialMainWindow()
 
 
 	splitSize = this->mainUI.splitter->sizes();
-	//qDebug()<<splitSize;
+	//qLogx()<<splitSize;
 	splitSize[0] += 80;
     // splitSize[1] -= 80; // no log section now
 	this->mainUI.splitter->setSizes(splitSize);
@@ -304,7 +307,7 @@ void Karia2::moveEvent (QMoveEvent * event )
 
 	int dtwidth = QApplication::desktop()->width();
 	int dtheight = QApplication::desktop()->height();
-	//qDebug()<<event->pos()<<event->oldPos()<<"W: "<<dtwidth<<" H:"<<dtheight;
+	//qLogx()<<event->pos()<<event->oldPos()<<"W: "<<dtwidth<<" H:"<<dtheight;
 
 	//top 
 
@@ -330,7 +333,7 @@ void Karia2::initPopupMenus()
     // automatic check supported style
     QStringList styleKeys = QStyleFactory::keys();
     QStyle *defaultStyle = QApplication::style();
-    // qDebug()<<QApplication::style()<<styleKeys;
+    // qLogx()<<QApplication::style()<<styleKeys;
     for (int i = 0; i < styleKeys.count(); ++i) {
         QAction *styleAction = new QAction(styleKeys.at(i), this->mainUI.menuStyle);
         styleAction->setData(styleKeys.at(i));
@@ -782,12 +785,12 @@ void Karia2::onStorageOpened()
         // cacl the downloading model index
         QItemSelection readySelect, readDeselect;
         QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
-        qDebug()<<topCatIdx.data();
+        qLogx()<<topCatIdx.data();
         int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
-        qDebug()<<l2RowCount;
+        qLogx()<<l2RowCount;
         for (int r = 0 ; r < l2RowCount ; r ++) {
             QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
-            qDebug()<<currCatIdx;
+            qLogx()<<currCatIdx;
             if (currCatIdx.data().toInt() == ng::cats::downloading) {
                 // for (int c = 0; c <= ng::cats::dirty; c ++) {
                 //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
@@ -816,11 +819,11 @@ void Karia2::initUserOptionSetting()
     //////
     QStringList colList;
     QString taskShowColumns = om->getTaskShowColumns();
-    // qDebug()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
+    // qLogx()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
     if (taskShowColumns != "") {
         colList = taskShowColumns.split(',');
         for (int i = ng::tasks::task_id ; i <= ng::tasks::aria_gid; ++i) {
-            // qDebug()<<"show col:"<<colList.contains(QString::number(i));
+            // qLogx()<<"show col:"<<colList.contains(QString::number(i));
             if (!colList.contains(QString::number(i))) {
                 this->mainUI.mui_tv_task_list->setColumnHidden(i, true);
             }
@@ -877,17 +880,17 @@ int Karia2::createTask(TaskOption *option)
 	
 	taskId = this->getNextValidTaskId();
 
-	//qDebug()<<this->mTaskQueue << __FUNCTION__ << "in " <<__FILE__;
+	//qLogx()<<this->mTaskQueue << __FUNCTION__ << "in " <<__FILE__;
 	if (taskId >= 0) {
         // cacl the downloading model index
         QItemSelection readySelect, readDeselect;
         QModelIndex topCatIdx = this->mCatViewModel->index(0, 0);
-        qDebug()<<topCatIdx.data();
+        qLogx()<<topCatIdx.data();
         int l2RowCount = this->mCatViewModel->rowCount(topCatIdx);
-        qDebug()<<l2RowCount;
+        qLogx()<<l2RowCount;
         for (int r = 0 ; r < l2RowCount ; r ++) {
             QModelIndex currCatIdx = this->mCatViewModel->index(r, ng::cats::cat_id, topCatIdx);
-            qDebug()<<currCatIdx;
+            qLogx()<<currCatIdx;
             if (currCatIdx.data().toInt() == ng::cats::downloading) {
                 // for (int c = 0; c <= ng::cats::dirty; c ++) {
                 //     QModelIndex readyIndex = this->mCatViewModel->index(r, c, topCatIdx);
@@ -943,7 +946,7 @@ void Karia2::onAddTaskList(QStringList list)
 		for (int t = 0; t <list.size(); ++ t )
 		{
 			taskUrl = list.at(t);
-			qDebug()<<taskUrl;
+			qLogx()<<taskUrl;
 			tid->setTaskUrl(taskUrl );
 			to = tid->getOption();
 			this->createTask(to );
@@ -959,7 +962,7 @@ void Karia2::onAddTaskList(QStringList list)
 
 void Karia2::testFunc()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	// int count = 7;	
 	this->mTaskPopupMenu->popup(QCursor::pos ());
 	return;
@@ -971,13 +974,13 @@ void Karia2::testFunc()
 
 	QString url = "http://localhost/mtv.wmv";
 	int nRet = 0;
-	qDebug() <<nRet;
+	qLogx() <<nRet;
 
 }
 
 void Karia2::testFunc2()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 
 	return;
 
@@ -994,7 +997,7 @@ void Karia2::testFunc2()
 
 void Karia2::onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected )
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
     Q_UNUSED(deselected);
 
 	int taskId;
@@ -1006,7 +1009,7 @@ void Karia2::onSegmentListSelectChange(const QItemSelection & selected, const QI
 	taskId = mil.at(1).data().toInt();
 	segId = mil.at(0).data().toInt();
 	segName = mil.at(2).data().toString();
-	qDebug()<<taskId<<segName<<segId;
+	qLogx()<<taskId<<segName<<segId;
 
 	//seach log model by taskid and seg id 
 
@@ -1021,7 +1024,7 @@ void Karia2::onSegmentListSelectChange(const QItemSelection & selected, const QI
 	}
 	else
 	{
-		qDebug()<<__FUNCTION__<<" model mSegLogListView = 0 ";
+		qLogx()<<__FUNCTION__<<" model mSegLogListView = 0 ";
 	}
 }
 
@@ -1047,7 +1050,7 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
 
 	taskId = mil.at(ng::tasks::task_id).data().toInt();
 
-	qDebug()<<__FUNCTION__<<taskId<<segName;
+	qLogx()<<__FUNCTION__<<taskId<<segName;
 
 	QModelIndex index;
 	QAbstractItemModel *mdl = 0;
@@ -1082,7 +1085,7 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
         this->mSegListView->setModel(mdl);
     }
 
-    qDebug()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl ? mdl->rowCount() : 0);
+    qLogx()<<__FUNCTION__<<"Ball Ball"<<taskId<<mdl<<(mdl ? mdl->rowCount() : 0);
     TaskBallMapWidget::instance()->onRunTaskCompleteState(taskId, true);
 
     {
@@ -1109,7 +1112,7 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
         int fpSize = fontInfo.pixelSize();
         // int fppSize = fontInfo.pointSize();
         int chcnt = laWidth * 2/ fpSize;
-        // qDebug()<<"calc chcnt:"<<laWidth<<fpSize<<chcnt<<fppSize<<refer.length();
+        // qLogx()<<"calc chcnt:"<<laWidth<<fpSize<<chcnt<<fppSize<<refer.length();
 
         if (refer.length() > chcnt) {
             this->mainUI.label_11->setText(QString("<a href=\"%1\">%2</a>")
@@ -1130,7 +1133,7 @@ void Karia2::onTaskListSelectChange(const QItemSelection & selected, const QItem
 
 void Karia2::onCatListSelectChange(const QItemSelection &selected, const QItemSelection &deselected)
 {
-	qDebug()<<__FUNCTION__<<selected;
+	qLogx()<<__FUNCTION__<<selected;
 	
     // has case selected.size() > 1
 	if (selected.size() != 1) {
@@ -1139,11 +1142,11 @@ void Karia2::onCatListSelectChange(const QItemSelection &selected, const QItemSe
 
     QModelIndex currentIndex;
     currentIndex = selected.at(0).indexes().at(0);
-    qDebug()<<currentIndex;
+    qLogx()<<currentIndex;
     QModelIndex catIDIndex = selected.at(0).indexes().at(ng::cats::cat_id);
     int catID = catIDIndex.model()->data(catIDIndex ).toInt();
 
-    // qDebug()<<"My cat id is: "<<catIDIndex.model()->data(catIDIndex).toString();
+    // qLogx()<<"My cat id is: "<<catIDIndex.model()->data(catIDIndex).toString();
     this->mTaskListView->setModel(0);
 
     if (catIDIndex.model()->data(catIDIndex).toString() == "0") {
@@ -1159,14 +1162,14 @@ void Karia2::onCatListSelectChange(const QItemSelection &selected, const QItemSe
                      SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection &)),
                      this, SLOT(onTaskListSelectChange(const QItemSelection &, const QItemSelection &)));
     
-    // qDebug()<<"colums should show:"<<this->mCustomTaskShowColumns;
+    // qLogx()<<"colums should show:"<<this->mCustomTaskShowColumns;
     if (!this->mCustomTaskShowColumns.isEmpty()) {
         this->onTaskShowColumnsChanged(this->mCustomTaskShowColumns);
     }
 
     // clean up
-    // qDebug()<<deselected;
-    // qDebug()<<deselected.count();
+    // qLogx()<<deselected;
+    // qLogx()<<deselected.count();
     // qDebug<<deselected.at(0); //.indexes();
     if (deselected.count() > 0) {
         QModelIndex deCatIdIndex = deselected.at(0).indexes().at(ng::cats::cat_id);
@@ -1183,7 +1186,7 @@ void Karia2::onCatListSelectChange(const QItemSelection &selected, const QItemSe
 // TODO, handle multi row select case
 void Karia2::onStartTask()
 {
-	qDebug()<<__FUNCTION__<<__LINE__;	
+	qLogx()<<__FUNCTION__<<__LINE__;	
 	QAbstractItemView *view = this->mTaskListView;
     QAbstractItemModel *model = view->model();
     int step = model->columnCount();
@@ -1191,7 +1194,7 @@ void Karia2::onStartTask()
 	int taskId = -1;
     QString url;
 	QModelIndexList smil = view->selectionModel()->selectedIndexes();
-	//qDebug()<<smil.size();
+	//qLogx()<<smil.size();
     if (smil.size() == 0) {
         return;
     }
@@ -1285,7 +1288,7 @@ void Karia2::onStartTask()
 
 void Karia2::onStartTaskAll()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 
 	TaskQueue * hTask = 0;
 	// int taskCount;
@@ -1306,7 +1309,7 @@ void Karia2::onStartTaskAll()
 
 void Karia2::onPauseTask()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	
 	QAbstractItemView *view = this->mTaskListView;
 	QAbstractItemModel *model = view->model(); // SqliteTaskModel::instance(ng::cats::downloading, this);
@@ -1314,7 +1317,7 @@ void Karia2::onPauseTask()
 	int taskId = -1;
     QString ariaGid;
 	QModelIndexList smil = view->selectionModel()->selectedIndexes();
-	qDebug()<<__FUNCTION__<<"selectedIndexes count:"<<smil.size();
+	qLogx()<<__FUNCTION__<<"selectedIndexes count:"<<smil.size();
 
 	if (smil.size() == 0) {
         return;
@@ -1326,7 +1329,7 @@ void Karia2::onPauseTask()
 //    for (int i = 0; i < smil.size(); i += step) {
 //        taskId = smil.value(i).data().toInt();
 //        ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
-//        qDebug()<<__FUNCTION__<<smil.value(i)<<taskId;
+//        qLogx()<<__FUNCTION__<<smil.value(i)<<taskId;
 
 //        // check if running
 //        if (!this->mRunningMap.contains(taskId)) {
@@ -1343,7 +1346,7 @@ void Karia2::onPauseTask()
 }
 void Karia2::onPauseTask(int pTaskId )
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
     Q_UNUSED(pTaskId);
 
 	// BaseRetriver * hRetr = 0;
@@ -1360,7 +1363,7 @@ void Karia2::onPauseTask(int pTaskId )
 
 void Karia2::onPauseTaskAll()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	TaskQueue * hTask = 0;
 	// int taskCount;
 
@@ -1382,7 +1385,7 @@ void Karia2::onPauseTaskAll()
  */
 void Karia2::onDeleteTask()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	
 	SqliteTaskModel * from_model = 0 , * to_model = 0;
 	QModelIndex idx;
@@ -1405,12 +1408,12 @@ void Karia2::onDeleteTask()
     int rowcnt = mil.size() / colcnt;
 	for (int row = rowcnt - 1; row >= 0; row --) {
         int mrow = mil.value(row  * colcnt + ng::tasks::task_id).row();
-        // qDebug()<<"prepare delete ROW:"<<mrow<<" All ROW:"<<rowcnt;
+        // qLogx()<<"prepare delete ROW:"<<mrow<<" All ROW:"<<rowcnt;
 		// int taskId = from_model->data(mil.value(row * colcnt + ng::tasks::task_id)).toInt();
 		QString ariaGid = from_model->data(mil.value(row * colcnt + ng::tasks::aria_gid)).toString();
         // int srcCatId = from_model->data(mil.value(row * colcnt + ng::tasks::sys_cat_id)).toInt();
 
-        // qDebug()<<"DDDD:"<<taskId<<ariaGid<<srcCatId;
+        // qLogx()<<"DDDD:"<<taskId<<ariaGid<<srcCatId;
         deleteModelRows<<mrow;
         continue;
         
@@ -1439,7 +1442,7 @@ void Karia2::onDeleteTask()
         int taskId = from_model->data(from_model->index(mrow, ng::tasks::task_id)).toInt();
         QString ariaGid = from_model->data(from_model->index(mrow, ng::tasks::aria_gid)).toString();
         int srcCatId = from_model->data(from_model->index(mrow, ng::tasks::sys_cat_id)).toInt();
-        qDebug()<<"DDDD:"<<mrow<<taskId<<ariaGid<<srcCatId;
+        qLogx()<<"DDDD:"<<mrow<<taskId<<ariaGid<<srcCatId;
         QModelIndexList rmil;
         for (int col = 0; col < colcnt; col ++) {
             rmil.append(from_model->index(mrow, col));
@@ -1467,7 +1470,7 @@ void Karia2::onDeleteTask()
 
 void Karia2::onDeleteTaskAll()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	QModelIndex index;
 	QAbstractItemModel *model;
 	// int rowCount = -1;
@@ -1510,7 +1513,7 @@ QModelIndex findCatModelIndexByCatId(QAbstractItemModel *mdl, QModelIndex parent
 
 void Karia2::onTaskDone(int pTaskId)
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 
 	SqliteTaskModel *mdl = SqliteTaskModel::instance(ng::cats::downloading);
 
@@ -1535,7 +1538,7 @@ void Karia2::onTaskDone(int pTaskId)
         // cacl the downloading model index
         QItemSelection readySelect, readDeselect;
         QModelIndex readyIdx = findCatModelIndexByCatId(this->mCatViewModel, QModelIndex(), destCatId);
-        qDebug()<<"find cat recursive:"<<destCatId<<readyIdx;
+        qLogx()<<"find cat recursive:"<<destCatId<<readyIdx;
         readySelect.select(this->mCatViewModel->index(readyIdx.row(), 0, readyIdx.parent()), 
                            this->mCatViewModel->index(readyIdx.row(), ng::cats::dirty, readyIdx.parent()));
         
@@ -1547,7 +1550,7 @@ void Karia2::onTaskDone(int pTaskId)
 
 void Karia2::onShutdown()
 {
-    qDebug()<<__FUNCTION__<<" shutdown OS now";
+    qLogx()<<__FUNCTION__<<" shutdown OS now";
 }
 
 //////ui op
@@ -1572,10 +1575,10 @@ void Karia2::onNewCategory()
 		ism = dlg->getSelectionModel();
 
 		aim = dlg->getCatModel();		
-		//qDebug()<<dlg->getCatModel();
+		//qLogx()<<dlg->getCatModel();
 		//
 		mil = ism->selectedIndexes();
-		qDebug()<<__FUNCTION__<<mil.size();
+		qLogx()<<__FUNCTION__<<mil.size();
 		if (mil.size() >  0 ) {
 			row = mil.at(0).model()->rowCount(mil.at(0));
 			aim->insertRows(row, 1, mil.at(0));
@@ -1584,7 +1587,7 @@ void Karia2::onNewCategory()
 			idx = aim->index(row, ng::cats::path, mil.at(0));
 			aim->setData(idx, dir);
 			
-			qDebug()<<"insertt "<<row<<aim->data(idx);
+			qLogx()<<"insertt "<<row<<aim->data(idx);
 			
 			//this->mCatView->collapse(mil.at(0));	// open the new cate
 			//this->mCatView->expand(mil.at(0));			
@@ -1621,7 +1624,7 @@ void Karia2::onShowCategoryProperty()
 	er = dlg->exec();	//show it
 
 	if (er == QDialog::Accepted) {
-		//qDebug()<<dlg->getCatModel();
+		//qLogx()<<dlg->getCatModel();
 	} else {
 
 	}
@@ -1833,7 +1836,7 @@ QString decodeFlashgetUrl(QString enUrl)
     }
 
     if (deUrl.toLower().startsWith("flashgetx://")) {
-        qDebug()<<"Unsupported protocol type."<<deUrl;
+        qLogx()<<"Unsupported protocol type."<<deUrl;
     }
     return deUrl;
 
@@ -1873,7 +1876,7 @@ void Karia2::showNewDownloadDialog()
 	delete tid;
 
     QString deUrl = decodeEncodeUrl(url);
-	qDebug()<<"Decode url: "<<segcnt<<url<<deUrl;
+	qLogx()<<"Decode url: "<<segcnt<<url<<deUrl;
     if (url != deUrl) {
         to->setUrl(deUrl);
         url = deUrl;
@@ -1881,7 +1884,7 @@ void Karia2::showNewDownloadDialog()
 
 	if (er == QDialog::Accepted)	{
         int taskId = this->createTask(to);
-		qDebug()<<segcnt<<url<<taskId;
+		qLogx()<<segcnt<<url<<taskId;
         
         //this->initXmlRpc();
 
@@ -1908,10 +1911,11 @@ void Karia2::showNewDownloadDialog()
 //            QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
 //            this->mAriaUpdater.start();
 //        }
+        this->mEAria2Man->addUri(taskId, url, to);
 	} else {
 		delete to; to = 0;
 	}
-	qDebug()<<segcnt<<url;
+	qLogx()<<segcnt<<url;
 }
 
 
@@ -1935,7 +1939,7 @@ void Karia2::showNewBittorrentFileDialog()
         to->setUrl("file://" + url); //转换成本地文件协议
 
         int taskId = this->createTask(to);
-		qDebug()<<__FUNCTION__<<url<<taskId;
+		qLogx()<<__FUNCTION__<<url<<taskId;
         
         //this->initXmlRpc();
 
@@ -2005,7 +2009,7 @@ void Karia2::showNewMetalinkFileDialog()
         to->setUrl("file://" + url); //转换成本地文件协议
 
         int taskId = this->createTask(to);
-		qDebug()<<url<<taskId;
+		qLogx()<<url<<taskId;
         
         //this->initXmlRpc();
 
@@ -2058,7 +2062,7 @@ void Karia2::showBatchDownloadDialog()
 	delete bjd;
 
 	if (er == QDialog::Accepted) {		
-		qDebug()<<segcnt<<url;
+		qLogx()<<segcnt<<url;
 		taskinfodlg *tid = new taskinfodlg(this);
 		for (int i = 0; i < sl.count(); ++i) {
 			tid->setTaskUrl(sl.at(i));
@@ -2105,7 +2109,7 @@ void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接
 				urlList[i] = urlList.at(i).left(urlList.at(i).length()-1);
 			}
 		}
-		qDebug()<<urlList;
+		qLogx()<<urlList;
 
 		if (urlList.size() > 0 )
 		{
@@ -2133,7 +2137,7 @@ void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接
 				//test
 				linkCount = 0;
 				linkList = html_parse_get_all_link(htmlcode.toLatin1().data() , &linkCount );
-				qDebug()<<linkCount;
+				qLogx()<<linkCount;
 				for (int j = 0; j < linkCount; j ++ )
 				{
 					srcList.append(QString(linkList[j]));
@@ -2150,7 +2154,7 @@ void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接
 			if (wpld->exec() == QDialog::Accepted)
 			{
 				resultList = wpld->getResultUrlList();
-				qDebug()<<resultList;
+				qLogx()<<resultList;
 
 			}
 			delete wpld; wpld = 0;
@@ -2183,7 +2187,7 @@ void Karia2::showProcessWebPageInputDiglog()	//处理WEB页面，取其中链接
 				for (int t = 0; t < resultList.size(); ++ t )
 				{
 					taskUrl = resultList.at(t);
-					qDebug()<<taskUrl;
+					qLogx()<<taskUrl;
 					tid->setTaskUrl(taskUrl );
 					to = tid->getOption();
 					this->createTask(to );
@@ -2237,7 +2241,7 @@ void Karia2::onShowOptions()
 
 void Karia2::onShowTaskProperty()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	// QItemSelectionModel * sim;
 	TaskQueue *tq = NULL;
 	QModelIndexList mil;
@@ -2282,7 +2286,7 @@ void Karia2::onShowTaskProperty(int pTaskId)
 
 void Karia2::onShowTaskPropertyDigest(const QModelIndex & index )
 {
-	//qDebug()<<__FUNCTION__ << index.data();
+	//qLogx()<<__FUNCTION__ << index.data();
 	// int taskId;
 	this->mSwapPoint = QCursor::pos();
 	this->mSwapModelIndex = index;
@@ -2291,7 +2295,7 @@ void Karia2::onShowTaskPropertyDigest(const QModelIndex & index )
 
 void Karia2::onShowTaskPropertyDigest( )
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 	QString tips = tr("<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body style=\" white-space: pre-wrap; font-family:宋体; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;\"><table  width=\"100%\"  height=\"100%\" border=\"1\">  <tr>    <td width=\"97\">&nbsp;<img name=\"\" src=\"%1\" width=\"80\" height=\"80\" alt=\"\"></td>    <td  height=\"100%\" ><b>%2</b><br>-------------------------------<br>File Size: %3<br>File Type: .%4<br>Completed: %5<br>-------------------------------<br>Save Postion: %6<br>URL: %7<br>Refferer: %8<br>Comment: %9<br>-------------------------------<br>Create Time: %10<br>------------------------------- </td>  </tr></table></body></html>");
 
 	QPoint np = this->mainUI.mui_tv_task_list->viewport()->mapFromGlobal(QCursor::pos());
@@ -2339,7 +2343,7 @@ void Karia2::onShowTaskPropertyDigest( )
 		ftype = guessedFileType.first;
 		fimg = guessedFileType.second;
 
-		//qDebug()<<"show digest"<<this->mSwapModelIndex.data();
+		//qLogx()<<"show digest"<<this->mSwapModelIndex.data();
 		//QToolTip * tt = new QToolTip();
 		tips = tips.arg(fimg);
 		tips = tips.arg(name);
@@ -2387,14 +2391,14 @@ QPair<QString, QString> Karia2::getFileTypeByFileName(QString fileName)
     }
 
     // ("/usr/share/icons", "/usr/local/share/icons", "/usr/share/icons", ":/home/gzleo/.kde4/share/icons", ":/icons")
-    // qDebug()<<QIcon::themeSearchPaths();
+    // qLogx()<<QIcon::themeSearchPaths();
     
     return ftype;
 }
 
 void Karia2::onEditSelectAll()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
 
 	if (wg == this->mainUI.mui_tv_task_list) {
@@ -2402,12 +2406,12 @@ void Karia2::onEditSelectAll()
 	} else if (wg == this->mainUI.mui_tv_seg_log_list ) {
 		this->mainUI.mui_tv_seg_log_list->selectAll();
 	}
-	qDebug()<<wg;
+	qLogx()<<wg;
 
 }
 void Karia2::onEditInvertSelect()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	QWidget * wg = focusWidget ();
 	QModelIndex idx;
 	QTreeView *tv;
@@ -2446,7 +2450,7 @@ void Karia2::onEditInvertSelect()
 		sm->select(tv->model()->index(subrows[i],0),QItemSelectionModel::Select|QItemSelectionModel::Rows);
 	}
 
-	qDebug()<<wg;
+	qLogx()<<wg;
 
 }
 
@@ -2464,7 +2468,7 @@ void Karia2::onShowToolbarText(bool show)
 
 void Karia2::onTaskListMenuPopup(/* const QPoint & pos */) 
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 
 	//将菜单项进行使合适的变灰
 	QModelIndex idx;
@@ -2594,7 +2598,7 @@ void Karia2::onTaskListMenuPopup(/* const QPoint & pos */)
 }
 void Karia2::onUpdateJobMenuEnableProperty() 
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 
 	//将菜单项进行使合适的变灰
 	QModelIndex idx;
@@ -2743,7 +2747,7 @@ void Karia2::onCateMenuPopup(const QPoint & pos)
 
 void Karia2::onCopyUrlToClipboard()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 
 	QItemSelectionModel * ism = 0;
 	QModelIndexList mil;
@@ -2761,7 +2765,7 @@ void Karia2::onCopyUrlToClipboard()
 ////////////
 void Karia2::onCopySelectSegLog()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	
 	QModelIndex idx;
 	// QTreeView *tv;
@@ -2792,7 +2796,7 @@ void Karia2::onCopySelectSegLog()
 	}
 
 
-	qDebug()<<cols<<text <<mil.size();
+	qLogx()<<cols<<text <<mil.size();
 
 }
 void Karia2::onSaveSegLog()
@@ -2867,13 +2871,13 @@ void Karia2::onSwitchLanguage(QAction* action)
 	QString lang = "en_US";	//默认
 	//if (action == this->mainUI.action_Chinese_simple)
 	//{
-	//	qDebug()<<"switch lang: zh_CN";
+	//	qLogx()<<"switch lang: zh_CN";
 	//	lang = "zh_CN";
 	//}
 
 	//if (action == this->mainUI.action_English)
 	//{
-	//	qDebug()<<"switch lang: en_US";
+	//	qLogx()<<"switch lang: en_US";
 	//	lang = "en_US";
 	//}
 	lang = action->data().toString();
@@ -2886,10 +2890,10 @@ void Karia2::onSwitchLanguage(QAction* action)
 
 	QString langFile  = QString("karia2_")+lang;
 	appTranslator.load(langFile , qmPath );
-	//qDebug()<<"Loading file :"<<langFile;
+	//qLogx()<<"Loading file :"<<langFile;
 	langFile = "qt_"+lang;
 	qtTranslator.load(langFile,qmPath);
-	//qDebug()<<"Loading file :"<<langFile;
+	//qLogx()<<"Loading file :"<<langFile;
 
 	if (! action->isChecked()) {
 		action->setChecked(true);
@@ -2910,13 +2914,13 @@ void Karia2::onSwitchSkinType(QAction* action)
 
 void Karia2::onSwitchWindowStyle(QAction * action )
 {
-	qDebug()<<__FUNCTION__<<":"<<__LINE__<<" typeL "<< action->data().toString()
+	qLogx()<<__FUNCTION__<<":"<<__LINE__<<" typeL "<< action->data().toString()
 		<< this->sender();
     // QStringList styleKeys = QStyleFactory::keys();
-    // qDebug()<<styleKeys;
+    // qLogx()<<styleKeys;
 
 	if (action->data().toString() == "norwegianwood") {
-		//qDebug()<<"NorwegianWood style";
+		//qLogx()<<"NorwegianWood style";
         if (this->mNorStyle == NULL) {
             // this->mNorStyle = new NorwegianWoodStyle();
         }
@@ -2937,7 +2941,7 @@ void Karia2::onSwitchWindowStyle(QAction * action )
 
 void Karia2::onSwitchSpeedMode(QAction *action)
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
     QString speedLimitType = "unlimited";
 	if (action == mainUI.action_Unlimited) {
 		this->mSpeedBarSlider->hide();
@@ -2994,7 +2998,7 @@ void Karia2::onRememberSpeedLimitSetting(bool checked)
 // need a accelerate slider
 void Karia2::onManualSpeedChanged(int value) 
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
 	//this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(value*this->mTaskQueue.size()));
 	// GlobalOption::instance()->mMaxLimitSpeed = value * 1024;	//the value is KB in unit
@@ -3038,7 +3042,7 @@ void Karia2::onGotoHomePage()
  */
 void Karia2::onDropZoneDoubleClicked()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	if (this->isHidden () )
 	{
 		this->setHidden(false);
@@ -3062,7 +3066,7 @@ void Karia2::onDropZoneCustomMenu(const QPoint & pos)
 
 void Karia2::onOpenDistDirector()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	QString openner;
 	QString tmp;
 	QString dir;
@@ -3096,7 +3100,7 @@ void Karia2::onOpenDistDirector()
 
 void Karia2::onOpenExecDownloadedFile()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 	
 	QString tmp;
 	QString dir, fname;
@@ -3173,7 +3177,7 @@ void Karia2::onClipBoardDataChanged()
 	QClipboard *cb = QApplication::clipboard();	
 	QString text = cb->text();
 
-	qDebug()<<cb->mimeData()->formats();
+	qLogx()<<cb->mimeData()->formats();
 	
 	if (text.length() > 0) {
 		QUrl uu(text);
@@ -3192,7 +3196,7 @@ void Karia2::onClipBoardDataChanged()
         }
 	}
 	
-	qDebug()<<text;
+	qLogx()<<text;
 }
 
 void Karia2::paintEvent (QPaintEvent * event )
@@ -3202,9 +3206,9 @@ void Karia2::paintEvent (QPaintEvent * event )
 	QPoint p(0, 0);
 	if (this->image.isNull()) {
 		this->image =QImage("4422b46f9b7e5389963077_zVzR8Bc2kwIf.jpg");
-		//qDebug()<<this->mCatView->windowOpacity();
+		//qLogx()<<this->mCatView->windowOpacity();
 		//this->mCatView->setWindowOpacity(0.5);
-		//qDebug()<<this->mCatView->windowOpacity();
+		//qLogx()<<this->mCatView->windowOpacity();
 		this->mainUI.splitter_4->setWindowOpacity(0.3);
 		this->mainUI.splitter_3->setWindowOpacity(0.5);
 		this->mainUI.splitter_2->setWindowOpacity(0.8);
@@ -3224,11 +3228,15 @@ void Karia2::paintEvent (QPaintEvent * event )
 void Karia2::closeEvent (QCloseEvent * event )
 {
     qLogx()<<this->sender();
-	//qDebug()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
+	//qLogx()<< static_cast<QApplication*>(QApplication::instance())->quitOnLastWindowClosed ();
     if (this->sender() == 0) {
         // 点击右上角的X号, 或者Alt+F4，将该行为转成窗口最小化，隐藏到系统托盘区域
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
 		event->setAccepted(false);
+    } else if (this->sender()->objectName() == "actionQuit") {
+        event->setAccepted(true);	//不再传递了
+        qApp->quit();
+        return;        
 	} else {//通过点击退出菜单，可认为用户是想退出的。
 		//if (QMessageBox::question(this,"Are you sure?","Exit Karia2 Now.",QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Cancel )
 		{
@@ -3259,11 +3267,11 @@ void Karia2::showEvent (QShowEvent * event )
 {
 	QWidget::showEvent(event);
 
-	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
+	//qLogx()<<__FUNCTION__<<__LINE__<<rand();
 	if (firstShowEvent == true) {	
 		firstShowEvent = false;
 		//添加首次显示要处理的工作
-		qDebug()<<__FUNCTION__<<__LINE__<<"first show";
+		qLogx()<<__FUNCTION__<<__LINE__<<"first show";
 		//this->firstShowHandler();
 		QTimer::singleShot(30, this, SLOT(firstShowHandler()));
 	}
@@ -3273,7 +3281,7 @@ void Karia2::showEvent (QShowEvent * event )
 #if defined(Q_OS_WIN)
 bool Karia2::winEvent (MSG * msg, long * result )
 {
-	//qDebug()<<__FUNCTION__<<__LINE__<<rand();
+	//qLogx()<<__FUNCTION__<<__LINE__<<rand();
 	//whereis MOD_CONTROL ???
     // shutcut: CTRL+SHIFT+C
 	if (msg->message == WM_HOTKEY) {
@@ -3281,7 +3289,7 @@ bool Karia2::winEvent (MSG * msg, long * result )
 		case 'C':
 			//做想做的事。我想用它抓图,哈哈，完全可以啊。
 			this->shootScreen();
-			qDebug()<<msg->message <<"xxx"<<(int)('G')<<":"<<msg->wParam<<" lp:"<< msg->lParam;
+			qLogx()<<msg->message <<"xxx"<<(int)('G')<<":"<<msg->wParam<<" lp:"<< msg->lParam;
 			break;
 		default:
 			break;
@@ -3298,9 +3306,9 @@ bool Karia2::macEvent (EventHandlerCallRef caller, EventRef event )
 #else
 bool Karia2::x11Event (XEvent * event )
 {
-    //qDebug()<<"XEvent->type:"<< event->type;
+    //qLogx()<<"XEvent->type:"<< event->type;
     if (event->type == PropertyNotify) {
-        //qDebug()<<"dont push button";
+        //qLogx()<<"dont push button";
     }
     return QMainWindow::x11Event(event);
 }
@@ -3308,9 +3316,9 @@ void Karia2::keyReleaseEvent (QKeyEvent * event )
 {
     // shortcut: CTRL+G
     if (event->modifiers() == Qt::ControlModifier) {
-        //qDebug()<<"with ctrl key ";
+        //qLogx()<<"with ctrl key ";
         if (event->key() == Qt::Key_G) {
-            //qDebug()<<"key released: " << event->text();
+            //qLogx()<<"key released: " << event->text();
             this->shootScreen();
         }
     }
@@ -3338,14 +3346,14 @@ void Karia2::shootScreen()
 		ff.close();
 	}
 	if (! screenSnapShot.save(fileName, format.toLatin1())) {
-		qDebug()<< "save screen snap shot error:"<<fileName;
+		qLogx()<< "save screen snap shot error:"<<fileName;
 	}
 }
 
 //system tray slot handler
 void Karia2::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
 {
-	qDebug()<<__FUNCTION__ << index;
+	qLogx()<<__FUNCTION__ << index;
 	if (index == QSystemTrayIcon::DoubleClick	)
 	{		
 		this->mainUI.action_Show_Hide_Main_Widow->trigger();
@@ -3368,7 +3376,7 @@ void Karia2::onActiveTrayIcon(QSystemTrayIcon::ActivationReason index )
  */
 void Karia2::onBallonClicked()
 {
-	qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__;
 }
 
 void Karia2::onShowWalkSiteWindow()
@@ -3418,7 +3426,7 @@ void Karia2::onShowWalkSiteWindow()
 		this->mWalkSiteDockWidget->setWidget(this->mHWalkSiteWndEx);
 	}
 	this->mHWalkSiteWndEx->showMinimized();
-	qDebug()<< this->mWalkSiteDockWidget->isHidden();
+	qLogx()<< this->mWalkSiteDockWidget->isHidden();
 	if (this->mWalkSiteDockWidget->isHidden() )
 		this->mWalkSiteDockWidget->showMinimized();
 
@@ -3437,11 +3445,11 @@ void Karia2::onTaskShowColumnsChanged(QString columns)
     //////
     QStringList colList;
     QString taskShowColumns = columns;
-    // qDebug()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
+    // qLogx()<<__FUNCTION__<<taskShowColumns<<(ng::tasks::aria_gid);
     if (taskShowColumns != "") {
         colList = taskShowColumns.split(',');
         for (int i = ng::tasks::task_id ; i <= ng::tasks::aria_gid; ++i) {
-            // qDebug()<<"show col:"<<colList.contains(QString::number(i));
+            // qLogx()<<"show col:"<<colList.contains(QString::number(i));
             if (!colList.contains(QString::number(i))) {
                 this->mainUI.mui_tv_task_list->setColumnHidden(i, true);
             } else {
@@ -3478,9 +3486,8 @@ void Karia2::applyReselectFile()
 
 void Karia2::handleArguments()
 {
-    QStringList args = qApp->arguments();
-    int argc = args.count();
-    char **argv = NULL; // qApp->argv();
+    int argc = this->m_argc;
+    char **argv = this->m_argv; // qApp->argv();
 
     this->handleArguments(argc, argv);
 }
@@ -3499,7 +3506,7 @@ QString Karia2::showCommandLineArguments()
         "\n";
         ;
 
-    qDebug()<<cmdLine;
+    qLogx()<<cmdLine;
 
     return cmdLine;
 }
@@ -3509,7 +3516,7 @@ QString Karia2::showCommandLineArguments()
 void Karia2::handleArguments(int argc, char **argv)
 {
     for (int i = 0 ; i < argc ; i ++) {
-        qDebug()<<"Arg no: "<<i<<argv[i];
+        qLogx()<<"Arg no: "<<i<<argv[i];
     }
 
     int rargc = argc;
@@ -3528,7 +3535,7 @@ void Karia2::handleArguments(int argc, char **argv)
         rargc = 0;
         rargv = targv;
 
-        qDebug()<<"Reformat arguments for handle properly. "; // ktyytc11
+        qLogx()<<"Reformat arguments for handle properly. "; // ktyytc11
         char *farg = argv[1];
         char *ptr = 0;
 
@@ -3538,7 +3545,7 @@ void Karia2::handleArguments(int argc, char **argv)
         while (*farg == ' ') { farg++; } ; // ltrim
         while (true && farg != NULL) {
             ptr = strchr(farg, ' ');
-            qDebug()<<"here:"<<ptr;
+            qLogx()<<"here:"<<ptr;
             if (ptr == NULL) {
                 targv[rargc++] = farg;
                 break;
@@ -3550,7 +3557,7 @@ void Karia2::handleArguments(int argc, char **argv)
         }
 
         for (int i = 0 ; i < rargc ; i ++) {
-            qDebug()<<"rArg no: "<<i<<rargv[i];
+            qLogx()<<"rArg no: "<<i<<rargv[i];
         }
     } else if (argc == 2) {
         // windows metafile arguments, no --metafile prefix
@@ -3596,7 +3603,7 @@ void Karia2::handleArguments(int argc, char **argv)
         QByteArray metaData = file.readAll().trimmed();
         QList<QByteArray> metaInfo = metaData.split('\n');
         if (metaInfo.count() != 5) {
-            qDebug()<<__FUNCTION__<<"Not a valid metfile.";
+            qLogx()<<__FUNCTION__<<"Not a valid metfile.";
             return;
         }
         uri = metaInfo.at(1);
@@ -3606,7 +3613,7 @@ void Karia2::handleArguments(int argc, char **argv)
     }
 
     if (uri.length() == 0) {
-        qDebug()<<__FUNCTION__<<"No uri specified.";
+        qLogx()<<__FUNCTION__<<"No uri specified.";
         return;
     }
 
@@ -3638,7 +3645,7 @@ void Karia2::handleArguments(int argc, char **argv)
     QString ngetUri = "karia2://" + options.toBase64Data();
     QClipboard *cb = QApplication::clipboard();
     cb->setText(ngetUri);
-    qDebug()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
+    qLogx()<<__FUNCTION__<<"uri:"<<uri<<"cbtext:"<<cb->text()<<ngetUri;
 
     // this->mainUI.action_New_Download->trigger();
     qApp->setActiveWindow(this);
@@ -3676,7 +3683,7 @@ void Karia2::onOtherKaria2MessageRecived(const QString &msg)
     QStringList args;
     
     if (msg.startsWith("sayhello:")) {
-        qDebug()<<__FUNCTION__<<"You says: "<<msg;
+        qLogx()<<__FUNCTION__<<"You says: "<<msg;
     } else if (msg.startsWith("cmdline:")) {
         args = msg.right(msg.length() - 8).split(" ");
         if (!args.at(1).startsWith("--")) {
@@ -3690,7 +3697,7 @@ void Karia2::onOtherKaria2MessageRecived(const QString &msg)
         }
         this->handleArguments(args);
     } else {
-        qDebug()<<__FUNCTION__<<"Unknown message type: "<<msg;
+        qLogx()<<__FUNCTION__<<"Unknown message type: "<<msg;
     }
 }
 
@@ -3704,14 +3711,14 @@ void Karia2::retranslateUi()
 
 void Karia2::onObjectDestroyed(QObject *obj)
 {
-	qDebug()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName();
+	qLogx()<<__FUNCTION__<<__LINE__<<" "<< obj->objectName();
 	obj->dumpObjectInfo ();
 	obj->dumpObjectTree ();
 }
 
 //void Karia2::onSkypeError(int errNo, QString msg)
 //{
-//    qDebug()<<errNo<<msg;
+//    qLogx()<<errNo<<msg;
 //}
 
 //void Karia2::onShowSkypeTracer(bool checked)
@@ -3734,7 +3741,7 @@ void Karia2::onObjectDestroyed(QObject *obj)
 //    // QString skypeName = this->mainUI.lineEdit->text();
     
 //    // QStringList contacts = this->mSkype->getContacts();
-//    // qDebug()<<skypeName<<contacts;
+//    // qLogx()<<skypeName<<contacts;
 
 //    // this->mSkype->newStream(skypeName);
 //    // this->mSkype->newStream("drswinghead");
@@ -3760,7 +3767,7 @@ void Karia2::onObjectDestroyed(QObject *obj)
     
 //    // QString spStr = sp.toString();
     
-//    // qDebug()<<muStr<<spStr;
+//    // qLogx()<<muStr<<spStr;
 
 //    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 //}
@@ -3775,7 +3782,7 @@ void Karia2::onObjectDestroyed(QObject *obj)
 //    // sp.data = num;
 
 //    // QString spStr = sp.toString();
-//    // qDebug()<<spStr;
+//    // qLogx()<<spStr;
 //    // this->mSkype->sendPackage(this->mainUI.lineEdit->text(), spStr);
 //}
 

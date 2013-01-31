@@ -74,9 +74,9 @@ win32 {
       # QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:console
     }
 } else {
-    INCLUDEPATH += ./aria2-1.13.0/src/
-    LIBS += -L./aria2-1.13.0/src/ -laria2c -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
-    LIBS += -lgcrypt
+    INCLUDEPATH += ./aria2-1.16.1/src/ ./aria2-1.16.1/  ./aria2-1.16.1/lib
+    LIBS += -L./aria2-1.16.1/src/ -laria2c -L./aria2-1.16.1/deps/wslay/lib/.libs/ -lwslay -L./aria2-1.16.1/intl -lintl
+    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
@@ -125,6 +125,7 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
+           asynctask.h \
            radarscanner.h \
            resource.h \
            rulesmandlg.h \
@@ -184,6 +185,7 @@ SOURCES += aboutdialog.cpp \
            karia2.cpp \
            karia2application.cpp \
            karia2_standalone_aria2.cpp \
+           asynctask.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \
            segmentlogmodel.cpp \
@@ -222,7 +224,8 @@ SOURCES += aboutdialog.cpp \
            simplelog.cpp \
            asyncdatabase.cpp \
            databaseworker.cpp \
-           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc
+           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc \
+
 win32{
         SOURCES += DiskInfo.cpp
 }  

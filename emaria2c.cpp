@@ -24,6 +24,7 @@
 #include "Logger.h"
 #include "RequestGroup.h"
 #include "prefs.h"
+#include "SharedHandle.h"
 #include "DownloadEngineFactory.h"
 #include "RecoverableException.h"
 #include "message.h"
@@ -49,6 +50,7 @@
 #include "console.h"
 #include "help_tags.h"
 #include "OptionHandlerException.h"
+#include "UnknownOptionException.h"
 #include "download_helper.h"
 #include "MultiUrlRequestInfo.h"
 #include "ConsoleStatCalc.h"
@@ -67,13 +69,14 @@ void test_emaria2c()
     aria2::Option *opt;
 
 
-    aria2::DownloadEngineHandle de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
+    // aria2::DownloadEngineHandle de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
+    aria2::SharedHandle<aria2::DownloadEngine> de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
 }
 
 QMutex EAria2Man::m_inst_mutex;
 EAria2Man *EAria2Man::m_instance = NULL;
 EAria2Man::EAria2Man(QObject *parent)
-    :QObject(parent)
+    :QThread(parent)
 {
 
 }
@@ -81,6 +84,19 @@ EAria2Man::EAria2Man(QObject *parent)
 EAria2Man::~EAria2Man()
 {
     qLogx()<<"";
+    int stkey;
+    Aria2StatCollector *sclt;
+    QPair<int, Aria2StatCollector*> elem;
+
+    while (!this->stkeys.empty()) {
+        elem = this->stkeys.dequeue();
+        stkey = elem.first;
+        sclt = elem.second;
+
+        if (sclt != NULL) {
+            delete sclt;
+        }
+    }
 }
 
 EAria2Man *EAria2Man::instance()
@@ -141,12 +157,13 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw = new EAria2Worker();
     eaw->m_tid = task_id;
     eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
+    eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
+    // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
+    //                  this, SIGNAL(progressState(Aria2StatCollector*)));
+    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &EAria2Man::onAllStatArrived);
+
     this->m_tasks[task_id] = eaw;
-//    QObject::connect(eaw, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-//                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
-    QObject::connect(eaw, SIGNAL(progressState(Aria2StatCollector*)),
-                     this, SIGNAL(progressState(Aria2StatCollector*)));
-    QObject::connect(eaw, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
+    QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
@@ -185,161 +202,165 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
 }
 
 /////
-void overrideWithEnv(aria2::Option& op, const aria2::OptionParser& optionParser,
-                     const std::string& pref,
-                     const std::string& envName)
+void overrideWithEnv
+(aria2::Option& op,
+ const aria2::SharedHandle<aria2::OptionParser>& optionParser,
+ const aria2::Pref* pref,
+ const std::string& envName)
 {
-  char* value = ::getenv(envName.c_str());
+  char* value = getenv(envName.c_str());
   if(value) {
     try {
-      optionParser.findByName(pref)->parse(op, value);
+      optionParser->find(pref)->parse(op, value);
     } catch(aria2::Exception& e) {
-      aria2::global::cerr()->printf
-        ("Caught Error while parsing environment variable '%s'\n%s\n",
-         envName.c_str(),
-         e.stackTrace().c_str());
+        aria2::global::cerr()->printf
+        (_("Caught Error while parsing environment variable '%s'"),
+         envName.c_str());
+        aria2::global::cerr()->printf("\n%s\n", e.stackTrace().c_str());
     }
   }
 }
 
+
 int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& uris,
                        int argc, char* argv[])
 {
-    aria2::OptionParser oparser;
-    oparser.setOptionHandlers(aria2::OptionHandlerFactory::createOptionHandlers());
-    try {
-      bool noConf = false;
-      std::string ucfname;
-      std::stringstream cmdstream;
-//      oparser.parseArg(cmdstream, uris, argc, argv);
-//      {
-//        // first evaluate --no-conf and --conf-path options.
-//        aria2::Option op;
-//        oparser.parse(op, cmdstream);
-//        noConf = op.getAsBool(aria2::PREF_NO_CONF);
-//        ucfname = op.get(aria2::PREF_CONF_PATH);
+    const aria2::SharedHandle<aria2::OptionParser>& oparser = aria2::OptionParser::getInstance();
+  try {
+    bool noConf = false;
+    std::string ucfname;
+    std::stringstream cmdstream;
+    // oparser->parseArg(cmdstream, uris, argc, argv);
+    // {
+    //   // first evaluate --no-conf and --conf-path options.
+    //     aria2::Option op;
+    //   oparser->parse(op, cmdstream);
+    //   noConf = op.getAsBool(aria2::PREF_NO_CONF);
+    //   ucfname = op.get(aria2::PREF_CONF_PATH);
 
-//        if(op.defined("version")) {
-//            // showVersion();
-//          exit(aria2::error_code::FINISHED);
-//        }
-//        if(op.defined("help")) {
-//          std::string keyword;
-//          if(op.get("help").empty()) {
-//            keyword = TAG_BASIC;
-//          } else {
-//            keyword = op.get("help");
-//            if(aria2::util::startsWith(keyword, "--")) {
-//              keyword = keyword.substr(2);
-//            }
-//            std::string::size_type eqpos = keyword.find("=");
-//            if(eqpos != std::string::npos) {
-//              keyword = keyword.substr(0, eqpos);
-//            }
-//          }
-//          // showUsage(keyword, oparser);
-//          exit(aria2::error_code::FINISHED);
-//        }
-//      }
+    //   if(op.defined(aria2::PREF_VERSION)) {
+    //     showVersion();
+    //     exit(aria2::error_code::FINISHED);
+    //   }
+    //   if(op.defined(aria2::PREF_HELP)) {
+    //     std::string keyword;
+    //     if(op.get(aria2::PREF_HELP).empty()) {
+    //       keyword = strHelpTag(aria2::TAG_BASIC);
+    //     } else {
+    //       keyword = op.get(aria2::PREF_HELP);
+    //       if(aria2::util::startsWith(keyword, "--")) {
+    //         keyword.erase(keyword.begin(), keyword.begin()+2);
+    //       }
+    //       std::string::size_type eqpos = keyword.find("=");
+    //       if(eqpos != std::string::npos) {
+    //         keyword.erase(keyword.begin()+eqpos, keyword.end());
+    //       }
+    //     }
+    //     showUsage(keyword, oparser, aria2::global::cout());
+    //     exit(aria2::error_code::FINISHED);
+    //   }
+    // }
 
-      oparser.parseDefaultValues(op);
+    oparser->parseDefaultValues(op);
 
-      if(!noConf) {
-        std::string cfname =
-          ucfname.empty() ?
-          oparser.findByName(aria2::PREF_CONF_PATH)->getDefaultValue():
-          ucfname;
+    if(!noConf) {
+      std::string cfname =
+        ucfname.empty() ?
+        oparser->find(aria2::PREF_CONF_PATH)->getDefaultValue() : ucfname;
 
-        if(aria2::File(cfname).isFile()) {
-          std::stringstream ss;
-          {
-            aria2::BufferedFile fp(cfname, aria2::BufferedFile::READ);
-            if(fp) {
-              fp.transfer(ss);
-            }
+      if(aria2::File(cfname).isFile()) {
+        std::stringstream ss;
+        {
+          aria2::BufferedFile fp(cfname.c_str(), aria2::BufferedFile::READ);
+          if(fp) {
+            fp.transfer(ss);
           }
-          try {
-            oparser.parse(op, ss);
-          } catch(aria2::OptionHandlerException& e) {
-            aria2::global::cerr()->printf("Parse error in %s\n%s\n",
-                                   cfname.c_str(),
-                                   e.stackTrace().c_str());
-            aria2::SharedHandle<aria2::OptionHandler> h = oparser.findByName(e.getOptionName());
-            if(h) {
-              aria2::global::cerr()->printf
-                ("Usage:\n%s\n",
-                 oparser.findByName(e.getOptionName())->getDescription().c_str());
-            }
-            exit(e.getErrorCode());
-          } catch(aria2::Exception& e) {
-            aria2::global::cerr()->printf("Parse error in %s\n%s\n",
-                                   cfname.c_str(),
-                                   e.stackTrace().c_str());
-            exit(e.getErrorCode());
+        }
+        try {
+          oparser->parse(op, ss);
+        } catch(aria2::OptionHandlerException& e) {
+            aria2::global::cerr()->printf(_("Parse error in %s"), cfname.c_str());
+            aria2::global::cerr()->printf("\n%s", e.stackTrace().c_str());
+          const aria2::OptionHandler* h = oparser->find(e.getPref());
+          if(h) {
+              aria2::global::cerr()->printf(_("Usage:"));
+              aria2::global::cerr()->printf("\n%s\n", h->getDescription());
           }
-        } else if(!ucfname.empty()) {
-          aria2::global::cerr()->printf("Configuration file %s is not found.\n",
-                                 cfname.c_str());
-          // showUsage(TAG_HELP, oparser);
-          exit(aria2::error_code::UNKNOWN_ERROR);
+          exit(e.getErrorCode());
+        } catch(aria2::Exception& e) {
+            aria2::global::cerr()->printf(_("Parse error in %s"), cfname.c_str());
+            aria2::global::cerr()->printf("\n%s", e.stackTrace().c_str());
+          exit(e.getErrorCode());
         }
-      }
-      // Override configuration with environment variables.
-      overrideWithEnv(op, oparser, aria2::PREF_HTTP_PROXY, "http_proxy");
-      overrideWithEnv(op, oparser, aria2::PREF_HTTPS_PROXY, "https_proxy");
-      overrideWithEnv(op, oparser, aria2::PREF_FTP_PROXY, "ftp_proxy");
-      overrideWithEnv(op, oparser, aria2::PREF_ALL_PROXY, "all_proxy");
-      overrideWithEnv(op, oparser, aria2::PREF_NO_PROXY, "no_proxy");
-
-      // we must clear eof bit and seek to the beginning of the buffer.
-      cmdstream.clear();
-      cmdstream.seekg(0, std::ios::beg);
-      // finaly let's parse and store command-iine options.
-      oparser.parse(op, cmdstream);
-  #ifdef __MINGW32__
-      for(std::map<std::string, std::string>::iterator i = op.begin();
-          i != op.end(); ++i) {
-        if(!util::isUtf8((*i).second)) {
-          (*i).second = nativeToUtf8((*i).second);
-        }
-      }
-  #endif // __MINGW32__
-    } catch(aria2::OptionHandlerException& e) {
-      aria2::global::cerr()->printf("%s\n", e.stackTrace().c_str());
-      aria2::SharedHandle<aria2::OptionHandler> h = oparser.findByName(e.getOptionName());
-      if(h) {
-        std::ostringstream ss;
-        ss << *h;
-        aria2::global::cerr()->printf("Usage:\n%s\n", ss.str().c_str());
-      }
-      exit(e.getErrorCode());
-    } catch(aria2::Exception& e) {
-      aria2::global::cerr()->printf("%s\n", e.stackTrace().c_str());
-      // showUsage(TAG_HELP, oparser);
-      exit(e.getErrorCode());
-    }
-    if(!op.getAsBool(aria2::PREF_ENABLE_RPC) &&
-  #ifdef ENABLE_BITTORRENT
-       op.blank(aria2::PREF_TORRENT_FILE) &&
-  #endif // ENABLE_BITTORRENT
-  #ifdef ENABLE_METALINK
-       op.blank(aria2::PREF_METALINK_FILE) &&
-  #endif // ENABLE_METALINK
-       op.blank(aria2::PREF_INPUT_FILE)) {
-      if(uris.empty()) {
-        aria2::global::cerr()->printf("%s\n", MSG_URI_REQUIRED);
-        // showUsage(TAG_HELP, oparser);
+      } else if(!ucfname.empty()) {
+          aria2::global::cerr()->printf(_("Configuration file %s is not found."),
+                               cfname.c_str());
+          aria2::global::cerr()->printf("\n");
+          // showUsage(strHelpTag(aria2::TAG_HELP), oparser, aria2::global::cerr());
         exit(aria2::error_code::UNKNOWN_ERROR);
       }
     }
-//    if(op.getAsBool(PREF_DAEMON)) {
-//      if(daemon(0, 0) < 0) {
-//        perror(MSG_DAEMON_FAILED);
-//        exit(error_code::UNKNOWN_ERROR);
-//      }
-//    }
-    return 0;
+    // Override configuration with environment variables.
+    overrideWithEnv(op, oparser, aria2::PREF_HTTP_PROXY, "http_proxy");
+    overrideWithEnv(op, oparser, aria2::PREF_HTTPS_PROXY, "https_proxy");
+    overrideWithEnv(op, oparser, aria2::PREF_FTP_PROXY, "ftp_proxy");
+    overrideWithEnv(op, oparser, aria2::PREF_ALL_PROXY, "all_proxy");
+    overrideWithEnv(op, oparser, aria2::PREF_NO_PROXY, "no_proxy");
+
+    // we must clear eof bit and seek to the beginning of the buffer.
+    cmdstream.clear();
+    cmdstream.seekg(0, std::ios::beg);
+    // finaly let's parse and store command-iine options.
+    oparser->parse(op, cmdstream);
+#ifdef __MINGW32__
+    for(size_t i = 1, len = option::countOption(); i < len; ++i) {
+      const Pref* pref = option::i2p(i);
+      if(op.defined(pref) && !util::isUtf8(op.get(pref))) {
+        op.put(pref, nativeToUtf8(op.get(pref)));
+      }
+    }
+#endif // __MINGW32__
+  } catch(aria2::OptionHandlerException& e) {
+      aria2::global::cerr()->printf("%s", e.stackTrace().c_str());
+    const aria2::OptionHandler* h = oparser->find(e.getPref());
+    if(h) {
+        aria2::global::cerr()->printf(_("Usage:"));
+        aria2::global::cerr()->printf("\n");
+      write(aria2::global::cerr(), *h);
+    }
+    exit(e.getErrorCode());
+  } catch(aria2::UnknownOptionException& e) {
+      // showUsage("", oparser, aria2::global::cerr());
+      // showCandidates(e.getUnknownOption(), oparser);
+    exit(e.getErrorCode());
+  } catch(aria2::Exception& e) {
+      aria2::global::cerr()->printf("%s", e.stackTrace().c_str());
+      // showUsage("", oparser, aria2::global::cerr());
+    exit(e.getErrorCode());
+  }
+  if(!op.getAsBool(aria2::PREF_ENABLE_RPC) &&
+#ifdef ENABLE_BITTORRENT
+     op.blank(aria2::PREF_TORRENT_FILE) &&
+#endif // ENABLE_BITTORRENT
+#ifdef ENABLE_METALINK
+     op.blank(aria2::PREF_METALINK_FILE) &&
+#endif // ENABLE_METALINK
+     op.blank(aria2::PREF_INPUT_FILE)) {
+    if(uris.empty()) {
+        // aria2::global::cerr()->printf(MSG_URI_REQUIRED);
+        aria2::global::cerr()->printf("\n");
+        // showUsage("", oparser, aria2::global::cerr());
+      exit(aria2::error_code::UNKNOWN_ERROR);
+    }
+  }
+  if(op.getAsBool(aria2::PREF_DAEMON)) {
+    if(daemon(0, 0) < 0) {
+        // perror(MSG_xDAEMON_FAILED);
+      exit(aria2::error_code::UNKNOWN_ERROR);
+    }
+  }
 }
+
 
 void EAria2Man::onWorkerFinished()
 {
@@ -369,6 +390,46 @@ void EAria2Man::onWorkerFinished()
     eaw->deleteLater();
 }
 
+
+//////// statqueue members
+void EAria2Man::run()
+{
+    int stkey;
+    Aria2StatCollector *sclt;
+    QPair<int, Aria2StatCollector*> elem;
+
+    while (!this->stkeys.empty()) {
+        elem = this->stkeys.dequeue();
+        stkey = elem.first;
+        sclt = elem.second;
+
+        this->dispatchStat(sclt);
+
+        if (sclt != NULL) {
+            delete sclt;
+        }
+    }
+}
+
+bool EAria2Man::dispatchStat(Aria2StatCollector *sclt)
+{
+    
+    return true;
+}
+
+
+bool EAria2Man::onAllStatArrived(int stkey)
+{
+    Aria2StatCollector *sclt = static_cast<Karia2StatCalc*>(sender())->getNextStat(stkey);
+    this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
+    if (!this->isRunning()) {
+        this->start();
+    }
+    return true;
+}
+
+
+
 /////////////////
 
 EAria2Worker::EAria2Worker(QObject *parent)
@@ -388,13 +449,9 @@ void EAria2Worker::run()
 //                                            getStatCalc(this->option_),
 //                                            getSummaryOut(this->option_))
 
-    statCalc_.reset(new Karia2StatCalc(this->m_tid, this->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-//    QObject::connect(statCalc_.get(), SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-//                     this, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
-    QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
-                     this, SIGNAL(progressState(Aria2StatCollector*)));
+    aria2::SharedHandle<aria2::UriListParser> ulp;
     exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-                                            statCalc_, getSummaryOut(this->option_))
+                                            statCalc_, getSummaryOut(this->option_), ulp)
             .execute();
     exit_status = exitStatus;
 

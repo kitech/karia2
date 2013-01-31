@@ -23,7 +23,7 @@
 class ConsoleStatCalc;
 class Aria2StatCollector;
 
-class Karia2StatCalc:public QObject, public aria2::StatCalc
+class Karia2StatCalc : public QObject, public aria2::StatCalc
 {
     Q_OBJECT;
 private:
@@ -37,13 +37,20 @@ public:
     virtual ~Karia2StatCalc() {}
 
     virtual void calculateStat(const aria2::DownloadEngine* e);
+    virtual void calculateStatDemoTest(const aria2::DownloadEngine* e);
+
+    // 指针的所有权给上层了，本类不再保存该指针的所有权
+    // 使用这个临时的pool，即使信号出问题，也能清理掉这些内存
+    Aria2StatCollector *getNextStat(int stkey);
+    QMap<uint64_t, Aria2StatCollector*> statPool;
+    static QAtomicInt poolCounter;
 
 signals:
 //    void progressState(int tid, quint32 gid, quint64 total_length,
 //                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
 //                   quint32 num_conns, quint32 eta);
     // TODO dont emit pointer via qt signal
-    void progressState(Aria2StatCollector *stats);
+    void progressStat(int stkey);
 
 private:
     int setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
@@ -59,6 +66,10 @@ class Aria2StatCollector
 public:
     Aria2StatCollector() {reset();}
     ~Aria2StatCollector() {}
+
+    aria2::TransferStat *globalStat;
+    aria2::TransferStat *sessionStat;
+    QMap<uint64_t, aria2::TransferStat *> tasksStat;
 
     void reset() {
         tid = 0;

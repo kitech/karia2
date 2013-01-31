@@ -25,7 +25,7 @@ class EAria2Man;
 class Karia2StatCalc;
 class Aria2StatCollector;
 
-class EAria2Man : public QObject
+class EAria2Man : public QThread
 {
     Q_OBJECT;
 protected:
@@ -48,16 +48,39 @@ private:
                            int argc, char* argv[]);
 
 signals:
-//    void progressState(int tid, quint32 gid, quint64 total_length,
+//    void progressStat(int tid, quint32 gid, quint64 total_length,
 //                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
 //                   quint32 num_conns, quint32 eta);
-    void progressState(Aria2StatCollector *stats);
+    void progressStat(Aria2StatCollector *stats);
     void taskFinished(int tid, int code);
+
+/**
+ * 实现下载状态信息的暂存
+ * 实现下载状态状态的合并
+ * 实现下载状态拆分发出
+ * 实现三角通信的一个节点，另两个是GUI和aria2实例
+ */
+public:
+    virtual void run();
+    bool dispatchStat(Aria2StatCollector *sclt);
+public slots:
+    bool onAllStatArrived(int stkey);
+
+signals:
+    void sessionStatFinished();
+    void globalStatFinished();
+    void taskStatFinished();
+    void segmentStatFinished();
 
 protected:
     QHash<int, EAria2Worker*> m_tasks;
     int m_argc;
     char m_argv[32][256];
+
+    // statqueue member
+    QQueue<QPair<int, Aria2StatCollector*> > stkeys;
+    Aria2StatCollector *lastStat;
+
 };
 
 class EAria2Worker : public QThread
@@ -82,11 +105,6 @@ protected:
     aria2::DownloadEngine *e;
     int exit_status;
 
-signals:
-//    void progressState(int tid, quint32 gid, quint64 total_length,
-//                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
-//                   quint32 num_conns, quint32 eta);
-    void progressState(Aria2StatCollector *stats);
 };
 
 #endif /* _EMARIA2C_H_ */

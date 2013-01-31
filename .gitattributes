@@ -18,11 +18,14 @@ aria2-1.13.0/src/config.h -text
 /ariaman.h -text
 /asyncdatabase.cpp -text
 /asyncdatabase.h -text
+/asynctask.cpp -text
+/asynctask.h -text
 /batchjobmandlg.cpp -text
 /batchjobmandlg.h -text
 /batchjobmandlg.ui -text
 browser/iegeturl.html -text
 browser/opera_go_to_page.dat -text
+/buildaria2.sh -text
 /catmandlg.cpp -text
 /catmandlg.h -text
 /catmandlg.ui -text

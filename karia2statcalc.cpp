@@ -7,7 +7,9 @@
 // Version: $Id$
 // 
 
+#include "simplelog.h"
 #include "karia2statcalc.h"
+
 
 #ifdef HAVE_TERMIOS_H
 #include <termios.h>
@@ -47,7 +49,7 @@
 #include "PieceStorage.h"
 #include "PeerStat.h"
 
-
+QAtomicInt Karia2StatCalc::poolCounter(1);
 Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
     : QObject(0),
       m_tid(tid),
@@ -59,16 +61,107 @@ Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
 void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 {
     aria2::TransferStat stat;
+    aria2::TransferStat *pstat;
 
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> > rgs, wrgs, frgs;
-    aria2::SharedHandle<aria2::RequestGroup> rg;
+    aria2::RequestGroupList rgs, wrgs, frgs;
+    // aria2::SharedHandle<aria2::RequestGroup> rg;
+    // aria2::RequestGroup* rg; //xxx
+    aria2::RequestGroupList::SeqType::iterator it;
     aria2::SharedHandle<aria2::PieceStorage> ps;
     aria2::SharedHandle<aria2::SegmentMan> sm;
     std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
     aria2::SharedHandle<aria2::PeerStat> psts;
     aria2::SharedHandle<aria2::DownloadContext> dctx;
-    std::deque<aria2::SharedHandle<aria2::DownloadResult> > dres;
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+    aria2::DownloadResultList dres;
+    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+
+
+    const unsigned char *bfptr;
+    int bflen;
+
+    rgs = e->getRequestGroupMan()->getRequestGroups();
+    wrgs = e->getRequestGroupMan()->getReservedGroups();
+    dres = e->getRequestGroupMan()->getDownloadResults();
+
+    qLogx()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<dres.size();
+
+    // slow stat signal
+    {
+        if(cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
+          return;
+        }
+        cp_ = aria2::global::wallclock();
+    }
+
+    int stkey = 0;
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+
+    // global
+    stat = e->getRequestGroupMan()->calculateStat();
+    sclt->globalStat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+    memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+    
+    if (rgs.size() > 0) {
+        for (it = rgs.begin(); it != rgs.end(); ++it) {
+            auto rg = *it;
+            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
+            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
+
+            stat = rg2.second->calculateStat();
+
+            pstat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+            memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+            sclt->tasksStat.insert(rg2.first, pstat); // gid => stat
+
+            this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+            stkey = this->poolCounter.fetchAndAddRelaxed(1);
+            if (this->statPool.contains(stkey)) {
+                qLogx()<<"whooooo, impossible.";
+            } else {
+                this->statPool.insert(stkey, sclt);
+            }
+            
+            //                                     down_speed, up_speed, num_conns, eta);
+            qLogx()<<"stat intval:"
+                   << stat.sessionDownloadLength << rg2.first
+                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
+                   << rg2.second->getNumConnection()
+                ;
+            
+            emit this->progressStat(stkey);
+        }
+    }
+
+    ///////DEBUG
+    this->cssc->calculateStat(e);
+}
+
+Aria2StatCollector *Karia2StatCalc::getNextStat(int stkey)
+{
+    if (this->statPool.contains(stkey)) {
+        return this->statPool.take(stkey);
+    }
+
+    return NULL;
+}
+
+
+void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
+{
+    aria2::TransferStat stat;
+
+    aria2::RequestGroupList rgs, wrgs, frgs;
+    // aria2::SharedHandle<aria2::RequestGroup> rg;
+    // aria2::RequestGroup* rg; //xxx
+    aria2::RequestGroupList::SeqType::iterator it;
+    aria2::SharedHandle<aria2::PieceStorage> ps;
+    aria2::SharedHandle<aria2::SegmentMan> sm;
+    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
+    aria2::SharedHandle<aria2::PeerStat> psts;
+    aria2::SharedHandle<aria2::DownloadContext> dctx;
+    aria2::DownloadResultList dres;
+    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+
 
     const unsigned char *bfptr;
     int bflen;
@@ -89,30 +182,41 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     if (rgs.size() > 0) {
         for (it = rgs.begin(); it != rgs.end(); ++it) {
-            rg = *it;
+            auto rg = *it;
+            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
+            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
             stat = e->getRequestGroupMan()->calculateStat();
+            stat = rg2.second->calculateStat();
 
             Aria2StatCollector *sclt = new Aria2StatCollector();
             sclt->tid = this->m_tid;
-            sclt->globalDownloadSpeed = stat.getDownloadSpeed();
-            sclt->globalUploadSpeed = stat.getUploadSpeed();
+            // sclt->globalDownloadSpeed = stat.getDownloadSpeed();
+        //     sclt->globalUploadSpeed = stat.getUploadSpeed();
+            sclt->globalUploadSpeed = stat.uploadSpeed;
+            sclt->globalDownloadSpeed = stat.downloadSpeed;
             sclt->numActive = rgs.size();
             sclt->numWaiting = wrgs.size();
             sclt->numStopped = dres.size();
 
             {
                 // status
-                if (rg->isPauseRequested()) {
-                    sclt->status = std::string("paused");
-                } else {
-                    sclt->status = std::string("active");
-                }
+                // if (rg.isPauseRequested()) {
+                //     sclt->status = std::string("paused");
+                // } else {
+                //     sclt->status = std::string("active");
+                // }
             }
 
-            this->setBaseStat(e, rg, sclt);
+        //        this->setBaseStat(e, rg, sclt);
             //            emit this->progressState(this->m_tid, gid, total_length, curr_length,
             //                                     down_speed, up_speed, num_conns, eta);
-            emit this->progressState(sclt);
+            qLogx()<<"stat intval:"<<sclt->tid<<sclt->numActive<<sclt->numWaiting
+                   <<sclt->numStopped << sclt->downloadSpeed << sclt->uploadSpeed
+                   << stat.sessionDownloadLength << rg2.first
+                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
+                   << rg2.second->getNumConnection()
+                ;
+            emit this->progressStat(0);
         }
     }
 
@@ -143,21 +247,21 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
         pss = sm->getPeerStats();
     dctx = rg->getDownloadContext();
 
-    sclt->gid = rg->getGID();
-    sclt->totalLength = rg->getTotalLength();
-    sclt->completedLength = rg->getCompletedLength();
-    sclt->uploadLength = 0; // ???????
-    stat = rg->calculateStat();
-    sclt->downloadSpeed = stat.getDownloadSpeed();
-    sclt->uploadSpeed = stat.getUploadSpeed();
-    if(rg->getTotalLength() > 0 && stat.getDownloadSpeed() > 0) {
-        sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.getDownloadSpeed();
-    }
-    sclt->connections = rg->getNumConnection();
-    if (dctx.get()) {
-        sclt->numPieces = dctx->getNumPieces();
-        sclt->pieceLength = dctx->getPieceLength();
-    }
+    // sclt->gid = rg->getGID();
+    // sclt->totalLength = rg->getTotalLength();
+    // sclt->completedLength = rg->getCompletedLength();
+    // sclt->uploadLength = 0; // ???????
+    // stat = rg->calculateStat();
+    // sclt->downloadSpeed = stat.getDownloadSpeed();
+    // sclt->uploadSpeed = stat.getUploadSpeed();
+    // if(rg->getTotalLength() > 0 && stat.getDownloadSpeed() > 0) {
+    //     sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.getDownloadSpeed();
+    // }
+    // sclt->connections = rg->getNumConnection();
+    // if (dctx.get()) {
+    //     sclt->numPieces = dctx->getNumPieces();
+    //     sclt->pieceLength = dctx->getPieceLength();
+    // }
 
     std::cout<<sclt->gid<<":"<<sclt->totalLength<<" "<<sclt->completedLength
             <<" "<<sclt->downloadSpeed<<" "<<sclt->uploadSpeed
