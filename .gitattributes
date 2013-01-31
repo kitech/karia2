@@ -4,7 +4,6 @@
 /DiskInfo.h -text
 /INSTALL -text
 /LICENSE -text
-/README -text
 Resources/favicon.ico -text
 Resources/karia2.png -text
 Resources/nullget-1.png -text
@@ -53,6 +52,7 @@ doc/all.txt -text
 doc/aria2-1.9.2_redirect_no_cookie_no_refer.patch -text
 doc/aria2c.txt -text
 doc/browsers.txt -text
+doc/build.txt -text
 doc/doxy_footer.html -text
 doc/flashget.txt -text
 doc/https.txt -text
