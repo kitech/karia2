@@ -33,6 +33,7 @@ class TaskItemDelegate;
 class OptionManager;
 
 class EAria2Man;
+class Karia2StatCalc;
 
 // class Skype;
 // class SkypeTracer;

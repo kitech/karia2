@@ -224,7 +224,8 @@ SOURCES += aboutdialog.cpp \
            simplelog.cpp \
            asyncdatabase.cpp \
            databaseworker.cpp \
-           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc
+           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc \
+
 win32{
         SOURCES += DiskInfo.cpp
 }  

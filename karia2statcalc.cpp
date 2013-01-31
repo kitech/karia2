@@ -49,7 +49,7 @@
 #include "PieceStorage.h"
 #include "PeerStat.h"
 
-
+QAtomicInt Karia2StatCalc::poolCounter(1);
 Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
     : QObject(0),
       m_tid(tid),
@@ -59,6 +59,94 @@ Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
 }
 
 void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
+{
+    aria2::TransferStat stat;
+    aria2::TransferStat *pstat;
+
+    aria2::RequestGroupList rgs, wrgs, frgs;
+    // aria2::SharedHandle<aria2::RequestGroup> rg;
+    // aria2::RequestGroup* rg; //xxx
+    aria2::RequestGroupList::SeqType::iterator it;
+    aria2::SharedHandle<aria2::PieceStorage> ps;
+    aria2::SharedHandle<aria2::SegmentMan> sm;
+    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
+    aria2::SharedHandle<aria2::PeerStat> psts;
+    aria2::SharedHandle<aria2::DownloadContext> dctx;
+    aria2::DownloadResultList dres;
+    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+
+
+    const unsigned char *bfptr;
+    int bflen;
+
+    rgs = e->getRequestGroupMan()->getRequestGroups();
+    wrgs = e->getRequestGroupMan()->getReservedGroups();
+    dres = e->getRequestGroupMan()->getDownloadResults();
+
+    qLogx()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<dres.size();
+
+    // slow stat signal
+    {
+        if(cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
+          return;
+        }
+        cp_ = aria2::global::wallclock();
+    }
+
+    int stkey = 0;
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+
+    // global
+    stat = e->getRequestGroupMan()->calculateStat();
+    sclt->globalStat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+    memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+    
+    if (rgs.size() > 0) {
+        for (it = rgs.begin(); it != rgs.end(); ++it) {
+            auto rg = *it;
+            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
+            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
+
+            stat = rg2.second->calculateStat();
+
+            pstat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+            memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+            sclt->tasksStat.insert(rg2.first, pstat); // gid => stat
+
+            this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+            stkey = this->poolCounter.fetchAndAddRelaxed(1);
+            if (this->statPool.contains(stkey)) {
+                qLogx()<<"whooooo, impossible.";
+            } else {
+                this->statPool.insert(stkey, sclt);
+            }
+            
+            //                                     down_speed, up_speed, num_conns, eta);
+            qLogx()<<"stat intval:"
+                   << stat.sessionDownloadLength << rg2.first
+                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
+                   << rg2.second->getNumConnection()
+                ;
+            
+            emit this->progressStat(stkey);
+        }
+    }
+
+    ///////DEBUG
+    this->cssc->calculateStat(e);
+}
+
+Aria2StatCollector *Karia2StatCalc::getNextStat(int stkey)
+{
+    if (this->statPool.contains(stkey)) {
+        return this->statPool.take(stkey);
+    }
+
+    return NULL;
+}
+
+
+void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
 {
     aria2::TransferStat stat;
 
@@ -128,7 +216,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
                    <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
                    << rg2.second->getNumConnection()
                 ;
-            emit this->progressStat(sclt);
+            emit this->progressStat(0);
         }
     }
 

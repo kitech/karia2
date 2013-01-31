@@ -59,6 +59,7 @@
 //#include "maiaXmlRpcClient.h"
 
 #include "emaria2c.h"
+#include "karia2statcalc.h"
 
 #include "metauri.h"
 //#include "skype.h"
