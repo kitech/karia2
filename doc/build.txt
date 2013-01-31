@@ -1,0 +1,12 @@
+
+You need QT 5.0 or higher
+
+-- Build instructions --
+
+cd /where/your/project/is/installed
+qmake-qt5 -project
+make
+
+./bin/<appname>
+
+

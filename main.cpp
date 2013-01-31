@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2010 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-18 12:50:15 +0800
-// Version: $Id: main.cpp 192 2011-12-18 15:52:23Z drswinghead $
+// Version: $Id: main.cpp 196 2013-01-31 15:50:35Z drswinghead $
 // 
 
 
