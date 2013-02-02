@@ -184,6 +184,7 @@ SOURCES += aboutdialog.cpp \
            nullcontroller.cpp \
            karia2.cpp \
            karia2application.cpp \
+           karia2_embed_aria2.cpp \
            karia2_standalone_aria2.cpp \
            asynctask.cpp \
            radarscanner.cpp \

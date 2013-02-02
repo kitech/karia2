@@ -67,10 +67,6 @@ public:
     Aria2StatCollector() {reset();}
     ~Aria2StatCollector() {}
 
-    aria2::TransferStat *globalStat;
-    aria2::TransferStat *sessionStat;
-    QMap<uint64_t, aria2::TransferStat *> tasksStat;
-
     void reset() {
         tid = 0;
         gid = 0;
@@ -122,6 +118,19 @@ public:
     int numStopped;
     int globalDownloadSpeed;
     int globalUploadSpeed;
+
+    // refer to aria2::TransferStat
+    class TransferStat {
+    public:
+        int downloadSpeed;
+        int uploadSpeed;
+        int64_t sessionDownloadLength;
+        int64_t sessionUploadLength;
+        int64_t allTimeUploadLength;
+    };
+    TransferStat *globalStat;
+    TransferStat *sessionStat;
+    QMap<uint64_t, TransferStat *> tasksStat;
 
     class ServerStatCollector {
     public:

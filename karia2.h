@@ -260,6 +260,7 @@ public slots:
     // void onSendPackage();
     // void onCallSkype();
 
+
 private slots:
     // aria2rpc related
     void testResponse(QVariant &res, QVariant &payload);

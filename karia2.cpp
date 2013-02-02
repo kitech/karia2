@@ -208,11 +208,13 @@ void Karia2::firstShowHandler()
 //                     this, SLOT(onTaskLogArrived(QString)));
 
     //// start embeded backed
+    qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
     this->mEAria2Man = EAria2Man::instance();
 //    QObject::connect(this->mEAria2Man, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
 //                     this->mTaskMan, SLOT(onProgressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
-    QObject::connect(this->mEAria2Man, SIGNAL(progressState(Aria2StatCollector*)),
-                     this->mTaskMan, SLOT(onProgressState(Aria2StatCollector*)));
+    // QObject::connect(this->mEAria2Man, SIGNAL(progressState(Aria2StatCollector*)),
+    //                  this->mTaskMan, SLOT(onProgressState(Aria2StatCollector*)));
+    QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
 
 	///////
 	this->hideUnimplementUiElement();

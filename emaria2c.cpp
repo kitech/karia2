@@ -176,6 +176,14 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
              "--max-connection-per-server=%d", 6);
     this->m_argc++;
 
+    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
+             "--max-download-limit=%dk", 5);
+    this->m_argc++;
+
+    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
+             "--min-split-size=%dM", 1);
+    this->m_argc++;
+
     snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
              "%s", url.toLatin1().data());
     this->m_argc++;
@@ -184,9 +192,11 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
 
     this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
+    eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "5K");
 
 
-
+    // TODO start in thread 
     aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, args, false, false, true);
 
     eaw->start();
@@ -408,7 +418,7 @@ void EAria2Man::run()
         sclt = elem.second;
 
         qLogx()<<"dispatching stat event:"<<stkey;
-        this->dispatchStat(sclt);
+        this->checkAndDispatchStat(sclt);
 
         if (sclt != NULL) {
             delete sclt;
@@ -416,9 +426,29 @@ void EAria2Man::run()
     }
 }
 
-bool EAria2Man::dispatchStat(Aria2StatCollector *sclt)
+bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
 {
+    QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
+    qLogx()<<"";
+    // emit this->taskStatChanged(sclt->tid, sclt->totalLength, sclt->completedLength,
+    //                            sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength),
+    //                            sclt->downloadSpeed, sclt->uploadSpeed);
+
+    stats[ng::stat::task_id] = sclt->tid;
+    stats[ng::stat::total_length] = (qulonglong)sclt->totalLength;
+    stats[ng::stat::completed_length] = (qulonglong)sclt->completedLength;
+    stats[ng::stat::completed_percent] = (int)(sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength));
+    stats[ng::stat::download_speed] = sclt->downloadSpeed;
+    stats[ng::stat::upload_speed] = sclt->uploadSpeed;
+    stats[ng::stat::gid] = (qulonglong)sclt->gid;
+    stats[ng::stat::num_connections] = sclt->connections;
+    stats[ng::stat::bitfield] = QString(sclt->bitfield.c_str());
+    stats[ng::stat::num_pieces] = sclt->numPieces;
+    stats[ng::stat::piece_length] = sclt->pieceLength;
+    stats[ng::stat::eta] = sclt->eta;
     
+    emit this->taskStatChanged(sclt->tid, stats);
+
     return true;
 }
 
@@ -455,14 +485,24 @@ void EAria2Worker::run()
 //                                            getSummaryOut(this->option_))
 
     aria2::SharedHandle<aria2::UriListParser> ulp;
-    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-                                            statCalc_, getSummaryOut(this->option_), ulp)
-            .execute();
+    aria2::SharedHandle<aria2::DownloadEngine> e;
+    aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
+                                    statCalc_, getSummaryOut(this->option_), ulp);
+    // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
+    //                                         statCalc_, getSummaryOut(this->option_), ulp)
+    //         .execute();
+    exitStatus = muri.execute();
     exit_status = exitStatus;
+
+    e = muri.getDownloadEngine();
+
+    statCalc_->calculateStat(e.get());
 
     for (int i = 0; i < this->requestGroups_.size(); ++i) {
         aria2::SharedHandle<aria2::RequestGroup> rg = this->requestGroups_.at(i);
         qLogx()<<rg->downloadFinished()<<exit_status;
     }
 }
+
+// 给MultiUriRequestInfo打个补丁，存储并且返回DownloadEngine对象。
 

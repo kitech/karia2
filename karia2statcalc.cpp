@@ -61,7 +61,7 @@ Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
 void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 {
     aria2::TransferStat stat;
-    aria2::TransferStat *pstat;
+    Aria2StatCollector::TransferStat *pstat;
 
     aria2::RequestGroupList rgs, wrgs, frgs;
     // aria2::SharedHandle<aria2::RequestGroup> rg;
@@ -83,7 +83,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     wrgs = e->getRequestGroupMan()->getReservedGroups();
     dres = e->getRequestGroupMan()->getDownloadResults();
 
-    qLogx()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<dres.size();
+    // qLogx()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<dres.size();
 
     // slow stat signal
     {
@@ -95,10 +95,12 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     int stkey = 0;
     Aria2StatCollector *sclt = new Aria2StatCollector();    
+    sclt->tid = m_tid;
 
     // global
+    Q_ASSERT(sizeof(aria2::TransferStat) == sizeof(Aria2StatCollector::TransferStat));
     stat = e->getRequestGroupMan()->calculateStat();
-    pstat = sclt->globalStat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+    pstat = sclt->globalStat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
     memcpy(pstat, &stat, sizeof(aria2::TransferStat));
     
     if (rgs.size() > 0) {
@@ -106,10 +108,11 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
             auto rg = *it;
             // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
             std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
+            this->setBaseStat(e, rg2.second, sclt);
 
             stat = rg2.second->calculateStat();
 
-            pstat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+            pstat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
             memcpy(pstat, &stat, sizeof(aria2::TransferStat));
             sclt->tasksStat.insert(rg2.first, pstat); // gid => stat
 
@@ -247,34 +250,33 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
         pss = sm->getPeerStats();
     dctx = rg->getDownloadContext();
 
-    // sclt->gid = rg->getGID();
-    // sclt->totalLength = rg->getTotalLength();
-    // sclt->completedLength = rg->getCompletedLength();
-    // sclt->uploadLength = 0; // ???????
-    // stat = rg->calculateStat();
-    // sclt->downloadSpeed = stat.getDownloadSpeed();
-    // sclt->uploadSpeed = stat.getUploadSpeed();
-    // if(rg->getTotalLength() > 0 && stat.getDownloadSpeed() > 0) {
-    //     sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.getDownloadSpeed();
-    // }
-    // sclt->connections = rg->getNumConnection();
-    // if (dctx.get()) {
-    //     sclt->numPieces = dctx->getNumPieces();
-    //     sclt->pieceLength = dctx->getPieceLength();
-    // }
+    sclt->gid = rg->getGID();
+    sclt->totalLength = rg->getTotalLength();
+    sclt->completedLength = rg->getCompletedLength();
+    sclt->uploadLength = 0; // ???????
+    stat = rg->calculateStat();
+    sclt->downloadSpeed = stat.downloadSpeed;
+    sclt->uploadSpeed = stat.uploadSpeed;
+    if(rg->getTotalLength() > 0 && stat.downloadSpeed > 0) {
+        sclt->eta = (rg->getTotalLength()-rg->getCompletedLength())/stat.downloadSpeed;
+    }
+    sclt->connections = rg->getNumConnection();
+    if (dctx.get()) {
+        sclt->numPieces = dctx->getNumPieces();
+        sclt->pieceLength = dctx->getPieceLength();
+    }
 
-    std::cout<<sclt->gid<<":"<<sclt->totalLength<<" "<<sclt->completedLength
-            <<" "<<sclt->downloadSpeed<<" "<<sclt->uploadSpeed
+    qLogx()<<sclt->gid<<":"<<sclt->totalLength<<" "<<sclt->completedLength
+           <<" "<<sclt->downloadSpeed<<" "<<sclt->uploadSpeed
            <<" "<<sclt->connections<<" "<<sclt->numPieces <<" "<<sclt->pieceLength
-          <<" "<<sclt->eta<<" finish:"<<rg->downloadFinished()
-          <<std::endl;
+           <<" "<<sclt->eta<<" finish:"<<rg->downloadFinished();
 
     if (ps.get()) {
         bfptr = ps->getBitfield();
         bflen = ps->getBitfieldLength();
 
         sclt->bitfield = aria2::util::toHex(bfptr, bflen);
-        std::cout<<"Bitfield:"<<(bflen*8)<<" "<<sclt->bitfield<<std::endl;
+        qLogx()<<"Bitfield:"<<(bflen*8)<<" "<<sclt->bitfield.c_str();
     }
 
     if (pss.size() > 0) {
@@ -282,8 +284,8 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
         for (int i = 0; i < pss.size(); i++) {
             psts = pss.at(i);
             if (psts.get()) {
-                std::cout<<"psts:"<<i<<" id:"<<psts->getCuid()<<" host:"<<psts->getHostname()<<" proto:"
-                        <<psts->getProtocol()<<std::endl;
+                qLogx()<<"psts:"<<i<<" id:"<<psts->getCuid()<<" host:"<<psts->getHostname().c_str()<<" proto:"
+                       <<psts->getProtocol().c_str();
                 psc.reset();
                 psc.cuid = psts->getCuid();
                 psc.host_name = psts->getHostname();

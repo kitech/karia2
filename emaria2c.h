@@ -25,6 +25,15 @@ class EAria2Man;
 class Karia2StatCalc;
 class Aria2StatCollector;
 
+namespace ng {
+    namespace stat {
+        enum {
+            task_id=1, gid, total_length, completed_length, completed_percent, download_speed, upload_speed,
+            bitfield, piece_length, num_pieces, num_connections, eta, num_active, num_waiting, num_stopped,
+        };
+    };
+};
+
 class EAria2Man : public QThread
 {
     Q_OBJECT;
@@ -62,14 +71,18 @@ signals:
  */
 public:
     virtual void run();
-    bool dispatchStat(Aria2StatCollector *sclt);
+    bool checkAndDispatchStat(Aria2StatCollector *sclt);
 public slots:
     bool onAllStatArrived(int stkey);
 
 signals:
     void sessionStatFinished();
     void globalStatFinished();
-    void taskStatFinished();
+    // -1表示没有修改
+    // void taskStatChanged(int tid, int totalLengh = -1, int completedLength = -1, 
+    //                      int completeDPercent = -1,
+    //                      int downloadSpeed = -1, int uploadSpeed = -1);
+    void taskStatChanged(int tid, QMap<int, QVariant> stats);
     void segmentStatFinished();
 
 protected:
