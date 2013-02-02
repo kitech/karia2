@@ -8,6 +8,7 @@
 // 
 #include <cassert>
 
+#include "simplelog.h"
 #include "sqlitesegmentmodel.h"
 
 //static 
@@ -89,7 +90,7 @@ SqliteSegmentModel::SqliteSegmentModel( int task_id , QObject *parent)
 			mpt.SP = sp ;
 			mpt.CP = cp ;
 			mpt.busy = false ;
-			qDebug()<< "sp :"<< sp <<"  cp:"<< cp << " file_size:"<< file_size  ;
+			qLogx()<< "sp :"<< sp <<"  cp:"<< cp << " file_size:"<< file_size  ;
 
 			this->mPointerMap.append(mpt);
 		}
@@ -113,7 +114,7 @@ int SqliteSegmentModel::columnCount(const QModelIndex &/*parent*/) const
 }
 QVariant SqliteSegmentModel::data(const QModelIndex &index, int role) const
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
 	if( role == Qt::DecorationRole && index.column() == 0 )	//只有第一列显示图片就可以了。
@@ -166,7 +167,7 @@ QVariant SqliteSegmentModel::headerData(int section, Qt::Orientation orientation
 
 QModelIndex SqliteSegmentModel::index(int row, int column, const QModelIndex &parent)   const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 
 
 	// QModelIndex mix = this->createIndex( row , column , (void *) 0 ) ;
@@ -180,7 +181,7 @@ QModelIndex SqliteSegmentModel::index(int row, int column, const QModelIndex &pa
 	//else
 	//	parentCatID = parent.internalId(); //static_cast<int>(parent.internalPointer());
 
-	////qDebug()<< __FUNCTION__ << parentCatID ;
+	////qLogx()<< __FUNCTION__ << parentCatID ;
 
 	//int childCatID = -1 ;
 	//int counter = 0 ;
@@ -193,13 +194,13 @@ QModelIndex SqliteSegmentModel::index(int row, int column, const QModelIndex &pa
 	//		if( row == counter )
 	//		{
 	//			childCatID = rec.value("cat_id").toInt();
-	//			//qDebug()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
+	//			//qLogx()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
 	//			break ;
 	//		}
 	//		counter += 1 ;
 	//	}
 	//}
-	////qDebug()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
+	////qLogx()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
 	////
 	//if ( childCatID != -1 )
 	//    return createIndex( row , column , childCatID );
@@ -211,7 +212,7 @@ QModelIndex SqliteSegmentModel::index(int row, int column, const QModelIndex &pa
 
 QModelIndex SqliteSegmentModel::parent(const QModelIndex &child) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 	
 	if (!child.isValid())
 		return QModelIndex();
@@ -223,7 +224,7 @@ QModelIndex SqliteSegmentModel::parent(const QModelIndex &child) const
 
 int SqliteSegmentModel::rowCount(const QModelIndex &parent) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 
 	int count = 0 ;
 	if( parent.isValid() )
@@ -235,14 +236,14 @@ int SqliteSegmentModel::rowCount(const QModelIndex &parent) const
 		count = this->mModelData.count() ;
 	}
 
-	////qDebug()<<__FUNCTION__ <<":"<< count ;
+	////qLogx()<<__FUNCTION__ <<":"<< count ;
 	return count ;
 	return 0;
 }
 
 bool SqliteSegmentModel::insertRows ( int row, int count, const QModelIndex & parent  )
 {
-	//qDebug()<<__FUNCTION__<<row;
+	//qLogx()<<__FUNCTION__<<row;
 
 	assert( ! parent.isValid() ) ;
 
@@ -271,7 +272,7 @@ bool SqliteSegmentModel::insertRows ( int row, int count, const QModelIndex & pa
 
 bool SqliteSegmentModel::removeRows ( int row, int count, const QModelIndex & parent  )
 {
-	//qDebug()<<__FUNCTION__<<row;
+	//qLogx()<<__FUNCTION__<<row;
 
 	int parentCatID = parent.internalId();
 	int atrow = 0 ;
@@ -296,7 +297,7 @@ bool SqliteSegmentModel::removeRows ( int row, int count, const QModelIndex & pa
 
 bool SqliteSegmentModel::setData ( const QModelIndex & index , const QVariant & value, int role )
 {
-	//qDebug()<<__FUNCTION__<<index.row()<<index.column()<<index.data();
+	//qLogx()<<__FUNCTION__<<index.row()<<index.column()<<index.data();
 
 	int row = index.row();
 	int col = index.column();
@@ -312,7 +313,7 @@ bool SqliteSegmentModel::setData ( const QModelIndex & index , const QVariant & 
 	else
 	{
 		this->mModelData[row].setValue(col,value);
-		//qDebug()<<row<<":"<<col <<" " << value ;
+		//qLogx()<<row<<":"<<col <<" " << value ;
 	}
 	this->mModelData[row].setValue(this->mSegmentsTableColumns.count()-1,"true");
 	emit dataChanged(index,index);
@@ -377,7 +378,7 @@ bool SqliteSegmentModel::submit ()
 		}
 	}
 
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count() ;
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count() ;
 
 	return true ;
 }
@@ -394,7 +395,7 @@ void SqliteSegmentModel::revert()
 		}
 	}
 
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
 	return ;
 }
 
@@ -610,7 +611,7 @@ quint64 SqliteSegmentModel::free( quint64 SP , quint64 size  )
 {
 	quint64 free_length = size ;
 	bool found = false ;
-	//qDebug()<<__FUNCTION__<<__LINE__<<" "<< "SP:"<< SP <<" size:"<<size;
+	//qLogx()<<__FUNCTION__<<__LINE__<<" "<< "SP:"<< SP <<" size:"<<size;
 
 	this->mAtomMutex.lock();
 
@@ -652,7 +653,7 @@ quint64 SqliteSegmentModel::free( quint64 SP , quint64 size  )
 			//assert( this->mPointerMap[i].CP > this->mMemCapacity ) ;
 			if( this->mPointerMap[i].CP > this->mMemCapacity )
 			{
-				qDebug()<<__FUNCTION__<<__LINE__<<" "<< "SP:"<< SP <<" size:"<<size
+				qLogx()<<__FUNCTION__<<__LINE__<<" "<< "SP:"<< SP <<" size:"<<size
 					<<" CP: "<< this->mPointerMap[i].CP <<" Cap:"<< this->mMemCapacity  ;
 			}
 			found = true ;
@@ -666,10 +667,10 @@ quint64 SqliteSegmentModel::free( quint64 SP , quint64 size  )
 
 	if( free_length != size )
 	{
-		qDebug()<<"SP:"<<SP<<" free_length:"<< free_length << " size:"<< size ;
+		qLogx()<<"SP:"<<SP<<" free_length:"<< free_length << " size:"<< size ;
 		for( int i = 0 ; i < this->mPointerMap .count() ; i ++ )
 		{
-			qDebug()<<"i :"<< i <<" \tSP:"<<this->mPointerMap.at(i).SP
+			qLogx()<<"i :"<< i <<" \tSP:"<<this->mPointerMap.at(i).SP
 				
 				<<" \tCP:"<<this->mPointerMap.at(i).CP
 				<<" \tbusy:"<<this->mPointerMap.at(i).busy ;
@@ -703,7 +704,7 @@ quint64 SqliteSegmentModel::release( quint64 SP )
 
 quint64 SqliteSegmentModel::setCapacity(quint64 capacity )
 {
-	qDebug()<<__FUNCTION__<<__LINE__<<" "<< capacity ;
+	qLogx()<<__FUNCTION__<<__LINE__<<" "<< capacity ;
 	//assert( capacity > 0 ) ;	
 	if( capacity == 0 )
 	{
@@ -712,7 +713,7 @@ quint64 SqliteSegmentModel::setCapacity(quint64 capacity )
 
 	if( this->mPointerMap.count() > 0 )
 	{
-		qDebug()<< " maybe already set omited " ;
+		qLogx()<< " maybe already set omited " ;
 		return 0 ;	//表示有问题
 	}
 	//
@@ -775,7 +776,7 @@ bool SqliteSegmentModel::isMemFullAlloced()
 
 	for( int i = 0 ; i < this->mPointerMap .count() ; i ++ )
 	{
-		qDebug()<<"i :"<< i <<" \tSP:"<<this->mPointerMap.at(i).SP
+		qLogx()<<"i :"<< i <<" \tSP:"<<this->mPointerMap.at(i).SP
 
 			<<" \tCP:"<<this->mPointerMap.at(i).CP
 			<<" \tbusy:"<<this->mPointerMap.at(i).busy ;

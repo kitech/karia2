@@ -11,7 +11,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = karai2
+TARGET = karia2
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
 QT = core gui xml network sql widgets printsupport

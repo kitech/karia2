@@ -98,7 +98,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     // global
     stat = e->getRequestGroupMan()->calculateStat();
-    sclt->globalStat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+    pstat = sclt->globalStat = (aria2::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
     memcpy(pstat, &stat, sizeof(aria2::TransferStat));
     
     if (rgs.size() > 0) {

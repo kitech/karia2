@@ -758,9 +758,8 @@ void Karia2::onStorageOpened()
     this->mTaskListView = this->mainUI.mui_tv_task_list;
     this->mTaskItemDelegate = new TaskItemDelegate();
     this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
-    // this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
-
-    // this->mTaskListView->setModel(this->mTaskTreeViewModel);
+    this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
+    this->mTaskListView->setModel(this->mTaskTreeViewModel);
     this->mTaskListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     this->mTaskListView->setAlternatingRowColors(true);

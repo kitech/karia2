@@ -7,6 +7,8 @@
 // Version: $Id: sqlitetaskmodel.cpp 195 2013-01-29 01:42:42Z drswinghead $
 // 
 
+#include "simplelog.h"
+
 #include "sqlitetaskmodel.h"
 
 //static
@@ -67,7 +69,7 @@ int SqliteTaskModel::columnCount(const QModelIndex &/*parent*/) const
 }
 QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 {
-	//qDebug()<<__FUNCTION__;
+	qLogx()<<__FUNCTION__<<index<<role;
 	if (!index.isValid())
 		return QVariant();
 
@@ -165,7 +167,7 @@ QVariant SqliteTaskModel::headerData(int section, Qt::Orientation orientation, i
 
 QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &parent)   const
 {
-	//qDebug()<<__FUNCTION__ << row <<":"<< column  ;
+	qLogx()<<__FUNCTION__ << row <<":"<< column  ;
 
 	//assert( ! parent.isValid()  ) ;
 
@@ -184,7 +186,7 @@ QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &paren
 	//else
 	//	parentCatID = parent.internalId(); //static_cast<int>(parent.internalPointer());
 
-	////qDebug()<< __FUNCTION__ << parentCatID ;
+	////qLogx()<< __FUNCTION__ << parentCatID ;
 
 	//int childCatID = -1 ;
 	//int counter = 0 ;
@@ -197,13 +199,13 @@ QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &paren
 	//		if( row == counter )
 	//		{
 	//			childCatID = rec.value("cat_id").toInt();
-	//			//qDebug()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
+	//			//qLogx()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
 	//			break ;
 	//		}
 	//		counter += 1 ;
 	//	}
 	//}
-	////qDebug()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
+	////qLogx()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
 	////
 	//if ( childCatID != -1 )
 	//    return createIndex( row , column , childCatID );
@@ -215,7 +217,7 @@ QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &paren
 
 QModelIndex SqliteTaskModel::parent(const QModelIndex &child) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 	
 	if (!child.isValid())
 		return QModelIndex();
@@ -225,7 +227,7 @@ QModelIndex SqliteTaskModel::parent(const QModelIndex &child) const
 
 int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	qLogx()<<__FUNCTION__  << parent;
 
 	int count = 0 ;
 
@@ -235,7 +237,7 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 		count = this->mModelData.count();
 	}
 	
-	//qDebug()<<__FUNCTION__ <<":"<< count ;
+	qLogx()<<__FUNCTION__ <<":"<< count ;
 	return count;
 
 	return 0;
@@ -243,7 +245,7 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 
 bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent  )
 {
-	//qDebug()<<__FUNCTION__<<row;
+	//qLogx()<<__FUNCTION__<<row;
 
 	assert( ! parent.isValid() ) ;
 
@@ -267,7 +269,7 @@ bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent 
 
 bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent  )
 {
-	//qDebug()<<__FUNCTION__<<row;
+	//qLogx()<<__FUNCTION__<<row;
 	
 	int atrow = 0 ;
 	int delete_begin = row ;
@@ -289,7 +291,7 @@ bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent 
 
 bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value, int role )
 {
-	// qDebug()<<__FUNCTION__<<index.row()<<index.column()<<index.data()<<value ;
+	// qLogx()<<__FUNCTION__<<index.row()<<index.column()<<index.data()<<value ;
 
 	int row = index.row();
 	int col = index.column();
@@ -298,7 +300,7 @@ bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value
 		
 	} else {
 		this->mModelData[row].setValue(col, value);
-		//qDebug()<<row<<":"<<col <<" " << value ;
+		//qLogx()<<row<<":"<<col <<" " << value ;
 	}
 	// this->mModelData[row].setValue(this->mTasksTableColumns.count()-1,"true");
     this->mModelData[row].setValue(ng::tasks::dirty, "true");
@@ -383,7 +385,7 @@ bool SqliteTaskModel::submit ()
 	}
     this->mStorage->commit();
 
-	qDebug()<<"there is about "<<dirtycnt<<"dirty rows to submit"<<this->mModelData.count();
+	qLogx()<<"there is about "<<dirtycnt<<"dirty rows to submit"<<this->mModelData.count();
 
 	return true;
 }
@@ -398,7 +400,7 @@ void SqliteTaskModel::revert()
 		}
 	}
 
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
 	return;
 }
 

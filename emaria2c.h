@@ -73,7 +73,8 @@ signals:
     void segmentStatFinished();
 
 protected:
-    QHash<int, EAria2Worker*> m_tasks;
+    QHash<int, EAria2Worker*> m_tasks; // tid => w
+    QHash<EAria2Worker*, int> m_rtasks; // w => tid
     int m_argc;
     char m_argv[32][256];
 

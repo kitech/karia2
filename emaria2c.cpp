@@ -163,6 +163,7 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &EAria2Man::onAllStatArrived);
 
     this->m_tasks[task_id] = eaw;
+    this->m_rtasks[eaw] = task_id;
     QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
@@ -392,6 +393,7 @@ void EAria2Man::onWorkerFinished()
 
 
 //////// statqueue members
+// TODO 线程需要一直运行处理等待状态，否则不断启动线程会用掉太多的资源。
 void EAria2Man::run()
 {
     int stkey;
@@ -403,6 +405,7 @@ void EAria2Man::run()
         stkey = elem.first;
         sclt = elem.second;
 
+        qLogx()<<"dispatching stat event:"<<stkey;
         this->dispatchStat(sclt);
 
         if (sclt != NULL) {

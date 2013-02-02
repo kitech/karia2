@@ -7,6 +7,8 @@
 // Version: $Id: sqlitecategorymodel.cpp 191 2011-11-06 10:03:22Z drswinghead $
 // 
 
+#include "simplelog.h"
+
 #include "sqlitestorage.h"
 
 #include "sqlitecategorymodel.h"
@@ -80,7 +82,7 @@ int SqliteCategoryModel::columnCount(const QModelIndex &/*parent*/) const
 }
 QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 {
-	//qDebug()<<__FUNCTION__;
+	//qLogx()<<__FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
 	if (role == Qt::DecorationRole && index.column() == 0 ) { // 只有第一列显示图片就可以了。
@@ -179,7 +181,7 @@ QVariant SqliteCategoryModel::data(const QModelIndex &index, int role) const
 		}
 	}
 
-	qDebug()<<" model error";
+	qLogx()<<" model error";
 	assert(1 == 2);
 	return QVariant();
 }
@@ -194,7 +196,7 @@ Qt::ItemFlags SqliteCategoryModel::flags(const QModelIndex &index) const
 
 QVariant SqliteCategoryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	//qDebug()<<__FUNCTION__ << rand() ;
+	//qLogx()<<__FUNCTION__ << rand() ;
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
 		switch (section) {
 				//case 0:
@@ -215,7 +217,7 @@ QVariant SqliteCategoryModel::headerData(int section, Qt::Orientation orientatio
 
 QModelIndex SqliteCategoryModel::index(int row, int column, const QModelIndex &parent)   const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 
 	//DomItem *parentItem;
 	
@@ -238,7 +240,7 @@ QModelIndex SqliteCategoryModel::index(int row, int column, const QModelIndex &p
 	else
 		parentCatID = parent.internalId(); //static_cast<int>(parent.internalPointer());
 
-	//qDebug()<< __FUNCTION__ << parentCatID ;
+	//qLogx()<< __FUNCTION__ << parentCatID ;
 
 	//DomItem *childItem = parentItem->child(row);
 	int childCatID = -1 ;
@@ -252,13 +254,13 @@ QModelIndex SqliteCategoryModel::index(int row, int column, const QModelIndex &p
 			if (row == counter )
 			{
 				childCatID = rec.value("cat_id").toInt();
-				//qDebug()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
+				//qLogx()<< __FUNCTION__ << parentCatID <<" is parent of "<<childCatID ;
 				break ;
 			}
 			counter += 1 ;
 		}
 	}
-	//qDebug()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
+	//qLogx()<< __FUNCTION__ << row <<" "<<column <<" " << parentCatID <<" is parent of "<<childCatID ;
 	//
 	if ( childCatID != -1 )
 	    return createIndex( row , column , childCatID );
@@ -271,7 +273,7 @@ QModelIndex SqliteCategoryModel::index(int row, int column, const QModelIndex &p
 
 QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 	
 	if (!child.isValid())
 		return QModelIndex();
@@ -294,7 +296,7 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 	//if (!parentItem || parentItem == rootItem)
 	//    return QModelIndex();
 
-	//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID<<" is parent of "<< childCatID ;
+	//qLogx()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID<<" is parent of "<< childCatID ;
 
 	int parentRow = 0 ;
 	if (parentCatID == -1 )
@@ -331,7 +333,7 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 		
 	}
 
-	//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<ppCatID << "  "<<parentCatID<<" is parent of "
+	//qLogx()<<__FUNCTION__<<":"<<__LINE__<<":"<<ppCatID << "  "<<parentCatID<<" is parent of "
 	//	<< childCatID <<" at row "<< atrow ;
 
 	return createIndex( atrow , 0 , parentCatID );
@@ -341,7 +343,7 @@ QModelIndex SqliteCategoryModel::parent(const QModelIndex &child) const
 
 int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 {
-	//qDebug()<<__FUNCTION__ ;
+	//qLogx()<<__FUNCTION__ ;
 	//DomItem *parentItem;
 
 	//if (!parent.isValid())
@@ -365,7 +367,7 @@ int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 			if (this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
 			{
 				count += 1; 
-				//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID <<this->mModelData.at(i).value("parent_cat_id").toInt()  ;
+				//qLogx()<<__FUNCTION__<<":"<<__LINE__<<":"<<parentCatID <<this->mModelData.at(i).value("parent_cat_id").toInt()  ;
 			}
 		}
 		//QModelIndex mi = this->index(parent.row(),2,parent.parent());
@@ -373,7 +375,7 @@ int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 		//{
 		//	for (int i = 0 ; i < this->mModelData.count() ; i ++ )
 		//	{
-		//		qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<count <<":data:"<< mi.data().toString() ;
+		//		qLogx()<<__FUNCTION__<<":"<<__LINE__<<":"<<count <<":data:"<< mi.data().toString() ;
 		//		if (this->mModelData.at(i).value("cat_id") == "0" )
 		//		{
 		//			count ++ ;
@@ -383,17 +385,17 @@ int SqliteCategoryModel::rowCount(const QModelIndex &parent) const
 		//	return count ;
 		//}
 		//return count ;
-		//qDebug()<<__FUNCTION__<<":"<<__LINE__<<":"<<count <<":data:"<< mi.data().toString() ;
+		//qLogx()<<__FUNCTION__<<":"<<__LINE__<<":"<<count <<":data:"<< mi.data().toString() ;
 	}
 
-	//qDebug()<<__FUNCTION__ <<":"<< count ;
+	//qLogx()<<__FUNCTION__ <<":"<< count ;
 	return count ;
 	return 0;
 }
 
 bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & parent  )
 {
-	qDebug()<<__FUNCTION__<<row;
+	qLogx()<<__FUNCTION__<<row;
 
 	//DomItem *item = static_cast<DomItem*>(parent.internalPointer());
 	//QDomNode pnode = item->node();
@@ -402,11 +404,11 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 	//
 
 	//nelem = this->mConfigDB->createNode("category").toElement() ;
-	//qDebug()<<nelem.tagName();
+	//qLogx()<<nelem.tagName();
 	//nelem.setAttribute("folder","no");
 	//pnode.appendChild(nelem);
 	//
-	//qDebug()<<item->row()<<nelem.tagName();
+	//qLogx()<<item->row()<<nelem.tagName();
 	//item->insertRows(count,new DomItem(nelem,row,item));
 
 	//delete rootItem ;
@@ -416,7 +418,7 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 	QSqlRecord r0 = this->mModelData.at(0);
 	int colcnt = r0.count();
 
-    qDebug()<<r0;
+    qLogx()<<r0;
 
 	beginInsertRows( parent , row , row+count -1 );//////////
 
@@ -432,7 +434,7 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 				int maxid = -1 ;
 				int rowcnt = this->mModelData.count();
 				for (int i = 0 ; i < rowcnt ; i ++ ) { //查找最大的cat id 号。
-					//qDebug()<<"already existed rows:"<<this->mModelData.at(i);
+					//qLogx()<<"already existed rows:"<<this->mModelData.at(i);
 					if (this->mModelData.at(i).value("cat_id").toInt() > maxid ) {
 						maxid = this->mModelData.at(i).value("cat_id").toInt() ;
 					}
@@ -480,7 +482,7 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 			rec.append( currField );
 		}
 
-        qDebug()<<rec;
+        qLogx()<<rec;
 		this->mModelData.append(rec);		
 	}
 	endInsertRows();//////////
@@ -490,7 +492,7 @@ bool SqliteCategoryModel::insertRows ( int row, int count, const QModelIndex & p
 
 bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & parent  )
 {
-	qDebug()<<__FUNCTION__<<row;
+	qLogx()<<__FUNCTION__<<row;
 
 	//DomItem *item = static_cast<DomItem*>(parent.internalPointer());
 	//DomItem *ditem ;
@@ -500,9 +502,9 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 	//dnode = item->child(row)->node();
 
 	////delete this->rootItem;
-	//qDebug()<<pnode.childNodes().count() ;
+	//qLogx()<<pnode.childNodes().count() ;
 	//pnode.removeChild(dnode) ;
-	//qDebug()<<pnode.childNodes().count();
+	//qLogx()<<pnode.childNodes().count();
 	//item->removeRow(row);
 	int parentCatID = parent.internalId();
 	int atrow = 0 ;
@@ -511,7 +513,7 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 
 	int rowcnt = this->mModelData.count();
 
-	qDebug()<<"parentid"<<parentCatID<<" delete begin to end "<< delete_begin << " --> "<< delete_end ;
+	qLogx()<<"parentid"<<parentCatID<<" delete begin to end "<< delete_begin << " --> "<< delete_end ;
 
 	beginRemoveRows  ( parent, delete_begin, delete_end ) ;	
 
@@ -520,17 +522,17 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 	{
 		if (this->mModelData.at(i).value("parent_cat_id").toInt() == parentCatID )
 		{	
-			qDebug()<<"atrow="<<atrow;
+			qLogx()<<"atrow="<<atrow;
 			if (atrow >= delete_begin && atrow <= delete_end )
 			{
 				this->mModelData[i].setValue("delete_flag","true");
 				this->mModelData[i].setValue("dirty","true");
 
 				int cat_id = this->mModelData.at(i).value("cat_id").toInt();
-				qDebug()<< "cat_id"<<cat_id;
+				qLogx()<< "cat_id"<<cat_id;
 
 				QModelIndex tempParentModel = this->index(atrow,0,parent);
-				qDebug()<<" last "<<(tempParentModel.model()->rowCount());
+				qLogx()<<" last "<<(tempParentModel.model()->rowCount());
 				if (tempParentModel.model()->rowCount() > 0 )
 				{
 					this->removeRows(0,tempParentModel.model()->rowCount() ,tempParentModel );
@@ -551,13 +553,13 @@ bool SqliteCategoryModel::removeRows ( int row, int count, const QModelIndex & p
 
 bool SqliteCategoryModel::setData ( const QModelIndex & index , const QVariant & value, int role )
 {
-	qDebug()<<__FUNCTION__<<index.row()<<index.column()<<index.data();
+	qLogx()<<__FUNCTION__<<index.row()<<index.column()<<index.data();
 
 	//return true ;
 
 	//      DomItem *item = static_cast<DomItem*>(index.internalPointer());
 	//QDomElement cnode = item->node().toElement() ;
-	//qDebug()<<cnode.tagName() ;
+	//qLogx()<<cnode.tagName() ;
 
 	//switch( index.column() )
 	//{
@@ -613,7 +615,7 @@ bool SqliteCategoryModel::setData ( const QModelIndex & index , const QVariant &
 				this->mModelData[i].setValue(9,"true");
 				break;
 			default:
-				qDebug()<< "SqliteCategoryModel::setData " << index.column() ;
+				qLogx()<< "SqliteCategoryModel::setData " << index.column() ;
 				assert( 1== 2);
 			}
 
@@ -653,10 +655,10 @@ bool SqliteCategoryModel::rowMoveTo( const QModelIndex & from , const QModelInde
 	//	}
 	//}
 
-	//qDebug()<<isChild;
+	//qLogx()<<isChild;
 	//if (isChild ) 
 	//{
-	//	qDebug()<<"Can't move parent to child cat";
+	//	qLogx()<<"Can't move parent to child cat";
 	//	return false ;
 	//}
 
@@ -712,7 +714,7 @@ bool SqliteCategoryModel::submit ()
 			//emit layoutChanged () ;
 		}
 	}
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count();
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to submit "<< this->mModelData.count();
 
 	return true ;
 }
@@ -727,7 +729,7 @@ void SqliteCategoryModel::revert()
 		}
 	}
 
-	qDebug()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
 	return ;
 }
 

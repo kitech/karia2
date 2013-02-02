@@ -165,6 +165,7 @@ public:
     class BitTorrentStatCollector {
     public:
         BitTorrentStatCollector() { reset(); }
+        ~BitTorrentStatCollector() {}
         void reset() {
             announceList.clear();
             comment.clear();

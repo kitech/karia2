@@ -315,7 +315,7 @@ bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<Q
 //	q.exec(createSql);
 
 	createSql = "CREATE TABLE segments (%1, PRIMARY KEY (seg_id, task_id))";
-	sl = QString(this->mSegColumnStr).split(", ");
+	sl = QString(this->mSegColumnStr).split(",");
 	tempSql = "";
 	for (int i = 0 ; i < sl.count() ; i ++) {
 		if (sl.at(i).trimmed().endsWith("_id")) {
