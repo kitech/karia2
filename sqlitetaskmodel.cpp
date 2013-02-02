@@ -69,7 +69,7 @@ int SqliteTaskModel::columnCount(const QModelIndex &/*parent*/) const
 }
 QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 {
-	qLogx()<<__FUNCTION__<<index<<role;
+	// qLogx()<<__FUNCTION__<<index<<role;
 	if (!index.isValid())
 		return QVariant();
 
@@ -167,7 +167,7 @@ QVariant SqliteTaskModel::headerData(int section, Qt::Orientation orientation, i
 
 QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &parent)   const
 {
-	qLogx()<<__FUNCTION__ << row <<":"<< column  ;
+	// qLogx()<<__FUNCTION__ << row <<":"<< column  ;
 
 	//assert( ! parent.isValid()  ) ;
 
@@ -227,7 +227,7 @@ QModelIndex SqliteTaskModel::parent(const QModelIndex &child) const
 
 int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 {
-	qLogx()<<__FUNCTION__  << parent;
+	// qLogx()<<__FUNCTION__  << parent;
 
 	int count = 0 ;
 
@@ -237,7 +237,7 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 		count = this->mModelData.count();
 	}
 	
-	qLogx()<<__FUNCTION__ <<":"<< count ;
+	// qLogx()<<__FUNCTION__ <<":"<< count ;
 	return count;
 
 	return 0;

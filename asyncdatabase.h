@@ -70,6 +70,7 @@ public:
     int execute(const QString &query); // 返回一个执行号码
     int execute(const QStringList &querys); // 返回一个执行号码
     int syncExecute(const QString &query, QList<QSqlRecord> &records);
+    int syncExecute(const QString &query, QVector<QSqlRecord> &records);
 
     // utils
     QString escapseString(const QString &str);

@@ -535,3 +535,78 @@ int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records
     
     return 0;
 }
+
+int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &records)
+{
+    bool eret = false;
+    QString estr;
+    QVariant eval;
+    QSqlError edb;
+    QVector<QSqlRecord> recs;
+
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
+
+    QSqlQuery dbq(m_database);
+    QStringList qelms;
+    QString sql;
+
+    eret = dbq.exec(query);
+    if (!eret) {
+        edb = dbq.lastError();
+        estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
+        qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
+    } else {
+        eval = dbq.lastInsertId();
+        qLogx()<<"already has lastInsertId..."<<eval;
+        if (!eval.isValid()) {
+            // not insert query
+            while(dbq.next()) {
+                recs.append(dbq.record());
+            }
+        } else {
+            // insert query;
+            qelms = query.trimmed().split(" ");
+            if (qelms.at(2) == TABLE_KARIA2_SEQ_TASKS) {
+                sql = QString("SELECT * FROM %1 WHERE seq_id=%2").arg(TABLE_KARIA2_SEQ_TASKS).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.append(dbq.record());                    
+                }
+            }
+            if (qelms.at(2) == TABLE_GROUPS) {
+                sql = QString("SELECT * FROM %1 WHERE gid=%2").arg(TABLE_GROUPS).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.append(dbq.record());                    
+                }
+            } else if (qelms.at(2) == TABLE_CONTACTS) {
+                sql = QString("SELECT * FROM %1 WHERE cid=%2").arg(TABLE_CONTACTS).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.push_back(dbq.record());                    
+                }
+            } else if (qelms.at(2) == TABLE_HISTORIES) {
+                sql = QString("SELECT * FROM %1 WHERE hid=%2").arg(TABLE_HISTORIES).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.append(dbq.record());                    
+                }
+            } else if (qelms.at(2) == TABLE_ACCOUNTS) {
+                sql = QString("SELECT * FROM %1 WHERE aid=%2").arg(TABLE_ACCOUNTS).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.append(dbq.record());
+                }
+            }
+        }
+    }
+
+    records = recs;
+    
+    return 0;
+}

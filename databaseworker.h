@@ -31,6 +31,7 @@ public slots:
     void slotExecute( const QString& query, int reqno);
     void slotExecute( const QStringList& querys, int reqno);
     int syncExecute(const QString &query, QList<QSqlRecord> &records);
+    int syncExecute(const QString &query, QVector<QSqlRecord> &records);
  
 signals:
     void connected();

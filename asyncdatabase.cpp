@@ -75,6 +75,15 @@ int AsyncDatabase::syncExecute(const QString &query, QList<QSqlRecord> &records)
     return 0;
 }
 
+int AsyncDatabase::syncExecute(const QString &query, QVector<QSqlRecord> &records)
+{
+    int iret;
+
+    iret = this->m_worker->syncExecute(query, records);
+
+    return 0;
+}
+
 QString AsyncDatabase::escapseString(const QString &str)
 {
     return this->m_worker->escapseString(str);

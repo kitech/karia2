@@ -864,6 +864,11 @@ int Karia2::getNextValidTaskId()
 
 	taskId = storage->getNextValidTaskID();
 
+    if (taskId <= 0) {
+        qLogx()<<"Invalid new task id:" << taskId;
+        exit(-1);
+    }
+
 	return taskId;
 }
 

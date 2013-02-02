@@ -387,6 +387,8 @@ void EAria2Man::onWorkerFinished()
         emit this->taskFinished(tid, eaw->exit_status);
     }
 
+    qLogx()<<"tid:"<<tid<<" download finished:"<<eaw->exit_status;
+
     this->m_tasks.remove(tid);
     eaw->deleteLater();
 }
