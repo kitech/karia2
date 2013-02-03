@@ -177,10 +177,6 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     this->m_argc++;
 
     snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
-             "--max-download-limit=%dk", 5);
-    this->m_argc++;
-
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
              "--min-split-size=%dM", 1);
     this->m_argc++;
 
@@ -193,7 +189,7 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
-    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "5K");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "200000");
 
 
     // TODO start in thread 
@@ -446,6 +442,7 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat::num_pieces] = sclt->numPieces;
     stats[ng::stat::piece_length] = sclt->pieceLength;
     stats[ng::stat::eta] = sclt->eta;
+    stats[ng::stat::error_code] = sclt->errorCode;
     
     emit this->taskStatChanged(sclt->tid, stats);
 
@@ -496,7 +493,7 @@ void EAria2Worker::run()
 
     e = muri.getDownloadEngine();
 
-    statCalc_->calculateStat(e.get());
+    // statCalc_->calculateStat(e.get());
 
     for (int i = 0; i < this->requestGroups_.size(); ++i) {
         aria2::SharedHandle<aria2::RequestGroup> rg = this->requestGroups_.at(i);

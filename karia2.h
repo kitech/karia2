@@ -89,8 +89,7 @@ public slots:
 
 	void onDeleteTask();
 	void onDeleteTaskAll();
-
-	void onTaskDone(int pTaskId);	//
+	void onTaskDone(int pTaskId, int code);	//
     void onShutdown();
 	//
 	void onCopyUrlToClipboard();
@@ -259,6 +258,8 @@ public slots:
     // void onChatWithSkype();
     // void onSendPackage();
     // void onCallSkype();
+
+public slots: // embeded aria2c related
 
 
 private slots:

@@ -72,7 +72,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
     aria2::SharedHandle<aria2::PeerStat> psts;
     aria2::SharedHandle<aria2::DownloadContext> dctx;
-    aria2::DownloadResultList dres;
+    aria2::DownloadResultList drs;
     // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
 
 
@@ -81,11 +81,12 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     rgs = e->getRequestGroupMan()->getRequestGroups();
     wrgs = e->getRequestGroupMan()->getReservedGroups();
-    dres = e->getRequestGroupMan()->getDownloadResults();
+    drs = e->getRequestGroupMan()->getDownloadResults();
 
-    // qLogx()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<dres.size();
+    qDebug()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<drs.size();
 
     // slow stat signal
+    if (!e->getRequestGroupMan()->downloadFinished())
     {
         if(cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
           return;
@@ -133,6 +134,20 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
             
             emit this->progressStat(stkey);
         }
+    }
+
+    if (drs.size() > 0) {
+        this->setDownloadResultStat(e, drs, sclt);
+
+        this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+        stkey = this->poolCounter.fetchAndAddRelaxed(1);
+        if (this->statPool.contains(stkey)) {
+            qLogx()<<"whooooo, impossible.";
+        } else {
+            this->statPool.insert(stkey, sclt);
+        }
+        qLogx()<<"maybe finished, hoho.";
+        emit this->progressStat(stkey);
     }
 
     ///////DEBUG
@@ -226,6 +241,30 @@ void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
     ///////DEBUG
     this->cssc->calculateStat(e);
 }
+
+int Karia2StatCalc::setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats)
+{
+    Aria2StatCollector *sclt = stats;
+    aria2::DownloadResultList::SeqType::iterator  it;
+    aria2::DownloadResult dres;
+    for (it = drs.begin(); it != drs.end(); it++) {
+        auto adres = it;
+        std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::DownloadResult> > dres2 = *it;
+
+        sclt->gid = dres2.first;
+        sclt->totalLength = dres2.second->totalLength;
+        sclt->completedLength = dres2.second->completedLength;
+        sclt->uploadLength = dres2.second->uploadLength;
+        sclt->numPieces = dres2.second->numPieces;
+        sclt->pieceLength = dres2.second->pieceLength;
+        sclt->bitfield = dres2.second->bitfield;
+        sclt->infoHash = dres2.second->infoHash;
+        sclt->errorCode = dres2.second->result;
+    }
+
+    return 0;
+}
+
 
 int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg,  Aria2StatCollector *stats)
 {

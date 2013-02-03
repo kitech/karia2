@@ -19,6 +19,7 @@
 #include "TimerA2.h"
 #include "ConsoleStatCalc.h"
 #include "RequestGroup.h"
+#include "RequestGroupMan.h"
 
 class ConsoleStatCalc;
 class Aria2StatCollector;
@@ -53,6 +54,7 @@ signals:
     void progressStat(int stkey);
 
 private:
+    int setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats);
     int setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setFilesStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setServersStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);

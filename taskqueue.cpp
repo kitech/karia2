@@ -523,13 +523,13 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             //     mdl->index(idx.row(), ng::tasks::file_size).data().toLongLong()) {
             //     mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
             // }
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), 
-            //              mdl->data(mdl->index(idx.row(), ng::tasks::file_size), Qt::EditRole));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
             // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
-            //              QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
+                         QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), downloadSpeed);

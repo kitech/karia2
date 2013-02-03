@@ -215,6 +215,7 @@ void Karia2::firstShowHandler()
     // QObject::connect(this->mEAria2Man, SIGNAL(progressState(Aria2StatCollector*)),
     //                  this->mTaskMan, SLOT(onProgressState(Aria2StatCollector*)));
     QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
+    // QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
 
 	///////
 	this->hideUnimplementUiElement();
@@ -1517,7 +1518,7 @@ QModelIndex findCatModelIndexByCatId(QAbstractItemModel *mdl, QModelIndex parent
     return idx;
 }
 
-void Karia2::onTaskDone(int pTaskId)
+void Karia2::onTaskDone(int pTaskId, int code)
 {
 	qLogx()<<__FUNCTION__;
 
