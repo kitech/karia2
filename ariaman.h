@@ -1,7 +1,7 @@
 // ariaman.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-02 21:16:57 +0800
 // Version: $Id: ariaman.h 117 2010-05-05 16:03:50Z drswinghead $

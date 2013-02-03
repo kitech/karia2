@@ -1,7 +1,7 @@
 // simplelog.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-05-01 15:45:06 +0800
 // Version: $Id$

@@ -1,7 +1,7 @@
 // sqlitestorage.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 19:36:20 +0800
 // Version: $Id: sqlitestorage.h 191 2011-11-06 10:03:22Z drswinghead $

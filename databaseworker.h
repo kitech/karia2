@@ -1,7 +1,7 @@
 // databaseworker.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-25 20:19:04 +0800
 // Version: $Id: databaseworker.h 994 2011-09-15 09:41:12Z drswinghead $

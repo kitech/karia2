@@ -1,7 +1,7 @@
 // seedfilemodel.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-21 20:42:02 +0800
 // Version: $Id: seedfilemodel.cpp 168 2010-09-12 10:14:08Z drswinghead $

@@ -1,7 +1,7 @@
 // taskballmapwidget.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-04 21:14:24 +0800
 // Version: $Id: taskballmapwidget.cpp 190 2011-10-31 10:04:55Z drswinghead $

@@ -1,7 +1,7 @@
 // taskitemdelegate.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-22 22:48:02 +0800
 // Version: $Id: taskitemdelegate.cpp 112 2010-05-03 06:41:43Z drswinghead $

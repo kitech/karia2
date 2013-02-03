@@ -1,7 +1,7 @@
 // resourcemonitor.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-05 11:02:35 +0800
 // Version: $Id: resourcemonitor.cpp 56 2010-04-16 08:50:28Z drswinghead $

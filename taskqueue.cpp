@@ -1,7 +1,7 @@
 // taskqueue.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:14:39 +0800
 // Version: $Id: taskqueue.cpp 190 2011-10-31 10:04:55Z drswinghead $

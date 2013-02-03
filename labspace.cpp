@@ -1,7 +1,7 @@
 // labspace.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-03 13:30:32 +0800
 // Version: $Id: labspace.cpp 195 2013-01-29 01:42:42Z drswinghead $

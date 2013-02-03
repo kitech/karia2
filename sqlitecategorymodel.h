@@ -1,7 +1,7 @@
 // sqlitecategorymodel.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-14 16:23:14 +0800
 // Version: $Id: sqlitecategorymodel.h 83 2010-04-24 09:16:49Z drswinghead $

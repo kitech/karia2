@@ -1,7 +1,7 @@
 // sqlitetaskmodel.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 11:21:26 +0800
 // Version: $Id: sqlitetaskmodel.h 82 2010-04-23 15:37:30Z drswinghead $

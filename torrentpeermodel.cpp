@@ -1,7 +1,7 @@
 // torrentpeermodel.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 10:59:15 +0800
 // Version: $Id: torrentpeermodel.cpp 74 2010-04-21 03:42:24Z drswinghead $

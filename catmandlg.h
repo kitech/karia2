@@ -1,7 +1,7 @@
 // catmandlg.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-14 16:19:42 +0800
 // Version: $Id: catmandlg.h 195 2013-01-29 01:42:42Z drswinghead $

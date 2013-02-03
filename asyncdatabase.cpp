@@ -1,7 +1,7 @@
 // asyncdatabase.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-24 20:17:39 +0800
 // Version: $Id$

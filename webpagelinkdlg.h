@@ -1,7 +1,7 @@
 // webpagelinkdlg.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-10 21:28:12 +0800
 // Version: $Id: webpagelinkdlg.h 56 2010-04-16 08:50:28Z drswinghead $
