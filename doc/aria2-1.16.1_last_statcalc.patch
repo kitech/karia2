@@ -1,0 +1,66 @@
+diff --git a/src/MultiUrlRequestInfo.cc b/src/MultiUrlRequestInfo.cc
+index 48bfec4..ce0c047 100644
+--- a/src/MultiUrlRequestInfo.cc
++++ b/src/MultiUrlRequestInfo.cc
+@@ -103,6 +103,11 @@ void handler(int signal) {
+ }
+ } // namespace
+ 
++SharedHandle<DownloadEngine> MultiUrlRequestInfo::getDownloadEngine()
++{
++    return this->e_;
++}
++
+ MultiUrlRequestInfo::MultiUrlRequestInfo
+ (const std::vector<SharedHandle<RequestGroup> >& requestGroups,
+  const SharedHandle<Option>& op,
+@@ -157,6 +162,7 @@ error_code::Value MultiUrlRequestInfo::execute()
+ 
+     SharedHandle<DownloadEngine> e =
+       DownloadEngineFactory().newDownloadEngine(option_.get(), requestGroups_);
++    this->e_ = e;
+ 
+     if(!option_->blank(PREF_LOAD_COOKIES)) {
+       File cookieFile(option_->get(PREF_LOAD_COOKIES));
+@@ -241,6 +247,7 @@ error_code::Value MultiUrlRequestInfo::execute()
+ 
+     e->getRequestGroupMan()->getNetStat().downloadStart();
+     e->run();
++    this->statCalc_->calculateStat(e.get());
+ 
+     if(!option_->blank(PREF_SAVE_COOKIES)) {
+       e->getCookieStorage()->saveNsFormat(option_->get(PREF_SAVE_COOKIES));
+@@ -292,4 +299,5 @@ error_code::Value MultiUrlRequestInfo::execute()
+   return returnValue;
+ }
+ 
++
+ } // namespace aria2
+diff --git a/src/MultiUrlRequestInfo.h b/src/MultiUrlRequestInfo.h
+index cdc84bc..c61c398 100644
+--- a/src/MultiUrlRequestInfo.h
++++ b/src/MultiUrlRequestInfo.h
+@@ -49,6 +49,7 @@ class Option;
+ class StatCalc;
+ class OutputFile;
+ class UriListParser;
++    class DownloadEngine;
+ 
+ class MultiUrlRequestInfo {
+ private:
+@@ -63,6 +64,7 @@ private:
+   SharedHandle<UriListParser> uriListParser_;
+ 
+   void printMessageForContinue();
++    SharedHandle<DownloadEngine> e_;
+ public:
+   MultiUrlRequestInfo
+   (const std::vector<SharedHandle<RequestGroup> >& requestGroups,
+@@ -78,6 +80,7 @@ public:
+    * last download result.
+    */
+   error_code::Value execute();
++    SharedHandle<DownloadEngine> getDownloadEngine();
+ };
+ 
+ } // namespace aria2
