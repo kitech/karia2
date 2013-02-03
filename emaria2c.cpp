@@ -366,9 +366,11 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
       exit(aria2::error_code::UNKNOWN_ERROR);
     }
   }
+
+  return 0;
 }
 
-
+QAtomicInt EAria2Man::doneCounter(-1);
 void EAria2Man::onWorkerFinished()
 {
     int tid;
@@ -390,13 +392,21 @@ void EAria2Man::onWorkerFinished()
             break;
         }
 
-        emit this->taskFinished(tid, eaw->exit_status);
+        // 这个信号的接收会早于statcalc的时间，导致上层UI处理不正确
+        // emit this->taskFinished(tid, eaw->exit_status);
+
     }
 
-    qLogx()<<"tid:"<<tid<<" download finished:"<<eaw->exit_status;
+    qLogx()<<"tid:"<<tid<<"done size:"<<eaw->requestGroups_.size()<<" download finished:"<<eaw->exit_status;
 
-    this->m_tasks.remove(tid);
-    eaw->deleteLater();
+    Aria2StatCollector *sclt = new Aria2StatCollector();
+    sclt->tid = tid;
+    this->doneCounter.testAndSetOrdered(INT_MIN, -1);
+    int stkey = this->doneCounter.fetchAndAddRelaxed(-1);
+    this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
+    if (!this->isRunning()) {
+        this->start();
+    }
 }
 
 
@@ -407,18 +417,26 @@ void EAria2Man::run()
     int stkey;
     Aria2StatCollector *sclt;
     QPair<int, Aria2StatCollector*> elem;
+    int tid = -1;
+    EAria2Worker *eaw = 0;
 
     while (!this->stkeys.empty()) {
         elem = this->stkeys.dequeue();
         stkey = elem.first;
         sclt = elem.second;
+        tid = sclt->tid;
+        eaw = this->m_tasks[tid];
 
         qLogx()<<"dispatching stat event:"<<stkey;
-        this->checkAndDispatchStat(sclt);
 
-        if (sclt != NULL) {
-            delete sclt;
+        if (stkey < 0) {
+            // 任务完成事件
+            this->confirmBackendFinished(tid, eaw);
+        } else {
+            this->checkAndDispatchStat(sclt);
         }
+
+        delete sclt;
     }
 }
 
@@ -449,6 +467,16 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     return true;
 }
 
+bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
+{
+    emit this->taskFinished(eaw->m_tid, eaw->exit_status);
+
+    this->m_tasks.remove(eaw->m_tid);
+    this->m_rtasks.remove(eaw);
+    eaw->deleteLater();    
+
+    return true;
+}
 
 bool EAria2Man::onAllStatArrived(int stkey)
 {

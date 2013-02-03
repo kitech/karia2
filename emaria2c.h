@@ -73,6 +73,7 @@ signals:
 public:
     virtual void run();
     bool checkAndDispatchStat(Aria2StatCollector *sclt);
+    bool confirmBackendFinished(int tid, EAria2Worker *eaw);
 public slots:
     bool onAllStatArrived(int stkey);
 
@@ -95,7 +96,7 @@ protected:
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;
     Aria2StatCollector *lastStat;
-
+    static QAtomicInt doneCounter; // 小于0的counter
 };
 
 class EAria2Worker : public QThread
