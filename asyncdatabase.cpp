@@ -1,4 +1,4 @@
-// asyncdatabase.cpp --- 
+﻿// asyncdatabase.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net

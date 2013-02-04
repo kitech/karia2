@@ -1,4 +1,4 @@
-// simplelog.h --- 
+﻿// simplelog.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net

@@ -1,4 +1,4 @@
-/* Hash table declarations.
+﻿/* Hash table declarations.
    Copyright (C) 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Wget.

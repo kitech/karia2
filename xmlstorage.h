@@ -1,4 +1,4 @@
-#ifndef XMLSTORAGE_H
+﻿#ifndef XMLSTORAGE_H
 #define XMLSTORAGE_H
 
 #include "abstractstorage.h"

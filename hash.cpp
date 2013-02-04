@@ -1,4 +1,4 @@
-/* Hash tables.
+﻿/* Hash tables.
    Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Wget.

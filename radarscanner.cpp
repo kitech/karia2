@@ -1,4 +1,4 @@
-
+﻿
 #include <math.h>
 
 #include "radarscanner.h"

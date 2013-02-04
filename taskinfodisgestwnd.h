@@ -1,4 +1,4 @@
-#ifndef TASKINFODISGESTWND_H
+﻿#ifndef TASKINFODISGESTWND_H
 #define TASKINFODISGESTWND_H
 
 #include <QWidget>

@@ -1,4 +1,4 @@
-#ifndef CATPROPDLG_H
+﻿#ifndef CATPROPDLG_H
 #define CATPROPDLG_H
 
 #include <QDialog>

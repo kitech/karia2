@@ -1,4 +1,4 @@
-#include "storagefactory.h"
+﻿#include "storagefactory.h"
 
 StorageFactory::StorageFactory(QObject *parent)
 	: QObject(parent)

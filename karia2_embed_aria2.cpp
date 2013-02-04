@@ -1,4 +1,4 @@
-// karia2.cpp ---
+﻿// karia2.cpp ---
 //
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net

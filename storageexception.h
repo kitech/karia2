@@ -1,4 +1,4 @@
-#ifndef STORAGEEXCEPTION_H
+﻿#ifndef STORAGEEXCEPTION_H
 #define STORAGEEXCEPTION_H
 
 #include <exception>

@@ -1,4 +1,4 @@
-#include <QtCore>
+﻿#include <QtCore>
 #include <QtGui>
 #include <QListWidget>
 #include <QListView>

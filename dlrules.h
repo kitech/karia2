@@ -1,4 +1,4 @@
-#ifndef DLRULES_H
+﻿#ifndef DLRULES_H
 #define DLRULES_H
 
 #include <QDialog>

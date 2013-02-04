@@ -1,4 +1,4 @@
-#ifndef DISKINFO_H
+﻿#ifndef DISKINFO_H
 #define DISKINFO_H
 
 #include <windows.h>

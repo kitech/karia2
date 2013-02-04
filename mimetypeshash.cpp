@@ -1,4 +1,4 @@
-// 2010年 03月 18日 星期四 13:36:31 CST
+﻿// 2010年 03月 18日 星期四 13:36:31 CST
 #include <QHash>
 #include <QString>
 

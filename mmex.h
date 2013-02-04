@@ -1,4 +1,4 @@
-#ifndef MMEX_H
+﻿#ifndef MMEX_H
 #define MMEX_H
 
 #include <QtCore>

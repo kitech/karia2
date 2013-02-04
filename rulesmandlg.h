@@ -1,4 +1,4 @@
-#ifndef RULESMANDLG_H
+﻿#ifndef RULESMANDLG_H
 #define RULESMANDLG_H
 
 #include <QDialog>

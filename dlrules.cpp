@@ -1,4 +1,4 @@
-#include "dlrules.h"
+﻿#include "dlrules.h"
 
 DLRules::DLRules(QWidget *parent)
     : QDialog(parent)

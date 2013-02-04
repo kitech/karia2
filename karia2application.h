@@ -1,4 +1,4 @@
-// karia2application.h --- 
+﻿// karia2application.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net

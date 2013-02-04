@@ -1,4 +1,4 @@
-#include "storageexception.h"
+﻿#include "storageexception.h"
 
 StorageException::StorageException(QObject *parent)
 	: std::exception(/*parent*/),QObject(parent)

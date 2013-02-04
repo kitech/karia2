@@ -1,4 +1,4 @@
-// karia2statcalc.h --- 
+﻿// karia2statcalc.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net

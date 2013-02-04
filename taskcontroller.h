@@ -1,4 +1,4 @@
-#ifndef TASKCONTROLLER_H
+﻿#ifndef TASKCONTROLLER_H
 #define TASKCONTROLLER_H
 
 #include <QObject>

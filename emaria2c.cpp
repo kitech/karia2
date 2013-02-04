@@ -1,4 +1,4 @@
-// emaria2c.cpp ---
+﻿// emaria2c.cpp ---
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
