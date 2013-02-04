@@ -469,11 +469,22 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
 
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
-    emit this->taskFinished(eaw->m_tid, eaw->exit_status);
 
-    this->m_tasks.remove(eaw->m_tid);
-    this->m_rtasks.remove(eaw);
-    eaw->deleteLater();    
+    switch(eaw->exit_status) {
+    case aria2::error_code::FINISHED:
+        emit this->taskFinished(eaw->m_tid, eaw->exit_status);
+
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();    
+        break;
+    case aria2::error_code::IN_PROGRESS:
+        break;
+    case aria2::error_code::REMOVED:
+        break;
+    default:
+        break;
+    }
 
     return true;
 }
