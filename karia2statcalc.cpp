@@ -83,7 +83,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     wrgs = e->getRequestGroupMan()->getReservedGroups();
     drs = e->getRequestGroupMan()->getDownloadResults();
 
-    qDebug()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<drs.size();
+    // qDebug()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<drs.size();
 
     // slow stat signal
     if (!e->getRequestGroupMan()->downloadFinished())

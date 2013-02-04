@@ -52,6 +52,8 @@ win32 {
 	} else {
       # LIBS += wsock32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
       # LIBS += ws2_32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
+        INCLUDEPATH +=Z:/cross/boost152/include
+
         ## check cl.exe, x64 or x86
         CLARCH=$$system(path)
         VAMD64=$$find(CLARCH,amd64)

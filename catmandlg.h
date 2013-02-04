@@ -13,7 +13,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
-#include <QtGui/QMainWindow>
+//#include <QtGui/QMainWindow>
 #include <QtXml>
 #include <QMessageBox>
 #include <QTreeWidget>
