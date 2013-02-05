@@ -189,7 +189,8 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
-    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "200000");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
+    eaw->option_->put(aria2::PREF_GID, QString("%1").arg(task_id, 16, 16).toStdString());
 
 
     // TODO start in thread 

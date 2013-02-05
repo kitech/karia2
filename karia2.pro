@@ -42,18 +42,17 @@ unix{
     LIBS += -lssl -lX11
 }
 win32 {
+    INCLUDEPATH +=Z:/cross/boost152/include 
 	win32-g++ {
 		# -mwindows can drop the dos window when app run. got this knowleage at dev-cpp's makefile generate function
         #LIBS += -LD:/msys/1.0/local/ssl/lib/ -mwindows -lssl -lcrypto -lwsock32 -lgdi32
   	    #LIBS += -LD:/msys/1.0/local/ssl/lib/ -mwindows -lssl -lcrypto -lws2_32 -lgdi32
   	    LIBS += -LD:/librarys/mw-ssl/lib/ -mwindows -lssl -lcrypto -lws2_32 -lgdi32 -lpsapi
         INCLUDEPATH += D:/librarys/mw-ssl/include 	
-        INCLUDEPATH +=Z:/cross/boost152/include
         QMAKE_LFLAGS_WINDOWS = 
 	} else {
       # LIBS += wsock32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
       # LIBS += ws2_32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
-        INCLUDEPATH +=Z:/cross/boost152/include
 
         ## check cl.exe, x64 or x86
         CLARCH=$$system(path)
@@ -128,6 +127,8 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
+           abstractui.h \
+           taskui.h \
            asynctask.h \
            radarscanner.h \
            resource.h \
@@ -189,6 +190,8 @@ SOURCES += aboutdialog.cpp \
            karia2application.cpp \
            karia2_embed_aria2.cpp \
            karia2_standalone_aria2.cpp \
+           abstractui.cpp \
+           taskui.cpp \
            asynctask.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \

@@ -1,3 +1,10 @@
+在linux上交叉编译mingw32版本的aria2:
+    CC=i486-mingw32-gcc CXX=i486-mingw32-g++ ./configure --host=x86_64-unknown-linux-gnu --target=i486-mingw32 --with-included-gettext --without-gnutls
+依赖的mingw32包安装：
+    yaourt mingw32-openssl mingw32-zlib mingw32-boost
+交叉编译aria2还是有些困难。
+   a2netcompat.h:125:32: error: invalid conversion from 'void (__attribute__((__stdcall__)) *)(addrinfo*)' to 'void (*)(addrinfo*)' [-fpermissive]
+
 XML-RPC:
         aria2.tellStatus
                 bitfield: 下载进度，以十六进制表示，FFFF 格式，2字节，最高位代表index为0的piece。如果其中一位置位表示，已经下载，否则没有。空闲的位在最低位，为0。

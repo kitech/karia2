@@ -16,12 +16,15 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "ui_karia2.h"
+
 #include "taskinfodlg.h"  // class TaskParameter
 
 #include "sqlitestorage.h"
 #include "walksitewnd.h"
 
+namespace Ui {
+    class Karia2;
+};
 class DropZone;
 class TaskQueue;
 class InstantSpeedHistogramWnd;
@@ -31,6 +34,9 @@ class WalkSiteWndEx;  //网站遍历窗口类。
 class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
+
+class AbstractUi;
+class TaskUi;
 
 class EAria2Man;
 class Karia2StatCalc;
@@ -50,16 +56,6 @@ public:
 
 public slots:
     void onStorageOpened();
-    int createTask(TaskOption*option);
-    int createTask(int taskId, TaskOption*option);
-
-    void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
-    void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
-    void onCatListSelectChange    (const QItemSelection & selected, const QItemSelection & deselected);
-	
-    void onAddTaskList(QStringList list);	// add a list of tasks
-
-//public:
 
 	//cat
     void onNewCategory();
@@ -109,8 +105,11 @@ public slots:
     // single application message handler
     void onOtherKaria2MessageRecived(const QString &msg);
 
+protected:
+    friend class AbstractUi;
+
 private:
-    Ui::Karia2 mainUI;
+    Ui::Karia2 *mainUI;
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -185,6 +184,9 @@ private:
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
 
+    // ***Uis
+    TaskUi *taskUi;
+                  
 public slots:
 	void onSwitchWindowStyle(QAction *action);
 
@@ -195,26 +197,12 @@ public slots:
 	void onSwitchSkinType(QAction*action);
 	
 	void showAboutDialog();		//about dialog
-	void showNewDownloadDialog();
-    void showNewBittorrentFileDialog();
-    void showNewMetalinkFileDialog();
-	void showBatchDownloadDialog();	//添加批量下载对话框
-	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
 	// void onShowConnectOption();
 	//void onShowDownloadRules();
 	// void onShowDefaultDownloadProperty();
 
 	void onShowOptions();
-	void onShowTaskProperty();
-	void onShowTaskProperty(int pTaskId);
-	void onShowTaskPropertyDigest(const QModelIndex & index);
-	void onShowTaskPropertyDigest( );
 	void onShowColumnEditor();	//列的显示情况管理
-	void onTaskListMenuPopup( /*const QPoint & pos  = QPoint() */);
-	void onUpdateJobMenuEnableProperty();
-	void onLogListMenuPopup( const QPoint & pos);
-	void onSegListMenuPopup( const QPoint & pos);
-	void onCateMenuPopup( const QPoint & pos);
 	//toolMenu
     // void onShutdownWhenDone(); // not need save in db
     // void onHungupWhenDone();  // the same 
@@ -315,7 +303,6 @@ private slots:
     void onAriaTorrentReselectFileMachineFault(int code, QString reason, QVariant &payload);
 
 private:	//method
-	int getNextValidTaskId();
 
 	void connectAllSignalAndSlog();
 
@@ -330,12 +317,6 @@ private:	//method
 
 	//dynamic language switch
 	void retranslateUi();
-
-	QPoint mSwapPoint;
-	QModelIndex mSwapModelIndex;
-
-	//
-	QPair<QString,QString> getFileTypeByFileName(QString fileName);
 
 	//temporary method, hide not impled function
 	void hideUnimplementUiElement();

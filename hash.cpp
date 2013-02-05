@@ -50,7 +50,7 @@ so, delete this exception statement from your version.  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
+#include <string.h>
 
 /* Make do without them. */
 # define xnew(x) xmalloc (sizeof (x))
