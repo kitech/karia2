@@ -48,6 +48,7 @@ win32 {
   	    #LIBS += -LD:/msys/1.0/local/ssl/lib/ -mwindows -lssl -lcrypto -lws2_32 -lgdi32
   	    LIBS += -LD:/librarys/mw-ssl/lib/ -mwindows -lssl -lcrypto -lws2_32 -lgdi32 -lpsapi
         INCLUDEPATH += D:/librarys/mw-ssl/include 	
+        INCLUDEPATH +=Z:/cross/boost152/include
         QMAKE_LFLAGS_WINDOWS = 
 	} else {
       # LIBS += wsock32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
