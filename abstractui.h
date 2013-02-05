@@ -19,6 +19,9 @@ namespace Ui {
 };
 class Karia2;
 
+/**
+ * UI 元素与控制太多，分治
+ */
 class AbstractUi : public QThread
 {
     Q_OBJECT;

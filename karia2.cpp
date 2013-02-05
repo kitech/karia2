@@ -15,7 +15,9 @@
 
 #include "utility.h"
 #include "karia2.h"
+#include "asynctask.h"
 #include "taskui.h"
+#include "optionui.h"
 #include "aboutdialog.h"
 #include "dropzone.h"
 #include "taskinfodlg.h"
@@ -78,6 +80,7 @@ extern QHash<QString, QString> gMimeHash;
 Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
     , mainUI(new Ui::Karia2())
+    , mAtask(NULL)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
     , mEAria2Man(NULL)
@@ -107,7 +110,8 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
 	} else {
 		this->mainUI->action_English->setChecked(true);
 	}
-	this->mDropZone = new DropZone();	// little float window
+	// this->mDropZone = new DropZone();	// little float window
+    qLogx()<<"";
 }
 /**
  * first show adjust window layout
@@ -115,6 +119,7 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
  */
 void Karia2::firstShowHandler()
 {
+    qLogx()<<"";
     QMenu *addTaskMenuList = new QMenu(this);
     addTaskMenuList->addAction(this->mainUI->action_New_Download);
     addTaskMenuList->addAction(this->mainUI->action_New_Bittorrent);
@@ -153,9 +158,9 @@ void Karia2::firstShowHandler()
 
 	///////	
 	// init base storage db 
-    this->mStorage = SqliteStorage::instance(this);
-    QObject::connect(this->mStorage, SIGNAL(opened()), this, SLOT(onStorageOpened()));
-	this->mStorage->open();
+    // this->mStorage = SqliteStorage::instance(this);
+    // QObject::connect(this->mStorage, SIGNAL(opened()), this, SLOT(onStorageOpened()));
+	// this->mStorage->open();
 
     //
     this->mCatView = this->mainUI->mui_tv_category;
@@ -170,7 +175,7 @@ void Karia2::firstShowHandler()
 
 
     // 初始化任务队列管理实例
-    this->mTaskMan = TaskQueue::instance();
+    // this->mTaskMan = TaskQueue::instance();
 
 	this->update();
 
@@ -213,23 +218,21 @@ void Karia2::firstShowHandler()
 //                     this, SLOT(onTaskLogArrived(QString)));
 
     //// start embeded backed
-    qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
-    this->mEAria2Man = EAria2Man::instance();
-//    QObject::connect(this->mEAria2Man, SIGNAL(progressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)),
-//                     this->mTaskMan, SLOT(onProgressState(int,quint32,quint64,quint64,quint32,quint32,quint32,quint32)));
-    // QObject::connect(this->mEAria2Man, SIGNAL(progressState(Aria2StatCollector*)),
-    //                  this->mTaskMan, SLOT(onProgressState(Aria2StatCollector*)));
-    QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
-    QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
+    // qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
+    //    this->mEAria2Man = EAria2Man::instance();
+    // QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
+    // QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
 
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
 
 
-    this->initUserOptionSetting();
+    // this->initUserOptionSetting();
     // process arguments 
     this->handleArguments();
+
+    qLogx()<<"";
 
     // this->mSkype = new Skype("karia2");
     // QObject::connect(this->mSkype, SIGNAL(skypeError(int, QString)),
@@ -247,6 +250,28 @@ void Karia2::firstShowHandler()
     //                  this, SLOT(onCallSkype()));
     // SkypeTunnel *tun = new SkypeTunnel(this);
     // tun->setSkype(this->mSkype);
+
+
+}
+
+void Karia2::asyncFirstShowHandler()
+{
+	// init base storage db 
+    this->mStorage = SqliteStorage::instance(this);
+    QObject::connect(this->mStorage, SIGNAL(opened()), this, SLOT(onStorageOpened()));
+	this->mStorage->open();
+
+    // 初始化任务队列管理实例
+    this->mTaskMan = TaskQueue::instance();
+
+    //// start embeded backed
+    qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
+    this->mEAria2Man = EAria2Man::instance();
+    QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
+    QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
+
+    this->initUserOptionSetting();
+
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -582,6 +607,7 @@ void Karia2::initAppIcons()
 
 void Karia2::connectAllSignalAndSlog()
 {
+    return;
 	QObject::connect(this->mainUI->actionDrop_zone, SIGNAL(triggered(bool)), this->mDropZone,SLOT(setVisible(bool)));
 	
 	//file action
@@ -2113,14 +2139,16 @@ void Karia2::closeEvent (QCloseEvent * event )
 void Karia2::showEvent (QShowEvent * event ) 
 {
 	QWidget::showEvent(event);
-
+    qLogx()<<__FUNCTION__<<__LINE__<<"first show";
 	//qLogx()<<__FUNCTION__<<__LINE__<<rand();
 	if (firstShowEvent == true) {	
 		firstShowEvent = false;
 		//添加首次显示要处理的工作
 		qLogx()<<__FUNCTION__<<__LINE__<<"first show";
 		//this->firstShowHandler();
-		QTimer::singleShot(30, this, SLOT(firstShowHandler()));
+		// QTimer::singleShot(30, this, SLOT(firstShowHandler()));
+        this->mAtask = new AsyncTask(this);
+        this->mAtask->start();
 	}
 }
 

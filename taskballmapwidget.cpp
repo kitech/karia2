@@ -34,7 +34,7 @@ TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	this->mBallMap = QImage(parent->size().width(), parent->size().height(), 
                             QImage::Format_ARGB32_Premultiplied);	// 初始化一个和窗口一样大的图象。
 
-	mSwithTimer.start(1000); // can start manually
+	// mSwithTimer.start(1000); // can start manually
 	QObject::connect(&this->mSwithTimer, SIGNAL(timeout()), this, SLOT(onSwitchState()));
 }
 

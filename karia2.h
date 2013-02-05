@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
-// Version: $Id: karia2.h 196 2013-01-31 15:50:35Z drswinghead $
+// Version: $Id$
 // 
 
 #ifndef KARIA2_H
@@ -35,8 +35,11 @@ class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
 
+
+class AsyncTask;
 class AbstractUi;
 class TaskUi;
+class OptionUi;
 
 class EAria2Man;
 class Karia2StatCalc;
@@ -106,6 +109,7 @@ public slots:
     void onOtherKaria2MessageRecived(const QString &msg);
 
 protected:
+    friend class AsyncTask;
     friend class AbstractUi;
 
 private:
@@ -160,6 +164,7 @@ private:
 	QTranslator qtTranslator;
 	QString qmPath;
 	QString qmLocale;
+    AsyncTask *mAtask;
 	//
 	QPalette orginalPalette;
     QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
@@ -186,6 +191,7 @@ private:
 
     // ***Uis
     TaskUi *taskUi;
+    OptionUi *optionUi;
                   
 public slots:
 	void onSwitchWindowStyle(QAction *action);
@@ -226,6 +232,7 @@ public slots:
 	
 	void shootScreen();
 	void firstShowHandler();
+	void asyncFirstShowHandler();
 
     void onAriaProcError(QProcess::ProcessError error);
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);

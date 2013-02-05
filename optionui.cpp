@@ -1,9 +1,9 @@
-﻿// asynctask.cpp --- 
+// optionui.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
-// Created: 2013-01-30 00:06:51 +0000
+// Created: 2013-02-05 16:27:47 +0000
 // Version: $Id$
 // 
 
@@ -15,7 +15,6 @@
 
 #include "utility.h"
 #include "karia2.h"
-#include "taskui.h"
 #include "aboutdialog.h"
 #include "dropzone.h"
 #include "taskinfodlg.h"
@@ -35,6 +34,7 @@
 #include "batchjobmandlg.h"
 #include "webpagelinkdlg.h"
 #include "taskqueue.h"
+#include "taskinfodlg.h"
 
 #include "taskballmapwidget.h"
 #include "instantspeedhistogramwnd.h"
@@ -70,33 +70,14 @@
 //#include "skypetunnel.h"
 //#include "skypetracer.h"
 
-#include "asynctask.h"
+#include "optionui.h"
 
-AsyncTask::AsyncTask(Karia2 *pwin)
-    : QThread(pwin)
-    , mpwin(pwin)
-{
-    QObject::connect(this, &AsyncTask::canFirstShow, mpwin, &Karia2::firstShowHandler);
-    QObject::connect(this, &AsyncTask::canAsyncFirstShow, mpwin, &Karia2::asyncFirstShowHandler);
-}
-
-AsyncTask::~AsyncTask()
+OptionUi::OptionUi(Karia2 *pwin)
+    : AbstractUi(pwin)
 {
 }
 
-// QObject::setParent: Cannot set parent, new parent is in a different thread
-// The canonical way to solve this problem is to use signals and slots.
-void AsyncTask::run()
+OptionUi::~OptionUi()
 {
-    // this->moveToThread(this->mpwin->thread());
-    // this->mpwin->firstShowHandler();
-
-    emit this->canFirstShow();
-
-    this->sleep(1); // 延迟1秒比原来好很多，界面会快速显示，数据加载有动态效果
-    // this->mpwin->asyncFirstShowHandler();
-    emit this->canAsyncFirstShow();
-    qLogx()<<"";
-
-    this->exec();
 }
+

@@ -554,6 +554,7 @@ int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &recor
     if (!eret) {
         edb = dbq.lastError();
         estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
+        assert(1==2);
         qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else {
         eval = dbq.lastInsertId();
