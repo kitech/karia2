@@ -77,7 +77,7 @@ public:
 
 public slots:
     void onConnected();
-    void onConnectError() { this->m_connected = false; }
+    void onConnectError(const QString &errmsg) { this->m_connected = false; }
 
 signals:
     void progress(const QString &msg);
