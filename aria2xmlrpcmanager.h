@@ -1,0 +1,6 @@
+#ifndef _ARIA2XMLRPCMANAGER_H_
+#define _ARIA2XMLRPCMANAGER_H_
+
+
+
+#endif /* _ARIA2XMLRPCMANAGER_H_ */

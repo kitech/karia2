@@ -97,8 +97,8 @@ bool DatabaseWorker::connectDatabase()
     m_database.setUserName( DATABASE_USER );
     m_database.setPassword( DATABASE_PASS );
     if ( !m_database.open() ) {
-        qWarning() << "Unable to connect to database, giving up:" << m_database.lastError().text();
-        emit this->connect_error();
+        qLogx() << "Unable to connect to database, giving up:" << m_database.lastError().text();
+        emit this->connect_error(m_database.lastError().text());
         return false;
     }
 
@@ -345,12 +345,12 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
         qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else {
         eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
+        if (dbq.isSelect()) {
             // not insert query
             while(dbq.next()) {
                 recs.push_back(dbq.record());
             }
-        } else {
+        } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             qelms = query.trimmed().split(" ");
             if (qelms.at(2) == TABLE_GROUPS) {
@@ -424,12 +424,12 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
         qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else if (errcnt == 0) {
         eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
+        if (dbq.isSelect()) {
             // not insert query
             while(dbq.next()) {
                 recs.push_back(dbq.record());
             }
-        } else {
+        } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             // qelms = query.trimmed().split(" ");
             qelms = sql.trimmed().split(" ");
@@ -472,63 +472,13 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
 
 int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records)
 {
-    bool eret = false;
-    QString estr;
-    QVariant eval;
-    QSqlError edb;
     QList<QSqlRecord> recs;
+    QVector<QSqlRecord> vrecs;
 
-    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
+    int iret = this->syncExecute(query, vrecs);
 
-    QSqlQuery dbq(m_database);
-    QStringList qelms;
-    QString sql;
-
-    eret = dbq.exec(query);
-    if (!eret) {
-        edb = dbq.lastError();
-        estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
-        qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
-    } else {
-        eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
-            // not insert query
-            while(dbq.next()) {
-                recs.push_back(dbq.record());
-            }
-        } else {
-            // insert query;
-            qelms = query.trimmed().split(" ");
-            if (qelms.at(2) == TABLE_GROUPS) {
-                sql = QString("SELECT * FROM %1 WHERE gid=%2").arg(TABLE_GROUPS).arg(eval.toInt());
-                eret = dbq.exec(sql);
-                Q_ASSERT(eret);
-                while(dbq.next()) {
-                    recs.push_back(dbq.record());                    
-                }
-            } else if (qelms.at(2) == TABLE_CONTACTS) {
-                sql = QString("SELECT * FROM %1 WHERE cid=%2").arg(TABLE_CONTACTS).arg(eval.toInt());
-                eret = dbq.exec(sql);
-                Q_ASSERT(eret);
-                while(dbq.next()) {
-                    recs.push_back(dbq.record());                    
-                }
-            } else if (qelms.at(2) == TABLE_HISTORIES) {
-                sql = QString("SELECT * FROM %1 WHERE hid=%2").arg(TABLE_HISTORIES).arg(eval.toInt());
-                eret = dbq.exec(sql);
-                Q_ASSERT(eret);
-                while(dbq.next()) {
-                    recs.push_back(dbq.record());                    
-                }
-            } else if (qelms.at(2) == TABLE_ACCOUNTS) {
-                sql = QString("SELECT * FROM %1 WHERE aid=%2").arg(TABLE_ACCOUNTS).arg(eval.toInt());
-                eret = dbq.exec(sql);
-                Q_ASSERT(eret);
-                while(dbq.next()) {
-                    recs.push_back(dbq.record());
-                }
-            }
-        }
+    for (int i = 0; i < vrecs.count(); i++) {
+        recs.push_back(vrecs.at(i));
     }
 
     records = recs;

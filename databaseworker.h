@@ -1,10 +1,10 @@
-﻿// databaseworker.h --- 
+// databaseworker.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-25 20:19:04 +0800
-// Version: $Id: databaseworker.h 994 2011-09-15 09:41:12Z drswinghead $
+// Version: $Id$
 // 
 
 #ifndef _DATABASEWORKER_H_
@@ -36,6 +36,7 @@ public slots:
 signals:
     void connected();
     void connect_error();
+    void connect_error(const QString &errmsg);
     // eval is lastInsertId
     void results( const QList<QSqlRecord>& records, int reqno, bool eret, 
                   const QString &estr, const QVariant &eval);
