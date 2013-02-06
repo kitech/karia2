@@ -5,6 +5,7 @@
 // URL: 
 // Created: 2011-04-25 20:19:04 +0800
 // Version: $Id$
+// Version: $Id$
 // 
 
 #ifndef _DATABASEWORKER_H_
@@ -35,7 +36,7 @@ public slots:
  
 signals:
     void connected();
-    void connect_error();
+    void connect_error(const QString &errmsg);
     void connect_error(const QString &errmsg);
     // eval is lastInsertId
     void results( const QList<QSqlRecord>& records, int reqno, bool eret, 
