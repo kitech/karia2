@@ -85,6 +85,7 @@ TaskUi::~TaskUi()
 
 bool TaskUi::init()
 {
+    QObject::connect(this->mainUI->action_New_Download, SIGNAL(triggered()), this, SLOT(showNewDownloadDialog()));
 }
 
 

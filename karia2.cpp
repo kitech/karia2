@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 196 2013-01-31 15:50:35Z drswinghead $
+// Version: $Id: karia2.cpp 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #include <QtCore>
@@ -112,6 +112,11 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
 	}
 	// this->mDropZone = new DropZone();	// little float window
     qLogx()<<"";
+
+    // ***ui init
+    this->taskUi = new TaskUi(this);
+    this->taskUi->init();
+
 }
 /**
  * first show adjust window layout
@@ -265,7 +270,7 @@ void Karia2::asyncFirstShowHandler()
     this->mTaskMan = TaskQueue::instance();
 
     //// start embeded backed
-    qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
+    qRegisterMetaType<QMap<int, QVariant> >("QMap<int, QVariant>");
     this->mEAria2Man = EAria2Man::instance();
     QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
     QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);

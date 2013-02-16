@@ -4,8 +4,8 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-25 20:19:04 +0800
-// Version: $Id$
-// Version: $Id$
+// Version: $Id: ce14e05b5712c8e25f0e8e72ed45befefee58646 $
+// Version: $Id: ce14e05b5712c8e25f0e8e72ed45befefee58646 $
 // 
 
 #ifndef _DATABASEWORKER_H_
@@ -36,7 +36,6 @@ public slots:
  
 signals:
     void connected();
-    void connect_error(const QString &errmsg);
     void connect_error(const QString &errmsg);
     // eval is lastInsertId
     void results( const QList<QSqlRecord>& records, int reqno, bool eret, 

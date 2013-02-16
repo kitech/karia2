@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-14 16:23:47 +0800
-// Version: $Id: sqlitecategorymodel.cpp 191 2011-11-06 10:03:22Z drswinghead $
+// Version: $Id: sqlitecategorymodel.cpp 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #include "simplelog.h"

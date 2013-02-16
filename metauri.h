@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-02 11:02:28 +0800
-// Version: $Id: metauri.h 167 2010-09-10 10:06:58Z drswinghead $
+// Version: $Id: metauri.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #ifndef _METAURI_H_

@@ -103,11 +103,23 @@ void AsyncDatabase::run()
     QObject::connect(m_worker, &DatabaseWorker::connect_error, this, &AsyncDatabase::onConnectError);
 
     // TODO 新的connect语法怎么处理这种重载的方法的呢？
-    // QObject::connect(this, &AsyncDatabase::executefwd, m_worker, &DatabaseWorker::slotExecute);
-    QObject::connect(this, SIGNAL(executefwd(const QString&, int)),
-            m_worker, SLOT(slotExecute(const QString&,int)));
-    QObject::connect(this, SIGNAL(executefwd(const QStringList&, int)),
-            m_worker, SLOT(slotExecute(const QStringList&,int)));
+    // 需要使用static_cast强制转换类成员函数指针的方式
+    // QObject::connect(this, &AsyncDatabase::executefwd, m_worker, &DatabaseWorker::slotExecute);  // error
+
+    void (AsyncDatabase::*c)(const QString&, int) = &AsyncDatabase::executefwd;
+    void (AsyncDatabase::*d)(const QStringList&, int) = &AsyncDatabase::executefwd;
+    void (DatabaseWorker::*a)(const QString&, int)  = &DatabaseWorker::slotExecute;
+    void (DatabaseWorker::*b)(const QStringList&, int)  = &DatabaseWorker::slotExecute;
+
+    QObject::connect(this, c, m_worker, a);
+    // QObject::connect(this, static_cast<void (AsyncDatabase::*)(const QString&, int)>(&AsyncDatabase::executefwd),
+    //                 m_worker, static_cast<void (DatabaseWorker::*)(const QString&, int)>(&DatabaseWorker::slotExecute));
+    QObject::connect(this, static_cast<void(AsyncDatabase::*)(const QStringList&, int)>(&AsyncDatabase::executefwd),
+                     m_worker, static_cast<void (DatabaseWorker::*)(const QStringList&,int)>(&DatabaseWorker::slotExecute));
+    // QObject::connect(this, SIGNAL(executefwd(const QString&, int)),
+    //        m_worker, SLOT(slotExecute(const QString&,int)));
+    // QObject::connect(this, SIGNAL(executefwd(const QStringList&, int)),
+    //        m_worker, SLOT(slotExecute(const QStringList&,int)));
     
     bool bret = m_worker->connectDatabase();
     if (!bret) {

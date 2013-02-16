@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-16 21:52:11 +0800
-// Version: $Id: preferencesdialog.h 116 2010-05-05 07:37:37Z drswinghead $
+// Version: $Id: preferencesdialog.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #ifndef PREFERENCESDIALOG_H

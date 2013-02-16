@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-19 23:00:53 +0800
-// Version: $Id: dropzone.cpp 195 2013-01-29 01:42:42Z drswinghead $
+// Version: $Id: dropzone.cpp 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #include <QtCore>

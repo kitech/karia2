@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 14:50:40 +0800
-// Version: $Id: sqlitesegmentmodel.h 56 2010-04-16 08:50:28Z drswinghead $
+// Version: $Id: sqlitesegmentmodel.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 #ifndef SQLITESEGMENTMODEL_H
 #define SQLITESEGMENTMODEL_H

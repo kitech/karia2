@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
-// Version: $Id$
+// Version: $Id: karia2.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #ifndef KARIA2_H
@@ -114,6 +114,9 @@ protected:
 
 private:
     Ui::Karia2 *mainUI;
+    // ***Uis
+    TaskUi *taskUi;
+    OptionUi *optionUi;
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -189,9 +192,6 @@ private:
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
 
-    // ***Uis
-    TaskUi *taskUi;
-    OptionUi *optionUi;
                   
 public slots:
 	void onSwitchWindowStyle(QAction *action);

@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-03 13:32:00 +0800
-// Version: $Id: labspace.h 195 2013-01-29 01:42:42Z drswinghead $
+// Version: $Id: labspace.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #ifndef LABSPACE_H
