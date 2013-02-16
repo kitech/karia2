@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-23 06:54:26 -0700
-// Version: $Id$
+// Version: $Id: 631840f7a796aed45a01e69179cd07f9274ec520 $
 // 
 
 #ifndef _EMARIA2C_H_
@@ -49,6 +49,7 @@ public:
 public slots:
     // int addTask(QString url);
     int addUri(int task_id, const QString &url, TaskOption *to);
+    int pauseTask(int task_id);
 
     //// from backend
     void onWorkerFinished();

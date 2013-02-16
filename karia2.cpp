@@ -1046,10 +1046,12 @@ void Karia2::onPauseTask()
 //    this->initXmlRpc();
 //    Q_ASSERT(this->mAriaRpc != NULL);
 
-//    for (int i = 0; i < smil.size(); i += step) {
-//        taskId = smil.value(i).data().toInt();
-//        ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
-//        qLogx()<<__FUNCTION__<<smil.value(i)<<taskId;
+    for (int i = 0; i < smil.size(); i += step) {
+        taskId = smil.value(i).data().toInt();
+        ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
+        qLogx()<<__FUNCTION__<<smil.value(i)<<taskId;
+
+        this->mEAria2Man->pauseTask(taskId);
 
 //        // check if running
 //        if (!this->mRunningMap.contains(taskId)) {
@@ -1062,7 +1064,7 @@ void Karia2::onPauseTask()
 //        this->mAriaRpc->call(QString("aria2.remove"), args, QVariant(taskId),
 //                             this, SLOT(onAriaRemoveResponse(QVariant &, QVariant&)),
 //                             this, SLOT(onAriaRemoveFault(int, QString, QVariant&)));
-//    }
+    }
 }
 void Karia2::onPauseTask(int pTaskId )
 {

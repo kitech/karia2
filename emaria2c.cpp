@@ -190,7 +190,9 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
     eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
-    eaw->option_->put(aria2::PREF_GID, QString("%1").arg(task_id, 16, 16).toStdString());
+    QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
+    eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
+    qLogx()<<task_id << ugid;
 
 
     // TODO start in thread 
@@ -208,6 +210,21 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
 
     return 0;
 }
+
+int EAria2Man::pauseTask(int task_id)
+{
+    EAria2Worker *eaw;
+
+    if (this->m_tasks.contains(task_id)) {
+        eaw = this->m_tasks.value(task_id);
+        Q_ASSERT(eaw->m_tid == task_id);
+
+        eaw->terminate();
+    }
+
+    return 0;
+}
+
 
 /////
 void overrideWithEnv
@@ -470,7 +487,6 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
 
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
-
     switch(eaw->exit_status) {
     case aria2::error_code::FINISHED:
         emit this->taskFinished(eaw->m_tid, eaw->exit_status);
@@ -486,6 +502,8 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     default:
         break;
     }
+
+    aria2::GroupId::clear();
 
     return true;
 }
