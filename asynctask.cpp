@@ -93,9 +93,10 @@ void AsyncTask::run()
 
     emit this->canFirstShow();
 
-    this->sleep(1); // 延迟1秒比原来好很多，界面会快速显示，数据加载有动态效果
+    // this->sleep(1); // 延迟1秒比原来好很多，界面会快速显示，数据加载有动态效果
+    this->msleep(300);
     // this->mpwin->asyncFirstShowHandler();
-    emit this->canAsyncFirstShow();
+    // emit this->canAsyncFirstShow();
     qLogx()<<"";
 
     this->exec();

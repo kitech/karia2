@@ -205,7 +205,6 @@ private:
     AsyncTask *mAtask;
 	//
 	QPalette orginalPalette;
-    QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
     
     OptionManager *mOptionMan;
     QString mCustomTaskShowColumns;

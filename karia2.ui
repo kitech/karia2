@@ -385,7 +385,6 @@
      <addaction name="action_Default_Palette"/>
      <addaction name="separator"/>
      <addaction name="separator"/>
-     <addaction name="action_NorwegianWood"/>
     </widget>
     <widget class="QMenu" name="menuLanguage">
      <property name="title">

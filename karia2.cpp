@@ -40,7 +40,6 @@
 #include "instantspeedhistogramwnd.h"
 #include "walksitewndex.h"
 
-// #include "norwegianwoodstyle.h"
 #include "torrentpeermodel.h"
 #include "taskservermodel.h"
 #include "seedfilemodel.h"
@@ -88,7 +87,6 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
 	mainUI->setupUi(this);	
 	firstShowEvent = true;
-    this->mNorStyle = NULL;
 
 	/////////////
 	orginalPalette = QApplication::palette();
@@ -164,15 +162,9 @@ void Karia2::firstShowHandler()
 
     //
     this->mCatView = this->mainUI->mui_tv_category;
-
-    ////
     this->mTaskListView = this->mainUI->mui_tv_task_list;
-
     this->mSegListView = this->mainUI->mui_tv_seg_list;
-
-
     this->mSegLogListView = this->mainUI->mui_tv_seg_log_list;
-
 
     // 初始化任务队列管理实例
     // this->mTaskMan = TaskQueue::instance();
@@ -181,7 +173,6 @@ void Karia2::firstShowHandler()
 
     // select the downloading cat Automaticly
     
-
     this->mSeedFileDelegate = new SeedFileItemDelegate();
     this->mSeedFileView = this->mainUI->treeView_2;
     this->mSeedFileView->setItemDelegate(this->mSeedFileDelegate);
@@ -191,13 +182,13 @@ void Karia2::firstShowHandler()
 	this->mWalkSiteDockWidget = 0;
 	this->mHWalkSiteWndEx = 0;
 
-	//
-	this->connectAllSignalAndSlog();
-
     this->mainUI->action_Pause->setEnabled(false);
     this->mainUI->action_Start->setEnabled(false);
     this->mainUI->action_Delete_task->setEnabled(false);
     // this->onUpdateJobMenuEnableProperty();
+
+	//
+	this->connectAllSignalAndSlog();
 	
 	//this->showMaximized();
 
@@ -217,20 +208,13 @@ void Karia2::firstShowHandler()
 //    QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString)),
 //                     this, SLOT(onTaskLogArrived(QString)));
 
-    //// start embeded backed
-    // qRegisterMetaType<QMap<int, QVariant> >("QMAP_INT_QVARIANT");
-    //    this->mEAria2Man = EAria2Man::instance();
-    // QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
-    // QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
-
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
 
-
     // this->initUserOptionSetting();
-    // process arguments 
-    this->handleArguments();
+
+
 
     qLogx()<<"";
 
@@ -251,6 +235,7 @@ void Karia2::firstShowHandler()
     // SkypeTunnel *tun = new SkypeTunnel(this);
     // tun->setSkype(this->mSkype);
 
+    this->asyncFirstShowHandler();
 
 }
 
@@ -271,7 +256,8 @@ void Karia2::asyncFirstShowHandler()
     QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
 
     this->initUserOptionSetting();
-
+    // process arguments 
+    this->handleArguments();
 
 	//test area 　---------begin-----------------
 	LabSpace *labspace = new LabSpace(this);
@@ -359,10 +345,7 @@ void Karia2::initPopupMenus()
 
     // should dynamic check available styles
 	//window style : "windows", "motif", "cde", "plastique", "windowsxp", or "macintosh" , "cleanlooks" 
-	//NorwegianWood
 	group = new QActionGroup(this);
-	mainUI->action_NorwegianWood->setData("norwegianwood");
-	group->addAction(mainUI->action_NorwegianWood);
     // automatic check supported style
     QStringList styleKeys = QStyleFactory::keys();
     QStyle *defaultStyle = QApplication::style();
@@ -1790,15 +1773,7 @@ void Karia2::onSwitchWindowStyle(QAction * action )
     // QStringList styleKeys = QStyleFactory::keys();
     // qLogx()<<styleKeys;
 
-	if (action->data().toString() == "norwegianwood") {
-		//qLogx()<<"NorwegianWood style";
-        if (this->mNorStyle == NULL) {
-            // this->mNorStyle = new NorwegianWoodStyle();
-        }
-		// QApplication::setStyle(this->mNorStyle);
-	} else {
-		QApplication::setStyle(action->data().toString());
-	}
+    QApplication::setStyle(action->data().toString());
 
 	if (mainUI->action_Default_Palette->isChecked()) {
 		QApplication::setPalette(this->orginalPalette);
@@ -3516,6 +3491,9 @@ void Karia2::onCateMenuPopup(const QPoint & pos)
 	this->mCatPopupMenu->popup(QCursor::pos());
 }
 
+///////////////////////////////////////////
+///////// end task ui
+//////////////////////////////////////////
 
 
 void Karia2::onReselectFile(int row, bool selected)
