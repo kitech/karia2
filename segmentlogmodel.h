@@ -1,4 +1,4 @@
-#ifndef SEGMENTLOGMODEL_H
+﻿#ifndef SEGMENTLOGMODEL_H
 #define SEGMENTLOGMODEL_H
 
 #include <QVector>

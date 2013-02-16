@@ -11,7 +11,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = karai2
+TARGET = karia2
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
 QT = core gui xml network sql widgets printsupport
@@ -42,6 +42,7 @@ unix{
     LIBS += -lssl -lX11
 }
 win32 {
+    INCLUDEPATH +=Z:/cross/boost152/include 
 	win32-g++ {
 		# -mwindows can drop the dos window when app run. got this knowleage at dev-cpp's makefile generate function
         #LIBS += -LD:/msys/1.0/local/ssl/lib/ -mwindows -lssl -lcrypto -lwsock32 -lgdi32
@@ -52,6 +53,7 @@ win32 {
 	} else {
       # LIBS += wsock32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
       # LIBS += ws2_32.lib  E:/library/openssl/lib/libeay32.lib E:/library/openssl/lib/ssleay32.lib 
+
         ## check cl.exe, x64 or x86
         CLARCH=$$system(path)
         VAMD64=$$find(CLARCH,amd64)
@@ -125,6 +127,9 @@ HEADERS += aboutdialog.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
+           abstractui.h \
+           taskui.h \
+           optionui.h \
            asynctask.h \
            radarscanner.h \
            resource.h \
@@ -184,7 +189,11 @@ SOURCES += aboutdialog.cpp \
            nullcontroller.cpp \
            karia2.cpp \
            karia2application.cpp \
+           karia2_embed_aria2.cpp \
            karia2_standalone_aria2.cpp \
+           abstractui.cpp \
+           taskui.cpp \
+           optionui.cpp \
            asynctask.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \

@@ -1,3 +1,10 @@
+使用C++11版本编译了。
+VC编译器需要带BOM头的UTF-8源文件。
+在linux使用这个命令去掉BOM头，
+    # awk '{if(NR==1)sub(/^\xef\xbb\xbf/,"");print}' text.txt
+    或者 tail --bytes=+4 text.txt
+使用这个命令添加BOM头，
+
 工程大了后尽量在头文件中使用类的前置声明，否则编译可能因为包含问题而变慢了。
 VC 静态MFC编译的问题:
 LIBCMT.lib

@@ -1,4 +1,4 @@
-#ifndef SERVERSWITCHER_H
+﻿#ifndef SERVERSWITCHER_H
 #define SERVERSWITCHER_H
 
 #include <QtCore>

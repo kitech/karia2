@@ -1,4 +1,4 @@
-#include "xmlstorage.h"
+﻿#include "xmlstorage.h"
 
 XMLStorage::XMLStorage(QObject *parent)
 	: AbstractStorage(parent)

@@ -1,7 +1,7 @@
-// aboutdialog.h --- 
+﻿// aboutdialog.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-06 13:22:13 +0800
 // Version: $Id$

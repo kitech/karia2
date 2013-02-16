@@ -1,10 +1,10 @@
-// asyncdatabase.h --- 
+﻿// asyncdatabase.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-24 20:17:22 +0800
-// Version: $Id$
+// Version: $Id: 5f2cba5189402d236e6fa11e327b8841cdfa553c $
 // 
 #ifndef _ASYNCDATABASE_H_
 #define _ASYNCDATABASE_H_
@@ -70,13 +70,14 @@ public:
     int execute(const QString &query); // 返回一个执行号码
     int execute(const QStringList &querys); // 返回一个执行号码
     int syncExecute(const QString &query, QList<QSqlRecord> &records);
+    int syncExecute(const QString &query, QVector<QSqlRecord> &records);
 
     // utils
     QString escapseString(const QString &str);
 
 public slots:
     void onConnected();
-    void onConnectError() { this->m_connected = false; }
+    void onConnectError(const QString &errmsg) { this->m_connected = false; }
 
 signals:
     void progress(const QString &msg);

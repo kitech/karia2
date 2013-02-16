@@ -1,7 +1,7 @@
-// sqlitestorage.cpp --- 
+﻿// sqlitestorage.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 19:36:28 +0800
 // Version: $Id$
@@ -315,7 +315,7 @@ bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<Q
 //	q.exec(createSql);
 
 	createSql = "CREATE TABLE segments (%1, PRIMARY KEY (seg_id, task_id))";
-	sl = QString(this->mSegColumnStr).split(", ");
+	sl = QString(this->mSegColumnStr).split(",");
 	tempSql = "";
 	for (int i = 0 ; i < sl.count() ; i ++) {
 		if (sl.at(i).trimmed().endsWith("_id")) {
@@ -1029,6 +1029,8 @@ QVector<QSqlRecord> SqliteStorage::getTaskSet( int cat_id )
 //		dataSet.append(rec);
 //	}
     //qLogx()<< q.lastError()<<": " << sql  ;
+
+    int iret = this->m_adb->syncExecute(sql, dataSet);
 	
 	return dataSet ;
 }
@@ -1054,14 +1056,19 @@ QVector<QSqlRecord> SqliteStorage::getSementSet( int task_id )
 
 int SqliteStorage::getNextValidTaskID()
 {
-	
+	QVector<QSqlRecord> recs;
 	QString sql = "INSERT INTO seq_tasks (seq_null) VALUES (0)";
 //	QSqlQuery q( this->mTasksDB );
 //	q.exec(sql);
 
 //	qLogx()<< q.lastError()<<": " << sql ;
+    this->m_adb->syncExecute(sql, recs);
+    qLogx()<<recs.count()<<recs;
 
 	sql = "SELECT MAX(seq_id) AS max_seq_id FROM seq_tasks ";
+	// sql = "SELECT last_insert_rowid() AS max_seq_id FROM seq_tasks";
+    //     this->m_adb->syncExecute(sql, recs);
+
 
 //	q.exec(sql);
 
@@ -1072,6 +1079,7 @@ int SqliteStorage::getNextValidTaskID()
 
     int max_task_id = 0;
 //	int max_task_id = rec.value(0).toInt();
+    max_task_id = recs.at(0).value(0).toInt();
 
     //qLogx()<< q.lastError()<<": " << sql << max_task_id ;
 

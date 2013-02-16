@@ -1,7 +1,7 @@
-// taskqueue.cpp --- 
+﻿// taskqueue.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:14:39 +0800
 // Version: $Id$
@@ -9,6 +9,7 @@
 
 #include <cassert>
 
+#include "simplelog.h"
 #include "taskinfodlg.h"	//for TaskOption class 
 
 #include "taskqueue.h"
@@ -22,6 +23,7 @@
 #include "seedfilemodel.h"
 
 #include "karia2statcalc.h"
+#include "emaria2c.h"
 #include "util.h"
 
 Task::Task(int taskId, QString taskUrl)
@@ -38,7 +40,7 @@ Task::~Task()
     delete this->btPeerModel; this->btPeerModel = 0;
     delete this->btTrackerModel; this->btTrackerModel = 0;
     delete this->serverModel; this->serverModel = 0;
-    qDebug()<<__FUNCTION__<<"here taskId:"<<this->mTaskId;
+    qLogx()<<__FUNCTION__<<"here taskId:"<<this->mTaskId;
 }
 
 /**
@@ -156,7 +158,7 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
         task = this->mTasks[taskId];
     }
 
-    qDebug()<<__FUNCTION__<<option->mCatId;
+    qLogx()<<__FUNCTION__<<option->mCatId;
 	//将任务信息添加到 task list view 中
 	QModelIndex index;
     QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
@@ -343,7 +345,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 
 // void TaskQueue::onOneSegmentFinished(int taskId, int segId , int finishStatus ) 
 // {
-// 	qDebug() << __FUNCTION__<<taskId<< " "<< segId  ;
+// 	qLogx() << __FUNCTION__<<taskId<< " "<< segId  ;
 
 // 	long startOffset ;
 // 	long totalLength ;
@@ -360,9 +362,9 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 	
 // void TaskQueue::onFirstSegmentReady(int pTaskId , long totalLength, bool supportBrokenRetrive)
 // {
-// 	qDebug() << __FUNCTION__ ;
+// 	qLogx() << __FUNCTION__ ;
 
-// 	qDebug()<<  __FUNCTION__ <<" return for nothing done " ;
+// 	qLogx()<<  __FUNCTION__ <<" return for nothing done " ;
 // 	return ;
 // 	//
 // 	TaskQueue * tq = 0 ;
@@ -377,7 +379,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 // 	int modelRows ;
 
 // 	if (tq == 0) {
-// 		qDebug()<< "find task faild : "<<pTaskId ;
+// 		qLogx()<< "find task faild : "<<pTaskId ;
 // 		// tq->mTaskStatus = TaskQueue::TS_ERROR;
 // 		this->onTaskListCellNeedChange( pTaskId , 1 , tq->getStatusString(TaskQueue::TS_ERROR));
 // 		return;
@@ -404,7 +406,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
  */
 // void TaskQueue::onAbtainedFileLength( int pTaskId , long totalLength , bool supportBrokenRetrive)
 // {
-// 	qDebug() << __FUNCTION__ << "taskId: "<< pTaskId << "totalLength :" << totalLength ;
+// 	qLogx() << __FUNCTION__ << "taskId: "<< pTaskId << "totalLength :" << totalLength ;
 // 	//if( this->mFileLengthAbtained == false )
 // 	if( this->getFileAbtained(pTaskId,ng::cats::downloading) == false )
 // 	{
@@ -424,7 +426,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 
 // void TaskQueue::onFirstSegmentFaild( int taskId, int errorNo )
 // {
-// 	qDebug() << __FUNCTION__ << "taskId: "<< taskId << "errorNo :" << errorNo ;
+// 	qLogx() << __FUNCTION__ << "taskId: "<< taskId << "errorNo :" << errorNo ;
 // 	TaskQueue * tq = 0 ;
 // 	//tq = this->findTaskById(taskId);
 // 	tq = this ;
@@ -439,7 +441,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 
 // void TaskQueue::onStartSegment(int pTaskId,int pSegId)
 // {
-// 	qDebug()<<__FUNCTION__<<pTaskId<<pSegId;
+// 	qLogx()<<__FUNCTION__<<pTaskId<<pSegId;
 // 	int row =0 ;
 // 	// BaseRetriver *br = 0 ;
 // 	QAbstractItemModel * logmdl = 0 ;
@@ -456,7 +458,7 @@ bool TaskQueue::updateSelectFile(int taskId, QString selected)
 
 void TaskQueue::onLogSegment(int taskId, int segId, QString log, int type) 
 {
-	//qDebug() << __FUNCTION__ << taskId <<" "<< segId ;
+	//qLogx() << __FUNCTION__ << taskId <<" "<< segId ;
 
 	int nowRows ;
 	QModelIndex index ;
@@ -475,9 +477,120 @@ void TaskQueue::onLogSegment(int taskId, int segId, QString log, int type)
 	mdl->setData(index,log);
 }
 
+void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
+{
+    int totalLength, completedLength, completedPercent,
+        downloadSpeed, uploadSpeed;
+
+    totalLength = stats.value(ng::stat::total_length).toInt();
+    completedLength = stats.value(ng::stat::completed_length).toInt();
+    completedPercent = stats.value(ng::stat::completed_percent).toInt();
+    downloadSpeed = stats.value(ng::stat::download_speed).toInt();
+    uploadSpeed = stats.value(ng::stat::upload_speed).toInt();
+
+    int numConnections = stats.value(ng::stat::num_connections).toInt();
+    int numPieces = stats.value(ng::stat::num_pieces).toInt();
+    int pieceLength = stats.value(ng::stat::piece_length).toInt();
+    QString str_bitfield = stats.value(ng::stat::bitfield).toString();
+    quint64 gid = stats.value(ng::stat::gid).toULongLong();
+
+    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed;
+
+	QModelIndex idx , idx2,idx3;
+	quint64 fsize , abtained ;
+	double  percent ;
+    // bool found = false;
+    unsigned short bitfield = 0;
+    QStringList bitList;
+    QString bitString;
+    // QVariantList files = sts["files"].toList();
+
+	//maybe should use mCatID , but we cant know the value here , so use default downloading cat
+	QAbstractItemModel *mdl = SqliteTaskModel::instance(ng::cats::downloading, this);
+
+	//QDateTime bTime , eTime ; 
+	//bTime = QDateTime::currentDateTime();
+    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole,
+                                     QVariant(QString("%1").arg(taskId)), 1, Qt::MatchExactly | Qt::MatchWrap);
+
+    if (mil.count() == 1) {
+        idx = mil.at(0);
+        if (completedLength == totalLength) {
+            // mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
+            // // fix no need download data case, the file is already downloaded, user readd it.
+            // if (files.count() > 0 
+            //     && files.at(0).toMap().value("length").toLongLong() > 
+            //     mdl->index(idx.row(), ng::tasks::file_size).data().toLongLong()) {
+            //     mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
+            // }
+            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
+            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
+                         QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+        } else {
+            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), downloadSpeed);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
+            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::active_block_count), numConnections);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), totalLength - completedLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::total_block_count), numPieces);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::block_activity), 
+                         QString("%1/%2").arg(numConnections).arg(numPieces));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), completedPercent);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid), gid);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), str_bitfield);
+        }
+
+        // 计算完成的pieces
+        // if (sts["status"].toString() == "complete") {
+        //     int blockCount = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
+        //     QStringList bitList;
+        //     for (int i = 0 ; i < blockCount; i ++) bitList << "1";
+        //     mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), bitList.join(","));
+        // } else {
+        //     mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), 
+        //                  this->fromBitArray(this->fromHexBitString(sts["bitfield"].toString())));
+        // }
+
+        // fix case that can not resovle file from url, must conntect to server 
+        // if (!sts.contains("bittorrent")) {
+        //     QVariantMap  fileMap0;
+        //     QString fileName;
+        //     QString fileSize;
+        //     if (files.count() > 0) {
+        //         fileMap0 = files.at(0).toMap();
+        //         fileName = fileMap0.value("path").toString();
+        //         if (sts.contains("dir")) {
+        //             fileName = fileName.right(fileName.length() - sts["dir"].toString().length() - 1);                    
+        //         } else {
+        //             fileName = QFileInfo(fileName).fileName();
+        //         }
+        //         mdl->setData(mdl->index(idx.row(), ng::tasks::file_name), fileName);
+        //     }
+        // }
+
+        // 处理bt信息
+        // if (sts.contains("bittorrent")) {
+        //     QVariantMap btSts = sts["bittorrent"].toMap();
+        //     qLogx()<<"announceList:"<<btSts["announceList"]
+        //             <<"comment:"<<btSts["comment"]
+        //             <<"createDate:"<<btSts["createDate"]
+        //             <<"mode:"<<btSts["mode"]
+        //             <<"info:"<<btSts["info"];
+        // }
+    } else {
+        qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
+    }
+
+}
+
 void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
 {
-	//qDebug() << __FUNCTION__ ;
+	//qLogx() << __FUNCTION__ ;
 
 	QModelIndex idx , idx2,idx3;
 	quint64 fsize , abtained ;
@@ -561,17 +674,17 @@ void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)
         // 处理bt信息
         // if (sts.contains("bittorrent")) {
         //     QVariantMap btSts = sts["bittorrent"].toMap();
-        //     qDebug()<<"announceList:"<<btSts["announceList"]
+        //     qLogx()<<"announceList:"<<btSts["announceList"]
         //             <<"comment:"<<btSts["comment"]
         //             <<"createDate:"<<btSts["createDate"]
         //             <<"mode:"<<btSts["mode"]
         //             <<"info:"<<btSts["info"];
         // }
     } else {
-        qDebug()<<__FUNCTION__<<"Can not found update model";
+        qLogx()<<__FUNCTION__<<"Can not found update model";
     }
 
-    // qDebug()<<"found status:"<<found;
+    // qLogx()<<"found status:"<<found;
 }
 
 QBitArray TaskQueue::fromHexBitString(QString fields)
@@ -588,7 +701,7 @@ QBitArray TaskQueue::fromHexBitString(QString fields)
         }
     }
     
-    // qDebug()<<fields<<ba<<ba.size();
+    // qLogx()<<fields<<ba<<ba.size();
     return ba;
 }
 
@@ -603,7 +716,7 @@ QString TaskQueue::fromBitArray(QBitArray ba)
 
 void TaskQueue::onTaskListCellNeedChange(int taskId, int cellId, QString value)
 {
-	//qDebug() << __FUNCTION__ ;
+	//qLogx() << __FUNCTION__ ;
 
 	QModelIndex idx, idx2, idx3;
 	quint64 fsize, abtained;
@@ -617,12 +730,12 @@ void TaskQueue::onTaskListCellNeedChange(int taskId, int cellId, QString value)
     QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole, 
                                      QString("%1").arg(taskId), 1, Qt::MatchExactly | Qt::MatchWrap);
 
-    // qDebug()<<"match found cell change:"<<mil<<taskId<<value;
+    // qLogx()<<"match found cell change:"<<mil<<taskId<<value;
     if (mil.count() == 1) {
         row = mil.at(0).row();
         idx = mdl->index(row, cellId);
         //change the value 
-        qDebug()<<mdl->data(idx);
+        qLogx()<<mdl->data(idx);
         mdl->setData(idx, value);
         if(cellId == ng::tasks::abtained_length) {
             idx = mdl->index(row, ng::tasks::file_size);
@@ -647,7 +760,7 @@ void TaskQueue::onTaskListCellNeedChange(int taskId, int cellId, QString value)
 //void TaskQueue::onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , QString opt )
 void TaskQueue::onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , int optType )
 {
-	//qDebug() << __FUNCTION__ << delta << optType ;
+	//qLogx() << __FUNCTION__ << delta << optType ;
 	TaskQueue * tq = 0 ;
 	SqliteSegmentModel * mdl = 0 ;
 	
@@ -673,7 +786,7 @@ void TaskQueue::onSegmentGotLengthNeedUpdate ( int taskId , int segId , long del
  */
 void TaskQueue::onSegmentCellNeedChange( int taskId , int segId ,  int cellId , QString value ) 
 {
-	//qDebug() << __FUNCTION__ ;
+	//qLogx() << __FUNCTION__ ;
 
 	QModelIndex idx , segidx ;
 
@@ -689,7 +802,7 @@ void TaskQueue::onSegmentCellNeedChange( int taskId , int segId ,  int cellId , 
 
 		if( idx.data().toInt() == (taskId) && segidx.data().toInt() == segId  )
 		{			
-		//	qDebug()<<"found index of cell" ;
+		//	qLogx()<<"found index of cell" ;
 
 			idx = mdl->index(i,cellId);
 			//change the value 
@@ -792,18 +905,18 @@ void TaskQueue::onSegmentCellNeedChange( int taskId , int segId ,  int cellId , 
 //        // 处理bt信息
 //        // if (sts.contains("bittorrent")) {
 //        //     QVariantMap btSts = sts["bittorrent"].toMap();
-//        //     qDebug()<<"announceList:"<<btSts["announceList"]
+//        //     qLogx()<<"announceList:"<<btSts["announceList"]
 //        //             <<"comment:"<<btSts["comment"]
 //        //             <<"createDate:"<<btSts["createDate"]
 //        //             <<"mode:"<<btSts["mode"]
 //        //             <<"info:"<<btSts["info"];
 //        // }
 //    } else {
-//        qDebug()<<__FUNCTION__<<"Can not found update model";
+//        qLogx()<<__FUNCTION__<<"Can not found update model";
 //    }
 //}
 
-
+/*
 void TaskQueue::onProgressState(Aria2StatCollector *stats)
 {
     QModelIndex idx , idx2,idx3;
@@ -895,23 +1008,24 @@ void TaskQueue::onProgressState(Aria2StatCollector *stats)
         // 处理bt信息
         // if (sts.contains("bittorrent")) {
         //     QVariantMap btSts = sts["bittorrent"].toMap();
-        //     qDebug()<<"announceList:"<<btSts["announceList"]
+        //     qLogx()<<"announceList:"<<btSts["announceList"]
         //             <<"comment:"<<btSts["comment"]
         //             <<"createDate:"<<btSts["createDate"]
         //             <<"mode:"<<btSts["mode"]
         //             <<"info:"<<btSts["info"];
         // }
     } else {
-        qDebug()<<__FUNCTION__<<"Can not found update model";
+        qLogx()<<__FUNCTION__<<"Can not found update model";
     }
 
     delete stats;
 }
+*/
 
 
 //void TaskQueue::onTaskDone(int pTaskId)	//
 //{
-//	qDebug() << __FUNCTION__ ;
+//	qLogx() << __FUNCTION__ ;
 //
 //}
 
@@ -919,7 +1033,7 @@ void TaskQueue::onProgressState(Aria2StatCollector *stats)
 
 void TaskQueue::onMemoryOverLoad()
 {
-	qDebug()<<__FUNCTION__<<__LINE__ ;
+	qLogx()<<__FUNCTION__<<__LINE__ ;
 	// emit this->onTaskDone( this->mTaskId );
 }
 
@@ -932,7 +1046,7 @@ bool TaskQueue::onStartTask(int pTaskId)
 	{
 		TaskQueue * taskQueue = NULL;//TaskQueue::instance(pTaskId,0);
 		// if (taskQueue->canceled == true) {
-		// 	qDebug()<<__FUNCTION__<<__LINE__<<" task caceled";
+		// 	qLogx()<<__FUNCTION__<<__LINE__<<" task caceled";
 		// 	return false;
 		// }
 		if ( taskQueue->getFileAbtained(pTaskId,ng::cats::downloading) ) {
@@ -947,7 +1061,7 @@ bool TaskQueue::onStartTask(int pTaskId)
 		TaskQueue * taskQueue = NULL;// TaskQueue::instance(pTaskId,0);
 		// if( taskQueue->canceled == true ) 
 		// {
-		// 	qDebug()<<__FUNCTION__<<__LINE__<<" task caceled";
+		// 	qLogx()<<__FUNCTION__<<__LINE__<<" task caceled";
 		// 	return false ;
 		// }		
 		// if ( taskQueue->getFileAbtained(pTaskId,ng::cats::downloading) )
@@ -981,7 +1095,7 @@ void TaskQueue::onPauseTask(int pTaskId )
 		// TaskQueue::removeInstance(pTaskId);
 		//delete taskQueue;taskQueue = 0 ;		
 		//delete 操作在　onOneSegmentFinished　成员函数中
-        qDebug()<<__FUNCTION__<<"No task meta object found:"<<pTaskId;
+        qLogx()<<__FUNCTION__<<"No task meta object found:"<<pTaskId;
 	}	
 }
 
@@ -1074,13 +1188,13 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
     // i known it must be only one match
     QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole, 
                                      QVariant(QString("%1").arg(taskId)), 1, Qt::MatchExactly | Qt::MatchWrap);
-    // qDebug()<<"found match model:"<<mil;
+    // qLogx()<<"found match model:"<<mil;
 
     if (mil.count() == 1) {
         idx = mil.at(0);
         bitStr = bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
         numPieces = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
-        // qDebug()<<__FUNCTION__<<numPieces<<bitString;
+        // qLogx()<<__FUNCTION__<<numPieces<<bitString;
 
         QStringList bitList = bitString.split(",");
         QBitArray ba(bitList.length());
@@ -1091,12 +1205,12 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
         }
         // ba.resize(qMin(bitList.length(), numPieces));
         ba.resize(numPieces);
-        // qDebug()<<"string is "<<bitString<<" BS:"<<ba.size()<<ba;
+        // qLogx()<<"string is "<<bitString<<" BS:"<<ba.size()<<ba;
         // dumpBitArray(ba);
         // return bitString;
         return ba;
     } else {
-        // qDebug()<<__FUNCTION__<<"can not found bit model";
+        // qLogx()<<__FUNCTION__<<"can not found bit model";
         return QBitArray();
     }
 }
@@ -1106,7 +1220,7 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
 //     int taskId;
 //     Task *task = NULL;
     
-//     // qDebug()<<"LOG-PART:"<<cuid<<itime<<log;
+//     // qLogx()<<"LOG-PART:"<<cuid<<itime<<log;
 //     return; // use so much memory, omit it now
 
 //     if (this->mTaskCUIDs.contains(cuid)) {
@@ -1129,7 +1243,7 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
 
 void TaskQueue::deleteLater () 
 {
-	qDebug()<<__FUNCTION__<<__LINE__;
+	qLogx()<<__FUNCTION__<<__LINE__;
 	QObject::deleteLater();
 }
 

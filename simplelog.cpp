@@ -1,7 +1,7 @@
-// log.cpp --- 
+﻿// log.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-05-01 16:02:41 +0800
 // Version: $Id$

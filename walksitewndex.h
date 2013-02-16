@@ -1,4 +1,4 @@
-#ifndef WALKSITEWNDEX_H
+﻿#ifndef WALKSITEWNDEX_H
 #define WALKSITEWNDEX_H
 
 #include <QStandardItemModel>

@@ -1,7 +1,7 @@
-// karia2application.cpp --- 
+﻿// karia2application.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-17 23:14:21 +0800
 // Version: $Id$

@@ -1,4 +1,4 @@
-#ifndef STORAGEFACTORY_H
+﻿#ifndef STORAGEFACTORY_H
 #define STORAGEFACTORY_H
 
 #include <cassert>

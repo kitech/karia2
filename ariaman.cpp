@@ -1,7 +1,7 @@
-// ariaman.cpp --- 
+﻿// ariaman.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-02 21:17:03 +0800
 // Version: $Id$

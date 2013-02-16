@@ -1,10 +1,10 @@
-// karia2statcalc.h --- 
+﻿// karia2statcalc.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-28 22:48:56 -0700
-// Version: $Id$
+// Version: $Id: 7fe0945157280f1df187551f4d8825ad6c3927d5 $
 // 
 #ifndef _KARIA2STATCALC_H_
 #define _KARIA2STATCALC_H_
@@ -19,6 +19,7 @@
 #include "TimerA2.h"
 #include "ConsoleStatCalc.h"
 #include "RequestGroup.h"
+#include "RequestGroupMan.h"
 
 class ConsoleStatCalc;
 class Aria2StatCollector;
@@ -53,6 +54,7 @@ signals:
     void progressStat(int stkey);
 
 private:
+    int setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats);
     int setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setFilesStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setServersStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
@@ -66,10 +68,6 @@ class Aria2StatCollector
 public:
     Aria2StatCollector() {reset();}
     ~Aria2StatCollector() {}
-
-    aria2::TransferStat *globalStat;
-    aria2::TransferStat *sessionStat;
-    QMap<uint64_t, aria2::TransferStat *> tasksStat;
 
     void reset() {
         tid = 0;
@@ -123,6 +121,19 @@ public:
     int globalDownloadSpeed;
     int globalUploadSpeed;
 
+    // refer to aria2::TransferStat
+    class TransferStat {
+    public:
+        int downloadSpeed;
+        int uploadSpeed;
+        int64_t sessionDownloadLength;
+        int64_t sessionUploadLength;
+        int64_t allTimeUploadLength;
+    };
+    TransferStat *globalStat;
+    TransferStat *sessionStat;
+    QMap<uint64_t, TransferStat *> tasksStat;
+
     class ServerStatCollector {
     public:
         ServerStatCollector() { reset(); }
@@ -165,6 +176,7 @@ public:
     class BitTorrentStatCollector {
     public:
         BitTorrentStatCollector() { reset(); }
+        ~BitTorrentStatCollector() {}
         void reset() {
             announceList.clear();
             comment.clear();

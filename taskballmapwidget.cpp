@@ -1,7 +1,7 @@
-// taskballmapwidget.cpp --- 
+﻿// taskballmapwidget.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-04 21:14:24 +0800
 // Version: $Id$
@@ -34,7 +34,7 @@ TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	this->mBallMap = QImage(parent->size().width(), parent->size().height(), 
                             QImage::Format_ARGB32_Premultiplied);	// 初始化一个和窗口一样大的图象。
 
-	mSwithTimer.start(1000); // can start manually
+	// mSwithTimer.start(1000); // can start manually
 	QObject::connect(&this->mSwithTimer, SIGNAL(timeout()), this, SLOT(onSwitchState()));
 }
 

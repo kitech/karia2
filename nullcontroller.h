@@ -1,4 +1,4 @@
-#ifndef NULLCONTROLLER_H
+﻿#ifndef NULLCONTROLLER_H
 #define NULLCONTROLLER_H
 
 #include <QObject>

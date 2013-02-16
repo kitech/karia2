@@ -1,4 +1,4 @@
-#ifndef RADARSCANNER_H
+﻿#ifndef RADARSCANNER_H
 #define RADARSCANNER_H
 
 #include <QtCore>

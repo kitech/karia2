@@ -1,4 +1,4 @@
-#include "taskinfodisgestwnd.h"
+﻿#include "taskinfodisgestwnd.h"
 
 TaskInfoDisgestWnd::TaskInfoDisgestWnd(QWidget *parent)
     : QWidget(parent)

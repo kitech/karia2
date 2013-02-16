@@ -1,0 +1,6 @@
+#ifndef _ARIA2EMBEDMANAGER_H_
+#define _ARIA2EMBEDMANAGER_H_
+
+
+
+#endif /* _ARIA2EMBEDMANAGER_H_ */

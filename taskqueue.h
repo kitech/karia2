@@ -1,7 +1,7 @@
-// taskqueue.h --- 
+﻿// taskqueue.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:14:45 +0800
 // Version: $Id$
@@ -94,6 +94,9 @@ public slots:
 
 	//void onTaskDone(int pTaskId);	//
 
+    // void onTaskStatusNeedUpdate2(int taskId, int totalLength, int completedLength, int completedPercent,
+    //                             int downloadSpeed, int uploadSpeed);
+    void onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats);
     void onTaskStatusNeedUpdate(int taskId, QVariantMap &sts);
 	void onTaskListCellNeedChange(int taskId , int cellId , QString value  );
 	//void onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , QString opt );
@@ -105,7 +108,7 @@ public slots:
 //    void onProgressState(int tid, quint32 gid, quint64 total_length,
 //                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
 //                   quint32 num_conns, quint32 eta);
-    void onProgressState(Aria2StatCollector *stats);
+    // void onProgressState(Aria2StatCollector *stats);
 
 	void onMemoryOverLoad();
 

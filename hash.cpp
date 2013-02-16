@@ -1,4 +1,4 @@
-/* Hash tables.
+﻿/* Hash tables.
    Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Wget.
@@ -50,7 +50,7 @@ so, delete this exception statement from your version.  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
+#include <string.h>
 
 /* Make do without them. */
 # define xnew(x) xmalloc (sizeof (x))

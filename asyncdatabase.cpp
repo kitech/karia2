@@ -1,7 +1,7 @@
-// asyncdatabase.cpp --- 
+﻿// asyncdatabase.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-24 20:17:39 +0800
 // Version: $Id$
@@ -36,7 +36,9 @@ AsyncDatabase::AsyncDatabase(QObject *parent)
 
 AsyncDatabase::~AsyncDatabase()
 {
-    delete m_worker;
+    if (m_worker) {
+        delete m_worker;
+    }
 }
 
 void AsyncDatabase::setInitSqls(QMap<QString, QString> creates, QHash<QString, QStringList> cinits)
@@ -52,7 +54,7 @@ void AsyncDatabase::onConnected() {
 
 int AsyncDatabase::execute(const QString& query)
 {
-    // int reqno = this->m_reqno++;
+    this->m_reqno.testAndSetOrdered(INT_MAX, 1);
     int reqno = this->m_reqno.fetchAndAddOrdered(1);
     emit executefwd(query, reqno); // forwards to the worker
     return reqno;
@@ -60,7 +62,7 @@ int AsyncDatabase::execute(const QString& query)
 
 int AsyncDatabase::execute(const QStringList& querys)
 {
-    // int reqno = this->m_reqno++;
+    this->m_reqno.testAndSetOrdered(INT_MAX, 1);
     int reqno = this->m_reqno.fetchAndAddOrdered(1);
     emit executefwd(querys, reqno); // forwards to the worker
     return reqno;
@@ -72,7 +74,16 @@ int AsyncDatabase::syncExecute(const QString &query, QList<QSqlRecord> &records)
 
     iret = this->m_worker->syncExecute(query, records);
 
-    return 0;
+    return iret;
+}
+
+int AsyncDatabase::syncExecute(const QString &query, QVector<QSqlRecord> &records)
+{
+    int iret;
+
+    iret = this->m_worker->syncExecute(query, records);
+
+    return iret;
 }
 
 QString AsyncDatabase::escapseString(const QString &str)
@@ -88,15 +99,33 @@ void AsyncDatabase::run()
     // Create worker object within the context of the new thread
     m_worker = new DatabaseWorker();
     m_worker->setInitSqls(this->createSqls, this->cinitSqls);
-    QObject::connect(m_worker, SIGNAL(connected()),
-                     this, SLOT(onConnected()));
+    QObject::connect(m_worker, &DatabaseWorker::connected, this, &AsyncDatabase::onConnected);
+    QObject::connect(m_worker, &DatabaseWorker::connect_error, this, &AsyncDatabase::onConnectError);
 
-    QObject::connect(this, SIGNAL(executefwd(const QString&, int)),
-            m_worker, SLOT(slotExecute(const QString&,int)));
-    QObject::connect(this, SIGNAL(executefwd(const QStringList&, int)),
-            m_worker, SLOT(slotExecute(const QStringList&,int)));
+    // TODO 新的connect语法怎么处理这种重载的方法的呢？
+    // 需要使用static_cast强制转换类成员函数指针的方式
+    // QObject::connect(this, &AsyncDatabase::executefwd, m_worker, &DatabaseWorker::slotExecute);  // error
+
+    void (AsyncDatabase::*c)(const QString&, int) = &AsyncDatabase::executefwd;
+    void (AsyncDatabase::*d)(const QStringList&, int) = &AsyncDatabase::executefwd;
+    void (DatabaseWorker::*a)(const QString&, int)  = &DatabaseWorker::slotExecute;
+    void (DatabaseWorker::*b)(const QStringList&, int)  = &DatabaseWorker::slotExecute;
+
+    QObject::connect(this, c, m_worker, a);
+    // QObject::connect(this, static_cast<void (AsyncDatabase::*)(const QString&, int)>(&AsyncDatabase::executefwd),
+    //                 m_worker, static_cast<void (DatabaseWorker::*)(const QString&, int)>(&DatabaseWorker::slotExecute));
+    QObject::connect(this, static_cast<void(AsyncDatabase::*)(const QStringList&, int)>(&AsyncDatabase::executefwd),
+                     m_worker, static_cast<void (DatabaseWorker::*)(const QStringList&,int)>(&DatabaseWorker::slotExecute));
+    // QObject::connect(this, SIGNAL(executefwd(const QString&, int)),
+    //        m_worker, SLOT(slotExecute(const QString&,int)));
+    // QObject::connect(this, SIGNAL(executefwd(const QStringList&, int)),
+    //        m_worker, SLOT(slotExecute(const QStringList&,int)));
     
-    m_worker->connectDatabase();
+    bool bret = m_worker->connectDatabase();
+    if (!bret) {
+        delete m_worker; m_worker = nullptr;
+        return;
+    }
 
     // Critical: register new type so that this signal can be
     // dispatched across thread boundaries by Qt using the event
@@ -104,8 +133,7 @@ void AsyncDatabase::run()
     qRegisterMetaType< QList<QSqlRecord> >( "QList<QSqlRecord>" );
 
     // forward final signal
-    QObject::connect(m_worker, SIGNAL(results(const QList<QSqlRecord>&, int, bool, const QString&, const QVariant&)),
-                     this, SIGNAL(results(const QList<QSqlRecord>&, int, bool, const QString&, const QVariant&)));
+    QObject::connect(m_worker, &DatabaseWorker::results, this, &AsyncDatabase::results);
 
     emit progress( "Press 'Go' to run a query." );
     emit ready(true);

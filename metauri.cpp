@@ -1,7 +1,7 @@
-// metauri.cpp --- 
+﻿// metauri.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-02 11:02:47 +0800
 // Version: $Id$

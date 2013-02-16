@@ -1,4 +1,4 @@
-#include <QtCore>
+﻿#include <QtCore>
 #include "batchjobmandlg.h"
 
 BatchJobManDlg::BatchJobManDlg(QWidget *parent)

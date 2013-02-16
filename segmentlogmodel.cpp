@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include <QtCore>
 #include <QStringList>

@@ -1,4 +1,4 @@
-#include "rulesmandlg.h"
+﻿#include "rulesmandlg.h"
 
 RulesManDlg::RulesManDlg(QWidget *parent)
     : QDialog(parent)

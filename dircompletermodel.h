@@ -1,4 +1,4 @@
-#ifndef DIRCOMPLETERMODEL_H
+﻿#ifndef DIRCOMPLETERMODEL_H
 #define DIRCOMPLETERMODEL_H
 
 #include <QDirModel>

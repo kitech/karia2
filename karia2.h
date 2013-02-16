@@ -1,7 +1,7 @@
-// karia2.h --- 
+﻿// karia2.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
 // Version: $Id$
@@ -16,12 +16,15 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "ui_karia2.h"
+
 #include "taskinfodlg.h"  // class TaskParameter
 
 #include "sqlitestorage.h"
 #include "walksitewnd.h"
 
+namespace Ui {
+    class Karia2;
+};
 class DropZone;
 class TaskQueue;
 class InstantSpeedHistogramWnd;
@@ -31,6 +34,12 @@ class WalkSiteWndEx;  //网站遍历窗口类。
 class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
+
+
+class AsyncTask;
+class AbstractUi;
+class TaskUi;
+class OptionUi;
 
 class EAria2Man;
 class Karia2StatCalc;
@@ -50,16 +59,6 @@ public:
 
 public slots:
     void onStorageOpened();
-    int createTask(TaskOption*option);
-    int createTask(int taskId, TaskOption*option);
-
-    void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
-    void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
-    void onCatListSelectChange    (const QItemSelection & selected, const QItemSelection & deselected);
-	
-    void onAddTaskList(QStringList list);	// add a list of tasks
-
-//public:
 
 	//cat
     void onNewCategory();
@@ -89,8 +88,7 @@ public slots:
 
 	void onDeleteTask();
 	void onDeleteTaskAll();
-
-	void onTaskDone(int pTaskId);	//
+	void onTaskDone(int pTaskId, int code);	//
     void onShutdown();
 	//
 	void onCopyUrlToClipboard();
@@ -110,8 +108,15 @@ public slots:
     // single application message handler
     void onOtherKaria2MessageRecived(const QString &msg);
 
+protected:
+    friend class AsyncTask;
+    friend class AbstractUi;
+
 private:
-    Ui::Karia2 mainUI;
+    Ui::Karia2 *mainUI;
+    // ***Uis
+    TaskUi *taskUi;
+    OptionUi *optionUi;
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -162,6 +167,7 @@ private:
 	QTranslator qtTranslator;
 	QString qmPath;
 	QString qmLocale;
+    AsyncTask *mAtask;
 	//
 	QPalette orginalPalette;
     QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
@@ -186,6 +192,7 @@ private:
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
 
+                  
 public slots:
 	void onSwitchWindowStyle(QAction *action);
 
@@ -196,26 +203,12 @@ public slots:
 	void onSwitchSkinType(QAction*action);
 	
 	void showAboutDialog();		//about dialog
-	void showNewDownloadDialog();
-    void showNewBittorrentFileDialog();
-    void showNewMetalinkFileDialog();
-	void showBatchDownloadDialog();	//添加批量下载对话框
-	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
 	// void onShowConnectOption();
 	//void onShowDownloadRules();
 	// void onShowDefaultDownloadProperty();
 
 	void onShowOptions();
-	void onShowTaskProperty();
-	void onShowTaskProperty(int pTaskId);
-	void onShowTaskPropertyDigest(const QModelIndex & index);
-	void onShowTaskPropertyDigest( );
 	void onShowColumnEditor();	//列的显示情况管理
-	void onTaskListMenuPopup( /*const QPoint & pos  = QPoint() */);
-	void onUpdateJobMenuEnableProperty();
-	void onLogListMenuPopup( const QPoint & pos);
-	void onSegListMenuPopup( const QPoint & pos);
-	void onCateMenuPopup( const QPoint & pos);
 	//toolMenu
     // void onShutdownWhenDone(); // not need save in db
     // void onHungupWhenDone();  // the same 
@@ -239,6 +232,7 @@ public slots:
 	
 	void shootScreen();
 	void firstShowHandler();
+	void asyncFirstShowHandler();
 
     void onAriaProcError(QProcess::ProcessError error);
     void onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -259,6 +253,9 @@ public slots:
     // void onChatWithSkype();
     // void onSendPackage();
     // void onCallSkype();
+
+public slots: // embeded aria2c related
+
 
 private slots:
     // aria2rpc related
@@ -313,7 +310,6 @@ private slots:
     void onAriaTorrentReselectFileMachineFault(int code, QString reason, QVariant &payload);
 
 private:	//method
-	int getNextValidTaskId();
 
 	void connectAllSignalAndSlog();
 
@@ -328,12 +324,6 @@ private:	//method
 
 	//dynamic language switch
 	void retranslateUi();
-
-	QPoint mSwapPoint;
-	QModelIndex mSwapModelIndex;
-
-	//
-	QPair<QString,QString> getFileTypeByFileName(QString fileName);
 
 	//temporary method, hide not impled function
 	void hideUnimplementUiElement();

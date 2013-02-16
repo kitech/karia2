@@ -1,10 +1,10 @@
-// emaria2c.h --- 
+﻿// emaria2c.h --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-23 06:54:26 -0700
-// Version: $Id$
+// Version: $Id: 631840f7a796aed45a01e69179cd07f9274ec520 $
 // 
 
 #ifndef _EMARIA2C_H_
@@ -24,6 +24,16 @@ class EAria2Worker;
 class EAria2Man;
 class Karia2StatCalc;
 class Aria2StatCollector;
+
+namespace ng {
+    namespace stat {
+        enum {
+            task_id=1, gid, total_length, completed_length, completed_percent, download_speed, upload_speed,
+            bitfield, piece_length, num_pieces, num_connections, eta, num_active, num_waiting, num_stopped,
+            error_code,
+        };
+    };
+};
 
 class EAria2Man : public QThread
 {
@@ -62,25 +72,31 @@ signals:
  */
 public:
     virtual void run();
-    bool dispatchStat(Aria2StatCollector *sclt);
+    bool checkAndDispatchStat(Aria2StatCollector *sclt);
+    bool confirmBackendFinished(int tid, EAria2Worker *eaw);
 public slots:
     bool onAllStatArrived(int stkey);
 
 signals:
     void sessionStatFinished();
     void globalStatFinished();
-    void taskStatFinished();
+    // -1表示没有修改
+    // void taskStatChanged(int tid, int totalLengh = -1, int completedLength = -1, 
+    //                      int completeDPercent = -1,
+    //                      int downloadSpeed = -1, int uploadSpeed = -1);
+    void taskStatChanged(int tid, QMap<int, QVariant> stats);
     void segmentStatFinished();
 
 protected:
-    QHash<int, EAria2Worker*> m_tasks;
+    QHash<int, EAria2Worker*> m_tasks; // tid => w
+    QHash<EAria2Worker*, int> m_rtasks; // w => tid
     int m_argc;
     char m_argv[32][256];
 
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;
     Aria2StatCollector *lastStat;
-
+    static QAtomicInt doneCounter; // 小于0的counter
 };
 
 class EAria2Worker : public QThread

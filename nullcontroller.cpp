@@ -1,4 +1,4 @@
-#include "nullcontroller.h"
+﻿#include "nullcontroller.h"
 
 NullController::NullController(QObject *parent)
 	: QObject(parent)

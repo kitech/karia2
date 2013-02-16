@@ -1,8 +1,6 @@
 * text=auto !eol
-/ChangeLog.txt -text
 /DiskInfo.cpp -text
 /DiskInfo.h -text
-/INSTALL -text
 /LICENSE -text
 Resources/favicon.ico -text
 Resources/karia2.png -text
@@ -12,7 +10,13 @@ Resources/nullget-1.png -text
 /aboutdialog.ui -text
 /abstractstorage.cpp -text
 /abstractstorage.h -text
-aria2-1.13.0/src/config.h -text
+/aria2embedmanager.h -text
+/aria2jsonrpcmanager.h -text
+/aria2manager.h -text
+/aria2rpcmanager.h -text
+/aria2wsjsonrpcmanager.h -text
+/aria2wssjsonrpcmanager.h -text
+/aria2xmlrpcmanager.h -text
 /ariaman.cpp -text
 /ariaman.h -text
 /asyncdatabase.cpp -text
@@ -43,12 +47,17 @@ data/karia2.desktop -text
 doc/(un)compress.txt -text
 doc/66985.user.js -text
 doc/C++.txt -text
+doc/ChangeLog.txt -text
 doc/Doxyfile -text
+doc/INSTALL -text
 doc/MPC.txt -text
 doc/QtCodingStyle -text
 doc/TODO.txt -text svneol=unset#text/plain
 doc/Torrent[!!-~]获取文件流程.odg -text
+doc/a2help.txt -text
+doc/addbom.sh -text
 doc/all.txt -text
+doc/aria2-1.16.1_last_statcalc.patch -text
 doc/aria2-1.9.2_redirect_no_cookie_no_refer.patch -text
 doc/aria2c.txt -text
 doc/browsers.txt -text
@@ -56,6 +65,7 @@ doc/build.txt -text
 doc/doxy_footer.html -text
 doc/flashget.txt -text
 doc/https.txt -text
+doc/karia2-uml.edx -text svneol=unset#application/xml
 doc/manual.txt -text
 doc/metafile.txt -text
 doc/qt[!!-~]note.txt -text
@@ -67,6 +77,7 @@ doc/thunder.txt -text
 /earia2wrapper.h -text
 /emaria2c.cpp -text
 /emaria2c.h -text
+/fixmwqtcmd.sh -text
 /genmk.bat -text
 /genqm.bat -text
 /genqm.sh -text
@@ -124,6 +135,7 @@ images/woodbutton.png -text
 /karia2.qrc -text
 /karia2.rc -text
 /karia2.ui -text
+/karia2_embed_aria2.cpp -text
 /karia2_standalone_aria2.cpp -text
 /karia2application.cpp -text
 /karia2application.h -text
@@ -175,6 +187,8 @@ libng/qtmd5.h -text
 /nullcontroller.h -text
 /optionmanager.cpp -text
 /optionmanager.h -text
+/optionui.cpp -text
+/optionui.h -text
 packages/archlinux/PKGBUILD -text
 packages/archlinux/karia2.sh -text
 packages/debian/DEBIAN/control -text
@@ -332,6 +346,8 @@ sqlite/sqlite3ext.h -text
 /taskqueue.h -text
 /taskservermodel.cpp -text
 /taskservermodel.h -text
+/taskui.cpp -text
+/taskui.h -text
 /torrentpeermodel.cpp -text
 /torrentpeermodel.h -text
 translations/karia2_en_US.qm -text

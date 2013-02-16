@@ -1,4 +1,4 @@
-/*
+﻿/*
 GetOpt_pp:	Yet another C++ version of getopt.
     Copyright (C) 2007, 2008  Daniel Gutson, FuDePAN
     

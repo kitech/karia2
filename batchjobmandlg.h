@@ -1,4 +1,4 @@
-#ifndef BATCHJOBMANDLG_H
+﻿#ifndef BATCHJOBMANDLG_H
 #define BATCHJOBMANDLG_H
 
 #include <QDialog>

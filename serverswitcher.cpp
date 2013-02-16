@@ -1,4 +1,4 @@
-#include "serverswitcher.h"
+﻿#include "serverswitcher.h"
 
 ServerSwitcher* ServerSwitcher::mHandle = 0 ;
 

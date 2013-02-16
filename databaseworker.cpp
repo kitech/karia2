@@ -1,7 +1,7 @@
-// databaseworker.cpp --- 
+﻿// databaseworker.cpp --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-25 20:19:15 +0800
 // Version: $Id: databaseworker.cpp 998 2011-09-17 11:03:58Z drswinghead $
@@ -49,7 +49,7 @@ DatabaseWorker::DatabaseWorker( QObject* parent )
 
 DatabaseWorker::~DatabaseWorker()
 {
-    // qDebug()<<__FILE__<<__LINE__<<__FUNCTION__;
+    // qLogx()<<__FILE__<<__LINE__<<__FUNCTION__;
     // this->m_database.close();
 
     // 如果不用这句，则会有警告。
@@ -80,6 +80,8 @@ bool DatabaseWorker::connectDatabase()
     db_file_path = qApp->applicationDirPath() + "/" + DATABASE_NAME;
 #endif
 
+    qLogx()<<"db file: "<< db_file_path;
+
     QStringList drivers = QSqlDatabase::drivers();
     if (!drivers.contains(DATABASE_DRIVER)) {
         qLogx()<<"Warning no "<<DATABASE_DRIVER<<" in this Qt";
@@ -95,8 +97,8 @@ bool DatabaseWorker::connectDatabase()
     m_database.setUserName( DATABASE_USER );
     m_database.setPassword( DATABASE_PASS );
     if ( !m_database.open() ) {
-        qWarning() << "Unable to connect to database, giving up:" << m_database.lastError().text();
-        emit this->connect_error();
+        qLogx() << "Unable to connect to database, giving up:" << m_database.lastError().text();
+        emit this->connect_error(m_database.lastError().text());
         return false;
     }
 
@@ -119,7 +121,7 @@ bool DatabaseWorker::connectDatabase()
         }
 
         q = m_database.exec(ctable_sql);
-        qDebug()<<ctable_name<<q.lastQuery()<<q.lastError();
+        qLogx()<<ctable_name<<q.lastQuery()<<q.lastError();
 
         if (this->cinitSqls.contains(ctable_name)) {
             ctable_inserts = this->cinitSqls.value(ctable_name);
@@ -127,7 +129,7 @@ bool DatabaseWorker::connectDatabase()
             for (int i = 0; i < ctable_inserts.count(); ++i) {
                 ins_sql = ctable_inserts.at(i);
                 bok = query.exec(ins_sql);
-                qDebug()<<ctable_name<<bok<<query.lastQuery()<<query.lastError();
+                qLogx()<<ctable_name<<bok<<query.lastQuery()<<query.lastError();
             }
         }
     }
@@ -137,7 +139,7 @@ bool DatabaseWorker::connectDatabase()
 //                .arg(TABLE_KARIA2_DEFAULT_OPTIONS);
 //        // m_database.exec( "create table item(id int, name varchar);" );
 //        q = m_database.exec(sql);
-//        qDebug()<<TABLE_OPTIONS<<q.lastQuery()<<q.lastError();
+//        qLogx()<<TABLE_OPTIONS<<q.lastQuery()<<q.lastError();
 //    }
 
     /*
@@ -153,7 +155,7 @@ bool DatabaseWorker::connectDatabase()
 //                .arg(TABLE_KARIA2_USER_OPTIONS);
 //        // m_database.exec( "create table item(id int, name varchar);" );
 //        q = m_database.exec(sql);
-//        qDebug()<<TABLE_GROUPS<<q.lastQuery()<<q.lastError();
+//        qLogx()<<TABLE_GROUPS<<q.lastQuery()<<q.lastError();
 
 //        QSqlQuery query(m_database);
 //        query.prepare(QString("INSERT INTO %1 (gid,group_name) VALUES (?,?)").arg(TABLE_GROUPS));
@@ -172,10 +174,10 @@ bool DatabaseWorker::connectDatabase()
 
 //        m_database.commit();
 
-//        qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
+//        qLogx()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
 
 //        // query.exec(QString("INSERT INTO %1 (group_name) VALUES ('vvvvvvvvvvvvvv')").arg(TABLE_GROUPS));
-//        // qDebug()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
+//        // qLogx()<<TABLE_GROUPS<<query.lastQuery()<<query.lastError();
 //    }
     /*
       CREATE TABLE TABLE_CONTACTS (
@@ -191,7 +193,7 @@ bool DatabaseWorker::connectDatabase()
 //        QString sql = QString("CREATE TABLE %1 (cid INTEGER PRIMARY KEY AUTOINCREMENT, group_id INTERGER NOT NULL, display_name VARCHAR(100) UNIQUE, phone_number VARCHAR(100) UNIQUE);").arg(TABLE_CONTACTS);
 //        // m_database.exec( "create table item(id int, name varchar);" );
 //        q = m_database.exec(sql);
-//        qDebug()<<TABLE_CONTACTS<<q.lastQuery()<<q.lastError();
+//        qLogx()<<TABLE_CONTACTS<<q.lastQuery()<<q.lastError();
 //    }
 
     /*
@@ -212,7 +214,7 @@ bool DatabaseWorker::connectDatabase()
 //        QString sql = QString("CREATE TABLE %1 (hid INTEGER PRIMARY KEY AUTOINCREMENT, contact_id INTEGER NOT NULL, phone_number VARCHAR(100), call_status INTEGER, call_ctime VARCHAR(100), call_etime VARCHAR(100));").arg(TABLE_HISTORIES);
 //        // m_database.exec( "create table item(id int, name varchar);" );
 //        q = m_database.exec(sql);
-//        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
+//        qLogx()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
 //    }
  
     // for account manager
@@ -235,7 +237,7 @@ bool DatabaseWorker::connectDatabase()
 //        QString sql = QString("CREATE TABLE %1 (aid INTEGER PRIMARY KEY AUTOINCREMENT, account_name VARCHAR(100) NOT NULL, account_password VARCHAR(100), display_name VARCHAR(100) NOT NULL UNIQUE, serv_addr VARCHAR(100) NOT NULL, account_status INTEGER, account_ctime VARCHAR(100), account_mtime VARCHAR(100));").arg(TABLE_ACCOUNTS);
 //        // m_database.exec( "create table item(id int, name varchar);" );
 //        q = m_database.exec(sql);
-//        qDebug()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
+//        qLogx()<<TABLE_HISTORIES<<q.lastQuery()<<q.lastError();
 //    }
 
     // 如果有新创建的表，则关闭再打开。否则可能调用端查询不到数据。
@@ -339,16 +341,16 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
     eret = dbq.exec(query);
     if (!eret) {
         edb = dbq.lastError();
-        estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
-        qDebug()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
+        estr = QString("ENO:%1, %2, reqno:%3, sql:%4").arg(edb.type()).arg(edb.text()).arg(reqno).arg(query);
+        qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else {
         eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
+        if (dbq.isSelect()) {
             // not insert query
             while(dbq.next()) {
                 recs.push_back(dbq.record());
             }
-        } else {
+        } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             qelms = query.trimmed().split(" ");
             if (qelms.at(2) == TABLE_GROUPS) {
@@ -382,7 +384,7 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
             }
         }
     }
-    // qDebug()<<"QQQQ: "<<query<<recs.count();
+    // qLogx()<<"QQQQ: "<<query<<recs.count();
     emit results(recs, reqno, eret, estr, eval);
 }
 
@@ -409,7 +411,7 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
         if (!eret) {
             edb = dbq.lastError();
             estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
-            qDebug()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
+            qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
             ++ errcnt;
         }
     }
@@ -419,15 +421,15 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
     if (!eret) {
         edb = dbq.lastError();
         estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
-        qDebug()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
+        qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else if (errcnt == 0) {
         eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
+        if (dbq.isSelect()) {
             // not insert query
             while(dbq.next()) {
                 recs.push_back(dbq.record());
             }
-        } else {
+        } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             // qelms = query.trimmed().split(" ");
             qelms = sql.trimmed().split(" ");
@@ -464,17 +466,33 @@ void DatabaseWorker::slotExecute(const QStringList& querys, int reqno)
     } else {
         qLogx()<<"Sql query error count: "<<errcnt;
     }
-    // qDebug()<<"QQQQ: "<<query<<recs.count();
+    // qLogx()<<"QQQQ: "<<query<<recs.count();
     emit results(recs, reqno, eret, estr, eval);
 }
 
 int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records)
 {
+    QList<QSqlRecord> recs;
+    QVector<QSqlRecord> vrecs;
+
+    int iret = this->syncExecute(query, vrecs);
+
+    for (int i = 0; i < vrecs.count(); i++) {
+        recs.push_back(vrecs.at(i));
+    }
+
+    records = recs;
+    
+    return 0;
+}
+
+int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &records)
+{
     bool eret = false;
     QString estr;
     QVariant eval;
     QSqlError edb;
-    QList<QSqlRecord> recs;
+    QVector<QSqlRecord> recs;
 
     QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
 
@@ -486,23 +504,33 @@ int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records
     if (!eret) {
         edb = dbq.lastError();
         estr = QString("ENO:%1, %2").arg(edb.type()).arg(edb.text());
-        qDebug()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
+        assert(1==2);
+        qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else {
         eval = dbq.lastInsertId();
-        if (!eval.isValid()) {
-            // not insert query
+        qLogx()<<"already has lastInsertId..."<<eval << dbq.size()<< query;
+        if (dbq.isSelect()) {
+            // not insert query, should select query
             while(dbq.next()) {
-                recs.push_back(dbq.record());
+                recs.append(dbq.record());
             }
-        } else {
+        } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             qelms = query.trimmed().split(" ");
+            if (qelms.at(2) == TABLE_KARIA2_SEQ_TASKS) {
+                sql = QString("SELECT * FROM %1 WHERE seq_id=%2").arg(TABLE_KARIA2_SEQ_TASKS).arg(eval.toInt());
+                eret = dbq.exec(sql);
+                Q_ASSERT(eret);
+                while(dbq.next()) {
+                    recs.append(dbq.record());                    
+                }
+            }
             if (qelms.at(2) == TABLE_GROUPS) {
                 sql = QString("SELECT * FROM %1 WHERE gid=%2").arg(TABLE_GROUPS).arg(eval.toInt());
                 eret = dbq.exec(sql);
                 Q_ASSERT(eret);
                 while(dbq.next()) {
-                    recs.push_back(dbq.record());                    
+                    recs.append(dbq.record());                    
                 }
             } else if (qelms.at(2) == TABLE_CONTACTS) {
                 sql = QString("SELECT * FROM %1 WHERE cid=%2").arg(TABLE_CONTACTS).arg(eval.toInt());
@@ -516,14 +544,14 @@ int DatabaseWorker::syncExecute(const QString &query, QList<QSqlRecord> &records
                 eret = dbq.exec(sql);
                 Q_ASSERT(eret);
                 while(dbq.next()) {
-                    recs.push_back(dbq.record());                    
+                    recs.append(dbq.record());                    
                 }
             } else if (qelms.at(2) == TABLE_ACCOUNTS) {
                 sql = QString("SELECT * FROM %1 WHERE aid=%2").arg(TABLE_ACCOUNTS).arg(eval.toInt());
                 eret = dbq.exec(sql);
                 Q_ASSERT(eret);
                 while(dbq.next()) {
-                    recs.push_back(dbq.record());
+                    recs.append(dbq.record());
                 }
             }
         }

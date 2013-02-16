@@ -1,4 +1,4 @@
-#include "dircompletermodel.h"
+﻿#include "dircompletermodel.h"
 
 DirCompleterModel::DirCompleterModel(QObject *parent)
 	: QDirModel(parent)
