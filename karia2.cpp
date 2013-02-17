@@ -251,8 +251,11 @@ void Karia2::asyncFirstShowHandler()
 
     //// start embeded backed
     qRegisterMetaType<QMap<int, QVariant> >("QMap<int, QVariant>");
+    qRegisterMetaType<QList<QMap<QString, QString> > >("QList<QMap<QString, QString> >");
     this->mEAria2Man = EAria2Man::instance();
     QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
+    QObject::connect(this->mEAria2Man, &EAria2Man::taskServerStatChanged, this->mTaskMan,
+                     &TaskQueue::onTaskServerStatusNeedUpdate);
     QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
 
     this->initUserOptionSetting();

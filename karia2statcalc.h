@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2012 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-28 22:48:56 -0700
-// Version: $Id$
+// Version: $Id: 7fe0945157280f1df187551f4d8825ad6c3927d5 $
 // 
 #ifndef _KARIA2STATCALC_H_
 #define _KARIA2STATCALC_H_
@@ -151,6 +151,7 @@ public:
         };
         std::vector<ServerList> servers;
     };
+    ServerStatCollector server_stats;
 
     //
     class PeerStatCollector {

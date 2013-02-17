@@ -452,6 +452,7 @@ void EAria2Man::run()
             this->confirmBackendFinished(tid, eaw);
         } else {
             this->checkAndDispatchStat(sclt);
+            this->checkAndDispatchServerStat(sclt);
         }
 
         delete sclt;
@@ -483,6 +484,23 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     emit this->taskStatChanged(sclt->tid, stats);
 
     return true;
+}
+
+bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
+{
+    QList<QMap<QString, QString> > servers;
+    QMap<QString, QString> server;
+
+    for (int i = 0; i < sclt->connections; i++) {
+        server["index"] = QString("%1").arg(i);
+        server["currentUri"] = "http://haha.com/abc.html.tar.gz";
+        server["downloadSpeed"] = QString("%1").arg(sclt->downloadSpeed);
+
+        servers.append(server);
+        server.clear();
+    }
+
+    emit this->taskServerStatChanged(sclt->tid, servers);
 }
 
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
