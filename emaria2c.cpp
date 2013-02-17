@@ -475,11 +475,13 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat::upload_speed] = sclt->uploadSpeed;
     stats[ng::stat::gid] = (qulonglong)sclt->gid;
     stats[ng::stat::num_connections] = sclt->connections;
-    stats[ng::stat::bitfield] = QString(sclt->bitfield.c_str());
+    stats[ng::stat::hex_bitfield] = QString(sclt->bitfield.c_str());
     stats[ng::stat::num_pieces] = sclt->numPieces;
     stats[ng::stat::piece_length] = sclt->pieceLength;
     stats[ng::stat::eta] = sclt->eta;
     stats[ng::stat::error_code] = sclt->errorCode;
+
+    
     
     emit this->taskStatChanged(sclt->tid, stats);
 

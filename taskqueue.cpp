@@ -491,7 +491,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     int numConnections = stats.value(ng::stat::num_connections).toInt();
     int numPieces = stats.value(ng::stat::num_pieces).toInt();
     int pieceLength = stats.value(ng::stat::piece_length).toInt();
-    QString str_bitfield = stats.value(ng::stat::bitfield).toString();
+    QString str_bitfield = stats.value(ng::stat::hex_bitfield).toString();
     quint64 gid = stats.value(ng::stat::gid).toULongLong();
 
     qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed;
@@ -1202,18 +1202,14 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
 
     if (mil.count() == 1) {
         idx = mil.at(0);
-        bitStr = bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
+        bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
         numPieces = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
         // qLogx()<<__FUNCTION__<<numPieces<<bitString;
 
-        QStringList bitList = bitString.split(",");
-        QBitArray ba(bitList.length());
-        if (!bitString.isEmpty()) {
-            for (int i = 0; i < bitList.count(); i++) {
-                ba.setBit(i, bitList.at(i).at(0) == '1');
-            }
-        }
+        QBitArray ba;
         // ba.resize(qMin(bitList.length(), numPieces));
+        ba = this->fromHexBitString(bitString);
+        bitStr = this->fromBitArray(ba);
         ba.resize(numPieces);
         // qLogx()<<"string is "<<bitString<<" BS:"<<ba.size()<<ba;
         // dumpBitArray(ba);

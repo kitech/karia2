@@ -928,6 +928,8 @@ void Karia2::onStartTask()
         TaskOption *taskOptions = TaskOption::fromModelRow(model, smil.at(row).row());
         taskId = smil.value(row + ng::tasks::task_id).data().toInt();
         url = smil.value(row + ng::tasks::org_url).data().toString();
+        
+        TaskBallMapWidget::instance()->startPaint(true);
 
         // if running
 //        if (this->mRunningMap.contains(taskId)) {

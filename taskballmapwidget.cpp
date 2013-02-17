@@ -200,7 +200,16 @@ void TaskBallMapWidget::resizeEvent(QResizeEvent * event)
 
 }
 
+void TaskBallMapWidget::startPaint(bool start)
+{
+    if (start && !this->mSwithTimer.isActive()) {
+        mSwithTimer.start(1000); // can start manually        
+    }
 
+    if (!start && this->mSwithTimer.isActive()) {
+        mSwithTimer.stop();
+    }
+}
 
 //用于更新任务完成状态的槽
 void TaskBallMapWidget::onRunTaskCompleteState(int taskId, bool pSwitch) 	//pSwitch 是否强制转换到这个任务图。
