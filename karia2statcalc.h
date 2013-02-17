@@ -151,6 +151,7 @@ public:
         };
         std::vector<ServerList> servers;
     };
+    ServerStatCollector server_stats;
 
     //
     class PeerStatCollector {

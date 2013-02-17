@@ -77,6 +77,7 @@ extern QHash<QString, QString> gMimeHash;
 TaskUi::TaskUi(Karia2 *pwin)
     : AbstractUi(pwin)
 {
+    this->mTaskMan = this->mpwin->mTaskMan;
 }
 
 TaskUi::~TaskUi()
@@ -85,7 +86,7 @@ TaskUi::~TaskUi()
 
 bool TaskUi::init()
 {
-    QObject::connect(this->mainUI->action_New_Download, SIGNAL(triggered()), this, SLOT(showNewDownloadDialog()));
+    QObject::connect(this->mainUI->action_New_Download, &QAction::triggered, this, &TaskUi::showNewDownloadDialog);
 }
 
 
@@ -844,14 +845,11 @@ void TaskUi::onSegmentListSelectChange(const QItemSelection & selected, const QI
 	QAbstractItemModel * mdl = SegmentLogModel::instance(taskId , segId, this);
 
 	this->mSegLogListView->setModel(0);
-	if (mdl != 0 )
-	{
+	if (mdl != 0 ) {
 		this->mSegLogListView->setModel(mdl);
 		this->mSegLogListView->resizeColumnToContents(2);
 		this->mSegLogListView->scrollToBottom();
-	}
-	else
-	{
+	} else {
 		qLogx()<<__FUNCTION__<<" model mSegLogListView = 0 ";
 	}
 }
@@ -1289,4 +1287,24 @@ void TaskUi::onCateMenuPopup(const QPoint & pos)
 {
     Q_UNUSED(pos);
 	this->mCatPopupMenu->popup(QCursor::pos());
+}
+
+
+void TaskUi::onStorageOpened()
+{
+    this->mCatView = this->mainUI->mui_tv_category;
+
+    ////
+    this->mpwin->mTaskListView = this->mainUI->mui_tv_task_list;
+    this->mTaskListView = this->mainUI->mui_tv_task_list;
+    this->mTaskItemDelegate = new TaskItemDelegate();
+    this->mTaskListView->setItemDelegate(this->mTaskItemDelegate);
+    this->mTaskTreeViewModel = SqliteTaskModel::instance(ng::cats::downloading, this);
+    this->mTaskListView->setModel(this->mTaskTreeViewModel);
+    this->mTaskListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    this->mTaskListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    this->mTaskListView->setAlternatingRowColors(true);
+    // QObject::connect(this->mTaskListView->selectionModel(),
+    //                  SIGNAL(selectionChanged (const QItemSelection & , const QItemSelection &   )),
+    //                  this, SLOT(onTaskListSelectChange(const QItemSelection & , const QItemSelection &   ) ) );
 }

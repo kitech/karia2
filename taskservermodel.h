@@ -21,6 +21,7 @@ public:
     ~TaskServerModel();
 
     bool setData(QVariantList &servers);
+    bool setData(QList<QMap<QString, QString> > &servers);
 
     int columnCount(const QModelIndex &parent) const;
     int rowCount(const QModelIndex &parent) const;

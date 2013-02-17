@@ -123,13 +123,9 @@ HEADERS += aboutdialog.h \
            hash.h \
            instantspeedhistogramwnd.h \
            labspace.h \
-#           norwegianwoodstyle.h \
            nullcontroller.h \
            karia2.h \
            karia2application.h \
-           abstractui.h \
-           taskui.h \
-           optionui.h \
            asynctask.h \
            radarscanner.h \
            resource.h \
@@ -185,15 +181,11 @@ SOURCES += aboutdialog.cpp \
            instantspeedhistogramwnd.cpp \
            labspace.cpp \
            main.cpp \
-#           norwegianwoodstyle.cpp \
            nullcontroller.cpp \
            karia2.cpp \
            karia2application.cpp \
            karia2_embed_aria2.cpp \
            karia2_standalone_aria2.cpp \
-           abstractui.cpp \
-           taskui.cpp \
-           optionui.cpp \
            asynctask.cpp \
            radarscanner.cpp \
            rulesmandlg.cpp \

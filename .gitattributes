@@ -181,8 +181,6 @@ libng/qtmd5.h -text
 /mimetypeshash.cpp -text
 /mmex.cpp -text
 /mmex.h -text
-/norwegianwoodstyle.cpp -text
-/norwegianwoodstyle.h -text
 /nullcontroller.cpp -text
 /nullcontroller.h -text
 /optionmanager.cpp -text

@@ -86,8 +86,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     // qDebug()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<drs.size();
 
     // slow stat signal
-    if (!e->getRequestGroupMan()->downloadFinished())
-    {
+    if (!e->getRequestGroupMan()->downloadFinished()) {
         if(cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
           return;
         }
@@ -136,6 +135,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
         }
     }
 
+    // 为什么要这么处理呢
     if (drs.size() > 0) {
         this->setDownloadResultStat(e, drs, sclt);
 

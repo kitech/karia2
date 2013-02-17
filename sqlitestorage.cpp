@@ -1181,27 +1181,26 @@ QVector<QString> SqliteStorage::getInternalSegmentsColumns()
 bool SqliteStorage::containsTask(int task_id)
 {
 	QString sql = QString("SELECT count(*) AS task_count FROM tasks WHERE task_id = '%1' " ).arg(task_id);
+
+	QVector<QSqlRecord> recs;
+    this->m_adb->syncExecute(sql, recs);
+    // qLogx()<<recs.count()<<recs;
+
+    if (recs.count() == 0) {
+        return false;
+    }
+
+	if (recs.at(0).value(0).toInt() == 1) {
+		return true;
+    } else if (recs.at(0).value(0).toInt() > 1) {
+		assert( 1==2);
+	} else if (recs.at(0).value(0).toInt() == 0) {
+		return false;
+	} else {
+		assert( 1==2);
+	}
 	
-//	QSqlQuery q(this->mTasksDB);
-//	q.exec(sql);
-
-//	q.next();
-//	QSqlRecord rec = q.record();
-
-//	assert( rec.count() == 1 );
-
-//	qLogx()<< q.lastError()<<": " << sql << rec.value(0).toInt();
-
-//	if( rec.value(0).toInt() == 1 )
-//		return true;
-//	else if( rec.value(0).toInt() > 1 ) {
-//		assert( 1==2);
-//	} else if( rec.value(0).toInt() == 0 ) {
-//		return false ;
-//	} else {
-//		assert( 1==2);
-//	}
-//	qLogx()<< q.lastError()<<": "<< sql;
+    //	qLogx()<< q.lastError()<<": " << sql << rec.value(0).toInt();
 
 	return false ;
 }

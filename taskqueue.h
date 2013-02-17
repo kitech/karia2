@@ -100,6 +100,7 @@ public slots:
     void onTaskStatusNeedUpdate(int taskId, QVariantMap &sts);
 	void onTaskListCellNeedChange(int taskId , int cellId , QString value  );
 	//void onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , QString opt );
+    void onTaskServerStatusNeedUpdate(int taskId, QList<QMap<QString, QString> > stats);
 	void onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , int optType );
 	void onSegmentCellNeedChange( int taskId , int segId ,  int cellId , QString value ) ;
 

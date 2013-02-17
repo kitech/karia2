@@ -38,7 +38,6 @@ class OptionManager;
 
 class AsyncTask;
 class AbstractUi;
-class TaskUi;
 class OptionUi;
 
 class EAria2Man;
@@ -58,6 +57,32 @@ public:
     void testFunc2();
 
 public slots:
+    // task ui
+    int createTask(TaskOption*option);
+    int createTask(int taskId, TaskOption*option);
+
+    void onSegmentListSelectChange(const QItemSelection & selected, const QItemSelection & deselected);
+    void onTaskListSelectChange   (const QItemSelection & selected, const QItemSelection & deselected);
+    void onCatListSelectChange    (const QItemSelection & selected, const QItemSelection & deselected);
+	
+    void onAddTaskList(QStringList list);	// add a list of tasks
+
+	void showNewDownloadDialog();
+    void showNewBittorrentFileDialog();
+    void showNewMetalinkFileDialog();
+	void showBatchDownloadDialog();	//添加批量下载对话框
+	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
+	void onShowTaskProperty();
+	void onShowTaskProperty(int pTaskId);
+	void onShowTaskPropertyDigest(const QModelIndex & index);
+	void onShowTaskPropertyDigest( );
+	void onTaskListMenuPopup( /*const QPoint & pos  = QPoint() */);
+	void onUpdateJobMenuEnableProperty();
+	void onLogListMenuPopup( const QPoint & pos);
+	void onSegListMenuPopup( const QPoint & pos);
+	void onCateMenuPopup( const QPoint & pos);
+
+    // storage
     void onStorageOpened();
 
 	//cat
@@ -100,6 +125,15 @@ public slots:
 	//////////
 	void onShowWalkSiteWindow();
 
+    //
+    int getNextValidTaskId();
+	QPair<QString,QString> getFileTypeByFileName(QString fileName);
+
+    static QString decodeQQdlUrl(QString enUrl);
+    static QString decodeThunderUrl(QString enUrl);
+    static QString decodeFlashgetUrl(QString enUrl);
+    static QString decodeEncodeUrl(QString enUrl);
+
     // arguments handler
     void handleArguments();
     void handleArguments(int argc, char **argv);
@@ -110,13 +144,11 @@ public slots:
 
 protected:
     friend class AsyncTask;
-    friend class AbstractUi;
 
 private:
     Ui::Karia2 *mainUI;
+
     // ***Uis
-    TaskUi *taskUi;
-    OptionUi *optionUi;
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -139,6 +171,9 @@ private:
 	QMenu *mCatPopupMenu;
 	QMenu *mDropZonePopupMenu;
 	QMenu *mSysTrayMenu;
+
+	QPoint mSwapPoint;
+	QModelIndex mSwapModelIndex;
 
 	InstantSpeedHistogramWnd *mISHW;
 	DropZone *mDropZone;
@@ -170,7 +205,6 @@ private:
     AsyncTask *mAtask;
 	//
 	QPalette orginalPalette;
-    QStyle *mNorStyle; // norwaystyle, because it is a standalone style, repeat new it cause memory leak.
     
     OptionManager *mOptionMan;
     QString mCustomTaskShowColumns;

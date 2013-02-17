@@ -757,6 +757,16 @@ void TaskQueue::onTaskListCellNeedChange(int taskId, int cellId, QString value)
 
 }
 
+void TaskQueue::onTaskServerStatusNeedUpdate(int taskId, QList<QMap<QString, QString> > stats)
+{
+    TaskServerModel *model;
+
+    if (this->mTasks.contains(taskId)) {
+        model = this->mTasks[taskId]->serverModel;
+        model->setData(stats);
+    }
+}
+
 //void TaskQueue::onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , QString opt )
 void TaskQueue::onSegmentGotLengthNeedUpdate ( int taskId , int segId , long delta , int optType )
 {

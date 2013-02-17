@@ -38,12 +38,16 @@ public:
     XQDebug(QIODevice *device) : QDebug(device) {
     }
 
-    ~XQDebug() {
+    void endl() {
         #ifdef WIN32
         *this<<"\r\n";
         #else
         *this<<"\n";
-        #endif
+        #endif        
+    }
+
+    ~XQDebug() {
+        this->endl();
     }
 };
 

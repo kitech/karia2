@@ -15,6 +15,7 @@
 class TaskQueue;
 class EAria2Man;
 class TaskOption;
+class TaskItemDelegate;
 
 class TaskUi : public AbstractUi
 {
@@ -56,6 +57,8 @@ public slots:
 	void onSegListMenuPopup( const QPoint & pos);
 	void onCateMenuPopup( const QPoint & pos);
 
+    void onStorageOpened();
+
 public:
     static QString decodeQQdlUrl(QString enUrl);
     static QString decodeThunderUrl(QString enUrl);
@@ -66,7 +69,7 @@ private:
     int getNextValidTaskId();
 	QPair<QString,QString> getFileTypeByFileName(QString fileName);
 
-private:
+protected:
 	QTreeView *mTaskListView;
 	QTreeView *mSegListView;
 	QTreeView *mSegLogListView;
@@ -76,7 +79,7 @@ private:
 	//
 	QAbstractItemModel *mTaskTreeViewModel;
 	QAbstractItemModel *mCatViewModel;
-    // TaskItemDelegate *mTaskItemDelegate;
+    TaskItemDelegate *mTaskItemDelegate;
     // SeedFileItemDelegate *mSeedFileDelegate;
 
     QString mCustomTaskShowColumns;
@@ -92,7 +95,6 @@ private:
     // temporary
     TaskQueue *mTaskMan;
     EAria2Man *mEAria2Man;
-    Ui::Karia2 *mainUI;
 };
 
 #endif /* _TASKUI_H_ */

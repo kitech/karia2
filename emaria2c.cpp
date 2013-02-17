@@ -190,7 +190,9 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
     eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
-    eaw->option_->put(aria2::PREF_GID, QString("%1").arg(task_id, 16, 16).toStdString());
+    QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
+    eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
+    qLogx()<<task_id << ugid;
 
 
     // TODO start in thread 
@@ -208,6 +210,21 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
 
     return 0;
 }
+
+int EAria2Man::pauseTask(int task_id)
+{
+    EAria2Worker *eaw;
+
+    if (this->m_tasks.contains(task_id)) {
+        eaw = this->m_tasks.value(task_id);
+        Q_ASSERT(eaw->m_tid == task_id);
+
+        eaw->terminate();
+    }
+
+    return 0;
+}
+
 
 /////
 void overrideWithEnv
@@ -435,6 +452,7 @@ void EAria2Man::run()
             this->confirmBackendFinished(tid, eaw);
         } else {
             this->checkAndDispatchStat(sclt);
+            this->checkAndDispatchServerStat(sclt);
         }
 
         delete sclt;
@@ -468,9 +486,25 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     return true;
 }
 
+bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
+{
+    QList<QMap<QString, QString> > servers;
+    QMap<QString, QString> server;
+
+    for (int i = 0; i < sclt->connections; i++) {
+        server["index"] = QString("%1").arg(i);
+        server["currentUri"] = "http://haha.com/abc.html.tar.gz";
+        server["downloadSpeed"] = QString("%1").arg(sclt->downloadSpeed);
+
+        servers.append(server);
+        server.clear();
+    }
+
+    emit this->taskServerStatChanged(sclt->tid, servers);
+}
+
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
-
     switch(eaw->exit_status) {
     case aria2::error_code::FINISHED:
         emit this->taskFinished(eaw->m_tid, eaw->exit_status);
@@ -486,6 +520,8 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     default:
         break;
     }
+
+    aria2::GroupId::clear();
 
     return true;
 }
@@ -507,6 +543,7 @@ bool EAria2Man::onAllStatArrived(int stkey)
 EAria2Worker::EAria2Worker(QObject *parent)
     : QThread(parent)
 {
+    this->exit_status = aria2::error_code::UNDEFINED;
 }
 
 EAria2Worker::~EAria2Worker()
@@ -516,7 +553,7 @@ EAria2Worker::~EAria2Worker()
 
 void EAria2Worker::run()
 {
-    aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
+    aria2::error_code::Value exitStatus = aria2::error_code::UNDEFINED;
 //    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
 //                                            getStatCalc(this->option_),
 //                                            getSummaryOut(this->option_))

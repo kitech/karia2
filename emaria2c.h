@@ -49,6 +49,7 @@ public:
 public slots:
     // int addTask(QString url);
     int addUri(int task_id, const QString &url, TaskOption *to);
+    int pauseTask(int task_id);
 
     //// from backend
     void onWorkerFinished();
@@ -73,6 +74,7 @@ signals:
 public:
     virtual void run();
     bool checkAndDispatchStat(Aria2StatCollector *sclt);
+    bool checkAndDispatchServerStat(Aria2StatCollector *sclt);
     bool confirmBackendFinished(int tid, EAria2Worker *eaw);
 public slots:
     bool onAllStatArrived(int stkey);
@@ -85,6 +87,7 @@ signals:
     //                      int completeDPercent = -1,
     //                      int downloadSpeed = -1, int uploadSpeed = -1);
     void taskStatChanged(int tid, QMap<int, QVariant> stats);
+    void taskServerStatChanged(int tid, QList<QMap<QString, QString> > stats);
     void segmentStatFinished();
 
 protected:

@@ -38,6 +38,10 @@ QVariant TaskServerModel::headerData(int section, Qt::Orientation orientation, i
     return rv;
 }
 
+/**
+ *
+ * @param servers QList<QVariant> <=> QList<QMap<QSring, QMap<QString, QVarian> > >
+ */
 bool TaskServerModel::setData(QVariantList &servers)
 {
 	// check for servers.count()'s value, if 0, no operation needed
@@ -71,6 +75,47 @@ bool TaskServerModel::setData(QVariantList &servers)
             tServers.append(tServer);
             tServer.clear();
         }
+    }
+
+	if (this->mServers.count() > 0) {
+		this->removeRows(0, this->mServers.count());
+	}
+    
+    if (tServers.count() > 0) { 
+        // if no this if, than below warning will show.
+        // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting. 
+        this->beginInsertRows(QModelIndex(), 0, tServers.count());
+        this->mServers = tServers;
+        this->endInsertRows();
+    }
+
+    return true;
+}
+
+bool TaskServerModel::setData(QList<QMap<QString, QString> > &servers)
+{
+    // map=(serverindex-sn, downloadSpeed, currentUri,currentUri)
+    
+    QList<QMap<char, QString> > tServers;
+    QMap<char, QString>  tServer;
+
+    QListIterator<QMap<QString, QString> > lit(servers);
+    QMap<QString, QString> server;
+    int sn = 0;
+    QString serverIndex;
+
+    while(lit.hasNext()) {
+        server = lit.next();
+
+        serverIndex = server["index"];
+        tServer[1] = server["downloadSpeed"];
+        tServer[2] = QUrl(server["currentUri"]).host();
+        tServer[3] = server["currentUri"];
+        tServer[0] = QString("%1-%2").arg(serverIndex).arg(++sn);
+            
+        tServers.append(tServer);
+        tServer.clear();
+
     }
 
 	if (this->mServers.count() > 0) {
