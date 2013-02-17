@@ -247,7 +247,7 @@ void TaskBallMapWidget::onSwitchState() 	//timer 超时调用槽
     // dumpBitArray(ba);
     // qDebug()<<__FUNCTION__<<(ba == this->mBallBit);
     if (ba != this->mBallBit) {
-        this->setToolTip(bitStr);
+        this->setToolTip("%1,%2").arg(bitStr);
         this->mBallBit = ba;
         this->update();
     }
