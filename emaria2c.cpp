@@ -491,10 +491,10 @@ bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     QList<QMap<QString, QString> > servers;
     QMap<QString, QString> server;
 
-    for (int i = 0; i < sclt->connections; i++) {
-        server["index"] = QString("%1").arg(i);
-        server["currentUri"] = "http://haha.com/abc.html.tar.gz";
-        server["downloadSpeed"] = QString("%1").arg(sclt->downloadSpeed);
+    for (int i = 0; i < sclt->server_stats.servers.size(); i++) {
+        server["index"] = QString("%1,%2").arg(i).arg(sclt->server_stats.servers.at(i).state);
+        server["currentUri"] = sclt->server_stats.servers.at(i).uri.c_str();
+        server["downloadSpeed"] = QString("%1").arg(sclt->server_stats.servers.at(i).downloadSpeed);
 
         servers.append(server);
         server.clear();

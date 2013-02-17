@@ -90,8 +90,10 @@ public:
     }
 
     ////////
+    std::string sessionId;
     int tid;
     int64_t  gid;
+    std::string uri;
     std::string status;
 
     uint64_t totalLength;
@@ -143,13 +145,16 @@ public:
 
         int index;
 
-        class ServerList {
+        class ServerInfo {
         public:
             std::string uri;
             std::string currentUri;
             int downloadSpeed;
+            int state; // 0 = IDLE, 1 = ACTIVE
+            std::string hostname;
+            std::string protocol;
         };
-        std::vector<ServerList> servers;
+        std::vector<ServerInfo> servers;
     };
     ServerStatCollector server_stats;
 
