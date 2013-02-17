@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-05-01 15:45:06 +0800
-// Version: $Id$
+// Version: $Id: 436bfb74f530b8669b50dea030823ce56e00fe62 $
 // 
 
 
@@ -38,12 +38,16 @@ public:
     XQDebug(QIODevice *device) : QDebug(device) {
     }
 
-    ~XQDebug() {
+    void endl() {
         #ifdef WIN32
         *this<<"\r\n";
         #else
         *this<<"\n";
-        #endif
+        #endif        
+    }
+
+    ~XQDebug() {
+        this->endl();
     }
 };
 

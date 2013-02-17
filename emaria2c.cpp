@@ -525,6 +525,7 @@ bool EAria2Man::onAllStatArrived(int stkey)
 EAria2Worker::EAria2Worker(QObject *parent)
     : QThread(parent)
 {
+    this->exit_status = aria2::error_code::UNDEFINED;
 }
 
 EAria2Worker::~EAria2Worker()
@@ -534,7 +535,7 @@ EAria2Worker::~EAria2Worker()
 
 void EAria2Worker::run()
 {
-    aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
+    aria2::error_code::Value exitStatus = aria2::error_code::UNDEFINED;
 //    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
 //                                            getStatCalc(this->option_),
 //                                            getSummaryOut(this->option_))
