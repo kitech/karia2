@@ -1186,7 +1186,7 @@ int TaskQueue::getActiveSegCount(int pTaskId, int cat_id)
 // 	// this->mTaskId = task_id ;
 // }
 
-QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
+QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr, QString &hexBitStr)
 {
 	QModelIndex idx;
     QString bitString;

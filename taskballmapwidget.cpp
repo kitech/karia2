@@ -242,12 +242,12 @@ void TaskBallMapWidget::onSwitchState() 	//timer 超时调用槽
     }
     Q_ASSERT(this->mTaskMan != NULL);
     // if (this->mTaskMan != NULL) {
-    QString bitStr;
-    QBitArray ba = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId, bitStr);
+    QString bitStr, hexBitStr;
+    QBitArray ba = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId, bitStr, hexBitStr);
     // dumpBitArray(ba);
     // qDebug()<<__FUNCTION__<<(ba == this->mBallBit);
     if (ba != this->mBallBit) {
-        this->setToolTip("%1,%2").arg(bitStr);
+        this->setToolTip(QString("%1,%2").arg(hexBitStr).arg(bitStr));
         this->mBallBit = ba;
         this->update();
     }

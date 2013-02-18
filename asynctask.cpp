@@ -15,7 +15,6 @@
 
 #include "utility.h"
 #include "karia2.h"
-#include "taskui.h"
 #include "aboutdialog.h"
 #include "dropzone.h"
 #include "taskinfodlg.h"
