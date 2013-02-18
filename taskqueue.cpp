@@ -482,6 +482,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     int totalLength, completedLength, completedPercent,
         downloadSpeed, uploadSpeed;
 
+
     totalLength = stats.value(ng::stat::total_length).toInt();
     completedLength = stats.value(ng::stat::completed_length).toInt();
     completedPercent = stats.value(ng::stat::completed_percent).toInt();
@@ -493,6 +494,10 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     int pieceLength = stats.value(ng::stat::piece_length).toInt();
     QString str_bitfield = stats.value(ng::stat::hex_bitfield).toString();
     quint64 gid = stats.value(ng::stat::gid).toULongLong();
+    QString status = stats.value(ng::stat::status).toString();
+    int eta = stats.value(ng::stat::eta).toInt();
+    QString str_eta = stats.value(ng::stat::str_eta).toString();
+    QString error_string = stats.value(ng::stat::error_string).toString();
 
     qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed;
 
@@ -525,16 +530,18 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             // }
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::comment), error_string);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
                          QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), QString::number(0));
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), downloadSpeed);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
             mdl->setData(mdl->index(idx.row(), ng::tasks::active_block_count), numConnections);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), totalLength - completedLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_block_count), numPieces);
@@ -543,6 +550,8 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), completedPercent);
             mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid), gid);
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), str_bitfield);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), str_eta);
+
         }
 
         // 计算完成的pieces

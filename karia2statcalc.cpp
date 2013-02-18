@@ -294,6 +294,7 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
         pss = sm->getPeerStats();
     dctx = rg->getDownloadContext();
 
+    sclt->state = rg->getState();
     sclt->gid = rg->getGID();
     sclt->totalLength = rg->getTotalLength();
     sclt->completedLength = rg->getCompletedLength();

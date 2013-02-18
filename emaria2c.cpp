@@ -479,9 +479,10 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat::num_pieces] = sclt->numPieces;
     stats[ng::stat::piece_length] = sclt->pieceLength;
     stats[ng::stat::eta] = sclt->eta;
+    stats[ng::stat::str_eta] = QString::fromStdString(aria2::util::secfmt(sclt->eta));
     stats[ng::stat::error_code] = sclt->errorCode;
-
-    
+    stats[ng::stat::status] = sclt->state == 1 ? "active" : "waiting"; 
+    // ready, active, waiting, complete, removed, error, pause
     
     emit this->taskStatChanged(sclt->tid, stats);
 
@@ -507,6 +508,8 @@ bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
 
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
+    QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
+
     switch(eaw->exit_status) {
     case aria2::error_code::FINISHED:
         emit this->taskFinished(eaw->m_tid, eaw->exit_status);
@@ -518,6 +521,15 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     case aria2::error_code::IN_PROGRESS:
         break;
     case aria2::error_code::REMOVED:
+        break;
+    case aria2::error_code::RESOURCE_NOT_FOUND:
+        stats[ng::stat::error_code] = eaw->exit_status;
+        stats[ng::stat::error_string] = QString(MSG_RESOURCE_NOT_FOUND);
+        stats[ng::stat::status] = "error";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
         break;
     default:
         break;

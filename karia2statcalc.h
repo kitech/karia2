@@ -72,7 +72,6 @@ public:
     void reset() {
         tid = 0;
         gid = 0;
-        status.clear();
 
         totalLength = 0;
         completedLength = 0;
@@ -94,7 +93,7 @@ public:
     int tid;
     int64_t  gid;
     std::string uri;
-    std::string status;
+    int state;
 
     uint64_t totalLength;
     uint64_t completedLength;
@@ -109,6 +108,7 @@ public:
     uint32_t numPieces;
     uint32_t connections;
     int errorCode;
+
 
     std::vector<int64_t> followedBy;
     int64_t belongsTo;
