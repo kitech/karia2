@@ -530,7 +530,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             // }
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), "complete");
             mdl->setData(mdl->index(idx.row(), ng::tasks::comment), error_string);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));

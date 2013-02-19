@@ -219,7 +219,10 @@ int EAria2Man::pauseTask(int task_id)
         eaw = this->m_tasks.value(task_id);
         Q_ASSERT(eaw->m_tid == task_id);
 
-        eaw->terminate();
+        // eaw->terminate();
+        // 这个可用，比直接终止(terminate)掉要好
+        // eaw->muri->getDownloadEngine()->getRequestGroupMan()->halt();
+        eaw->muri->getDownloadEngine()->getRequestGroupMan()->forceHalt();
     }
 
     return 0;
@@ -510,6 +513,8 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
     QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
 
+    aria2::GroupId::clear();
+
     switch(eaw->exit_status) {
     case aria2::error_code::FINISHED:
         emit this->taskFinished(eaw->m_tid, eaw->exit_status);
@@ -519,6 +524,13 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
         eaw->deleteLater();    
         break;
     case aria2::error_code::IN_PROGRESS:
+        stats[ng::stat::error_code] = eaw->exit_status;
+        stats[ng::stat::error_string] = QString::fromStdString(aria2::fmt(MSG_DOWNLOAD_NOT_COMPLETE, tid, ""));
+        stats[ng::stat::status] = "pause";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
         break;
     case aria2::error_code::REMOVED:
         break;
@@ -534,8 +546,6 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     default:
         break;
     }
-
-    aria2::GroupId::clear();
 
     return true;
 }
@@ -574,15 +584,17 @@ void EAria2Worker::run()
 
     aria2::SharedHandle<aria2::UriListParser> ulp;
     aria2::SharedHandle<aria2::DownloadEngine> e;
-    aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
-                                    statCalc_, getSummaryOut(this->option_), ulp);
+    this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
+                                                    statCalc_, getSummaryOut(this->option_), ulp));
+    // aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
+    // statCalc_, getSummaryOut(this->option_), ulp);
     // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
     //                                         statCalc_, getSummaryOut(this->option_), ulp)
     //         .execute();
-    exitStatus = muri.execute();
+    exitStatus = this->muri->execute();
     exit_status = exitStatus;
 
-    e = muri.getDownloadEngine();
+    e = muri->getDownloadEngine();
 
     // statCalc_->calculateStat(e.get());
 

@@ -25,6 +25,10 @@ class EAria2Man;
 class Karia2StatCalc;
 class Aria2StatCollector;
 
+namespace aria2 {
+    class MultiUrlRequestInfo;
+}
+
 namespace ng {
     namespace stat {
         enum {
@@ -116,6 +120,7 @@ protected:
     friend class EAria2Man;
 
     int m_tid;
+    aria2::SharedHandle<aria2::MultiUrlRequestInfo> muri;
     std::vector<aria2::SharedHandle<aria2::RequestGroup> > requestGroups_;
 
     aria2::SharedHandle<aria2::Option> option_;
