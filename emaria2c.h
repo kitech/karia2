@@ -1,7 +1,7 @@
 ﻿// emaria2c.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2012 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-23 06:54:26 -0700
 // Version: $Id: 631840f7a796aed45a01e69179cd07f9274ec520 $

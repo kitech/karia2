@@ -163,7 +163,8 @@ HEADERS += aboutdialog.h \
            simplelog.h \
            asyncdatabase.h \
            databaseworker.h \
-           emaria2c.h karia2statcalc.h
+           emaria2c.h karia2statcalc.h \
+           aria2manager.h 
 
 win32{
         HEADERS += DiskInfo.h	
@@ -225,7 +226,8 @@ SOURCES += aboutdialog.cpp \
            simplelog.cpp \
            asyncdatabase.cpp \
            databaseworker.cpp \
-           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc \
+           emaria2c.cpp karia2statcalc.cpp \ # aria2-1.13.0/src/option_processing.cc \
+           aria2manager.cpp
 
 win32{
         SOURCES += DiskInfo.cpp
