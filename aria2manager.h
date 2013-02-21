@@ -12,8 +12,11 @@
 
 #include <QtCore>
 
+#include "libng/qbihash.h"
+
 
 class TaskOption;
+class Aria2StatCollector;
 
 class Aria2Manager : public QThread
 {
@@ -29,8 +32,9 @@ public:
     virtual void run();
     
 signals:
-    void taskStatChanged(int tid, QMap<int, QVariant> stats);
-    void taskFinished(int tid, int code);
+    virtual void taskStatChanged(int tid, QMap<int, QVariant> stats);
+    virtual void taskServerStatChanged(int tid, QList<QMap<QString, QString> > stats);
+    virtual void taskFinished(int tid, int code);
     
 public slots:
     virtual int addTask(int task_id, const QString &url, TaskOption *to) = 0;
@@ -38,6 +42,8 @@ public slots:
     virtual int startTask(int task_id)  = 0;
     virtual int stopTask(int task_id)  = 0;
     virtual int pauseTask(int task_id)  = 0;
+    /////
+    virtual bool onAllStatArrived(int stkey) = 0;
                               
 protected slots:
     //// from backend
@@ -48,6 +54,17 @@ protected:
     // < 0 是从上端UI传递过来的事件
     // = 0 保留未用
     static QAtomicInt m_counter;
+protected:
+    QHash<int, void*> m_tasks; // tid => worker/QProcess/something
+    QHash<void*, int> m_rtasks; // worker/QProcess/something => tid
+    KBiHash<int, void*> m_tasks2; // tid => worker/QProcess/something
+    int m_argc;
+    char m_argv[32][256];
+
+    // statqueue member
+    QQueue<QPair<int, Aria2StatCollector*> > stkeys;
+    Aria2StatCollector *lastStat;
+    static QAtomicInt doneCounter; // 小于0的counter
 };
 
 

@@ -1,4 +1,6 @@
-// from http://websvn.kde.org/trunk/KDE/kdelibs/kdeui/itemviews/kbihash_p.h?view=markup
+//from http://quickgit.kde.org/?p=zanshin.git&a=blob&h=9af5a7f3fb6460f5b4441681593aab1b45f73316&f=src%2Freparentingmodel%2Fkbihash_p.h&o=plain
+// mainline: http://quickgit.kde.org/?p=kdelibs.git&a=blob&h=bfc10745484b7ea5bbccbeda0ffc8012cc28ba6a&f=kdeui%2Fitemviews%2Fkbihash_p.h&o=plain
+// qt5 patch: http://www.all-mail-archive.com/kde@lists.fedoraproject.org/1-1204014624/kdelibs-frameworks-tier1-itemmodels-src-Simplify-QMap-iterator-in-KBiHash
 /*
 
     Copyright (C) 2010 Klarälvdalens Datakonsult AB,
@@ -26,7 +28,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QMap>
-#include <QtCore/QMapData>
+#include <QtCore/QMultiMap>
 
 #include <QtCore/QDebug>
 
@@ -74,7 +76,20 @@ class KBiAssociativeContainer
     {
         /* implicit */ _iterator_impl_ctor(const typename QMap<T, U>::iterator it)
             // Using internals here because I was too lazy to write my own iterator.
-          : QMap<T, U>::iterator(static_cast<QMapData::Node*>(it))
+                       // : QMap<T, U>::iterator(static_cast<QMapData::Node*>(it))
+            : QMap<T, U>::iterator(it)
+        {
+
+        }
+    };
+
+    template<typename T, typename U>
+    struct _iterator_impl_ctor<QMultiMap<T, U>, T, U> : public QMultiMap<T, U>::iterator
+    {
+        /* implicit */ _iterator_impl_ctor(const typename QMultiMap<T, U>::iterator it)
+            // Using internals here because I was too lazy to write my own iterator.
+                       // : QMultiMap<T, U>::iterator(static_cast<QMapData::Node*>(it))
+          : QMultiMap<T, U>::iterator(it)
         {
 
         }
@@ -128,22 +143,32 @@ public:
     }
 
     inline bool removeLeft(left_type t) {
-        const right_type u = _leftToRight.take(t);
-        return _rightToLeft.remove(u) != 0;
+        left_const_iterator i = _leftToRight.constFind(t);
+        bool ret = false;
+        while (i != _leftToRight.constEnd() && i.key() == t) {
+            ret = true;
+            _rightToLeft.remove(i.value());
+            ++i;
+        }
+        _leftToRight.remove(t);
+        return ret;
     }
 
     inline bool removeRight(right_type u) {
+        //FIXME leaves dangling items with multimap
         const left_type t = _rightToLeft.take(u);
         return _leftToRight.remove(t) != 0;
     }
 
     inline right_type takeLeft(left_type t) {
+        //FIXME leaves dangling items with multimap
         const right_type u = _leftToRight.take(t);
         _rightToLeft.remove(u);
         return u;
     }
 
     inline left_type takeRight(right_type u) {
+        //FIXME leaves dangling items with multimap
         const left_type t = _rightToLeft.take(u);
         _leftToRight.remove(t);
         return t;
@@ -256,10 +281,12 @@ public:
 
         // This means we need to hash u and t up to twice each. Could probably be done better using QHashNode.
 
-        if (_leftToRight.contains(t))
-            _rightToLeft.remove(_leftToRight.take(t));
-        if (_rightToLeft.contains(u))
-            _leftToRight.remove(_rightToLeft.take(u));
+        //FIXME this doesn't apply in our special case with the multimap as we never replace and removing is wrong as we explicitly want multiple items.
+        //A more generic fix with a dedicated insertMulti call or so would probably be better
+//         if (_leftToRight.contains(t))
+//             _rightToLeft.remove(_leftToRight.take(t));
+//         if (_rightToLeft.contains(u))
+//             _leftToRight.remove(_rightToLeft.take(u));
 
         _rightToLeft.insert(u, t);
         return _leftToRight.insert(t, u);
@@ -458,6 +485,15 @@ struct _containerType<QMap<T, U>, T, U>
   }
 };
 
+template<typename T, typename U>
+struct _containerType<QMultiMap<T, U>, T, U>
+{
+  operator const char *()
+  {
+    return "QMultiMap";
+  }
+};
+
 
 template<typename Container>
 static const char * containerType()
@@ -567,3 +603,4 @@ QDebug operator<<(QDebug out, const KHash2Map<T, U> &container)
 }
 
 #endif
+
