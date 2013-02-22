@@ -31,30 +31,27 @@
 
 #include <QtCore>
 #include <QtXml>
+#include <QNetworkReply>
 
 class MaiaObject : public QObject {
-	Q_OBJECT;
+	Q_OBJECT
 	
-public:
-    MaiaObject(QObject* parent = 0);
-    static QDomElement toXml(QVariant arg);
-    static QVariant fromXml(const QDomElement &elem);
-    QString prepareCall(QString method, QList<QVariant> args);
-    static QString prepareResponse(QVariant arg);
-	
-    void setPayload(QVariant &payload);
-	
-public slots:
-    void parseResponse(QString response);
-	
-signals:
-    void aresponse(QVariant &);
-    void call(const QString, const QList<QVariant>);
-    void fault(int, const QString &);
+	public:
+		MaiaObject(QObject* parent = 0);
+		static QDomElement toXml(QVariant arg);
+		static QVariant fromXml(const QDomElement &elem);
+		QString prepareCall(QString method, QList<QVariant> args);
+		static QString prepareResponse(QVariant arg);
 
-    void aresponse(QVariant &, QVariant &);
+        void setPayload(QVariant &payload);
+		
+	public slots:
+		void parseResponse(QString response, QNetworkReply* reply);
+	
+	signals:
+    void aresponse(QVariant &, QNetworkReply* reply, QVariant &);
     void call(const QString, const QList<QVariant>, QVariant &);
-    void fault(int, const QString &, QVariant &);
+    void fault(int, const QString &, QNetworkReply* reply, QVariant &);
 
 private:
     QVariant payload;

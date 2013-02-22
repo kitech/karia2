@@ -35,33 +35,31 @@
 #include "maiaObject.h"
 
 class MaiaXmlRpcClient : public QObject {
-	Q_OBJECT;
+	Q_OBJECT
 	
-public:
-    MaiaXmlRpcClient(QObject* parent = 0);
-    MaiaXmlRpcClient(QUrl url, QObject* parent = 0);
-    ~MaiaXmlRpcClient();
-
-    void setUrl(QUrl url);
-    void call(QString method, QList<QVariant> args,
-              QObject* responseObject, const char* responseSlot,
-              QObject* faultObject, const char* faultSlot);
-
-    void call(QString method, QList<QVariant> args, QVariant payload,
-              QObject* responseObject, const char* responseSlot,
-              QObject* faultObject, const char* faultSlot);
+	public:
+		MaiaXmlRpcClient(QObject* parent = 0);
+		MaiaXmlRpcClient(QUrl url, QObject* parent = 0);
+		MaiaXmlRpcClient(QUrl url, QString userAgent, QObject *parent = 0);
+		void setUrl(QUrl url);
+		void setUserAgent(QString userAgent);
+        QNetworkReply* call(QString method, QList<QVariant> args, QVariant payload,
+		QObject* responseObject, const char* responseSlot,
+		QObject* faultObject, const char* faultSlot);
+		void setSslConfiguration(const QSslConfiguration &config);
+		QSslConfiguration sslConfiguration () const;
 	
-private slots:
-    void httpRequestDone(int id, bool error);
-    // qvoid responseHeaderReceived(QHttpResponseHeader header);
+	signals:
+		void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+	
+	private slots:
+		void replyFinished(QNetworkReply*);
 
-private:
-    QUrl m_url;
-    // in qt 4.6.2, this class is marked as obsolete. also QFtp. 
-    // Use which class now? QNetworkAccessManager?
-    // QHttp *http;
-    QMap<int, MaiaObject*> callmap;
-    QString cookie;
+	private:
+		void init();
+		QNetworkAccessManager manager;
+		QNetworkRequest request;
+		QMap<QNetworkReply*, MaiaObject*> callmap;
 };
 
 #endif
