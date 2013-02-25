@@ -52,8 +52,8 @@
 #include <X11/extensions/XTest.h>
 #endif
 
-//#include "ariaman.h"
-//#include "maiaXmlRpcClient.h"
+#include "ariaman.h"
+#include "maiaXmlRpcClient.h"
 
 
 void Karia2::testResponse(QVariant &response, QVariant &payload)

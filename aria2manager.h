@@ -18,6 +18,10 @@
 class TaskOption;
 class Aria2StatCollector;
 
+/*
+  这一层定义用户动作调用接口
+  响应用户动作的接口标准
+ */
 class Aria2Manager : public QThread
 {
     Q_OBJECT;
