@@ -9,6 +9,7 @@
 
 #include "aria2manager.h"
 
+QAtomicInt Aria2Manager::doneCounter = -1;
 QAtomicInt Aria2Manager::m_counter = 0;
 Aria2Manager::Aria2Manager()
     : QThread(0)
