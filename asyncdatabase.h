@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-04-24 20:17:22 +0800
-// Version: $Id$
+// Version: $Id: 5f2cba5189402d236e6fa11e327b8841cdfa553c $
 // 
 #ifndef _ASYNCDATABASE_H_
 #define _ASYNCDATABASE_H_

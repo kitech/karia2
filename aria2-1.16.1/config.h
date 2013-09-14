@@ -13,7 +13,7 @@
 /* #undef C_ALLOCA */
 
 /* Define to 1 if asynchronous DNS support is enabled. */
-#define ENABLE_ASYNC_DNS 1
+/* #undef ENABLE_ASYNC_DNS */
 
 /* Define to 1 if BitTorrent support is enabled. */
 #define ENABLE_BITTORRENT 1
@@ -48,10 +48,10 @@
 #define HAVE_ALLOCA_H 1
 
 /* Define to 1 if the system has the type `ares_addr_node'. */
-#define HAVE_ARES_ADDR_NODE 1
+/* #undef HAVE_ARES_ADDR_NODE */
 
 /* Define to 1 if you have the `ares_set_servers' function. */
-#define HAVE_ARES_SET_SERVERS 1
+/* #undef HAVE_ARES_SET_SERVERS */
 
 /* Define to 1 if you have the `argz_count' function. */
 #define HAVE_ARGZ_COUNT 1
@@ -207,7 +207,7 @@
 
 /* Define to 1 if you have the `gnutls_certificate_set_x509_system_trust'
    function. */
-#define HAVE_GNUTLS_CERTIFICATE_SET_X509_SYSTEM_TRUST 1
+/* #undef HAVE_GNUTLS_CERTIFICATE_SET_X509_SYSTEM_TRUST */
 
 /* Define if you have the iconv() function and it works. */
 #define HAVE_ICONV 1
@@ -241,16 +241,16 @@
 #define HAVE_LC_MESSAGES 1
 
 /* Define to 1 if you have libcares. */
-#define HAVE_LIBCARES 1
+/* #undef HAVE_LIBCARES */
 
 /* Define to 1 if you have libexpat. */
-/* #undef HAVE_LIBEXPAT */
+#define HAVE_LIBEXPAT 1
 
 /* Define to 1 if you have libgcrypt. */
-/* #undef HAVE_LIBGCRYPT */
+#define HAVE_LIBGCRYPT 1
 
 /* Define to 1 if you have libgmp. */
-#define HAVE_LIBGMP 1
+/* #undef HAVE_LIBGMP */
 
 /* Define to 1 if you have libgnutls. */
 #define HAVE_LIBGNUTLS 1
@@ -259,10 +259,10 @@
 #define HAVE_LIBINTL_H 1
 
 /* Define to 1 if you have libnettle. */
-#define HAVE_LIBNETTLE 1
+/* #undef HAVE_LIBNETTLE */
 
 /* Define to 1 if you have libxml2. */
-#define HAVE_LIBXML2 1
+/* #undef HAVE_LIBXML2 */
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
@@ -409,10 +409,10 @@
 #define HAVE_SOME_FALLOCATE 1
 
 /* Define to 1 if you have sqlite3. */
-#define HAVE_SQLITE3 1
+/* #undef HAVE_SQLITE3 */
 
 /* Define to 1 if you have the `sqlite3_open_v2' function. */
-#define HAVE_SQLITE3_OPEN_V2 1
+/* #undef HAVE_SQLITE3_OPEN_V2 */
 
 /* Define to 1 if `stat' has the bug that it succeeds when given the
    zero-length file name argument. */
@@ -677,7 +677,7 @@
 /* Define as the maximum value of type 'size_t', if the system doesn't define
    it. */
 #ifndef SIZE_MAX
-# define SIZE_MAX (((1UL << 63) - 1) * 2 + 1)
+# define SIZE_MAX (((1U << 31) - 1) * 2 + 1)
 #endif
 
 /* If using the C implementation of alloca, define if you know the
@@ -692,7 +692,7 @@
 #define STDC_HEADERS 1
 
 /* Define target-type */
-#define TARGET "x86_64-unknown-linux-gnu"
+#define TARGET "i686-pc-linux-gnu"
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #define TIME_WITH_SYS_TIME 1
@@ -767,7 +767,7 @@
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
-/* #undef _FILE_OFFSET_BITS */
+#define _FILE_OFFSET_BITS 64
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */

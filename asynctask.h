@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2013-01-30 00:06:29 +0000
-// Version: $Id$
+// Version: $Id: 222d1f9e170c137fa4429733483a3acb080c8e2b $
 // 
 
 #ifndef _ASYNCTASK_H_

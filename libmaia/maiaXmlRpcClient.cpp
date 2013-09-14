@@ -25,6 +25,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <QSslConfiguration>
+
 #include "maiaXmlRpcClient.h"
 #include "maiaFault.h"
 
@@ -85,7 +87,7 @@ QNetworkReply* MaiaXmlRpcClient::call(QString method, QList<QVariant> args, QVar
 }
 
 void MaiaXmlRpcClient::setSslConfiguration(const QSslConfiguration &config) {
-	request.setSslConfiguration(config);
+	//request.setSslConfiguration(config);
 }
 
 QSslConfiguration MaiaXmlRpcClient::sslConfiguration () const {
