@@ -291,14 +291,18 @@ void Karia2::initialMainWindow()
 	//qLogx()<<__FUNCTION__;
 	//set split on humanable postion , but not middle
 	QList<int> splitSize;
-	splitSize = this->mainUI->splitter_4->sizes();	
-	splitSize[0] -= 70;
-	splitSize[1] += 70;	
+    float goldRate = 0.718, goldRate2 = 0.618;
+    int twidth;
+
+	splitSize = this->mainUI->splitter_4->sizes();
+    twidth = splitSize[0] + splitSize[1];
+	splitSize[1] = (int)(twidth * goldRate);	
+	splitSize[0] = twidth - splitSize[1];
 	this->mainUI->splitter_4->setSizes(splitSize);
 
 	splitSize = this->mainUI->splitter_3->sizes();	
-	splitSize[0] -= 100;
-	splitSize[1] += 100;	
+	splitSize[0] -= 60;
+	splitSize[1] += 60;	
 	this->mainUI->splitter_3->setSizes(splitSize);
 
 	splitSize = this->mainUI->splitter_2->sizes();
@@ -770,6 +774,8 @@ void Karia2::onStorageOpened()
     this->mCatView->setModel(this->mCatViewModel);
     this->mCatView->setRootIndex(this->mCatViewModel->index(0, 0)); // root is the topest node
     this->mCatView->expandAll();
+    // 设置特殊列的大小
+    this->mCatView->resizeColumnToContents(0);
 
     this->update();
 
@@ -1175,13 +1181,13 @@ void Karia2::onDeleteTask()
         }
         if (srcCatId == ng::cats::deleted) {
             // delete it directly
-            from_model->removeRows(mrow, 1);
+            from_model->removeRows(mrow, 1, QModelIndex(), false);
 			//在system tray 显示移动任务消息
 			this->mSysTrayIcon->showMessage(tr("Delete Task ."),
                                             QString(tr("Delete permanently. TaskId: %1")).arg(taskId),
                                             QSystemTrayIcon::Information, 5000);
         } else {
-            int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil);
+            int rv = from_model->moveTasks(srcCatId, ng::cats::deleted, rmil, false);
             if (rv <= 0) {
             }
 			//在system tray 显示移动任务消息
@@ -1259,7 +1265,7 @@ void Karia2::onTaskDone(int pTaskId, int code)
         }
 
         destCatId = mdl->data(mdl->index(idx.row(), ng::tasks::user_cat_id)).toInt();
-        mdl->moveTasks(ng::cats::downloading, destCatId, moveModels);
+        mdl->moveTasks(ng::cats::downloading, destCatId, moveModels, false);
 
         // cacl the downloading model index
         QItemSelection readySelect, readDeselect;

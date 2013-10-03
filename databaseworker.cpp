@@ -509,12 +509,12 @@ int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &recor
         qLogx()<<__FILE__<<__LINE__<<__FUNCTION__<<estr;
     } else {
         eval = dbq.lastInsertId();
-        qLogx()<<"already has lastInsertId..."<<eval << dbq.size()<< query;
         if (dbq.isSelect()) {
             // not insert query, should select query
             while(dbq.next()) {
                 recs.append(dbq.record());
             }
+            qLogx()<<"select count:..."<<eval << dbq.size() << recs.size() << query;
         } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             qelms = query.trimmed().split(" ");

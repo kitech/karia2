@@ -267,7 +267,7 @@ bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent 
 	return true ;
 }
 
-bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent  )
+bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex &parent, bool persistRemove)
 {
 	//qLogx()<<__FUNCTION__<<row;
 	
@@ -280,7 +280,9 @@ bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex & parent 
 	for (int i = delete_end; i >= delete_begin ; i --) {
 		int taskID = this->mModelData.at(i).value("task_id").toInt();
 		this->mModelData.remove(row);
-        this->mStorage->deleteTask(taskID);
+        if (persistRemove) {
+            this->mStorage->deleteTask(taskID);
+        }
         emit layoutChanged () ;	//这是必须，否则视图不能正常画出模型。
 	}
 
@@ -405,7 +407,7 @@ void SqliteTaskModel::revert()
 }
 
 
-bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mil)
+bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mil, bool persistRemove)
 {
     SqliteTaskModel *srcModel = NULL;
     SqliteTaskModel *destModel = NULL;
@@ -423,7 +425,7 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
         }
 
         // 
-        srcModel->removeRows(mil.at(row * columnCount).row(), 1);
+        srcModel->removeRows(mil.at(row * columnCount).row(), 1, QModelIndex(), false);
         destModel->insertRows(0, 1);
         for (int col = 0 ; col < columnCount; col ++) {
             QMap<int, QVariant> itemData = rowItemData.at(col);
