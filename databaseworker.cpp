@@ -7,6 +7,7 @@
 // Version: $Id: databaseworker.cpp 998 2011-09-17 11:03:58Z drswinghead $
 // 
 
+#include <assert.h>
 #include <algorithm>
 
 #include "simplelog.h"

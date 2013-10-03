@@ -78,7 +78,7 @@ win32 {
 } else {
     INCLUDEPATH += ./aria2-1.16.1/src/ ./aria2-1.16.1/  ./aria2-1.16.1/lib
     LIBS += -L./aria2-1.16.1/src/ -laria2c -L./aria2-1.16.1/deps/wslay/lib/.libs/ -lwslay -L./aria2-1.16.1/intl -lintl
-    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
+    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lexpat  -lxml2 -lz -lm
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""

@@ -8,6 +8,12 @@
 // 
 
 #include <stdio.h>
+#include <assert.h>
+
+#include <QFile>
+#include <QDir>
+#include <QSettings>
+#include <QCoreApplication>
 
 #include "simplelog.h"
 
@@ -17,9 +23,10 @@
 #define STDERR_FILENO  2
 #endif
 
-boost::shared_ptr<FileLog> FileLog::mInst = boost::shared_ptr<FileLog>();
+FileLog *FileLog::mInst = NULL;
+pthread_mutex_t FileLog::mIMutex = PTHREAD_MUTEX_INITIALIZER;
+
 FileLog::FileLog()
-//    :QObject()
 {
     this->mStream = new QFile(0);
 
@@ -59,12 +66,14 @@ QFile *FileLog::stream()
     return this->mStream;
 }
 
-boost::shared_ptr<FileLog> FileLog::instance()
+FileLog * FileLog::instance()
 {
-    if (FileLog::mInst == boost::shared_ptr<FileLog>()) {
-        boost::shared_ptr<FileLog> hlog = boost::shared_ptr<FileLog>(new FileLog());
+    pthread_mutex_lock(&FileLog::mIMutex);
+    if (FileLog::mInst == NULL) {
+        FileLog *hlog = new FileLog();
         FileLog::mInst = hlog;
     }
+    pthread_mutex_unlock(&FileLog::mIMutex);
 
     return FileLog::mInst;
 }
