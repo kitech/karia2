@@ -187,6 +187,8 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     args.push_back(url.toStdString());
 
     this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
+
+    eaw->option_->put(aria2::PREF_DIR, QString("%1%2").arg(getenv("HOME")).arg("/NGDownload").toStdString());
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
     eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
