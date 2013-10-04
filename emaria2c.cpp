@@ -191,6 +191,8 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     aria2::OptionParser::getInstance()->parseDefaultValues(*eaw->option_.get());
     // this->_option_processing(*eaw->option_.get(), eaw->args, eaw->m_argc, (char**)eaw->m_argv);
     eaw->option_->put(aria2::PREF_DIR, to->getSaveDir().toStdString());
+    eaw->option_->put(aria2::PREF_LOG, "/tmp/abc.log");
+    eaw->option_->put(aria2::PREF_LOG_LEVEL, "debug");
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
     eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "20000");
@@ -198,6 +200,13 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
     qLogx()<<task_id << ugid;
 
+    // 重新设置aria2的log设置
+    aria2::LogFactory::setLogFile(eaw->option_->get(aria2::PREF_LOG));
+    aria2::LogFactory::setLogLevel(eaw->option_->get(aria2::PREF_LOG_LEVEL));
+    if(eaw->option_->getAsBool(aria2::PREF_QUIET)) {
+        aria2::LogFactory::setConsoleOutput(false);
+    }
+    aria2::LogFactory::reconfigure();
 
     // TODO start in thread 
     aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, eaw->args, false, false, true);
