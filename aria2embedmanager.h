@@ -11,7 +11,7 @@
 
 #include <QtCore>
 
-#include "SharedHandle.h"
+// #include "SharedHandle.h"
 #include "DownloadResult.h"
 
 #include "aria2manager.h"
@@ -58,8 +58,8 @@ public:
     bool confirmBackendFinished(int tid, Aria2EmbedWorker *eaw);
 
 private:
-    int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
-                           int argc, char* argv[]);
+    // int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
+    //                    int argc, char* argv[]);
 };
 
 class Aria2EmbedWorker : public QThread
@@ -75,13 +75,13 @@ protected:
     friend class Aria2EmbedManager;
 
     int m_tid;
-    aria2::SharedHandle<aria2::MultiUrlRequestInfo> muri;
-    std::vector<aria2::SharedHandle<aria2::RequestGroup> > requestGroups_;
+    std::shared_ptr<aria2::MultiUrlRequestInfo> muri;
+    std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
 
-    aria2::SharedHandle<aria2::Option> option_;
-    // aria2::SharedHandle<aria2::StatCalc> statCalc_;
-    // aria2::SharedHandle<aria2::OutputFile> summaryOut_;
-    aria2::SharedHandle<Karia2StatCalc> statCalc_;
+    std::shared_ptr<aria2::Option> option_;
+    // std::shared_ptr<aria2::StatCalc> statCalc_;
+    // std::shared_ptr<aria2::OutputFile> summaryOut_;
+    std::unique_ptr<Karia2StatCalc> statCalc_;
     aria2::DownloadEngine *e;
     int exit_status;
 

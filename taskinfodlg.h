@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-08 00:16:48 +0800
-// Version: $Id: taskinfodlg.h 198 2013-02-16 03:59:01Z drswinghead $
+// Version: $Id: taskinfodlg.h 200 2013-10-04 07:13:26Z drswinghead $
 // 
 #ifndef TASKINFODLG_H
 #define TASKINFODLG_H

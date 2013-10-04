@@ -30,7 +30,7 @@ class Karia2StatCalc : public QObject, public aria2::StatCalc
 private:
     aria2::Timer cp_;
     time_t summaryInterval_;
-    aria2::SharedHandle<aria2::ConsoleStatCalc> cssc;
+    std::shared_ptr<aria2::ConsoleStatCalc> cssc;
     int m_tid;
 public:
     Karia2StatCalc(int tid, time_t summaryInterval);
@@ -55,13 +55,13 @@ signals:
 
 private:
     int setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats);
-    int setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
-    int setFilesStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
-    int setServersStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
-    int setBittorrentStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
+    int setBaseStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
+    int setFilesStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
+    int setServersStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
+    int setBittorrentStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
 };
 
-typedef aria2::SharedHandle<Karia2StatCalc> Karia2StatCalcHandle;
+typedef std::shared_ptr<Karia2StatCalc> Karia2StatCalcHandle;
 
 class Aria2StatCollector
 {

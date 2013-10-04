@@ -64,17 +64,13 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     Aria2StatCollector::TransferStat *pstat;
 
     aria2::RequestGroupList rgs, wrgs, frgs;
-    // aria2::SharedHandle<aria2::RequestGroup> rg;
-    // aria2::RequestGroup* rg; //xxx
-    aria2::RequestGroupList::SeqType::iterator it;
-    aria2::SharedHandle<aria2::PieceStorage> ps;
-    aria2::SharedHandle<aria2::SegmentMan> sm;
-    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
-    aria2::SharedHandle<aria2::PeerStat> psts;
-    aria2::SharedHandle<aria2::DownloadContext> dctx;
+    aria2::RequestGroupList::iterator it;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
     aria2::DownloadResultList drs;
-    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
-
 
     const unsigned char *bfptr;
     int bflen;
@@ -102,20 +98,19 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
     stat = e->getRequestGroupMan()->calculateStat();
     pstat = sclt->globalStat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
     memcpy(pstat, &stat, sizeof(aria2::TransferStat));
-    
+
     if (rgs.size() > 0) {
         for (it = rgs.begin(); it != rgs.end(); ++it) {
-            auto rg = *it;
-            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
-            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
-            this->setBaseStat(e, rg2.second, sclt);
-            this->setServersStat(e, rg2.second, sclt);
+            std::shared_ptr<aria2::RequestGroup> rg2 = *it;
+    
+            this->setBaseStat(e, rg2, sclt);
+            this->setServersStat(e, rg2, sclt);
 
-            stat = rg2.second->calculateStat();
-
+            stat = rg2->calculateStat();
             pstat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
             memcpy(pstat, &stat, sizeof(aria2::TransferStat));
-            sclt->tasksStat.insert(rg2.first, pstat); // gid => stat
+
+            sclt->tasksStat.insert(rg2->getGID(), pstat); // gid => stat
 
             // stkey
             this->poolCounter.testAndSetOrdered(INT_MAX, 1);
@@ -128,10 +123,11 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
             
             //                                     down_speed, up_speed, num_conns, eta);
             qLogx()<<"stat intval:"
-                   << stat.sessionDownloadLength << rg2.first
-                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
-                   << rg2.second->getNumConnection()
-                   <<"pss:"<<(sm)<<pss.size()
+                   << stat.sessionDownloadLength << rg2->getGID()
+                   <<rg2->getTotalLength() << rg2->getCompletedLength()
+                   << rg2->getNumConnection()
+                   <<"pss:"<<pss.size()
+                // <<"pss:"<<(sm)<<pss.size()
                 ;
             
             emit this->progressStat(stkey);
@@ -172,17 +168,13 @@ void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
     aria2::TransferStat stat;
 
     aria2::RequestGroupList rgs, wrgs, frgs;
-    // aria2::SharedHandle<aria2::RequestGroup> rg;
-    // aria2::RequestGroup* rg; //xxx
-    aria2::RequestGroupList::SeqType::iterator it;
-    aria2::SharedHandle<aria2::PieceStorage> ps;
-    aria2::SharedHandle<aria2::SegmentMan> sm;
-    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
-    aria2::SharedHandle<aria2::PeerStat> psts;
-    aria2::SharedHandle<aria2::DownloadContext> dctx;
+    aria2::RequestGroupList::iterator it;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
     aria2::DownloadResultList dres;
-    // std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
-
 
     const unsigned char *bfptr;
     int bflen;
@@ -203,11 +195,9 @@ void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
 
     if (rgs.size() > 0) {
         for (it = rgs.begin(); it != rgs.end(); ++it) {
-            auto rg = *it;
-            // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
-            std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
+            std::shared_ptr<aria2::RequestGroup> rg2 = *it;
             stat = e->getRequestGroupMan()->calculateStat();
-            stat = rg2.second->calculateStat();
+            stat = rg2->calculateStat();
 
             Aria2StatCollector *sclt = new Aria2StatCollector();
             sclt->tid = this->m_tid;
@@ -228,14 +218,14 @@ void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
                 // }
             }
 
-        //        this->setBaseStat(e, rg, sclt);
+            //        this->setBaseStat(e, rg, sclt);
             //            emit this->progressState(this->m_tid, gid, total_length, curr_length,
             //                                     down_speed, up_speed, num_conns, eta);
             qLogx()<<"stat intval:"<<sclt->tid<<sclt->numActive<<sclt->numWaiting
                    <<sclt->numStopped << sclt->downloadSpeed << sclt->uploadSpeed
-                   << stat.sessionDownloadLength << rg2.first
-                   <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
-                   << rg2.second->getNumConnection()
+                   << stat.sessionDownloadLength << rg2->getGID()
+                   <<rg2->getTotalLength() << rg2->getCompletedLength()
+                   << rg2->getNumConnection()
                 ;
             emit this->progressStat(0);
         }
@@ -248,40 +238,41 @@ void Karia2StatCalc::calculateStatDemoTest(const aria2::DownloadEngine* e)
 int Karia2StatCalc::setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats)
 {
     Aria2StatCollector *sclt = stats;
-    aria2::DownloadResultList::SeqType::iterator  it;
+    aria2::DownloadResultList::iterator  it;
     aria2::DownloadResult dres;
+
     for (it = drs.begin(); it != drs.end(); it++) {
         auto adres = it;
-        std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::DownloadResult> > dres2 = *it;
+        std::shared_ptr<aria2::DownloadResult> dres2 = *it;
 
-        sclt->gid = dres2.first;
-        sclt->totalLength = dres2.second->totalLength;
-        sclt->completedLength = dres2.second->completedLength;
-        sclt->uploadLength = dres2.second->uploadLength;
-        sclt->numPieces = dres2.second->numPieces;
-        sclt->pieceLength = dres2.second->pieceLength;
-        sclt->bitfield = dres2.second->bitfield;
-        sclt->infoHash = dres2.second->infoHash;
-        sclt->errorCode = dres2.second->result;
+        sclt->gid = dres2->metadataInfo->getGID();
+        sclt->totalLength = dres2->totalLength;
+        sclt->completedLength = dres2->completedLength;
+        sclt->uploadLength = dres2->uploadLength;
+        sclt->numPieces = dres2->numPieces;
+        sclt->pieceLength = dres2->pieceLength;
+        sclt->bitfield = dres2->bitfield;
+        sclt->infoHash = dres2->infoHash;
+        sclt->errorCode = dres2->result;
     }
 
     return 0;
 }
 
 
-int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg,  Aria2StatCollector *stats)
+int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg,  Aria2StatCollector *stats)
 {
     Aria2StatCollector *sclt = stats;
     aria2::TransferStat stat;
 
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> > rgs;
-//    aria2::SharedHandle<aria2::RequestGroup> rg;
-    aria2::SharedHandle<aria2::PieceStorage> ps;
-    aria2::SharedHandle<aria2::SegmentMan> sm;
-    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
-    aria2::SharedHandle<aria2::PeerStat> psts;
-    aria2::SharedHandle<aria2::DownloadContext> dctx;
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+    std::deque<std::shared_ptr<aria2::RequestGroup> > rgs;
+//    std::shared_ptr<aria2::RequestGroup> rg;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
+    std::deque<std::shared_ptr<aria2::RequestGroup> >::iterator it;
 
     const unsigned char *bfptr;
     int bflen;
@@ -344,19 +335,18 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
     return 0;
 }
 
-int Karia2StatCalc::setFilesStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
+int Karia2StatCalc::setFilesStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
 {
     Aria2StatCollector *sclt = stats;
     aria2::TransferStat stat;
 
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> > rgs;
-//    aria2::SharedHandle<aria2::RequestGroup> rg;
-    aria2::SharedHandle<aria2::PieceStorage> ps;
-    aria2::SharedHandle<aria2::SegmentMan> sm;
-    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
-    aria2::SharedHandle<aria2::PeerStat> psts;
-    aria2::SharedHandle<aria2::DownloadContext> dctx;
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+    std::deque<std::shared_ptr<aria2::RequestGroup> > rgs;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
+    std::deque<std::shared_ptr<aria2::RequestGroup> >::iterator it;
 
     const unsigned char *bfptr;
     int bflen;
@@ -366,21 +356,20 @@ int Karia2StatCalc::setFilesStat(const aria2::DownloadEngine* e, aria2::SharedHa
     return 0;
 }
 
-int Karia2StatCalc::setServersStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
+int Karia2StatCalc::setServersStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
 {
     Aria2StatCollector *sclt = stats;
     aria2::TransferStat stat;
 
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> > rgs;
-//    aria2::SharedHandle<aria2::RequestGroup> rg;
-    aria2::SharedHandle<aria2::PieceStorage> ps;
-    aria2::SharedHandle<aria2::SegmentMan> sm;
-    std::vector<aria2::SharedHandle<aria2::PeerStat> > pss;
-    aria2::SharedHandle<aria2::PeerStat> psts;
-    aria2::SharedHandle<aria2::DownloadContext> dctx;
-    std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
-    aria2::SharedHandle<aria2::MetadataInfo> metaInfo;
-    std::vector<aria2::SharedHandle<aria2::FileEntry> > fileEntries;
+    std::deque<std::shared_ptr<aria2::RequestGroup> > rgs;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
+    std::deque<std::shared_ptr<aria2::RequestGroup> >::iterator it;
+    std::shared_ptr<aria2::MetadataInfo> metaInfo;
+    std::vector<std::shared_ptr<aria2::FileEntry> > fileEntries;
     std::vector<std::string> uris;
 
     const unsigned char *bfptr;
@@ -413,14 +402,18 @@ int Karia2StatCalc::setServersStat(const aria2::DownloadEngine* e, aria2::Shared
 
         stats->server_stats.servers.push_back(servInfo);
 
-        qLogx()<<"servinfo:"<<(metaInfo)<<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
+        qLogx()<<"servinfo:" <<(metaInfo ? metaInfo->getGID() : -1)
+               <<(metaInfo ? metaInfo->getUri().c_str() : "'mi null'")
+               <<"gid="<<rg->getGID()
+               <<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
                << servInfo.hostname.c_str() << servInfo.protocol.c_str();
+
     }
 
     return 0;
 }
 
-int Karia2StatCalc::setBittorrentStat(const aria2::DownloadEngine* e, aria2::SharedHandle<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
+int Karia2StatCalc::setBittorrentStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
 {
     return 0;
 }

@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 11:21:17 +0800
-// Version: $Id: sqlitetaskmodel.cpp 198 2013-02-16 03:59:01Z drswinghead $
+// Version: $Id: sqlitetaskmodel.cpp 200 2013-10-04 07:13:26Z drswinghead $
 // 
 
 #include "simplelog.h"

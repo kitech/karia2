@@ -25,7 +25,7 @@
 #include "Logger.h"
 #include "RequestGroup.h"
 #include "prefs.h"
-#include "SharedHandle.h"
+// #include "SharedHandle.h"
 #include "DownloadEngineFactory.h"
 #include "RecoverableException.h"
 #include "message.h"
@@ -76,13 +76,13 @@ Aria2EmbedManager::~Aria2EmbedManager()
 {
 }
 
-aria2::SharedHandle<aria2::StatCalc> getStatCalc2(const aria2::SharedHandle<aria2::Option>& op)
+std::shared_ptr<aria2::StatCalc> getStatCalc2(const std::shared_ptr<aria2::Option>& op)
 {
-  aria2::SharedHandle<aria2::StatCalc> statCalc;
+  std::shared_ptr<aria2::StatCalc> statCalc;
   if(op->getAsBool(aria2::PREF_QUIET)) {
     statCalc.reset(new aria2::NullStatCalc());
   } else {
-    aria2::SharedHandle<aria2::ConsoleStatCalc> impl
+    std::shared_ptr<aria2::ConsoleStatCalc> impl
       (new aria2::ConsoleStatCalc(op->getAsInt(aria2::PREF_SUMMARY_INTERVAL),
                            op->getAsBool(aria2::PREF_HUMAN_READABLE)));
     impl->setReadoutVisibility(op->getAsBool(aria2::PREF_SHOW_CONSOLE_READOUT));
@@ -92,10 +92,10 @@ aria2::SharedHandle<aria2::StatCalc> getStatCalc2(const aria2::SharedHandle<aria
   return statCalc;
 }
 
-aria2::SharedHandle<aria2::OutputFile> getSummaryOut2(const aria2::SharedHandle<aria2::Option>& op)
+std::shared_ptr<aria2::OutputFile> getSummaryOut2(const std::shared_ptr<aria2::Option>& op)
 {
   if(op->getAsBool(aria2::PREF_QUIET)) {
-    return aria2::SharedHandle<aria2::OutputFile>(new aria2::NullOutputFile());
+    return std::shared_ptr<aria2::OutputFile>(new aria2::NullOutputFile());
   } else {
     return aria2::global::cout();
   }
@@ -110,7 +110,7 @@ int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
 
     eaw = new Aria2EmbedWorker();
     eaw->m_tid = task_id;
-    eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
+    eaw->option_ = std::shared_ptr<aria2::Option>(new aria2::Option());
     eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
     // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
     //                  this, SIGNAL(progressState(Aria2StatCollector*)));
@@ -140,7 +140,7 @@ int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
 
     args.push_back(url.toStdString());
 
-    this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
+    // this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
     eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
@@ -159,8 +159,8 @@ int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
 //                                            getSummaryOut(eaw->option_))
 //            .execute();
 //    exitStatus = aria2::MultiUrlRequestInfo(eaw->requestGroups_, eaw->option_,
-//                                            aria2::SharedHandle<aria2::StatCalc>(),
-//                                            aria2::SharedHandle<aria2::OutputFile>()).execute();
+//                                            std::shared_ptr<aria2::StatCalc>(),
+//                                            std::shared_ptr<aria2::OutputFile>()).execute();
 
     return 0;
 }
@@ -186,7 +186,7 @@ int Aria2EmbedManager::pauseTask(int task_id)
 /////
 void overrideWithEnv2
 (aria2::Option& op,
- const aria2::SharedHandle<aria2::OptionParser>& optionParser,
+ const std::shared_ptr<aria2::OptionParser>& optionParser,
  const aria2::Pref* pref,
  const std::string& envName)
 {
@@ -203,11 +203,11 @@ void overrideWithEnv2
   }
 }
 
-
+/*
 int Aria2EmbedManager::_option_processing(aria2::Option& op, std::vector<std::string>& uris,
                        int argc, char* argv[])
 {
-    const aria2::SharedHandle<aria2::OptionParser>& oparser = aria2::OptionParser::getInstance();
+    const std::shared_ptr<aria2::OptionParser>& oparser = aria2::OptionParser::getInstance();
   try {
     bool noConf = false;
     std::string ucfname;
@@ -344,12 +344,13 @@ int Aria2EmbedManager::_option_processing(aria2::Option& op, std::vector<std::st
 
   return 0;
 }
+*/
 
 void Aria2EmbedManager::onWorkerFinished()
 {
     int tid;
     Aria2EmbedWorker *eaw = static_cast<Aria2EmbedWorker*>(sender());
-    aria2::SharedHandle<aria2::RequestGroup> rg;
+    std::shared_ptr<aria2::RequestGroup> rg;
 
     tid = eaw->m_tid;
     for (int i = 0; i < eaw->requestGroups_.size(); ++i) {
@@ -535,24 +536,33 @@ void Aria2EmbedWorker::run()
 //                                            getStatCalc(this->option_),
 //                                            getSummaryOut(this->option_))
 
-    aria2::SharedHandle<aria2::UriListParser> ulp;
-    aria2::SharedHandle<aria2::DownloadEngine> e;
-    this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-                                                    statCalc_, getSummaryOut2(this->option_), ulp));
+    std::shared_ptr<aria2::UriListParser> ulp;
+    std::shared_ptr<aria2::DownloadEngine> e;
+
+    this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_, ulp));
+    exit_status = this->muri->prepare();
+    this->muri->getDownloadEngine()->setStatCalc(std::move(this->statCalc_));
+
     // aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
     // statCalc_, getSummaryOut(this->option_), ulp);
     // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
     //                                         statCalc_, getSummaryOut(this->option_), ulp)
     //         .execute();
-    exitStatus = this->muri->execute();
+    try {
+        muri->getDownloadEngine()->run();
+    } catch(aria2::RecoverableException& e) {
+        // A2_LOG_ERROR_EX(EX_EXCEPTION_CAUGHT, e);
+    }
+    exitStatus = muri->getResult();
     exit_status = exitStatus;
 
-    e = muri->getDownloadEngine();
+    // e = muri->getDownloadEngine();
+    muri->getDownloadEngine();
 
     // statCalc_->calculateStat(e.get());
 
     for (int i = 0; i < this->requestGroups_.size(); ++i) {
-        aria2::SharedHandle<aria2::RequestGroup> rg = this->requestGroups_.at(i);
+        std::shared_ptr<aria2::RequestGroup> rg = this->requestGroups_.at(i);
         qLogx()<<rg->downloadFinished()<<exit_status;
     }
 }
