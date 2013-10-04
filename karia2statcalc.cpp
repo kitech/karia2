@@ -109,6 +109,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
             // aria2::SharedHandle<aria2::RequestGroup> rg2 = *it;
             std::pair<aria2::a2_gid_t, aria2::SharedHandle<aria2::RequestGroup> > rg2 = *it;
             this->setBaseStat(e, rg2.second, sclt);
+            this->setServersStat(e, rg2.second, sclt);
 
             stat = rg2.second->calculateStat();
 
@@ -116,6 +117,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
             memcpy(pstat, &stat, sizeof(aria2::TransferStat));
             sclt->tasksStat.insert(rg2.first, pstat); // gid => stat
 
+            // stkey
             this->poolCounter.testAndSetOrdered(INT_MAX, 1);
             stkey = this->poolCounter.fetchAndAddRelaxed(1);
             if (this->statPool.contains(stkey)) {
@@ -129,6 +131,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
                    << stat.sessionDownloadLength << rg2.first
                    <<rg2.second->getTotalLength() << rg2.second->getCompletedLength()
                    << rg2.second->getNumConnection()
+                   <<"pss:"<<(sm)<<pss.size()
                 ;
             
             emit this->progressStat(stkey);
@@ -146,7 +149,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
         } else {
             this->statPool.insert(stkey, sclt);
         }
-        qLogx()<<"maybe finished, hoho.";
+        qLogx()<<"maybe finished, hoho." << sclt->errorCode;
         emit this->progressStat(stkey);
     }
 
@@ -283,12 +286,15 @@ int Karia2StatCalc::setBaseStat(const aria2::DownloadEngine* e, aria2::SharedHan
     const unsigned char *bfptr;
     int bflen;
 
+    stats->sessionId = e->getSessionId();
+
     ps = rg->getPieceStorage();
     sm = rg->getSegmentMan();
     if (sm.get())
         pss = sm->getPeerStats();
     dctx = rg->getDownloadContext();
 
+    sclt->state = rg->getState();
     sclt->gid = rg->getGID();
     sclt->totalLength = rg->getTotalLength();
     sclt->completedLength = rg->getCompletedLength();
@@ -373,10 +379,43 @@ int Karia2StatCalc::setServersStat(const aria2::DownloadEngine* e, aria2::Shared
     aria2::SharedHandle<aria2::PeerStat> psts;
     aria2::SharedHandle<aria2::DownloadContext> dctx;
     std::deque<aria2::SharedHandle<aria2::RequestGroup> >::iterator it;
+    aria2::SharedHandle<aria2::MetadataInfo> metaInfo;
+    std::vector<aria2::SharedHandle<aria2::FileEntry> > fileEntries;
+    std::vector<std::string> uris;
 
     const unsigned char *bfptr;
     int bflen;
 
+    dctx = rg->getDownloadContext();
+
+    sm = rg->getSegmentMan();
+    if (!sm) {
+        return 0;
+    }
+
+    fileEntries = dctx->getFileEntries();
+    if (!fileEntries.empty()) {
+        fileEntries.at(0)->getUris(uris);
+    }
+
+    pss = sm->getPeerStats();
+    for (int i = 0; i < pss.size(); i++) {
+        psts = pss.at(i);
+        
+        Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
+        metaInfo = rg->getMetadataInfo();
+        servInfo.uri = metaInfo ? metaInfo->getUri() : "";
+        servInfo.uri = servInfo.uri.empty() ? (uris.empty() ? "" : uris.at(0)) : servInfo.uri;
+        servInfo.downloadSpeed = psts->calculateDownloadSpeed();
+        servInfo.state = psts->getStatus();
+        servInfo.hostname = psts->getHostname();
+        servInfo.protocol = psts->getProtocol();
+
+        stats->server_stats.servers.push_back(servInfo);
+
+        qLogx()<<"servinfo:"<<(metaInfo)<<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
+               << servInfo.hostname.c_str() << servInfo.protocol.c_str();
+    }
 
     return 0;
 }

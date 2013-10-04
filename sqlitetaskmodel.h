@@ -38,11 +38,11 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
-	virtual bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
-	virtual bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() ) ;
+	virtual bool setData (const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
+	virtual bool insertRows (int row, int count, const QModelIndex & parent = QModelIndex());
+	virtual bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex(), bool persistRemove = true);
 
-    bool moveTasks(int srcCatId, int destCatId, QModelIndexList &mil);
+    bool moveTasks(int srcCatId, int destCatId, QModelIndexList &mil, bool persistRemove = true);
 
 public slots:
 	//inherient

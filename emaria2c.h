@@ -1,7 +1,7 @@
 ﻿// emaria2c.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2012 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-23 06:54:26 -0700
 // Version: $Id: 631840f7a796aed45a01e69179cd07f9274ec520 $
@@ -25,12 +25,17 @@ class EAria2Man;
 class Karia2StatCalc;
 class Aria2StatCollector;
 
+namespace aria2 {
+    class MultiUrlRequestInfo;
+}
+
 namespace ng {
     namespace stat {
         enum {
             task_id=1, gid, total_length, completed_length, completed_percent, download_speed, upload_speed,
-            bitfield, piece_length, num_pieces, num_connections, eta, num_active, num_waiting, num_stopped,
-            error_code,
+            bitfield, hex_bitfield, piece_length, num_pieces, num_connections, eta, str_eta,
+            num_active, num_waiting, num_stopped,
+            error_code, error_string, status,
         };
     };
 };
@@ -93,8 +98,6 @@ signals:
 protected:
     QHash<int, EAria2Worker*> m_tasks; // tid => w
     QHash<EAria2Worker*, int> m_rtasks; // w => tid
-    int m_argc;
-    char m_argv[32][256];
 
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;
@@ -113,8 +116,10 @@ public:
 
 protected:
     friend class EAria2Man;
+    std::vector<std::string> args;
 
     int m_tid;
+    aria2::SharedHandle<aria2::MultiUrlRequestInfo> muri;
     std::vector<aria2::SharedHandle<aria2::RequestGroup> > requestGroups_;
 
     aria2::SharedHandle<aria2::Option> option_;

@@ -31,7 +31,7 @@ so, delete this exception statement from your version.  */
    tree.  To test, also use -DTEST.  */
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+//# include <config.h>
 # ifdef HAVE_STRING_H
 #  include <string.h>
 # else

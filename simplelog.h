@@ -11,24 +11,30 @@
 #ifndef _SIMPLE_LOG_H_
 #define _SIMPLE_LOG_H_
 
-#include <QtCore>
+#include <unistd.h>
+#include <sys/syscall.h>
+#include <pthread.h>
 
-#include "boost/smart_ptr.hpp"
+#include <QDebug>
+#include <QHash>
+#include <QDateTime>
+#include <QFile>
+
 
 // 好象这个log功能还有问题，非qt的多线程有时会崩溃。
-class FileLog // : public QObject
+class FileLog
 {
-//    Q_OBJECT;
 public:
     virtual ~FileLog();
-    static boost::shared_ptr<FileLog> instance();
+    static FileLog *instance();
     QFile *stream();
 
 protected:
     explicit FileLog();
 
 private:
-    static boost::shared_ptr<FileLog> mInst;
+    static pthread_mutex_t mIMutex;
+    static FileLog *mInst;
     QFile* mStream;
 };
 

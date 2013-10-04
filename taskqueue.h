@@ -119,7 +119,7 @@ public slots:
 	QString getRealUrlModel(int pTaskId,int cat_id);
 	int getActiveSegCount(int pTaskId, int cat_id);
 
-    QBitArray getCompletionBitArray(int taskId, QString &bitStr);
+    QBitArray getCompletionBitArray(int taskId, QString &bitStr, QString &hexBitStr);
 
     // void onTaskLogArrived(QString cuid, QString itime, QString log);
 

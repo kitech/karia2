@@ -482,6 +482,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     int totalLength, completedLength, completedPercent,
         downloadSpeed, uploadSpeed;
 
+
     totalLength = stats.value(ng::stat::total_length).toInt();
     completedLength = stats.value(ng::stat::completed_length).toInt();
     completedPercent = stats.value(ng::stat::completed_percent).toInt();
@@ -491,10 +492,14 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     int numConnections = stats.value(ng::stat::num_connections).toInt();
     int numPieces = stats.value(ng::stat::num_pieces).toInt();
     int pieceLength = stats.value(ng::stat::piece_length).toInt();
-    QString str_bitfield = stats.value(ng::stat::bitfield).toString();
+    QString str_bitfield = stats.value(ng::stat::hex_bitfield).toString();
     quint64 gid = stats.value(ng::stat::gid).toULongLong();
+    QString status = stats.value(ng::stat::status).toString();
+    int eta = stats.value(ng::stat::eta).toInt();
+    QString str_eta = stats.value(ng::stat::str_eta).toString();
+    QString error_string = stats.value(ng::stat::error_string).toString();
 
-    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed;
+    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
 
 	QModelIndex idx , idx2,idx3;
 	quint64 fsize , abtained ;
@@ -515,7 +520,9 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
 
     if (mil.count() == 1) {
         idx = mil.at(0);
-        if (completedLength == totalLength) {
+        if (completedLength == 0 && totalLength == 0) {
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
+        } else if (completedLength == totalLength && completedLength > 0) {
             // mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
             // // fix no need download data case, the file is already downloaded, user readd it.
             // if (files.count() > 0 
@@ -525,16 +532,18 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             // }
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), "complete");
+            mdl->setData(mdl->index(idx.row(), ng::tasks::comment), error_string);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
             mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
                          QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), QString::number(0));
         } else {
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), downloadSpeed);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), sts["status"]);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
             mdl->setData(mdl->index(idx.row(), ng::tasks::active_block_count), numConnections);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), totalLength - completedLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_block_count), numPieces);
@@ -543,6 +552,8 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), completedPercent);
             mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid), gid);
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), str_bitfield);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), str_eta);
+
         }
 
         // 计算完成的pieces
@@ -1186,7 +1197,7 @@ int TaskQueue::getActiveSegCount(int pTaskId, int cat_id)
 // 	// this->mTaskId = task_id ;
 // }
 
-QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
+QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr, QString &hexBitStr)
 {
 	QModelIndex idx;
     QString bitString;
@@ -1202,18 +1213,14 @@ QBitArray TaskQueue::getCompletionBitArray(int taskId, QString &bitStr)
 
     if (mil.count() == 1) {
         idx = mil.at(0);
-        bitStr = bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
+        bitString = mdl->data(mdl->index(idx.row(), ng::tasks::total_packet)).toString();
         numPieces = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
         // qLogx()<<__FUNCTION__<<numPieces<<bitString;
 
-        QStringList bitList = bitString.split(",");
-        QBitArray ba(bitList.length());
-        if (!bitString.isEmpty()) {
-            for (int i = 0; i < bitList.count(); i++) {
-                ba.setBit(i, bitList.at(i).at(0) == '1');
-            }
-        }
+        QBitArray ba;
         // ba.resize(qMin(bitList.length(), numPieces));
+        ba = this->fromHexBitString(bitString);
+        bitStr = this->fromBitArray(ba);
         ba.resize(numPieces);
         // qLogx()<<"string is "<<bitString<<" BS:"<<ba.size()<<ba;
         // dumpBitArray(ba);

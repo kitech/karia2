@@ -32,6 +32,7 @@ public:
     virtual ~TaskBallMapWidget();
 
 public slots:
+    void startPaint(bool start);
 	//用于更新任务完成状态的槽
 	void onRunTaskCompleteState(int taskId, bool pSwitch = false);	//pSwitch 是否强制转换到这个任务图。
 

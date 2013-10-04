@@ -3,10 +3,10 @@
 ######################################################################
 
 TEMPLATE = app
-INCLUDEPATH += . ; ../../
+INCLUDEPATH += . ../../
 LIBS += ../../libmaia.a
 
-TARGET = 
+TARGET = server
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += xml network

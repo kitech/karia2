@@ -72,7 +72,6 @@ public:
     void reset() {
         tid = 0;
         gid = 0;
-        status.clear();
 
         totalLength = 0;
         completedLength = 0;
@@ -90,9 +89,11 @@ public:
     }
 
     ////////
+    std::string sessionId;
     int tid;
     int64_t  gid;
-    std::string status;
+    std::string uri;
+    int state;
 
     uint64_t totalLength;
     uint64_t completedLength;
@@ -107,6 +108,7 @@ public:
     uint32_t numPieces;
     uint32_t connections;
     int errorCode;
+
 
     std::vector<int64_t> followedBy;
     int64_t belongsTo;
@@ -143,13 +145,16 @@ public:
 
         int index;
 
-        class ServerList {
+        class ServerInfo {
         public:
             std::string uri;
             std::string currentUri;
             int downloadSpeed;
+            int state; // 0 = IDLE, 1 = ACTIVE
+            std::string hostname;
+            std::string protocol;
         };
-        std::vector<ServerList> servers;
+        std::vector<ServerInfo> servers;
     };
     ServerStatCollector server_stats;
 

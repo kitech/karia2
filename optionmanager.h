@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-05-05 14:01:50 +0800
-// Version: $Id: a988da3b02643148cc0f56a12afbedc58cb26fb4 $
+// Version: $Id$
 // 
 
 #include <QtCore>

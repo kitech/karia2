@@ -101,6 +101,11 @@ void TaskOption::setDefaultValue()
 	mProxyTypeMedia = 0;	
 }
 
+const QString TaskOption::getSaveDir()
+{
+    return this->mSavePath;
+}
+
 void TaskOption::dump()
 {
 	//general

@@ -13,8 +13,8 @@
 #include <QRadialGradient>
 #include <QtGui>
 
+#include "simplelog.h"
 #include "taskballmapwidget.h"
-
 #include "taskqueue.h"
 
 TaskBallMapWidget * TaskBallMapWidget::hWnd = 0 ;
@@ -27,7 +27,7 @@ TaskBallMapWidget::TaskBallMapWidget(QWidget *parent)
 	// mBlockSize = 50 * 1024 ;	// 50K
 	this->mCurrentTaskId = -8888 ;
 	this->setMinimumSize(parent->size().width() , parent->size().height());
-	qDebug()<< parent->size() ;
+	qLogx()<< parent->size() ;
 	// this->mBallRadius = 10 ;
     this->mBallRadius = 7;
 
@@ -65,7 +65,7 @@ TaskBallMapWidget * TaskBallMapWidget::instance(QWidget * parent)
 //         }
 //         buff[i+1] = '\0';
 //     }
-//     qDebug()<<ba.size()<<QString(buff);
+//     qLogx()<<ba.size()<<QString(buff);
 // }
 
 /**
@@ -75,7 +75,7 @@ TaskBallMapWidget * TaskBallMapWidget::instance(QWidget * parent)
  */
 void TaskBallMapWidget::paintEvent(QPaintEvent * event ) 
 {
-	// qDebug()<< __FUNCTION__ <<this->mBallBit.size()<<this->mBallMap.size()<<this->mCurrentTaskId;
+	// qLogx()<< __FUNCTION__ <<this->mBallBit.size()<<this->mBallMap.size()<<this->mCurrentTaskId;
 	QBrush brush(QColor(0, 0, 0));
 
 	//依靠currtaskid 判断是否需要重绘
@@ -83,7 +83,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
 		return;
 	}
     if (this->mBallBit.size() <= 0) {
-        qDebug()<<__FUNCTION__<<QString("No bit set,");
+        qLogx()<<__FUNCTION__<<QString("No bit set,");
         // leave the widget raw clear
         return;
     }
@@ -99,7 +99,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
 	int height = this->mBallMap.height() ;
 
 	if (width != this->mBallMap.width()) {
-		//qDebug()<< "change to width:" << width ;
+		//qLogx()<< "change to width:" << width ;
 		//需要改变图象大小。宽度
 		this->mBallMap = QImage(width , this->mBallMap.height() , QImage::Format_ARGB32_Premultiplied);
 		//this->mBallMap = this->mBallMap.scaledToWidth( width ) ; 
@@ -115,7 +115,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
 			height = ( height / (this->mBallRadius*2) ) * ( this->mBallRadius * 2);
 		}
 
-		//qDebug()<< "change to height: " << height ;
+		//qLogx()<< "change to height: " << height ;
 		//需要改变图象大小。高度。
 		//this->mBallMap = this->mBallMap.scaledToHeight( (this->mCurrentLength / (this->mBlockSize))/((width/(this->mBallRadius*2)) ) * ( this->mBallRadius*2 ));
 		this->mBallMap =  QImage(width, height, QImage::Format_ARGB32_Premultiplied);
@@ -126,7 +126,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
 	}
     //  ball ball 48 0 // 0 true 600 0 
     
-    // qDebug()<<__FUNCTION__<<this->mBallBit.size()<<this->mBallMap.isNull()<<width<<height;
+    // qLogx()<<__FUNCTION__<<this->mBallBit.size()<<this->mBallMap.isNull()<<width<<height;
     if (this->mBallMap.isNull()) {
         /*
           if not check, show this error:
@@ -162,7 +162,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
         (this->mBallBit.size() / mcol) : (this->mBallBit.size() / mcol + 1);
 	int mtb = this->mBallBit.size();	//所有球的个数。
 
-    // qDebug()<<"rows:"<<mrow<<"cols:"<<mcol;
+    // qLogx()<<"rows:"<<mrow<<"cols:"<<mcol;
     for (int row = 0; row < mrow; row++) {
         int sballno;
         
@@ -178,7 +178,7 @@ void TaskBallMapWidget::paintEvent(QPaintEvent * event )
             bx = col * this->mBallRadius * 2; //本求块的右上角X值。
             by = row * this->mBallRadius * 2; //本求块的右上角Y值。
 
-			//qDebug()<<"x,y,w"<<bx<<by<<(this->mBallRadius*2);
+			//qLogx()<<"x,y,w"<<bx<<by<<(this->mBallRadius*2);
 			radgrad.setCenter(bx+this->mBallRadius, by + this->mBallRadius);	//梯度参数设置
 			radgrad.setRadius(this->mBallRadius * 2 );
 			radgrad.setFocalPoint(bx+this->mBallRadius/2,by+this->mBallRadius/2);
@@ -200,12 +200,21 @@ void TaskBallMapWidget::resizeEvent(QResizeEvent * event)
 
 }
 
+void TaskBallMapWidget::startPaint(bool start)
+{
+    if (start && !this->mSwithTimer.isActive()) {
+        mSwithTimer.start(1000); // can start manually        
+    }
 
+    if (!start && this->mSwithTimer.isActive()) {
+        mSwithTimer.stop();
+    }
+}
 
 //用于更新任务完成状态的槽
 void TaskBallMapWidget::onRunTaskCompleteState(int taskId, bool pSwitch) 	//pSwitch 是否强制转换到这个任务图。
 {
-	// qDebug()<< __FUNCTION__ <<pSwitch;
+	// qLogx()<< __FUNCTION__ <<pSwitch;
 	if (pSwitch) {
 		this->mCurrentTaskId = taskId;
 	}
@@ -216,36 +225,36 @@ void TaskBallMapWidget::onRunTaskCompleteState(int taskId, bool pSwitch) 	//pSwi
 
 	//画图。
     // this->mBallBit = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId);
-    // qDebug()<<__FUNCTION__<<this->mCurrentTaskId<<this->mBallBit;
+    // qLogx()<<__FUNCTION__<<this->mCurrentTaskId<<this->mBallBit;
     // // dumpBitArray(this->mBallBit);
 
 	// this->update();
 
-	//qDebug()<< __FUNCTION__ <<" return";
+	//qLogx()<< __FUNCTION__ <<" return";
 }
 
 
 void TaskBallMapWidget::onSwitchState() 	//timer 超时调用槽
 {
     if (this->mTaskMan == NULL) {
-        qDebug()<<"instance TaskQueue";
+        qLogx()<<"instance TaskQueue";
         this->mTaskMan = TaskQueue::instance();
     }
     Q_ASSERT(this->mTaskMan != NULL);
     // if (this->mTaskMan != NULL) {
-    QString bitStr;
-    QBitArray ba = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId, bitStr);
+    QString bitStr, hexBitStr;
+    QBitArray ba = this->mTaskMan->getCompletionBitArray(this->mCurrentTaskId, bitStr, hexBitStr);
     // dumpBitArray(ba);
-    // qDebug()<<__FUNCTION__<<(ba == this->mBallBit);
+    // qLogx()<<__FUNCTION__<<(ba == this->mBallBit);
     if (ba != this->mBallBit) {
-        this->setToolTip(bitStr);
+        this->setToolTip(QString("%1,%2").arg(hexBitStr).arg(bitStr));
         this->mBallBit = ba;
         this->update();
     }
 
     // this->repaint();
     // }
-	//qDebug()<< __FUNCTION__ <<" return";
+	//qLogx()<< __FUNCTION__ <<" return";
 }
 
 //设置每个球块所表示的文件块大小。

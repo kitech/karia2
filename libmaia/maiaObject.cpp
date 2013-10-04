@@ -72,7 +72,7 @@ QDomElement MaiaObject::toXml(QVariant arg) {
 
 	} case QVariant::Bool: {
 	
-		QString textValue = arg.toBool() ? "true" : "false";
+		QString textValue = arg.toBool() ? "1" : "0";
 
 		QDomElement tag = doc.createElement("boolean"); 
 		QDomText text = doc.createTextNode(textValue);
@@ -158,6 +158,11 @@ QVariant MaiaObject::fromXml(const QDomElement &elem) {
 		return QVariant();
 	}
 	
+	// If no type is indicated, the type is string.
+	if(!elem.firstChild().isElement()) {
+		return QVariant(elem.text());
+	}
+	
 	const QDomElement typeElement = elem.firstChild().toElement();	
 	const QString typeName = typeElement.tagName().toLower();
 
@@ -176,6 +181,8 @@ QVariant MaiaObject::fromXml(const QDomElement &elem) {
 		return QVariant(QByteArray::fromBase64( typeElement.text().toLatin1()));
 	else if(typeName == "datetime" || typeName == "datetime.iso8601")
 		return QVariant(QDateTime::fromString(typeElement.text(), "yyyyMMddThh:mm:ss"));
+	else if(typeName == "nil") // Non-standard extension: http://ontosys.com/xml-rpc/extensions.php
+		return QVariant();
 	else if ( typeName == "array" ) {
 		QList<QVariant> values;
 		QDomNode valueNode = typeElement.firstChild().firstChild();
@@ -226,7 +233,7 @@ QString MaiaObject::prepareCall(QString method, QList<QVariant> args) {
 		param.appendChild(toXml(args.at(i)));
 		params.appendChild(param);
 	}
-    // qDebug()<<doc.toString();
+
 	return doc.toString();
 }
 
@@ -253,12 +260,14 @@ QString MaiaObject::prepareResponse(QVariant arg) {
 	return doc.toString();
 }
 
-void MaiaObject::parseResponse(QString response) {
+void MaiaObject::parseResponse(QString response, QNetworkReply* reply) {
 	QDomDocument doc;
 	QVariant arg;
-	if(!doc.setContent(response)) {
-		emit fault(-32700, tr("parse error: response not well formed."));
-        emit fault(-32700, tr("parse error: response not well formed."), this->payload);
+	QString errorMsg;
+	int errorLine;
+	int errorColumn;
+	if(!doc.setContent(response, &errorMsg, &errorLine, &errorColumn)) {
+		emit fault(-32700, QString("parse error: response not well formed at line %1: %2").arg(errorLine).arg(errorMsg), reply, this->payload);
 		delete this;
 		return;
 	}
@@ -267,18 +276,16 @@ void MaiaObject::parseResponse(QString response) {
 		if(!paramNode.isNull()) {
 			arg = fromXml( paramNode.firstChild().toElement() );
 		}
-		emit aresponse(arg);
-        emit aresponse(arg, this->payload);
+		emit aresponse(arg, reply, this->payload);
 	} else if(doc.documentElement().firstChild().toElement().tagName().toLower() == "fault") {
 		const QVariant errorVariant = fromXml(doc.documentElement().firstChild().firstChild().toElement());
 		emit fault(errorVariant.toMap() [ "faultCode" ].toInt(),
-				   errorVariant.toMap() [ "faultString" ].toString());
-		emit fault(errorVariant.toMap() [ "faultCode" ].toInt(),
-				   errorVariant.toMap() [ "faultString" ].toString(), this->payload);
-
+		           errorVariant.toMap() [ "faultString" ].toString(),
+		           reply, this->payload);
 	} else {
-		emit fault(-32600, tr("parse error: invalid xml-rpc. not conforming to spec."));
-        emit fault(-32600, tr("parse error: invalid xml-rpc. not conforming to spec."), this->payload);
+		emit fault(-32600,
+		           tr("parse error: invalid xml-rpc. not conforming to spec."),
+		           reply, this->payload);
 	}
 	delete this;
 	return;

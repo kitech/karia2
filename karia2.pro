@@ -78,7 +78,7 @@ win32 {
 } else {
     INCLUDEPATH += ./aria2-1.16.1/src/ ./aria2-1.16.1/  ./aria2-1.16.1/lib
     LIBS += -L./aria2-1.16.1/src/ -laria2c -L./aria2-1.16.1/deps/wslay/lib/.libs/ -lwslay -L./aria2-1.16.1/intl -lintl
-    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3   -lxml2 -lz -lm
+    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lexpat  -lxml2 -lz -lm
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""
@@ -163,7 +163,13 @@ HEADERS += aboutdialog.h \
            simplelog.h \
            asyncdatabase.h \
            databaseworker.h \
-           emaria2c.h karia2statcalc.h
+           emaria2c.h karia2statcalc.h \
+           aria2manager.h \
+           aria2embedmanager.h \
+           aria2rpcmanager.h \
+           aria2jsonmanager.h \
+           aria2xmlmanager.h \
+           aria2managerfactory.h
 
 win32{
         HEADERS += DiskInfo.h	
@@ -225,7 +231,13 @@ SOURCES += aboutdialog.cpp \
            simplelog.cpp \
            asyncdatabase.cpp \
            databaseworker.cpp \
-           emaria2c.cpp karia2statcalc.cpp # aria2-1.13.0/src/option_processing.cc \
+           emaria2c.cpp karia2statcalc.cpp \ # aria2-1.13.0/src/option_processing.cc \
+           aria2manager.cpp  \
+           aria2embedmanager.cpp \
+           aria2rpcmanager.cpp \
+           aria2jsonmanager.cpp \
+           aria2xmlmanager.cpp \
+           aria2managerfactory.cpp
 
 win32{
         SOURCES += DiskInfo.cpp

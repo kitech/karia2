@@ -1,7 +1,7 @@
 ﻿// emaria2c.cpp ---
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2012 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-23 06:54:12 -0700
 // Version: $Id$
@@ -152,51 +152,64 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     qLogx()<<task_id<<url<<to;
 
     EAria2Worker *eaw;
-    std::vector<std::string> args;
 
     eaw = new EAria2Worker();
     eaw->m_tid = task_id;
     eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
     eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-    // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
-    //                  this, SIGNAL(progressState(Aria2StatCollector*)));
     QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &EAria2Man::onAllStatArrived);
 
+    if (this->m_tasks.contains(task_id)) {
+        qLogx()<<"task already in manager: " << task_id << this->m_tasks[task_id];
+    }
     this->m_tasks[task_id] = eaw;
     this->m_rtasks[eaw] = task_id;
     QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
-    memset(this->m_argv, 0 , sizeof(this->m_argv));
-    this->m_argc = 1;
-    strcpy(this->m_argv[0], "./karia2c");
+    /*
+    memset(eaw->m_argv, 0 , sizeof(eaw->m_argv));
+    eaw->m_argc = 1;
+    strcpy(eaw->m_argv[0], "./karia2c");
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "--max-connection-per-server=%d", 6);
-    this->m_argc++;
+    eaw->m_argc++;
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "--min-split-size=%dM", 1);
-    this->m_argc++;
+    eaw->m_argc++;
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "%s", url.toLatin1().data());
-    this->m_argc++;
+    eaw->m_argc++;
+    */
 
-    args.push_back(url.toStdString());
+    eaw->args.push_back(url.toStdString());
 
-    this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
+    aria2::OptionParser::getInstance()->parseDefaultValues(*eaw->option_.get());
+    // this->_option_processing(*eaw->option_.get(), eaw->args, eaw->m_argc, (char**)eaw->m_argv);
+    eaw->option_->put(aria2::PREF_DIR, to->getSaveDir().toStdString());
+    eaw->option_->put(aria2::PREF_LOG, "/tmp/abc.log");
+    eaw->option_->put(aria2::PREF_LOG_LEVEL, "debug");
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
-    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "20000");
     QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
     eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
     qLogx()<<task_id << ugid;
 
+    // 重新设置aria2的log设置
+    aria2::LogFactory::setLogFile(eaw->option_->get(aria2::PREF_LOG));
+    aria2::LogFactory::setLogLevel(eaw->option_->get(aria2::PREF_LOG_LEVEL));
+    if(eaw->option_->getAsBool(aria2::PREF_QUIET)) {
+        aria2::LogFactory::setConsoleOutput(false);
+    }
+    aria2::LogFactory::reconfigure();
 
     // TODO start in thread 
-    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, args, false, false, true);
+    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, eaw->args, false, false, true);
 
     eaw->start();
 //    aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
@@ -219,7 +232,10 @@ int EAria2Man::pauseTask(int task_id)
         eaw = this->m_tasks.value(task_id);
         Q_ASSERT(eaw->m_tid == task_id);
 
-        eaw->terminate();
+        // eaw->terminate();
+        // 这个可用，比直接终止(terminate)掉要好
+        // eaw->muri->getDownloadEngine()->getRequestGroupMan()->halt();
+        eaw->muri->getDownloadEngine()->getRequestGroupMan()->forceHalt();
     }
 
     return 0;
@@ -287,6 +303,7 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
     // }
 
     oparser->parseDefaultValues(op);
+    return 0; // return for simple
 
     if(!noConf) {
       std::string cfname =
@@ -407,6 +424,7 @@ void EAria2Man::onWorkerFinished()
         case aria2::error_code::REMOVED:
             break;
         default:
+            // error
             break;
         }
 
@@ -475,11 +493,14 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat::upload_speed] = sclt->uploadSpeed;
     stats[ng::stat::gid] = (qulonglong)sclt->gid;
     stats[ng::stat::num_connections] = sclt->connections;
-    stats[ng::stat::bitfield] = QString(sclt->bitfield.c_str());
+    stats[ng::stat::hex_bitfield] = QString(sclt->bitfield.c_str());
     stats[ng::stat::num_pieces] = sclt->numPieces;
     stats[ng::stat::piece_length] = sclt->pieceLength;
     stats[ng::stat::eta] = sclt->eta;
+    stats[ng::stat::str_eta] = QString::fromStdString(aria2::util::secfmt(sclt->eta));
     stats[ng::stat::error_code] = sclt->errorCode;
+    stats[ng::stat::status] = sclt->state == 1 ? "active" : "waiting"; 
+    // ready, active, waiting, complete, removed, error, pause
     
     emit this->taskStatChanged(sclt->tid, stats);
 
@@ -491,10 +512,10 @@ bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     QList<QMap<QString, QString> > servers;
     QMap<QString, QString> server;
 
-    for (int i = 0; i < sclt->connections; i++) {
-        server["index"] = QString("%1").arg(i);
-        server["currentUri"] = "http://haha.com/abc.html.tar.gz";
-        server["downloadSpeed"] = QString("%1").arg(sclt->downloadSpeed);
+    for (int i = 0; i < sclt->server_stats.servers.size(); i++) {
+        server["index"] = QString("%1,%2").arg(i).arg(sclt->server_stats.servers.at(i).state);
+        server["currentUri"] = sclt->server_stats.servers.at(i).uri.c_str();
+        server["downloadSpeed"] = QString("%1").arg(sclt->server_stats.servers.at(i).downloadSpeed);
 
         servers.append(server);
         server.clear();
@@ -505,6 +526,10 @@ bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
 
 bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
 {
+    QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
+
+    aria2::GroupId::clear();
+
     switch(eaw->exit_status) {
     case aria2::error_code::FINISHED:
         emit this->taskFinished(eaw->m_tid, eaw->exit_status);
@@ -514,14 +539,27 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
         eaw->deleteLater();    
         break;
     case aria2::error_code::IN_PROGRESS:
+        stats[ng::stat::error_code] = eaw->exit_status;
+        stats[ng::stat::error_string] = QString::fromStdString(aria2::fmt(MSG_DOWNLOAD_NOT_COMPLETE, tid, ""));
+        stats[ng::stat::status] = "pause";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
         break;
     case aria2::error_code::REMOVED:
         break;
+    case aria2::error_code::RESOURCE_NOT_FOUND:
     default:
+        stats[ng::stat::error_code] = eaw->exit_status;
+        stats[ng::stat::error_string] = QString(MSG_RESOURCE_NOT_FOUND);
+        stats[ng::stat::status] = "error";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
         break;
     }
-
-    aria2::GroupId::clear();
 
     return true;
 }
@@ -560,15 +598,17 @@ void EAria2Worker::run()
 
     aria2::SharedHandle<aria2::UriListParser> ulp;
     aria2::SharedHandle<aria2::DownloadEngine> e;
-    aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
-                                    statCalc_, getSummaryOut(this->option_), ulp);
+    this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
+                                                    statCalc_, getSummaryOut(this->option_), ulp));
+    // aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
+    // statCalc_, getSummaryOut(this->option_), ulp);
     // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
     //                                         statCalc_, getSummaryOut(this->option_), ulp)
     //         .execute();
-    exitStatus = muri.execute();
+    exitStatus = this->muri->execute();
     exit_status = exitStatus;
 
-    e = muri.getDownloadEngine();
+    e = muri->getDownloadEngine();
 
     // statCalc_->calculateStat(e.get());
 
