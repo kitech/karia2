@@ -94,6 +94,13 @@ icons/arrow-down.png -text
 icons/arrow-up.png -text
 icons/bookmarks.png -text
 icons/configure.png -text
+icons/crystalsvg/16x16/filesystems/folder_violet_open.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/down.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/messagebox_critical.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/messagebox_info.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/presence_online.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/toggle_log.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/up.png -text svneol=unset#image/png
 icons/document-multiple.png -text
 icons/document-open-folder.png -text
 icons/document-properties.png -text

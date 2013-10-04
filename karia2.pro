@@ -14,7 +14,7 @@ TEMPLATE = app
 TARGET = karia2
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += .
-QT = core gui xml network sql widgets printsupport
+QT = core gui xml network sql widgets
 
 win32 {
       CONFIG += release
@@ -23,6 +23,7 @@ win32 {
    #QMAKE_CC = clang
    #QMAKE_CXX = clang++
    QMAKE_CXXFLAGS += -std=c++11
+   QMAKE_LFLAGS += -g -O2 -std=c++11
 }
 
 DESTDIR = ./bin
@@ -79,7 +80,7 @@ win32 {
     ARIA2_ROOT = ./aria2-1.18.0
     INCLUDEPATH += $$ARIA2_ROOT/src/ $$ARIA2_ROOT  $$ARIA2_ROOT/lib $$ARIA2_ROOT/src/includes
     LIBS += -L$$ARIA2_ROOT/src/ -laria2 -L$$ARIA2_ROOT/deps/wslay/lib/.libs/ -lwslay
-    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lexpat  -lxml2 -lz -lm
+    LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lxml2 -lz -lm
 }
 
 DEFINES += "KARIA2_VERSION=\\\"$$VERSION\\\""

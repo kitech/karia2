@@ -60,8 +60,6 @@ public slots:
     void onWorkerFinished();
 
 private:
-    // int _option_processing(aria2::Option& op, std::vector<std::string>& uris,
-    //                    int argc, char* argv[]);
 
 signals:
 //    void progressStat(int tid, quint32 gid, quint64 total_length,

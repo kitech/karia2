@@ -115,6 +115,10 @@ public slots:
 	void onDeleteTaskAll();
 	void onTaskDone(int pTaskId, int code);	//
     void onShutdown();
+
+    void onLogAppended(const QString &path);
+    
+
 	//
 	void onCopyUrlToClipboard();
 
@@ -222,7 +226,8 @@ private:
 
     //////// using embeded aria2c procedue
     EAria2Man *mEAria2Man;
-
+    QFile *mLogFile;
+    QFileSystemWatcher *mLogWatcher;
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
 
