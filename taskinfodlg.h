@@ -47,6 +47,7 @@ public:
         this->mOldUrl = this->mTaskUrl;
         this->mTaskUrl = url;
     }
+    const QString getSaveDir();
 	
 	void dump();
 

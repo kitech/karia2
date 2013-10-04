@@ -149,7 +149,7 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
         } else {
             this->statPool.insert(stkey, sclt);
         }
-        qLogx()<<"maybe finished, hoho.";
+        qLogx()<<"maybe finished, hoho." << sclt->errorCode;
         emit this->progressStat(stkey);
     }
 

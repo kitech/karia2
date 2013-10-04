@@ -499,7 +499,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     QString str_eta = stats.value(ng::stat::str_eta).toString();
     QString error_string = stats.value(ng::stat::error_string).toString();
 
-    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed;
+    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
 
 	QModelIndex idx , idx2,idx3;
 	quint64 fsize , abtained ;
@@ -520,7 +520,9 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
 
     if (mil.count() == 1) {
         idx = mil.at(0);
-        if (completedLength == totalLength) {
+        if (completedLength == 0 && totalLength == 0) {
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
+        } else if (completedLength == totalLength && completedLength > 0) {
             // mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
             // // fix no need download data case, the file is already downloaded, user readd it.
             // if (files.count() > 0 

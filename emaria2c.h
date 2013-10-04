@@ -98,8 +98,6 @@ signals:
 protected:
     QHash<int, EAria2Worker*> m_tasks; // tid => w
     QHash<EAria2Worker*, int> m_rtasks; // w => tid
-    int m_argc;
-    char m_argv[32][256];
 
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;
@@ -118,6 +116,7 @@ public:
 
 protected:
     friend class EAria2Man;
+    std::vector<std::string> args;
 
     int m_tid;
     aria2::SharedHandle<aria2::MultiUrlRequestInfo> muri;

@@ -152,53 +152,55 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     qLogx()<<task_id<<url<<to;
 
     EAria2Worker *eaw;
-    std::vector<std::string> args;
 
     eaw = new EAria2Worker();
     eaw->m_tid = task_id;
     eaw->option_ = aria2::SharedHandle<aria2::Option>(new aria2::Option());
     eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-    // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
-    //                  this, SIGNAL(progressState(Aria2StatCollector*)));
     QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &EAria2Man::onAllStatArrived);
 
+    if (this->m_tasks.contains(task_id)) {
+        qLogx()<<"task already in manager: " << task_id << this->m_tasks[task_id];
+    }
     this->m_tasks[task_id] = eaw;
     this->m_rtasks[eaw] = task_id;
     QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
-    memset(this->m_argv, 0 , sizeof(this->m_argv));
-    this->m_argc = 1;
-    strcpy(this->m_argv[0], "./karia2c");
+    /*
+    memset(eaw->m_argv, 0 , sizeof(eaw->m_argv));
+    eaw->m_argc = 1;
+    strcpy(eaw->m_argv[0], "./karia2c");
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "--max-connection-per-server=%d", 6);
-    this->m_argc++;
+    eaw->m_argc++;
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "--min-split-size=%dM", 1);
-    this->m_argc++;
+    eaw->m_argc++;
 
-    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
+    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
              "%s", url.toLatin1().data());
-    this->m_argc++;
+    eaw->m_argc++;
+    */
 
-    args.push_back(url.toStdString());
+    eaw->args.push_back(url.toStdString());
 
-    this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
-
-    eaw->option_->put(aria2::PREF_DIR, QString("%1%2").arg(getenv("HOME")).arg("/NGDownload").toStdString());
+    aria2::OptionParser::getInstance()->parseDefaultValues(*eaw->option_.get());
+    // this->_option_processing(*eaw->option_.get(), eaw->args, eaw->m_argc, (char**)eaw->m_argv);
+    eaw->option_->put(aria2::PREF_DIR, to->getSaveDir().toStdString());
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
-    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "20000");
     QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
     eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
     qLogx()<<task_id << ugid;
 
 
     // TODO start in thread 
-    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, args, false, false, true);
+    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, eaw->args, false, false, true);
 
     eaw->start();
 //    aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
@@ -292,6 +294,7 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
     // }
 
     oparser->parseDefaultValues(op);
+    return 0; // return for simple
 
     if(!noConf) {
       std::string cfname =
@@ -412,6 +415,7 @@ void EAria2Man::onWorkerFinished()
         case aria2::error_code::REMOVED:
             break;
         default:
+            // error
             break;
         }
 
@@ -537,6 +541,7 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     case aria2::error_code::REMOVED:
         break;
     case aria2::error_code::RESOURCE_NOT_FOUND:
+    default:
         stats[ng::stat::error_code] = eaw->exit_status;
         stats[ng::stat::error_string] = QString(MSG_RESOURCE_NOT_FOUND);
         stats[ng::stat::status] = "error";
@@ -544,8 +549,6 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
         this->m_tasks.remove(eaw->m_tid);
         this->m_rtasks.remove(eaw);
         eaw->deleteLater();
-        break;
-    default:
         break;
     }
 
