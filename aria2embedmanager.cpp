@@ -1,11 +1,12 @@
-﻿// emaria2c.cpp ---
+// aria2embedmanager.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
-// Created: 2011-10-23 06:54:12 -0700
+// Created: 2013-02-25 21:56:59 +0000
 // Version: $Id$
 // 
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -57,72 +58,25 @@
 #include "NullStatCalc.h"
 #include "NullOutputFile.h"
 
-#include "emaria2c.h"
+// #include "emaria2c.h"
 #include "karia2statcalc.h"
 
 #include "simplelog.h"
 #include "taskinfodlg.h"
 
-void test_emaria2c()
+#include "aria2embedmanager.h"
+
+Aria2EmbedManager::Aria2EmbedManager()
+    : Aria2Manager()
 {
-    std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
-    aria2::Option *opt;
-
-
-    // aria2::DownloadEngineHandle de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
-    std::shared_ptr<aria2::DownloadEngine> de = aria2::DownloadEngineFactory().newDownloadEngine(opt, requestGroups_);
 }
 
-QMutex EAria2Man::m_inst_mutex;
-EAria2Man *EAria2Man::m_instance = NULL;
-EAria2Man::EAria2Man(QObject *parent)
-    :QThread(parent)
-{
 
+Aria2EmbedManager::~Aria2EmbedManager()
+{
 }
 
-EAria2Man::~EAria2Man()
-{
-    qLogx()<<"";
-    int stkey;
-    Aria2StatCollector *sclt;
-    QPair<int, Aria2StatCollector*> elem;
-
-    while (!this->stkeys.empty()) {
-        elem = this->stkeys.dequeue();
-        stkey = elem.first;
-        sclt = elem.second;
-
-        if (sclt != NULL) {
-            delete sclt;
-        }
-    }
-}
-
-EAria2Man *EAria2Man::instance()
-{
-    if (EAria2Man::m_instance == NULL) {
-        EAria2Man::m_inst_mutex.lock();
-        if (EAria2Man::m_instance == NULL) {
-            EAria2Man::m_instance = new EAria2Man();
-        }
-        EAria2Man::m_inst_mutex.unlock();
-    }
-    return EAria2Man::m_instance;
-}
-
-//int EAria2Man::addTask(QString url)
-//{
-
-//    return 0;
-//}
-
-//namespace aria2 {
-//extern void option_processing(Option& option, std::vector<std::string>& uris,
-//                              int argc, char* argv[]);
-//}
-
-std::shared_ptr<aria2::StatCalc> getStatCalc(const std::shared_ptr<aria2::Option>& op)
+std::shared_ptr<aria2::StatCalc> getStatCalc2(const std::shared_ptr<aria2::Option>& op)
 {
   std::shared_ptr<aria2::StatCalc> statCalc;
   if(op->getAsBool(aria2::PREF_QUIET)) {
@@ -138,7 +92,7 @@ std::shared_ptr<aria2::StatCalc> getStatCalc(const std::shared_ptr<aria2::Option
   return statCalc;
 }
 
-std::shared_ptr<aria2::OutputFile> getSummaryOut(const std::shared_ptr<aria2::Option>& op)
+std::shared_ptr<aria2::OutputFile> getSummaryOut2(const std::shared_ptr<aria2::Option>& op)
 {
   if(op->getAsBool(aria2::PREF_QUIET)) {
     return std::shared_ptr<aria2::OutputFile>(new aria2::NullOutputFile());
@@ -147,71 +101,56 @@ std::shared_ptr<aria2::OutputFile> getSummaryOut(const std::shared_ptr<aria2::Op
   }
 }
 
-int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
+int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
     qLogx()<<task_id<<url<<to;
 
-    EAria2Worker *eaw;
+    Aria2EmbedWorker *eaw;
+    std::vector<std::string> args;
 
-    eaw = new EAria2Worker();
+    eaw = new Aria2EmbedWorker();
     eaw->m_tid = task_id;
     eaw->option_ = std::shared_ptr<aria2::Option>(new aria2::Option());
     eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &EAria2Man::onAllStatArrived);
+    // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
+    //                  this, SIGNAL(progressState(Aria2StatCollector*)));
+    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2EmbedManager::onAllStatArrived);
 
-    if (this->m_tasks.contains(task_id)) {
-        qLogx()<<"task already in manager: " << task_id << this->m_tasks[task_id];
-    }
     this->m_tasks[task_id] = eaw;
     this->m_rtasks[eaw] = task_id;
-    QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
+    QObject::connect(eaw, &QThread::finished, this, &Aria2EmbedManager::onWorkerFinished);
 
     // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
-    /*
-    memset(eaw->m_argv, 0 , sizeof(eaw->m_argv));
-    eaw->m_argc = 1;
-    strcpy(eaw->m_argv[0], "./karia2c");
+    memset(this->m_argv, 0 , sizeof(this->m_argv));
+    this->m_argc = 1;
+    strcpy(this->m_argv[0], "./karia2c");
 
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
+    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
              "--max-connection-per-server=%d", 6);
-    eaw->m_argc++;
+    this->m_argc++;
 
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
+    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[this->m_argc]),
              "--min-split-size=%dM", 1);
-    eaw->m_argc++;
+    this->m_argc++;
 
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
+    snprintf(this->m_argv[this->m_argc], sizeof(this->m_argv[m_argc]),
              "%s", url.toLatin1().data());
-    eaw->m_argc++;
-    */
+    this->m_argc++;
 
-    eaw->args.push_back(url.toStdString());
+    args.push_back(url.toStdString());
 
-    aria2::OptionParser::getInstance()->parseDefaultValues(*eaw->option_.get());
-    // this->_option_processing(*eaw->option_.get(), eaw->args, eaw->m_argc, (char**)eaw->m_argv);
-    eaw->option_->put(aria2::PREF_DIR, to->getSaveDir().toStdString());
-    eaw->option_->put(aria2::PREF_LOG, "/tmp/abc.log");
-    eaw->option_->put(aria2::PREF_LOG_LEVEL, "debug");
+    // this->_option_processing(*eaw->option_.get(), args, this->m_argc, (char**)this->m_argv);
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
-    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "20000");
+    eaw->option_->put(aria2::PREF_MAX_DOWNLOAD_LIMIT, "2000000");
     QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
     eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
     qLogx()<<task_id << ugid;
 
-    // 重新设置aria2的log设置
-    aria2::global::initConsole(true);
-    aria2::LogFactory::setLogFile(eaw->option_->get(aria2::PREF_LOG));
-    aria2::LogFactory::setLogLevel(eaw->option_->get(aria2::PREF_LOG_LEVEL));
-    aria2::LogFactory::setConsoleLogLevel(eaw->option_->get(aria2::PREF_CONSOLE_LOG_LEVEL));
-    if(eaw->option_->getAsBool(aria2::PREF_QUIET)) {
-        aria2::LogFactory::setConsoleOutput(false);
-    }
-    aria2::LogFactory::reconfigure();
 
     // TODO start in thread 
-    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, eaw->args, false, false, true);
+    aria2::createRequestGroupForUri(eaw->requestGroups_, eaw->option_, args, false, false, true);
 
     eaw->start();
 //    aria2::error_code::Value exitStatus = aria2::error_code::FINISHED;
@@ -226,12 +165,12 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     return 0;
 }
 
-int EAria2Man::pauseTask(int task_id)
+int Aria2EmbedManager::pauseTask(int task_id)
 {
-    EAria2Worker *eaw;
+    Aria2EmbedWorker *eaw;
 
     if (this->m_tasks.contains(task_id)) {
-        eaw = this->m_tasks.value(task_id);
+        eaw = (Aria2EmbedWorker*)this->m_tasks.value(task_id);
         Q_ASSERT(eaw->m_tid == task_id);
 
         // eaw->terminate();
@@ -245,7 +184,7 @@ int EAria2Man::pauseTask(int task_id)
 
 
 /////
-void overrideWithEnv
+void overrideWithEnv2
 (aria2::Option& op,
  const std::shared_ptr<aria2::OptionParser>& optionParser,
  const aria2::Pref* pref,
@@ -265,7 +204,7 @@ void overrideWithEnv
 }
 
 /*
-int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& uris,
+int Aria2EmbedManager::_option_processing(aria2::Option& op, std::vector<std::string>& uris,
                        int argc, char* argv[])
 {
     const std::shared_ptr<aria2::OptionParser>& oparser = aria2::OptionParser::getInstance();
@@ -305,7 +244,6 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
     // }
 
     oparser->parseDefaultValues(op);
-    return 0; // return for simple
 
     if(!noConf) {
       std::string cfname =
@@ -345,11 +283,11 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
       }
     }
     // Override configuration with environment variables.
-    overrideWithEnv(op, oparser, aria2::PREF_HTTP_PROXY, "http_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_HTTPS_PROXY, "https_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_FTP_PROXY, "ftp_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_ALL_PROXY, "all_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_NO_PROXY, "no_proxy");
+    overrideWithEnv2(op, oparser, aria2::PREF_HTTP_PROXY, "http_proxy");
+    overrideWithEnv2(op, oparser, aria2::PREF_HTTPS_PROXY, "https_proxy");
+    overrideWithEnv2(op, oparser, aria2::PREF_FTP_PROXY, "ftp_proxy");
+    overrideWithEnv2(op, oparser, aria2::PREF_ALL_PROXY, "all_proxy");
+    overrideWithEnv2(op, oparser, aria2::PREF_NO_PROXY, "no_proxy");
 
     // we must clear eof bit and seek to the beginning of the buffer.
     cmdstream.clear();
@@ -408,15 +346,14 @@ int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& u
 }
 */
 
-QAtomicInt EAria2Man::doneCounter(-1);
-void EAria2Man::onWorkerFinished()
+void Aria2EmbedManager::onWorkerFinished()
 {
     int tid;
-    EAria2Worker *eaw = static_cast<EAria2Worker*>(sender());
+    Aria2EmbedWorker *eaw = static_cast<Aria2EmbedWorker*>(sender());
     std::shared_ptr<aria2::RequestGroup> rg;
 
     tid = eaw->m_tid;
-    for (size_t i = 0; i < eaw->requestGroups_.size(); ++i) {
+    for (int i = 0; i < eaw->requestGroups_.size(); ++i) {
         rg = eaw->requestGroups_.at(i);
 
         switch(eaw->exit_status) {
@@ -427,7 +364,6 @@ void EAria2Man::onWorkerFinished()
         case aria2::error_code::REMOVED:
             break;
         default:
-            // error
             break;
         }
 
@@ -451,20 +387,20 @@ void EAria2Man::onWorkerFinished()
 
 //////// statqueue members
 // TODO 线程需要一直运行处理等待状态，否则不断启动线程会用掉太多的资源。
-void EAria2Man::run()
+void Aria2EmbedManager::run()
 {
     int stkey;
     Aria2StatCollector *sclt;
     QPair<int, Aria2StatCollector*> elem;
     int tid = -1;
-    EAria2Worker *eaw = 0;
+    Aria2EmbedWorker *eaw = 0;
 
     while (!this->stkeys.empty()) {
         elem = this->stkeys.dequeue();
         stkey = elem.first;
         sclt = elem.second;
         tid = sclt->tid;
-        eaw = this->m_tasks[tid];
+        eaw = (Aria2EmbedWorker*)this->m_tasks[tid];
 
         qLogx()<<"dispatching stat event:"<<stkey;
 
@@ -480,7 +416,7 @@ void EAria2Man::run()
     }
 }
 
-bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
+bool Aria2EmbedManager::checkAndDispatchStat(Aria2StatCollector *sclt)
 {
     QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
     qLogx()<<"";
@@ -510,7 +446,7 @@ bool EAria2Man::checkAndDispatchStat(Aria2StatCollector *sclt)
     return true;
 }
 
-bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
+bool Aria2EmbedManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
 {
     QList<QMap<QString, QString> > servers;
     QMap<QString, QString> server;
@@ -527,7 +463,7 @@ bool EAria2Man::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     emit this->taskServerStatChanged(sclt->tid, servers);
 }
 
-bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
+bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
 {
     QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
 
@@ -553,7 +489,6 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
     case aria2::error_code::REMOVED:
         break;
     case aria2::error_code::RESOURCE_NOT_FOUND:
-    default:
         stats[ng::stat::error_code] = eaw->exit_status;
         stats[ng::stat::error_string] = QString(MSG_RESOURCE_NOT_FOUND);
         stats[ng::stat::status] = "error";
@@ -562,12 +497,14 @@ bool EAria2Man::confirmBackendFinished(int tid, EAria2Worker *eaw)
         this->m_rtasks.remove(eaw);
         eaw->deleteLater();
         break;
+    default:
+        break;
     }
 
     return true;
 }
 
-bool EAria2Man::onAllStatArrived(int stkey)
+bool Aria2EmbedManager::onAllStatArrived(int stkey)
 {
     Aria2StatCollector *sclt = static_cast<Karia2StatCalc*>(sender())->getNextStat(stkey);
     this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
@@ -581,18 +518,18 @@ bool EAria2Man::onAllStatArrived(int stkey)
 
 /////////////////
 
-EAria2Worker::EAria2Worker(QObject *parent)
+Aria2EmbedWorker::Aria2EmbedWorker(QObject *parent)
     : QThread(parent)
 {
     this->exit_status = aria2::error_code::UNDEFINED;
 }
 
-EAria2Worker::~EAria2Worker()
+Aria2EmbedWorker::~Aria2EmbedWorker()
 {
     qLogx()<<"";
 }
 
-void EAria2Worker::run()
+void Aria2EmbedWorker::run()
 {
     aria2::error_code::Value exitStatus = aria2::error_code::UNDEFINED;
 //    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
@@ -600,20 +537,17 @@ void EAria2Worker::run()
 //                                            getSummaryOut(this->option_))
 
     std::shared_ptr<aria2::UriListParser> ulp;
-    // std::unique_ptr<aria2::DownloadEngine> e;
+    std::shared_ptr<aria2::DownloadEngine> e;
+
     this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_, ulp));
     exit_status = this->muri->prepare();
     this->muri->getDownloadEngine()->setStatCalc(std::move(this->statCalc_));
-
-    qLogx()<<"prepare ret:"<<exit_status;
 
     // aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
     // statCalc_, getSummaryOut(this->option_), ulp);
     // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
     //                                         statCalc_, getSummaryOut(this->option_), ulp)
     //         .execute();
-    // exitStatus = this->muri->execute();
-
     try {
         muri->getDownloadEngine()->run();
     } catch(aria2::RecoverableException& e) {
@@ -621,8 +555,6 @@ void EAria2Worker::run()
     }
     exitStatus = muri->getResult();
     exit_status = exitStatus;
-
-    qLogx()<<"execute ret:"<<exitStatus;
 
     // e = muri->getDownloadEngine();
     muri->getDownloadEngine();
@@ -636,4 +568,5 @@ void EAria2Worker::run()
 }
 
 // 给MultiUriRequestInfo打个补丁，存储并且返回DownloadEngine对象。
+
 

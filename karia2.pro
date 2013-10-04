@@ -76,8 +76,9 @@ win32 {
       # QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:console
     }
 } else {
-    INCLUDEPATH += ./aria2-1.16.1/src/ ./aria2-1.16.1/  ./aria2-1.16.1/lib
-    LIBS += -L./aria2-1.16.1/src/ -laria2c -L./aria2-1.16.1/deps/wslay/lib/.libs/ -lwslay -L./aria2-1.16.1/intl -lintl
+    ARIA2_ROOT = ./aria2-1.18.0
+    INCLUDEPATH += $$ARIA2_ROOT/src/ $$ARIA2_ROOT  $$ARIA2_ROOT/lib $$ARIA2_ROOT/src/includes
+    LIBS += -L$$ARIA2_ROOT/src/ -laria2 -L$$ARIA2_ROOT/deps/wslay/lib/.libs/ -lwslay
     LIBS += -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lexpat  -lxml2 -lz -lm
 }
 
