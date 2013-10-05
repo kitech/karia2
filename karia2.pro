@@ -1,7 +1,7 @@
-# NullGet.pro --- 
+# karia2.pro --- 
 # 
 # Author: liuguangzhao
-# Copyright (C) 2007-2010 liuguangzhao@users.sf.net
+# Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 # URL: 
 # Created: 2010-04-03 19:19:40 +0800
 # Version: $Id$
@@ -20,10 +20,10 @@ win32 {
       CONFIG += release
 } else {
       CONFIG += debug
-   #QMAKE_CC = clang
-   #QMAKE_CXX = clang++
-   QMAKE_CXXFLAGS += -std=c++11
-   QMAKE_LFLAGS += -g -O2 -std=c++11
+    #QMAKE_CC = clang       # clang compiled karia2 crash
+    #QMAKE_CXX = clang++
+    QMAKE_CXXFLAGS += -std=c++11
+    QMAKE_LFLAGS += -g -O2 -std=c++11
 }
 
 DESTDIR = ./bin
