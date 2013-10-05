@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>659</width>
-    <height>493</height>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -141,6 +141,10 @@
        <item>
         <property name="text">
          <string>Proxy</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icons/crystalsvg/128x128/filesystems/network_proxy.png</normaloff>icons/crystalsvg/128x128/filesystems/network_proxy.png</iconset>
         </property>
        </item>
        <item>
