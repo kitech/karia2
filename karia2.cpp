@@ -63,6 +63,8 @@
 
 #include "emaria2c.h"
 #include "karia2statcalc.h"
+#include "aria2manager.h"
+#include "aria2managerfactory.h"
 
 #include "metauri.h"
 //#include "skype.h"
@@ -80,7 +82,8 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     , mAtask(NULL)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
-    , mEAria2Man(NULL)
+    // , mEAria2Man(NULL)
+    , mAria2Manager(NULL)
     , mLogFile(NULL)
     , m_argc(argc), m_argv(argv)
 //    , mSkypeTracer(NULL)
@@ -254,11 +257,13 @@ void Karia2::asyncFirstShowHandler()
     //// start embeded backed
     qRegisterMetaType<QMap<int, QVariant> >("QMap<int, QVariant>");
     qRegisterMetaType<QList<QMap<QString, QString> > >("QList<QMap<QString, QString> >");
+    /*
     this->mEAria2Man = EAria2Man::instance();
     QObject::connect(this->mEAria2Man, &EAria2Man::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
     QObject::connect(this->mEAria2Man, &EAria2Man::taskServerStatChanged, this->mTaskMan,
                      &TaskQueue::onTaskServerStatusNeedUpdate);
     QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
+    */
     this->mLogFile = new QFile("/tmp/karia2.log");
     if (!this->mLogFile->open(QIODevice::ReadWrite | QIODevice::Unbuffered)) {
         qLogx()<<"Open log catch file error:"<<this->mLogFile->error();
@@ -269,6 +274,14 @@ void Karia2::asyncFirstShowHandler()
         QObject::connect(this->mLogWatcher, &QFileSystemWatcher::fileChanged, this, &Karia2::onLogAppended);
         // QDir().remove("/tmp/karia2.log");
     }
+
+    // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_EMBEDED);
+    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_LIBARIA2);
+    QObject::connect(this->mAria2Manager, &Aria2Manager::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
+    QObject::connect(this->mAria2Manager, &Aria2Manager::taskServerStatChanged,
+                     this->mTaskMan, &TaskQueue::onTaskServerStatusNeedUpdate);
+    QObject::connect(this->mAria2Manager, &Aria2Manager::taskFinished, this, &Karia2::onTaskDone);
+
 
     this->initUserOptionSetting();
     // process arguments 
@@ -1007,7 +1020,8 @@ void Karia2::onStartTask()
             args.insert(1, options);
         }
 
-        this->mEAria2Man->addUri(taskId, url, taskOptions);
+        this->mAria2Manager->addTask(taskId, url, taskOptions);
+        // this->mEAria2Man->addUri(taskId, url, taskOptions);
 
 //        this->mAriaRpc->call(aria2RpcMethod, args, QVariant(payload),
 //                             this, SLOT(onAriaAddUriResponse(QVariant &, QVariant &)),
@@ -1074,7 +1088,8 @@ void Karia2::onPauseTask()
         ariaGid = smil.value(i + ng::tasks::aria_gid).data().toString();
         qLogx()<<__FUNCTION__<<smil.value(i)<<taskId;
 
-        this->mEAria2Man->pauseTask(taskId);
+        // this->mEAria2Man->pauseTask(taskId);
+        this->mAria2Manager->pauseTask(taskId);
 
 //        // check if running
 //        if (!this->mRunningMap.contains(taskId)) {
@@ -2641,7 +2656,8 @@ void Karia2::showNewDownloadDialog()
 //            QObject::connect(&this->mAriaUpdater, SIGNAL(timeout()), this, SLOT(onAriaUpdaterTimeout()));
 //            this->mAriaUpdater.start();
 //        }
-        this->mEAria2Man->addUri(taskId, url, to);
+        // this->mEAria2Man->addUri(taskId, url, to);
+        this->mAria2Manager->addTask(taskId, url, to);
 	} else {
 		delete to; to = 0;
 	}

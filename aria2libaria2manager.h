@@ -1,35 +1,27 @@
-// aria2embedmanager.h --- 
-// 
-// Author: liuguangzhao
-// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
-// URL: 
-// Created: 2013-02-25 21:55:29 +0000
-// Version: $Id$
-// 
-#ifndef _ARIA2EMBEDMANAGER_H_
-#define _ARIA2EMBEDMANAGER_H_
+#ifndef _ARIA2LIBARIA2MANAGER_H_
+#define _ARIA2LIBARIA2MANAGER_H_
 
 #include <QtCore>
 
-#include "DownloadResult.h"
-
 #include "aria2manager.h"
+#include "aria2/aria2.h"
 
 class TaskOption;
-class Aria2EmbedWorker;
+class Aria2Libaria2Worker;
 class Karia2StatCalc;
 class Aria2StatCollector;
 
 namespace aria2 {
+    class Session;
     class MultiUrlRequestInfo;
 }
 
-class Aria2EmbedManager : public Aria2Manager
+class Aria2Libaria2Manager : public Aria2Manager
 {
     Q_OBJECT;
 public:
-    Aria2EmbedManager();
-    virtual ~Aria2EmbedManager();
+    Aria2Libaria2Manager();
+    virtual ~Aria2Libaria2Manager();
 
     virtual void run();
     
@@ -53,35 +45,36 @@ public slots: // from worker thread
 public:
     bool checkAndDispatchStat(Aria2StatCollector *sclt);
     bool checkAndDispatchServerStat(Aria2StatCollector *sclt);
-    bool confirmBackendFinished(int tid, Aria2EmbedWorker *eaw);
+    bool confirmBackendFinished(int tid, Aria2Libaria2Worker *eaw);
 
 private:
+    aria2::Session *a2sess;
+    aria2::SessionConfig a2cfg;
 };
 
-class Aria2EmbedWorker : public QThread
+class Aria2Libaria2Worker : public QThread
 {
     Q_OBJECT;
 public:
-    Aria2EmbedWorker(QObject *parent = 0);
-    virtual ~Aria2EmbedWorker();
+    Aria2Libaria2Worker(QObject *parent = 0);
+    virtual ~Aria2Libaria2Worker();
 
     void run();
 
 protected:
-    friend class Aria2EmbedManager;
+    friend class Aria2Libaria2Manager;
 
     int m_tid;
-    std::shared_ptr<aria2::MultiUrlRequestInfo> muri;
-    std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
+    // std::shared_ptr<aria2::MultiUrlRequestInfo> muri;
+    // std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
 
-    std::shared_ptr<aria2::Option> option_;
-    // std::shared_ptr<aria2::StatCalc> statCalc_;
-    // std::shared_ptr<aria2::OutputFile> summaryOut_;
-    std::unique_ptr<Karia2StatCalc> statCalc_;
-    aria2::DownloadEngine *e;
+    // std::shared_ptr<aria2::Option> option_;
+    // std::unique_ptr<Karia2StatCalc> statCalc_;
+    // aria2::DownloadEngine *e;
     int exit_status;
 
+    aria2::KeyVals options;
+    aria2::Session *a2sess; // point to manager member
 };
 
-
-#endif /* _ARIA2EMBEDMANAGER_H_ */
+#endif /* _ARIA2LIBARIA2MANAGER_H_ */

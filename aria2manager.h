@@ -19,7 +19,7 @@ class TaskOption;
 class Aria2StatCollector;
 
 namespace ng {
-    namespace stat {
+    namespace stat2 {
         enum {
             task_id=1, gid, total_length, completed_length, completed_percent, download_speed, upload_speed,
             bitfield, hex_bitfield, piece_length, num_pieces, num_connections, eta, str_eta,
@@ -38,10 +38,12 @@ class Aria2Manager : public QThread
     Q_OBJECT;
 public:
     enum BackendType {
-        BT_UNDEFINED = 0, BT_EMBEDED = 1, BT_XML_ON_HTTP, BT_XML_ON_WEBSOCKET,
-        BT_JSON_ON_HTTP, BT_JSON_ON_WEBSOCKET
+        BT_UNDEFINED = 0, BT_EMBEDED = 1, BT_XML_ON_HTTP, 
+        BT_XML_ON_WEBSOCKET,
+        BT_JSON_ON_HTTP, BT_JSON_ON_WEBSOCKET,
+        BT_LIBARIA2,
     };
-    Aria2Manager();
+    explicit Aria2Manager();
     virtual ~Aria2Manager();
     
     virtual void run();
@@ -73,8 +75,6 @@ protected:
     QHash<int, void*> m_tasks; // tid => worker/QProcess/something
     QHash<void*, int> m_rtasks; // worker/QProcess/something => tid
     KBiHash<int, void*> m_tasks2; // tid => worker/QProcess/something
-    int m_argc;
-    char m_argv[32][256];
 
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;

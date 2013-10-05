@@ -42,6 +42,7 @@ class OptionUi;
 
 class EAria2Man;
 class Karia2StatCalc;
+class Aria2Manager;
 
 // class Skype;
 // class SkypeTracer;
@@ -225,12 +226,15 @@ private:
 //    MaiaXmlRpcClient *mAriaRpc;
 
     //////// using embeded aria2c procedue
-    EAria2Man *mEAria2Man;
+    //EAria2Man *mEAria2Man;
     QFile *mLogFile;
     QFileSystemWatcher *mLogWatcher;
+    
+    // all aria2 xmlrpc/json/websocket manager
+    Aria2Manager *mAria2Manager;
+
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
-
                   
 public slots:
 	void onSwitchWindowStyle(QAction *action);

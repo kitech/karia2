@@ -168,6 +168,7 @@ HEADERS += aboutdialog.h \
            emaria2c.h karia2statcalc.h \
            aria2manager.h \
            aria2embedmanager.h \
+           aria2libaria2manager.h \
            aria2rpcmanager.h \
            aria2jsonmanager.h \
            aria2xmlmanager.h \
@@ -236,6 +237,7 @@ SOURCES += aboutdialog.cpp \
            emaria2c.cpp karia2statcalc.cpp \ # aria2-1.13.0/src/option_processing.cc \
            aria2manager.cpp  \
            aria2embedmanager.cpp \
+           aria2libaria2manager.cpp \
            aria2rpcmanager.cpp \
            aria2jsonmanager.cpp \
            aria2xmlmanager.cpp \

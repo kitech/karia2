@@ -13,7 +13,12 @@ Resources/nullget-1.png -text
 /aria2embedmanager.cpp -text
 /aria2embedmanager.h -text
 /aria2jsonrpcmanager.h -text
+/aria2libaria2manager.cpp -text
+/aria2libaria2manager.h -text
+/aria2manager.cpp -text
 /aria2manager.h -text
+/aria2managerfactory.cpp -text
+/aria2managerfactory.h -text
 /aria2rpcmanager.h -text
 /aria2wsjsonrpcmanager.h -text
 /aria2wssjsonrpcmanager.h -text
@@ -163,6 +168,7 @@ libmaia/examples/server/server.cpp -text
 libmaia/examples/server/server.h -text
 libmaia/examples/server/server.pro -text
 libmaia/examples/server/server_main.cpp -text
+libmaia/maia.pri -text
 libmaia/maia.pro -text
 libmaia/maiaFault.cpp -text
 libmaia/maiaFault.h -text
