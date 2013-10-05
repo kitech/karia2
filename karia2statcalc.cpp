@@ -27,6 +27,8 @@
 #include <sstream>
 #include <iterator>
 
+#include "aria2/aria2.h"
+
 #include "DownloadEngine.h"
 #include "RequestGroupMan.h"
 #include "RequestGroup.h"
@@ -151,6 +153,127 @@ void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 
     ///////DEBUG
     this->cssc->calculateStat(e);
+}
+
+
+// for libaria2
+void Karia2StatCalc::calculateStat(aria2::DownloadHandle* dh)
+{
+    //
+    if (cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
+        return;
+    }
+    cp_ = aria2::global::wallclock();
+
+    int stkey = 0;    
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+    sclt->tid = m_tid;
+    
+    this->setBaseStat(dh, sclt);
+    this->setServersStat(dh, sclt);
+
+    // stkey
+    this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+    stkey = this->poolCounter.fetchAndAddRelaxed(1);
+    if (this->statPool.contains(stkey)) {
+        qLogx()<<"whooooo, impossible.";
+    } else {
+        this->statPool.insert(stkey, sclt);
+    }
+            
+    emit this->progressStat(stkey);
+
+    // 
+    /*
+    aria2::TransferStat stat;
+    Aria2StatCollector::TransferStat *pstat;
+
+    aria2::RequestGroupList rgs, wrgs, frgs;
+    aria2::RequestGroupList::iterator it;
+    std::shared_ptr<aria2::PieceStorage> ps;
+    std::shared_ptr<aria2::SegmentMan> sm;
+    std::vector<std::shared_ptr<aria2::PeerStat> > pss;
+    std::shared_ptr<aria2::PeerStat> psts;
+    std::shared_ptr<aria2::DownloadContext> dctx;
+    aria2::DownloadResultList drs;
+
+    const unsigned char *bfptr;
+    int bflen;
+
+    rgs = e->getRequestGroupMan()->getRequestGroups();
+    wrgs = e->getRequestGroupMan()->getReservedGroups();
+    drs = e->getRequestGroupMan()->getDownloadResults();
+
+    // qDebug()<<"active:"<<rgs.size()<<" wating:"<<wrgs.size()<<" done:"<<drs.size();
+
+    // slow stat signal
+    if (!e->getRequestGroupMan()->downloadFinished()) {
+        if(cp_.differenceInMillis(aria2::global::wallclock())+A2_DELTA_MILLIS < 1000) {
+          return;
+        }
+        cp_ = aria2::global::wallclock();
+    }
+
+    int stkey = 0;
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+    sclt->tid = m_tid;
+
+    // global
+    Q_ASSERT(sizeof(aria2::TransferStat) == sizeof(Aria2StatCollector::TransferStat));
+    stat = e->getRequestGroupMan()->calculateStat();
+    pstat = sclt->globalStat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+    memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+
+    if (rgs.size() > 0) {
+        for (it = rgs.begin(); it != rgs.end(); ++it) {
+            std::shared_ptr<aria2::RequestGroup> rg2 = *it;
+    
+            this->setBaseStat(e, rg2, sclt);
+            this->setServersStat(e, rg2, sclt);
+
+            stat = rg2->calculateStat();
+            pstat = (Aria2StatCollector::TransferStat*)calloc(1, sizeof(aria2::TransferStat));
+            memcpy(pstat, &stat, sizeof(aria2::TransferStat));
+
+            sclt->tasksStat.insert(rg2->getGID(), pstat); // gid => stat
+
+            // stkey
+            this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+            stkey = this->poolCounter.fetchAndAddRelaxed(1);
+            if (this->statPool.contains(stkey)) {
+                qLogx()<<"whooooo, impossible.";
+            } else {
+                this->statPool.insert(stkey, sclt);
+            }
+            
+            //                                     down_speed, up_speed, num_conns, eta);
+            qLogx()<<"stat intval:"
+                   << stat.sessionDownloadLength << rg2->getGID()
+                   <<rg2->getTotalLength() << rg2->getCompletedLength()
+                   << rg2->getNumConnection()
+                   <<"pss:"<<pss.size()
+                // <<"pss:"<<(sm)<<pss.size()
+                ;
+            
+            emit this->progressStat(stkey);
+        }
+    }
+
+    // 为什么要这么处理呢
+    if (drs.size() > 0) {
+        this->setDownloadResultStat(e, drs, sclt);
+
+        this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+        stkey = this->poolCounter.fetchAndAddRelaxed(1);
+        if (this->statPool.contains(stkey)) {
+            qLogx()<<"whooooo, impossible.";
+        } else {
+            this->statPool.insert(stkey, sclt);
+        }
+        qLogx()<<"maybe finished, hoho." << sclt->errorCode;
+        emit this->progressStat(stkey);
+    }    
+    */
 }
 
 Aria2StatCollector *Karia2StatCalc::getNextStat(int stkey)
@@ -414,6 +537,67 @@ int Karia2StatCalc::setServersStat(const aria2::DownloadEngine* e, std::shared_p
 }
 
 int Karia2StatCalc::setBittorrentStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats)
+{
+    return 0;
+}
+
+
+// for libaria2
+int Karia2StatCalc::setDownloadResultStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
+{
+    return 0;
+}
+
+int Karia2StatCalc::setBaseStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
+{
+    stats->gid = this->m_tid;
+    stats->state = dh->getStatus();
+    stats->totalLength = dh->getTotalLength();
+    stats->completedLength = dh->getCompletedLength();
+    stats->downloadSpeed = dh->getDownloadSpeed();
+    stats->pieceLength = dh->getPieceLength();
+    stats->numPieces = dh->getNumPieces();
+    stats->connections = dh->getConnections();
+    stats->errorCode = dh->getErrorCode();
+    if(stats->totalLength > 0 && stats->downloadSpeed > 0) {
+        stats->eta = (stats->totalLength - stats->completedLength)/stats->downloadSpeed;
+    }
+    std::string rawBitField = dh->getBitfield();
+    stats->bitfield = aria2::util::toHex(rawBitField.c_str(), rawBitField.length());
+
+    aria2::KeyVals opts = dh->getOptions();
+    for (auto item : opts) {
+        // qLogx()<<"key="<<item.first.c_str()<<",value="<<item.second.c_str();
+    }
+
+    return 0;
+}
+
+int Karia2StatCalc::setFilesStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
+{
+    return 0;
+}
+
+int Karia2StatCalc::setServersStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
+{
+    // libaria2无法获取所有的连接信息，模拟信息
+    int connum = dh->getConnections();
+
+    for (int i = 0; i < connum; i++) {
+        Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
+        servInfo.uri = QString("http://haha.%1").arg(i).toStdString();
+        servInfo.downloadSpeed = i+100;
+        servInfo.state = i+5;
+        servInfo.hostname = QString("thishost-%1").arg(i).toStdString();
+        servInfo.protocol = "http";
+
+        stats->server_stats.servers.push_back(servInfo);
+    }
+
+    return 0;
+}
+
+int Karia2StatCalc::setBittorrentStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
 {
     return 0;
 }

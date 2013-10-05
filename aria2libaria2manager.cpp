@@ -19,6 +19,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "util.h" //from aria2-root
+
 #include "karia2statcalc.h"
 
 #include "simplelog.h"
@@ -41,8 +43,10 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
 {
     qLogx()<<task_id<<url<<to;
 
+    aria2::KeyVals opt1;
+    opt1.push_back(aria2::KeyVal("log", "/tmp/karia2.log"));
     aria2::libraryInit();
-    this->a2sess = aria2::sessionNew(aria2::KeyVals(), this->a2cfg);
+    this->a2sess = aria2::sessionNew(opt1, this->a2cfg);
 
 
     Aria2Libaria2Worker *eaw;
@@ -50,6 +54,8 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
 
     eaw = new Aria2Libaria2Worker();
     eaw->m_tid = task_id;
+    eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, 60));
+    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2Libaria2Manager::onAllStatArrived);
 
     if (this->m_tasks.contains(task_id)) {
         qLogx()<<"task already in manager: " << task_id << this->m_tasks[task_id];
@@ -62,7 +68,14 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
     eaw->a2sess = this->a2sess;
 
     aria2::KeyVals opts;
-    int rv = aria2::addUri(this->a2sess, nullptr, args, eaw->options);
+    opts.push_back(aria2::KeyVal("dir", to->getSaveDir().toStdString()));
+    opts.push_back(aria2::KeyVal("split", "3"));
+    opts.push_back(aria2::KeyVal("min-split-size", "1M"));
+    opts.push_back(aria2::KeyVal("max-connection-per-server", "4"));
+    opts.push_back(aria2::KeyVal("max-download-limit", "20000"));
+    QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
+    opts.push_back(aria2::KeyVal("gid", ugid.toStdString()));
+    int rv = aria2::addUri(this->a2sess, nullptr, args, opts);
     eaw->start();    
 
     /*
@@ -228,9 +241,9 @@ bool Aria2Libaria2Manager::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat2::num_pieces] = sclt->numPieces;
     stats[ng::stat2::piece_length] = sclt->pieceLength;
     stats[ng::stat2::eta] = sclt->eta;
-    stats[ng::stat2::str_eta] = ""; // QString::fromStdString(aria2::util::secfmt(sclt->eta));
+    stats[ng::stat2::str_eta] = QString::fromStdString(aria2::util::secfmt(sclt->eta));
     stats[ng::stat2::error_code] = sclt->errorCode;
-    stats[ng::stat2::status] = sclt->state == 1 ? "active" : "waiting"; 
+    stats[ng::stat2::status] = sclt->state == aria2::DOWNLOAD_ACTIVE ? "active" : "waiting"; 
     // ready, active, waiting, complete, removed, error, pause
     
     emit this->taskStatChanged(sclt->tid, stats);
@@ -335,26 +348,14 @@ void Aria2Libaria2Worker::run()
         auto count = std::chrono::duration_cast<std::chrono::milliseconds>
                                 (now - start).count();
 
-        if(count >= 900) {
+        if(count >= 300) {
             qLogx()<<"haha cycle:"<<rv;
             start = now;
             std::vector<aria2::A2Gid> gids = aria2::getActiveDownload(this->a2sess);
-            for(auto gid : gids) {
+            for (auto gid : gids) {
                 aria2::DownloadHandle* dh = aria2::getDownloadHandle(this->a2sess, gid);
                 if(dh) {
-                    /*
-                    DownloadStatus st;
-                    st.gid = gid;
-                    st.totalLength = dh->getTotalLength();
-                    st.completedLength = dh->getCompletedLength();
-                    st.downloadSpeed = dh->getDownloadSpeed();
-                    st.uploadSpeed = dh->getUploadSpeed();
-                    if(dh->getNumFiles() > 0) {
-                        aria2::FileData file = dh->getFile(1);
-                        st.filename = file.path;
-                    }
-                    v.push_back(std::move(st));
-                    */
+                    this->statCalc_->calculateStat(dh);
                     qLogx()<<"progress:"<<gid<<dh->getTotalLength()<<dh->getCompletedLength()
                            <<dh->getDownloadSpeed()<<dh->getUploadSpeed()
                            <<dh->getNumFiles();
@@ -364,40 +365,5 @@ void Aria2Libaria2Worker::run()
         }
     }
 
-    /*
-    aria2::error_code::Value exitStatus = aria2::error_code::UNDEFINED;
-//    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-//                                            getStatCalc(this->option_),
-//                                            getSummaryOut(this->option_))
-
-    std::shared_ptr<aria2::UriListParser> ulp;
-    std::shared_ptr<aria2::DownloadEngine> e;
-
-    this->muri.reset(new aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_, ulp));
-    exit_status = this->muri->prepare();
-    this->muri->getDownloadEngine()->setStatCalc(std::move(this->statCalc_));
-
-    // aria2::MultiUrlRequestInfo muri(this->requestGroups_, this->option_,
-    // statCalc_, getSummaryOut(this->option_), ulp);
-    // exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
-    //                                         statCalc_, getSummaryOut(this->option_), ulp)
-    //         .execute();
-    try {
-        muri->getDownloadEngine()->run();
-    } catch(aria2::RecoverableException& e) {
-        // A2_LOG_ERROR_EX(EX_EXCEPTION_CAUGHT, e);
-    }
-    exitStatus = muri->getResult();
-    exit_status = exitStatus;
-
-    // e = muri->getDownloadEngine();
-    muri->getDownloadEngine();
-
-    // statCalc_->calculateStat(e.get());
-
-    for (int i = 0; i < this->requestGroups_.size(); ++i) {
-        std::shared_ptr<aria2::RequestGroup> rg = this->requestGroups_.at(i);
-        qLogx()<<rg->downloadFinished()<<exit_status;
-    }
-    */
+    exit_status = rv;
 }

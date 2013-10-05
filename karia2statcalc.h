@@ -1,7 +1,7 @@
 ﻿// karia2statcalc.h --- 
 // 
 // Author: liuguangzhao
-// Copyright (C) 2007-2012 liuguangzhao@users.sf.net
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2011-10-28 22:48:56 -0700
 // Version: $Id: 7fe0945157280f1df187551f4d8825ad6c3927d5 $
@@ -9,13 +9,11 @@
 #ifndef _KARIA2STATCALC_H_
 #define _KARIA2STATCALC_H_
 
-
-#include "StatCalc.h"
-
 #include <string>
 #include <functional>
 #include <QtCore>
 
+#include "StatCalc.h"
 #include "TimerA2.h"
 #include "ConsoleStatCalc.h"
 #include "RequestGroup.h"
@@ -38,6 +36,7 @@ public:
     virtual ~Karia2StatCalc() {}
 
     virtual void calculateStat(const aria2::DownloadEngine* e);
+    virtual void calculateStat(aria2::DownloadHandle* dh);
     virtual void calculateStatDemoTest(const aria2::DownloadEngine* e);
 
     // 指针的所有权给上层了，本类不再保存该指针的所有权
@@ -54,11 +53,20 @@ signals:
     void progressStat(int stkey);
 
 private:
+    // 全局下载统计数据
     int setDownloadResultStat(const aria2::DownloadEngine* e, aria2::DownloadResultList &drs, Aria2StatCollector *stats);
+    // 当前任务下载统计
     int setBaseStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setFilesStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setServersStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setBittorrentStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
+
+    int setDownloadResultStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
+    int setBaseStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
+    int setFilesStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
+    int setServersStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
+    int setBittorrentStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
+    
 };
 
 typedef std::shared_ptr<Karia2StatCalc> Karia2StatCalcHandle;
@@ -140,7 +148,6 @@ public:
     public:
         ServerStatCollector() { reset(); }
         void reset() {
-
         }
 
         int index;

@@ -9,6 +9,7 @@
 #ifndef _ARIA2LIBARIA2MANAGER_H_
 #define _ARIA2LIBARIA2MANAGER_H_
 
+#include <memory>
 #include <QtCore>
 
 #include "aria2manager.h"
@@ -77,7 +78,7 @@ protected:
     // std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
 
     // std::shared_ptr<aria2::Option> option_;
-    // std::unique_ptr<Karia2StatCalc> statCalc_;
+    std::unique_ptr<Karia2StatCalc> statCalc_;
     // aria2::DownloadEngine *e;
     int exit_status;
 
