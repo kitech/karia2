@@ -177,7 +177,7 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
 
     // 重新设置aria2的log设置，
     // TODO 需要设计怎么针对不同的任务启动不同的日志记录方式。
-    aria2::global::initConsole(true);
+    aria2::global::initConsole(false);
     aria2::LogFactory::setLogFile(eaw->option_->get(aria2::PREF_LOG));
     aria2::LogFactory::setLogLevel(eaw->option_->get(aria2::PREF_LOG_LEVEL));
     aria2::LogFactory::setConsoleLogLevel(eaw->option_->get(aria2::PREF_CONSOLE_LOG_LEVEL));

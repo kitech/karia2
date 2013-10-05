@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 202 2013-10-04 16:10:17Z drswinghead $
+// Version: $Id: karia2.cpp 203 2013-10-05 02:29:40Z drswinghead $
 // 
 
 #include <QtCore>
@@ -1301,23 +1301,53 @@ void Karia2::onLogAppended(const QString &path)
 {
     QByteArray aba = this->mLogFile->readAll();
     QList<QByteArray> laba = aba.split('\n');
-    
+
+    // 2013-10-05 09:02:26.127331 [INFO] [BackupIPv4ConnectCommand.cc:87] CUID#8 - Backup connection canceled
+    QRegExp exp("(.{20,26}) .([A-Z]{4,6}). (.*)");
+    QStringList caps;
+
+    QString line;
+    int type;
+    QString ltime;
+    QString log;
+    QString tid, segid;
+
     for (int i = 0; i < laba.size(); i++) {
-        QByteArray ba = laba.at(i);
-        // qLogx()<<this->mLogFile->readLine();
+        line = QString(laba.at(i).trimmed());
+        if (exp.exactMatch(line)) {
+            caps = exp.capturedTexts();
+            ltime = caps[1];
+            log = caps[3];
+            if (caps[2] == "INFO") {
+                type = ng::logs::INFO_MSG;
+            } else if (caps[2] == "DEBUG") {
+                type = ng::logs::DEBUG_MSG;
+            } else if (caps[2] == "ERROR") {
+                type = ng::logs::ERROR_MSG;                
+            } else if (caps[2] == "NOTICE") {
+                type = ng::logs::INFO_MSG;
+            } else {
+                type = ng::logs::INFO_MSG;
+            }
+        } else {
+            log = line;
+            type = ng::logs::DEBUG_MSG;
+            ltime = "0:0:0:0:0";
+        }
+
         QAbstractItemModel * mdl = SegmentLogModel::instance(0, 0, this);
         int row = mdl->rowCount();
     
         if (row > 30) {
-            mdl->removeRows(20, 10);
+            mdl->removeRows(0, 10);
         }
         row = mdl->rowCount();
         mdl->insertRows(row, 1);
         QModelIndex mi;
 
-        mdl->setData(mdl->index(row, 0), ng::logs::DEBUG_MSG);
-        mdl->setData(mdl->index(row, 1), "0:0:0:0");
-        mdl->setData(mdl->index(row, 2), QString(ba).trimmed());
+        mdl->setData(mdl->index(row, 0), type);
+        mdl->setData(mdl->index(row, 1), ltime);
+        mdl->setData(mdl->index(row, 2), log);
         mdl->setData(mdl->index(row, 3), "0");
         mdl->setData(mdl->index(row, 4), "0");
         mdl->setData(mdl->index(row, 5), "false");
