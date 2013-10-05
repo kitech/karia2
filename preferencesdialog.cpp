@@ -56,6 +56,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 {
 	this->uiwin.setupUi(this);
 
+    // 设置listWidget中的项目选中区域
+    this->uiwin.listWidget->setIconSize(QSize(50,50));
+    QListWidgetItem *item = NULL;
+    for (int i = this->uiwin.listWidget->count() - 1; i >= 0; --i) {
+        item = this->uiwin.listWidget->item(i);
+        item->setSizeHint(QSize(120, 50));
+    }
+
     this->storage = SqliteStorage::instance();
     this->mom = OptionManager::instance();
 
