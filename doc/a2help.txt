@@ -55,7 +55,7 @@ Options:
  -d, --dir=DIR 用于存储已下载文件的目录。
 
                               可能的取值： /path/to/directory
-                              默认： /home/gzleo/workspace/karia2-git
+                              默认： /home/gzleo/karia2-git
                               标记： #basic, #file
 
  -o, --out=FILE 下载文件的文件名。当使用 -Z
@@ -82,7 +82,9 @@ Options:
                               默认： false
                               标记： #advanced
 
- --referer=REFERER 设置引用页，此设置对所有链接有效。
+ --referer=REFERER            设置重定向. 此选项对所有URL均适用. 如果 "*" 被
+                              给出, 每个请求都会被重定向.
+                              当使用-P选项时会有用.
 
                               标记： #http
 
@@ -127,24 +129,23 @@ Options:
                               默认： 0
                               标记： #http, #ftp, #bittorrent
 
- --file-allocation=METHOD     Specify file allocation method.
-                              'none' doesn't pre-allocate file space. 'prealloc'
-                              pre-allocates file space before download begins.
-                              This may take some time depending on the size of
-                              the file.
-                              If you are using newer file systems such as ext4
-                              (with extents support), btrfs, xfs or NTFS
-                              (MinGW build only), 'falloc' is your best
-                              choice. It allocates large(few GiB) files
-                              almost instantly. Don't use 'falloc' with legacy
-                              file systems such as ext3 and FAT32 because it
-                              takes almost same time as 'prealloc' and it
-                              blocks aria2 entirely until allocation finishes.
-                              'falloc' may not be available if your system
-                              doesn't have posix_fallocate() function.
-                              'trunc' uses ftruncate() system call or
-                              platform-specific counterpart to truncate a file
-                              to a specified length.
+ --file-allocation=METHOD     指定文件分配方式.
+                              'none' 选项表示不预分配空间. 'prealloc'
+                              表示在下载真正开始前预先分配空间.
+                              根据文件的大小，这可能会花费一些时间
+                              如果你正在使用的是新型文件系统如ext4
+                              (启用扩展支持的), btrfs, xfs 或 NTFS
+                              (仅限MinGW环境 ), 'falloc' 是你最好的
+                              选择. 它几乎能在一瞬间完成很大(几个 GiB) 
+                              文件的预分配. 但请千万注意不要使用 'falloc' 
+                              在比较旧的文件系统上，如ext3 和 FAT32 因为
+                             在这些文件系统上该选项花费的时间和 'prealloc'
+                             不相上下并且在分配完成前aria2 会被完全阻塞.
+                              如果你的系统中不存在posix_fallocate()函数(在嵌
+                              入式系统如OpenWRT中该函数一般由uClibc提供)
+                             'falloc'  选项将不适用,强制使用该选项将不能启动aria2.
+                              'trunc' 将调用 ftruncate()或平台指定的相应功能
+                              创建一个制定大小的文件。
 
                               可能的取值： none, prealloc, trunc, falloc
                               默认： prealloc
@@ -158,35 +159,30 @@ Options:
                               默认： 5M
                               标记： #advanced, #file
 
- --allow-overwrite[=true|false] Restart download from scratch if the
-                              corresponding control file doesn't exist.  See
-                              also --auto-file-renaming option.
+ --allow-overwrite[=true|false] 如果没有控制文件，重新开始下载。
+                                            另见 --auto-file-renaming 选项。
 
                               可能的取值： true, false
                               默认： false
                               标记： #advanced, #file
 
- --realtime-chunk-checksum[=true|false]  Validate chunk of data by calculating
-                              checksum while downloading a file if chunk
-                              checksums are provided.
+ --realtime-chunk-checksum[=true|false]  在下载过程中实时校验文件块
+                                                                            如果提供了文件校验值
 
                               可能的取值： true, false
                               默认： true
                               标记： #metalink, #checksum
 
- -V, --check-integrity[=true|false] Check file integrity by validating piece
-                              hashes or a hash of entire file. This option has
-                              effect only in BitTorrent, Metalink downloads
-                              with checksums or HTTP(S)/FTP downloads with
-                              --checksum option. If piece hashes are provided,
-                              this option can detect damaged portions of a file
-                              and re-download them. If a hash of entire file is
-                              provided, hash check is only done when file has
-                              been already download. This is determined by file
-                              length. If hash check fails, file is
-                              re-downloaded from scratch. If both piece hashes
-                              and a hash of entire file are provided, only
-                              piece hashes are used.
+ -V, --check-integrity[=true|false]   通过验证文件块哈希值或整个文
+                             件哈希值检查文件的完整性。该选项仅生效于 
+                             BitTorrent, Metalink 下载启用 --checksums 选项时
+                             或 HTTP(S)/FTP 下载启用 --checksum 选项时. 如过
+                             提供了文件块的哈希校验值，则会在下载过程中就检
+                             测文件的那部分已损坏并且会重新下载损坏的部分;如
+                             果给定的是整个文件的哈希值，那么校验只能在下载
+                             已经完成的情况下进行 。同时，这也取决于文件的长
+                             度，如果哈系校验失败, 则会重新下载.如果整个文件哈
+                             希值和块哈希都存在，只有块哈希会被使用。
 
                               可能的取值： true, false
                               默认： false
@@ -266,17 +262,11 @@ Options:
                               默认： false
                               标记： #advanced
 
- --enable-direct-io[=true|false] 启用直接I/O，在分配文件空间时，
-                              这可以降低CPU负载。
-                              如果遇到任何错误，请关闭。
-
-                              可能的取值： true, false
-                              标记： #advanced, #file, #deprecated
-
- --allow-piece-length-change[=true|false] If false is given, aria2 aborts
-                              download when a piece length is different from
-                              one in a control file. If true is given, you can
-                              proceed but some download progress will be lost.
+ --allow-piece-length-change[=true|false] 如果为 false, 当文件的某一块内
+                                                   容与控制文件中的描述不同时aria2 将会停止相
+                                                   应文件的下载;反之，如果为 true,遇到文件块内
+                                                   容与aria2控制文件中的描述不符时,下载仍将继
+                                                   续,风险是文件的某些内容可能会丢失
 
                               可能的取值： true, false
                               默认： false
@@ -320,10 +310,17 @@ Options:
                               默认： 60
                               标记： #advanced
 
- --log-level=LEVEL 设置输出的日志级别。
+ --log-level=LEVEL            Set log level to output to file specified using
+                             --log option.
 
                               可能的取值： debug, info, notice, warn, error
                               默认： debug
+                              标记： #advanced
+
+ --console-log-level=LEVEL    Set log level to output to console.
+
+                              可能的取值： debug, info, notice, warn, error
+                              默认： notice
                               标记： #advanced
 
  --uri-selector=SELECTOR 指定URI选择算法。
@@ -648,8 +645,7 @@ Options:
                               --async-dns=false.
 
                               可能的取值： true, false
-                              默认： false
-                              标记： #advanced
+                              标记： #advanced, #deprecated
 
  --max-download-result=NUM    Set maximum number of download result kept in
                               memory. The download results are completed/error/
@@ -667,9 +663,9 @@ Options:
                               默认： 1000
                               标记： #advanced
 
- --retry-wait=SEC             设置重试时间隔的秒数。 
-                              在 SEC > 0 时aria2会在HTTP服务器返回
-                              503 响应时重试下载
+ --retry-wait=SEC            设定重试等待时间. 当 SEC > 0时,
+                               如果HTTP 返回503 错误，aria2会等待 
+                              SEC 秒然后重试下载.
 
                               可能的取值： 0-600
                               默认： 0
@@ -793,8 +789,10 @@ Options:
 
  --force-save[=true|false]    Save download with --save-session option even
                               if the download is completed or removed. This
-                              may be useful to save BitTorrent seeding which
-                              is recognized as completed state.
+                              option also saves control file in that
+                              situations. This may be useful to save
+                              BitTorrent seeding which is recognized as
+                              completed state.
 
                               可能的取值： true, false
                               默认： false
@@ -814,7 +812,7 @@ Options:
                               SIZE can include K or M(1K = 1024, 1M = 1024K).
 
                               可能的取值： 0-*
-                              默认： 0
+                              默认： 16M
                               标记： #advanced
 
  --gid=GID                    Set GID manually. aria2 identifies each
@@ -829,6 +827,15 @@ Options:
                               this option is not used, new GID is generated
                               by aria2.
 
+                              标记： #advanced
+
+ --save-session-interval=SEC  Save error/unfinished downloads to a file
+                              specified by --save-session option every SEC
+                              seconds. If 0 is given, file will be saved only
+                              when aria2 exits.
+
+                              可能的取值： 0-*
+                              默认： 0
                               标记： #advanced
 
  --ftp-user=USER 设置FTP用户。此设置对所有链接有效。
@@ -868,7 +875,7 @@ Options:
 
  -U, --user-agent=USER_AGENT 为http(s)下载设置用户代理。
 
-                              默认： aria2/1.16.1
+                              默认： aria2/1.18.0
                               标记： #http
 
  --load-cookies=FILE 从FILE中载入Cookies，这些FILE通常使用Firefox3格式
@@ -877,10 +884,10 @@ Options:
                               可能的取值： /path/to/file
                               标记： #basic, #http, #cookie
 
- --save-cookies=FILE          Save Cookies to FILE in Mozilla/Firefox(1.x/2.x)/
-                              Netscape format. If FILE already exists, it is
-                              overwritten. Session Cookies are also saved and
-                              their expiry values are treated as 0.
+ --save-cookies=FILE        以Mozilla/Firefox(1.x/2.x)/
+                              Netscape的标准格式保存   Cookies 到
+                             制定文件FILE. 如果FILE已存在，则会覆
+                             盖. 会话的 Cookies 也会保存，
 
                               可能的取值： /path/to/file
                               标记： #http, #cookie
@@ -1051,20 +1058,17 @@ Options:
 
                               标记： #http, #https, #ftp
 
- -S, --show-files[=true|false] Print file listing of .torrent, .meta4 and
-                              .metalink file and exit. More detailed
-                              information will be listed in case of torrent
-                              file.
+ -S, --show-files[=true|false] 显示 .torrent, .meta4 和
+                              .metalink 等类型文件的列表然后退出.
+                              如果是torrent文件，会给出更详细信息。
 
                               可能的取值： true, false
                               默认： false
                               标记： #basic, #metalink, #bittorrent
 
- --max-overall-upload-limit=SPEED Set max overall upload speed in bytes/sec.
-                              0 means unrestricted.
-                              You can append K or M(1K = 1024, 1M = 1024K).
-                              To limit the upload speed per torrent, use
-                              --max-upload-limit option.
+ --max-overall-upload-limit=SPEED 设置全局最大上传速度为SPEED bytes/sec.
+                              0 意味着不限制.使用 K 或 M (1K = 1024, 1M = 1024K)也是可
+                             以的.你也可以使用--max-upload-limit可以为单个torrent文件限速。
 
                               可能的取值： 0-*
                               默认： 0
@@ -1095,15 +1099,16 @@ Options:
                               默认： 6881-6999
                               标记： #basic, #bittorrent
 
- --follow-torrent=true|false|mem 如果指定true或mem，当后缀为.torrent
-                              或内容类型是application/x-bittorrent的文
-                              件被下载时，aria2将分析其为torrent文件
-                              并下载其中提及的文件。
-                              
-                              如果指定mem，torrent文件不会被写入
-                              到磁盘，但只保留在内存中。
-                              如果指定false，上面提到的动作
-                              将不会被采取。
+ --follow-torrent=true|false|mem If true or mem is specified, when a file
+                              whose suffix is .torrent or content type is
+                              application/x-bittorrent is downloaded, aria2
+                              parses it as a torrent file and downloads files
+                              mentioned in it.
+                              If mem is specified, a torrent file is not
+                              written to the disk, but is just kept in memory.
+                              If false is specified, the .torrent file is
+                              downloaded to the disk, but is not parsed as a
+                              torrent and its contents are not downloaded.
 
                               可能的取值： true, mem, false
                               默认： true
@@ -1140,13 +1145,12 @@ Options:
                               默认： 1.0
                               标记： #bittorrent
 
- --peer-id-prefix=PEER_ID_PREFIX Specify the prefix of peer ID. The peer ID in
-                              BitTorrent is 20 byte length. If more than 20
-                              bytes are specified, only first 20 bytes are
-                              used. If less than 20 bytes are specified, random
-                              byte data are added to make its length 20 bytes.
+ --peer-id-prefix=PEER_ID_PREFIX 使用peer ID前缀. BitTorrent的peer ID
+                               长度为20字节. 如果制定长度大于20字节，则只会使用前20
+                               字节的内容，如果给定的长度小于20自己，则使用随机值填
+                               充至20字节
 
-                              默认： A2-1-16-1-
+                              默认： A2-1-18-0-
                               标记： #bittorrent
 
  --enable-peer-exchange[=true|false] 启用Peer交换扩展。
@@ -1155,17 +1159,20 @@ Options:
                               默认： true
                               标记： #bittorrent
 
- --enable-dht[=true|false]    Enable IPv4 DHT functionality.
+ --enable-dht[=true|false]    Enable IPv4 DHT functionality. It also enables
+                              UDP tracker support. If a private flag is set
+                              in a torrent, aria2 doesn't use DHT for that
+                              download even if ``true`` is given.
 
                               可能的取值： true, false
                               默认： true
                               标记： #basic, #bittorrent
 
- --dht-listen-port=PORT...    Set UDP listening port for both IPv4 and IPv6
-                              DHT. Multiple ports can be specified by using
-                              ',', for example: "6881,6885". You can also
-                              use '-' to specify a range: "6881-6999". ','
-                              and '-' can be used together.
+ --dht-listen-port=PORT...    Set UDP listening port used by DHT(IPv4, IPv6)
+                              and UDP tracker. Multiple ports can be specified
+                              by using ',', for example: "6881,6885". You can
+                              also use '-' to specify a range: "6881-6999".
+                              ',' and '-' can be used together.
 
                               可能的取值： 1024-65535
                               默认： 6881-6999
@@ -1449,18 +1456,6 @@ Options:
 
                               标记： #metalink
 
- -C, --metalink-servers=NUM_SERVERS 同时连接的服务器数目。
-                              有些Metalink对连接的服务器数目
-                              有要求。aria2严格遵守这些要求。
-                              这意味着如果Metalink定义的最大
-                              连接数目低于NUM_SERVERS，
-                              aria2将以定义的最大连接数目代
-                              替NUM_SERVERS。
-                              也可以参阅-s和-j选项。
-
-                              可能的取值： 1-*
-                              标记： #metalink, #deprecated
-
  --follow-metalink=true|false|mem If true or mem is specified, when a file
                               whose suffix is .meta4 or .metalink, or content
                               type of application/metalink4+xml or
@@ -1469,8 +1464,10 @@ Options:
                               mentioned in it.
                               If mem is specified, a metalink file is not
                               written to the disk, but is just kept in memory.
-                              If false is specified, the action mentioned above
-                              is not taken.
+                              If false is specified, the .metalink file is
+                              downloaded to the disk, but is not parsed as a
+                              metalink file and its contents are not
+                              downloaded.
 
                               可能的取值： true, mem, false
                               默认： true

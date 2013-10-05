@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 204 2013-10-05 05:14:06Z drswinghead $
+// Version: $Id: karia2.cpp 206 2013-10-05 09:31:19Z drswinghead $
 // 
 
 #include <QtCore>
@@ -268,6 +268,7 @@ void Karia2::asyncFirstShowHandler()
     if (!this->mLogFile->open(QIODevice::ReadWrite | QIODevice::Unbuffered)) {
         qLogx()<<"Open log catch file error:"<<this->mLogFile->error();
     } else {
+        this->mLogFile->resize(0);
         this->mLogFile->seek(this->mLogFile->size());
         this->mLogWatcher = new QFileSystemWatcher();
         this->mLogWatcher->addPath("/tmp/karia2.log");
@@ -1354,7 +1355,7 @@ void Karia2::onLogAppended(const QString &path)
         int row = mdl->rowCount();
     
         if (row > 30) {
-            mdl->removeRows(0, 10);
+            mdl->removeRows(0, row - 10);
         }
         row = mdl->rowCount();
         mdl->insertRows(row, 1);
