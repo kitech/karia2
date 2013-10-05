@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
-// Version: $Id: karia2.h 199 2013-02-17 06:01:35Z drswinghead $
+// Version: $Id: karia2.h 202 2013-10-04 16:10:17Z drswinghead $
 // 
 
 #ifndef KARIA2_H
@@ -115,6 +115,10 @@ public slots:
 	void onDeleteTaskAll();
 	void onTaskDone(int pTaskId, int code);	//
     void onShutdown();
+
+    void onLogAppended(const QString &path);
+    
+
 	//
 	void onCopyUrlToClipboard();
 
@@ -222,7 +226,8 @@ private:
 
     //////// using embeded aria2c procedue
     EAria2Man *mEAria2Man;
-
+    QFile *mLogFile;
+    QFileSystemWatcher *mLogWatcher;
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
 

@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-07-03 13:32:00 +0800
-// Version: $Id: labspace.h 198 2013-02-16 03:59:01Z drswinghead $
+// Version: $Id: labspace.h 202 2013-10-04 16:10:17Z drswinghead $
 // 
 
 #ifndef LABSPACE_H
@@ -12,11 +12,11 @@
 
 #include <QObject>
 #include <QFileSystemWatcher>
-#include <QPrintDialog>
 #include <QWidget>
 #include <QDialog>
 #include <QtWidgets>
-#include <QtPrintSupport>
+// #include <QPrintDialog>
+// #include <QtPrintSupport>
 
 #include "ui_labspace.h"
 

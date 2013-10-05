@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 200 2013-10-04 07:13:26Z drswinghead $
+// Version: $Id: karia2.cpp 202 2013-10-04 16:10:17Z drswinghead $
 // 
 
 #include <QtCore>
@@ -81,6 +81,7 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
     , mEAria2Man(NULL)
+    , mLogFile(NULL)
     , m_argc(argc), m_argv(argv)
 //    , mSkypeTracer(NULL)
 {
@@ -165,6 +166,7 @@ void Karia2::firstShowHandler()
     this->mTaskListView = this->mainUI->mui_tv_task_list;
     this->mSegListView = this->mainUI->mui_tv_seg_list;
     this->mSegLogListView = this->mainUI->mui_tv_seg_log_list;
+    this->mSegLogListView->setModel(SegmentLogModel::instance(0, 0, this));
 
     // 初始化任务队列管理实例
     // this->mTaskMan = TaskQueue::instance();
@@ -257,6 +259,16 @@ void Karia2::asyncFirstShowHandler()
     QObject::connect(this->mEAria2Man, &EAria2Man::taskServerStatChanged, this->mTaskMan,
                      &TaskQueue::onTaskServerStatusNeedUpdate);
     QObject::connect(this->mEAria2Man, &EAria2Man::taskFinished, this, &Karia2::onTaskDone);
+    this->mLogFile = new QFile("/tmp/karia2.log");
+    if (!this->mLogFile->open(QIODevice::ReadWrite | QIODevice::Unbuffered)) {
+        qLogx()<<"Open log catch file error:"<<this->mLogFile->error();
+    } else {
+        this->mLogFile->seek(this->mLogFile->size());
+        this->mLogWatcher = new QFileSystemWatcher();
+        this->mLogWatcher->addPath("/tmp/karia2.log");
+        QObject::connect(this->mLogWatcher, &QFileSystemWatcher::fileChanged, this, &Karia2::onLogAppended);
+        // QDir().remove("/tmp/karia2.log");
+    }
 
     this->initUserOptionSetting();
     // process arguments 
@@ -1283,6 +1295,33 @@ void Karia2::onTaskDone(int pTaskId, int code)
 void Karia2::onShutdown()
 {
     qLogx()<<__FUNCTION__<<" shutdown OS now";
+}
+
+void Karia2::onLogAppended(const QString &path)
+{
+    QByteArray aba = this->mLogFile->readAll();
+    QList<QByteArray> laba = aba.split('\n');
+    
+    for (int i = 0; i < laba.size(); i++) {
+        QByteArray ba = laba.at(i);
+        // qLogx()<<this->mLogFile->readLine();
+        QAbstractItemModel * mdl = SegmentLogModel::instance(0, 0, this);
+        int row = mdl->rowCount();
+    
+        if (row > 30) {
+            mdl->removeRows(20, 10);
+        }
+        row = mdl->rowCount();
+        mdl->insertRows(row, 1);
+        QModelIndex mi;
+
+        mdl->setData(mdl->index(row, 0), ng::logs::DEBUG_MSG);
+        mdl->setData(mdl->index(row, 1), "0:0:0:0");
+        mdl->setData(mdl->index(row, 2), QString(ba).trimmed());
+        mdl->setData(mdl->index(row, 3), "0");
+        mdl->setData(mdl->index(row, 4), "0");
+        mdl->setData(mdl->index(row, 5), "false");
+    }
 }
 
 //////ui op

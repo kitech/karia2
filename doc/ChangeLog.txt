@@ -1,6 +1,8 @@
 13:01 2013-10-03
       升级到aria2-1.18.0，不再需要修改源代码即可购入到karia2中。
-      aria2-1.18.0提供了libaria2api，可以看看。      
+      aria2-1.18.0提供了libaria2api，可以看看。
+      ./configure --enable-libaria2 --enable-static --disable-shared --prefix=/home/gzleo/local --without-libexpat
+                
 
 13:01 2013-02-03
     使用aria2c做为下载后端，在linux上，可以把aria2c进入嵌入式编译成一个程序。

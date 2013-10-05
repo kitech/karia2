@@ -117,11 +117,6 @@ EAria2Man *EAria2Man::instance()
 //    return 0;
 //}
 
-//namespace aria2 {
-//extern void option_processing(Option& option, std::vector<std::string>& uris,
-//                              int argc, char* argv[]);
-//}
-
 std::shared_ptr<aria2::StatCalc> getStatCalc(const std::shared_ptr<aria2::Option>& op)
 {
   std::shared_ptr<aria2::StatCalc> statCalc;
@@ -166,32 +161,12 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     this->m_rtasks[eaw] = task_id;
     QObject::connect(eaw, &QThread::finished, this, &EAria2Man::onWorkerFinished);
 
-    // aria2::option_processing(*eaw->option_.get(), args, m_argc, m_argv);
     // 生成taskgroup
-    /*
-    memset(eaw->m_argv, 0 , sizeof(eaw->m_argv));
-    eaw->m_argc = 1;
-    strcpy(eaw->m_argv[0], "./karia2c");
-
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
-             "--max-connection-per-server=%d", 6);
-    eaw->m_argc++;
-
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
-             "--min-split-size=%dM", 1);
-    eaw->m_argc++;
-
-    snprintf(eaw->m_argv[eaw->m_argc], sizeof(eaw->m_argv[eaw->m_argc]),
-             "%s", url.toLatin1().data());
-    eaw->m_argc++;
-    */
-
     eaw->args.push_back(url.toStdString());
 
     aria2::OptionParser::getInstance()->parseDefaultValues(*eaw->option_.get());
-    // this->_option_processing(*eaw->option_.get(), eaw->args, eaw->m_argc, (char**)eaw->m_argv);
     eaw->option_->put(aria2::PREF_DIR, to->getSaveDir().toStdString());
-    eaw->option_->put(aria2::PREF_LOG, "/tmp/abc.log");
+    eaw->option_->put(aria2::PREF_LOG, "/tmp/karia2.log");
     eaw->option_->put(aria2::PREF_LOG_LEVEL, "debug");
     eaw->option_->put(aria2::PREF_MAX_CONNECTION_PER_SERVER, "6");
     eaw->option_->put(aria2::PREF_MIN_SPLIT_SIZE, "1M");
@@ -200,12 +175,13 @@ int EAria2Man::addUri(int task_id, const QString &url, TaskOption *to)
     eaw->option_->put(aria2::PREF_GID, ugid.toStdString());
     qLogx()<<task_id << ugid;
 
-    // 重新设置aria2的log设置
+    // 重新设置aria2的log设置，
+    // TODO 需要设计怎么针对不同的任务启动不同的日志记录方式。
     aria2::global::initConsole(true);
     aria2::LogFactory::setLogFile(eaw->option_->get(aria2::PREF_LOG));
     aria2::LogFactory::setLogLevel(eaw->option_->get(aria2::PREF_LOG_LEVEL));
     aria2::LogFactory::setConsoleLogLevel(eaw->option_->get(aria2::PREF_CONSOLE_LOG_LEVEL));
-    if(eaw->option_->getAsBool(aria2::PREF_QUIET)) {
+    if (eaw->option_->getAsBool(aria2::PREF_QUIET)) {
         aria2::LogFactory::setConsoleOutput(false);
     }
     aria2::LogFactory::reconfigure();
@@ -242,171 +218,6 @@ int EAria2Man::pauseTask(int task_id)
 
     return 0;
 }
-
-
-/////
-void overrideWithEnv
-(aria2::Option& op,
- const std::shared_ptr<aria2::OptionParser>& optionParser,
- const aria2::Pref* pref,
- const std::string& envName)
-{
-  char* value = getenv(envName.c_str());
-  if(value) {
-    try {
-      optionParser->find(pref)->parse(op, value);
-    } catch(aria2::Exception& e) {
-        aria2::global::cerr()->printf
-        (_("Caught Error while parsing environment variable '%s'"),
-         envName.c_str());
-        aria2::global::cerr()->printf("\n%s\n", e.stackTrace().c_str());
-    }
-  }
-}
-
-/*
-int EAria2Man::_option_processing(aria2::Option& op, std::vector<std::string>& uris,
-                       int argc, char* argv[])
-{
-    const std::shared_ptr<aria2::OptionParser>& oparser = aria2::OptionParser::getInstance();
-  try {
-    bool noConf = false;
-    std::string ucfname;
-    std::stringstream cmdstream;
-    // oparser->parseArg(cmdstream, uris, argc, argv);
-    // {
-    //   // first evaluate --no-conf and --conf-path options.
-    //     aria2::Option op;
-    //   oparser->parse(op, cmdstream);
-    //   noConf = op.getAsBool(aria2::PREF_NO_CONF);
-    //   ucfname = op.get(aria2::PREF_CONF_PATH);
-
-    //   if(op.defined(aria2::PREF_VERSION)) {
-    //     showVersion();
-    //     exit(aria2::error_code::FINISHED);
-    //   }
-    //   if(op.defined(aria2::PREF_HELP)) {
-    //     std::string keyword;
-    //     if(op.get(aria2::PREF_HELP).empty()) {
-    //       keyword = strHelpTag(aria2::TAG_BASIC);
-    //     } else {
-    //       keyword = op.get(aria2::PREF_HELP);
-    //       if(aria2::util::startsWith(keyword, "--")) {
-    //         keyword.erase(keyword.begin(), keyword.begin()+2);
-    //       }
-    //       std::string::size_type eqpos = keyword.find("=");
-    //       if(eqpos != std::string::npos) {
-    //         keyword.erase(keyword.begin()+eqpos, keyword.end());
-    //       }
-    //     }
-    //     showUsage(keyword, oparser, aria2::global::cout());
-    //     exit(aria2::error_code::FINISHED);
-    //   }
-    // }
-
-    oparser->parseDefaultValues(op);
-    return 0; // return for simple
-
-    if(!noConf) {
-      std::string cfname =
-        ucfname.empty() ?
-        oparser->find(aria2::PREF_CONF_PATH)->getDefaultValue() : ucfname;
-
-      if(aria2::File(cfname).isFile()) {
-        std::stringstream ss;
-        {
-          aria2::BufferedFile fp(cfname.c_str(), aria2::BufferedFile::READ);
-          if(fp) {
-            fp.transfer(ss);
-          }
-        }
-        try {
-          oparser->parse(op, ss);
-        } catch(aria2::OptionHandlerException& e) {
-            aria2::global::cerr()->printf(_("Parse error in %s"), cfname.c_str());
-            aria2::global::cerr()->printf("\n%s", e.stackTrace().c_str());
-          const aria2::OptionHandler* h = oparser->find(e.getPref());
-          if(h) {
-              aria2::global::cerr()->printf(_("Usage:"));
-              aria2::global::cerr()->printf("\n%s\n", h->getDescription());
-          }
-          exit(e.getErrorCode());
-        } catch(aria2::Exception& e) {
-            aria2::global::cerr()->printf(_("Parse error in %s"), cfname.c_str());
-            aria2::global::cerr()->printf("\n%s", e.stackTrace().c_str());
-          exit(e.getErrorCode());
-        }
-      } else if(!ucfname.empty()) {
-          aria2::global::cerr()->printf(_("Configuration file %s is not found."),
-                               cfname.c_str());
-          aria2::global::cerr()->printf("\n");
-          // showUsage(strHelpTag(aria2::TAG_HELP), oparser, aria2::global::cerr());
-        exit(aria2::error_code::UNKNOWN_ERROR);
-      }
-    }
-    // Override configuration with environment variables.
-    overrideWithEnv(op, oparser, aria2::PREF_HTTP_PROXY, "http_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_HTTPS_PROXY, "https_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_FTP_PROXY, "ftp_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_ALL_PROXY, "all_proxy");
-    overrideWithEnv(op, oparser, aria2::PREF_NO_PROXY, "no_proxy");
-
-    // we must clear eof bit and seek to the beginning of the buffer.
-    cmdstream.clear();
-    cmdstream.seekg(0, std::ios::beg);
-    // finaly let's parse and store command-iine options.
-    oparser->parse(op, cmdstream);
-#ifdef __MINGW32__
-    for(size_t i = 1, len = option::countOption(); i < len; ++i) {
-      const Pref* pref = option::i2p(i);
-      if(op.defined(pref) && !util::isUtf8(op.get(pref))) {
-        op.put(pref, nativeToUtf8(op.get(pref)));
-      }
-    }
-#endif // __MINGW32__
-  } catch(aria2::OptionHandlerException& e) {
-      aria2::global::cerr()->printf("%s", e.stackTrace().c_str());
-    const aria2::OptionHandler* h = oparser->find(e.getPref());
-    if(h) {
-        aria2::global::cerr()->printf(_("Usage:"));
-        aria2::global::cerr()->printf("\n");
-      write(aria2::global::cerr(), *h);
-    }
-    exit(e.getErrorCode());
-  } catch(aria2::UnknownOptionException& e) {
-      // showUsage("", oparser, aria2::global::cerr());
-      // showCandidates(e.getUnknownOption(), oparser);
-    exit(e.getErrorCode());
-  } catch(aria2::Exception& e) {
-      aria2::global::cerr()->printf("%s", e.stackTrace().c_str());
-      // showUsage("", oparser, aria2::global::cerr());
-    exit(e.getErrorCode());
-  }
-  if(!op.getAsBool(aria2::PREF_ENABLE_RPC) &&
-#ifdef ENABLE_BITTORRENT
-     op.blank(aria2::PREF_TORRENT_FILE) &&
-#endif // ENABLE_BITTORRENT
-#ifdef ENABLE_METALINK
-     op.blank(aria2::PREF_METALINK_FILE) &&
-#endif // ENABLE_METALINK
-     op.blank(aria2::PREF_INPUT_FILE)) {
-    if(uris.empty()) {
-        // aria2::global::cerr()->printf(MSG_URI_REQUIRED);
-        aria2::global::cerr()->printf("\n");
-        // showUsage("", oparser, aria2::global::cerr());
-      exit(aria2::error_code::UNKNOWN_ERROR);
-    }
-  }
-  if(op.getAsBool(aria2::PREF_DAEMON)) {
-    if(daemon(0, 0) < 0) {
-        // perror(MSG_xDAEMON_FAILED);
-      exit(aria2::error_code::UNKNOWN_ERROR);
-    }
-  }
-
-  return 0;
-}
-*/
 
 QAtomicInt EAria2Man::doneCounter(-1);
 void EAria2Man::onWorkerFinished()
