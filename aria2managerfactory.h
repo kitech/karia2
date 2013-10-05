@@ -17,8 +17,8 @@ class Aria2Manager;
 class Aria2ManagerFactory
 {
 public:
-    Aria2ManagerFactory();
-    ~Aria2ManagerFactory();
+    explicit Aria2ManagerFactory();
+    virtual ~Aria2ManagerFactory();
 
     static Aria2Manager *createManager(int type);
 

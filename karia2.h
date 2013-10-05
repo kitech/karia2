@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
-// Version: $Id: karia2.h 202 2013-10-04 16:10:17Z drswinghead $
+// Version: $Id: karia2.h 204 2013-10-05 05:14:06Z drswinghead $
 // 
 
 #ifndef KARIA2_H
@@ -42,6 +42,7 @@ class OptionUi;
 
 class EAria2Man;
 class Karia2StatCalc;
+class Aria2Manager;
 
 // class Skype;
 // class SkypeTracer;
@@ -225,12 +226,15 @@ private:
 //    MaiaXmlRpcClient *mAriaRpc;
 
     //////// using embeded aria2c procedue
-    EAria2Man *mEAria2Man;
+    //EAria2Man *mEAria2Man;
     QFile *mLogFile;
     QFileSystemWatcher *mLogWatcher;
+    
+    // all aria2 xmlrpc/json/websocket manager
+    Aria2Manager *mAria2Manager;
+
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
-
                   
 public slots:
 	void onSwitchWindowStyle(QAction *action);

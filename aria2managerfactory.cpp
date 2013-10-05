@@ -9,6 +9,7 @@
 
 #include "aria2manager.h"
 #include "aria2embedmanager.h"
+#include "aria2libaria2manager.h"
 #include "aria2managerfactory.h"
 
 Aria2ManagerFactory::Aria2ManagerFactory()
@@ -32,6 +33,9 @@ Aria2Manager* Aria2ManagerFactory::createManager(int type)
             manager = new Aria2EmbedManager();
             Aria2ManagerFactory::mManagers[type] = manager;
             break;
+        case Aria2Manager::BT_LIBARIA2:
+            manager = new Aria2Libaria2Manager();
+            Aria2ManagerFactory::mManagers[type] = manager;
         default:
             break;
         }

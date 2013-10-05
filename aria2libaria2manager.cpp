@@ -1,9 +1,9 @@
-// aria2embedmanager.cpp --- 
+// aria2libaria2manager.cpp --- 
 // 
 // Author: liuguangzhao
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
-// Created: 2013-02-25 21:56:59 +0000
+// Created: 2013-10-05 13:13:50 +0000
 // Version: $Id$
 // 
 
@@ -19,105 +19,62 @@
 #include <sstream>
 #include <iostream>
 
-#include "RequestGroupMan.h"
-#include "DownloadEngine.h"
-#include "LogFactory.h"
-#include "Logger.h"
-#include "RequestGroup.h"
-#include "prefs.h"
-#include "DownloadEngineFactory.h"
-#include "RecoverableException.h"
-#include "message.h"
-#include "util.h"
-#include "Option.h"
-#include "OptionParser.h"
-#include "OptionHandlerFactory.h"
-#include "OptionHandler.h"
-#include "Exception.h"
-#include "StatCalc.h"
-#include "CookieStorage.h"
-#include "File.h"
-#include "Netrc.h"
-#include "AuthConfigFactory.h"
-#include "SessionSerializer.h"
-#include "TimeA2.h"
-#include "fmt.h"
-#include "SocketCore.h"
-#include "OutputFile.h"
-#ifdef ENABLE_SSL
-# include "TLSContext.h"
-#endif // ENABLE_SSL
-#include "console.h"
-#include "help_tags.h"
-#include "OptionHandlerException.h"
-#include "UnknownOptionException.h"
-#include "download_helper.h"
-#include "MultiUrlRequestInfo.h"
-#include "ConsoleStatCalc.h"
-#include "NullStatCalc.h"
-#include "NullOutputFile.h"
-
-// #include "emaria2c.h"
 #include "karia2statcalc.h"
 
 #include "simplelog.h"
 #include "taskinfodlg.h"
 
-#include "aria2embedmanager.h"
+#include "aria2libaria2manager.h"
 
-Aria2EmbedManager::Aria2EmbedManager()
+Aria2Libaria2Manager::Aria2Libaria2Manager()
     : Aria2Manager()
+    , a2sess(NULL)
 {
 }
 
 
-Aria2EmbedManager::~Aria2EmbedManager()
+Aria2Libaria2Manager::~Aria2Libaria2Manager()
 {
 }
 
-std::shared_ptr<aria2::StatCalc> getStatCalc2(const std::shared_ptr<aria2::Option>& op)
-{
-  std::shared_ptr<aria2::StatCalc> statCalc;
-  if(op->getAsBool(aria2::PREF_QUIET)) {
-    statCalc.reset(new aria2::NullStatCalc());
-  } else {
-    std::shared_ptr<aria2::ConsoleStatCalc> impl
-      (new aria2::ConsoleStatCalc(op->getAsInt(aria2::PREF_SUMMARY_INTERVAL),
-                           op->getAsBool(aria2::PREF_HUMAN_READABLE)));
-    impl->setReadoutVisibility(op->getAsBool(aria2::PREF_SHOW_CONSOLE_READOUT));
-    impl->setTruncate(op->getAsBool(aria2::PREF_TRUNCATE_CONSOLE_READOUT));
-    statCalc = impl;
-  }
-  return statCalc;
-}
-
-std::shared_ptr<aria2::OutputFile> getSummaryOut2(const std::shared_ptr<aria2::Option>& op)
-{
-  if(op->getAsBool(aria2::PREF_QUIET)) {
-    return std::shared_ptr<aria2::OutputFile>(new aria2::NullOutputFile());
-  } else {
-    return aria2::global::cout();
-  }
-}
-
-int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
+int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *to)
 {
     qLogx()<<task_id<<url<<to;
 
-    Aria2EmbedWorker *eaw;
+    aria2::libraryInit();
+    this->a2sess = aria2::sessionNew(aria2::KeyVals(), this->a2cfg);
+
+
+    Aria2Libaria2Worker *eaw;
     std::vector<std::string> args;
 
-    eaw = new Aria2EmbedWorker();
+    eaw = new Aria2Libaria2Worker();
+    eaw->m_tid = task_id;
+
+    if (this->m_tasks.contains(task_id)) {
+        qLogx()<<"task already in manager: " << task_id << this->m_tasks[task_id];
+    }
+    this->m_tasks[task_id] = eaw;
+    this->m_rtasks[eaw] = task_id;
+    QObject::connect(eaw, &QThread::finished, this, &Aria2Libaria2Manager::onWorkerFinished);
+
+    args.push_back(url.toStdString());
+    eaw->a2sess = this->a2sess;
+
+    aria2::KeyVals opts;
+    int rv = aria2::addUri(this->a2sess, nullptr, args, eaw->options);
+    eaw->start();    
+
+    /*
+    eaw = new Aria2Libaria2Worker();
     eaw->m_tid = task_id;
     eaw->option_ = std::shared_ptr<aria2::Option>(new aria2::Option());
     eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, eaw->option_->getAsInt(aria2::PREF_SUMMARY_INTERVAL)));
-    // QObject::connect(statCalc_.get(), SIGNAL(progressState(Aria2StatCollector*)),
-    //                  this, SIGNAL(progressState(Aria2StatCollector*)));
-    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2EmbedManager::onAllStatArrived);
+    QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2Libaria2Manager::onAllStatArrived);
 
     this->m_tasks[task_id] = eaw;
     this->m_rtasks[eaw] = task_id;
-    QObject::connect(eaw, &QThread::finished, this, &Aria2EmbedManager::onWorkerFinished);
+    QObject::connect(eaw, &QThread::finished, this, &Aria2Libaria2Manager::onWorkerFinished);
 
     // 生成taskgroup
     args.push_back(url.toStdString());
@@ -156,31 +113,34 @@ int Aria2EmbedManager::addTask(int task_id, const QString &url, TaskOption *to)
 //    exitStatus = aria2::MultiUrlRequestInfo(eaw->requestGroups_, eaw->option_,
 //                                            std::shared_ptr<aria2::StatCalc>(),
 //                                            std::shared_ptr<aria2::OutputFile>()).execute();
-
+    */
     return 0;
 }
 
-int Aria2EmbedManager::pauseTask(int task_id)
+int Aria2Libaria2Manager::pauseTask(int task_id)
 {
-    Aria2EmbedWorker *eaw;
+    Aria2Libaria2Worker *eaw;
 
     if (this->m_tasks.contains(task_id)) {
-        eaw = (Aria2EmbedWorker*)this->m_tasks.value(task_id);
+        eaw = (Aria2Libaria2Worker*)this->m_tasks.value(task_id);
         Q_ASSERT(eaw->m_tid == task_id);
 
+        aria2::shutdown(eaw->a2sess, false);
+        
         // eaw->terminate();
         // 这个可用，比直接终止(terminate)掉要好
         // eaw->muri->getDownloadEngine()->getRequestGroupMan()->halt();
-        eaw->muri->getDownloadEngine()->getRequestGroupMan()->forceHalt();
+        // eaw->muri->getDownloadEngine()->getRequestGroupMan()->forceHalt();
     }
 
     return 0;
 }
 
-void Aria2EmbedManager::onWorkerFinished()
+void Aria2Libaria2Manager::onWorkerFinished()
 {
+    /*
     int tid;
-    Aria2EmbedWorker *eaw = static_cast<Aria2EmbedWorker*>(sender());
+    Aria2Libaria2Worker *eaw = static_cast<Aria2Libaria2Worker*>(sender());
     std::shared_ptr<aria2::RequestGroup> rg;
 
     tid = eaw->m_tid;
@@ -213,25 +173,26 @@ void Aria2EmbedManager::onWorkerFinished()
     if (!this->isRunning()) {
         this->start();
     }
+    */
 }
 
 
 //////// statqueue members
 // TODO 线程需要一直运行处理等待状态，否则不断启动线程会用掉太多的资源。
-void Aria2EmbedManager::run()
+void Aria2Libaria2Manager::run()
 {
     int stkey;
     Aria2StatCollector *sclt;
     QPair<int, Aria2StatCollector*> elem;
     int tid = -1;
-    Aria2EmbedWorker *eaw = 0;
+    Aria2Libaria2Worker *eaw = 0;
 
     while (!this->stkeys.empty()) {
         elem = this->stkeys.dequeue();
         stkey = elem.first;
         sclt = elem.second;
         tid = sclt->tid;
-        eaw = (Aria2EmbedWorker*)this->m_tasks[tid];
+        eaw = (Aria2Libaria2Worker*)this->m_tasks[tid];
 
         qLogx()<<"dispatching stat event:"<<stkey;
 
@@ -247,7 +208,7 @@ void Aria2EmbedManager::run()
     }
 }
 
-bool Aria2EmbedManager::checkAndDispatchStat(Aria2StatCollector *sclt)
+bool Aria2Libaria2Manager::checkAndDispatchStat(Aria2StatCollector *sclt)
 {
     QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
     qLogx()<<"";
@@ -267,7 +228,7 @@ bool Aria2EmbedManager::checkAndDispatchStat(Aria2StatCollector *sclt)
     stats[ng::stat2::num_pieces] = sclt->numPieces;
     stats[ng::stat2::piece_length] = sclt->pieceLength;
     stats[ng::stat2::eta] = sclt->eta;
-    stats[ng::stat2::str_eta] = QString::fromStdString(aria2::util::secfmt(sclt->eta));
+    stats[ng::stat2::str_eta] = ""; // QString::fromStdString(aria2::util::secfmt(sclt->eta));
     stats[ng::stat2::error_code] = sclt->errorCode;
     stats[ng::stat2::status] = sclt->state == 1 ? "active" : "waiting"; 
     // ready, active, waiting, complete, removed, error, pause
@@ -277,7 +238,7 @@ bool Aria2EmbedManager::checkAndDispatchStat(Aria2StatCollector *sclt)
     return true;
 }
 
-bool Aria2EmbedManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
+bool Aria2Libaria2Manager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
 {
     QList<QMap<QString, QString> > servers;
     QMap<QString, QString> server;
@@ -294,7 +255,7 @@ bool Aria2EmbedManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     emit this->taskServerStatChanged(sclt->tid, servers);
 }
 
-bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
+bool Aria2Libaria2Manager::confirmBackendFinished(int tid, Aria2Libaria2Worker *eaw)
 {
     QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
 
@@ -310,7 +271,7 @@ bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
         break;
     case aria2::error_code::IN_PROGRESS:
         stats[ng::stat2::error_code] = eaw->exit_status;
-        stats[ng::stat2::error_string] = QString::fromStdString(aria2::fmt(MSG_DOWNLOAD_NOT_COMPLETE, tid, ""));
+        stats[ng::stat2::error_string] = "";// QString::fromStdString(aria2::fmt(MSG_DOWNLOAD_NOT_COMPLETE, tid, ""));
         stats[ng::stat2::status] = "pause";
         emit this->taskStatChanged(eaw->m_tid, stats);
         this->m_tasks.remove(eaw->m_tid);
@@ -321,7 +282,7 @@ bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
         break;
     case aria2::error_code::RESOURCE_NOT_FOUND:
         stats[ng::stat2::error_code] = eaw->exit_status;
-        stats[ng::stat2::error_string] = QString(MSG_RESOURCE_NOT_FOUND);
+        stats[ng::stat2::error_string] = "";// QString(MSG_RESOURCE_NOT_FOUND);
         stats[ng::stat2::status] = "error";
         emit this->taskStatChanged(eaw->m_tid, stats);
         this->m_tasks.remove(eaw->m_tid);
@@ -335,7 +296,7 @@ bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
     return true;
 }
 
-bool Aria2EmbedManager::onAllStatArrived(int stkey)
+bool Aria2Libaria2Manager::onAllStatArrived(int stkey)
 {
     Aria2StatCollector *sclt = static_cast<Karia2StatCalc*>(sender())->getNextStat(stkey);
     this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
@@ -349,19 +310,61 @@ bool Aria2EmbedManager::onAllStatArrived(int stkey)
 
 /////////////////
 
-Aria2EmbedWorker::Aria2EmbedWorker(QObject *parent)
+Aria2Libaria2Worker::Aria2Libaria2Worker(QObject *parent)
     : QThread(parent)
 {
     this->exit_status = aria2::error_code::UNDEFINED;
 }
 
-Aria2EmbedWorker::~Aria2EmbedWorker()
+Aria2Libaria2Worker::~Aria2Libaria2Worker()
 {
     qLogx()<<"";
 }
 
-void Aria2EmbedWorker::run()
+#include <chrono>
+void Aria2Libaria2Worker::run()
 {
+    auto start = std::chrono::steady_clock::now();
+    int rv;
+    for (;;) {
+        rv = aria2::run(this->a2sess, aria2::RUN_ONCE); // run 1sec, rv==0无下载任务，rv==-1有错误
+        if (rv != 1) {
+            break;
+        }
+        auto now = std::chrono::steady_clock::now();
+        auto count = std::chrono::duration_cast<std::chrono::milliseconds>
+                                (now - start).count();
+
+        if(count >= 900) {
+            qLogx()<<"haha cycle:"<<rv;
+            start = now;
+            std::vector<aria2::A2Gid> gids = aria2::getActiveDownload(this->a2sess);
+            for(auto gid : gids) {
+                aria2::DownloadHandle* dh = aria2::getDownloadHandle(this->a2sess, gid);
+                if(dh) {
+                    /*
+                    DownloadStatus st;
+                    st.gid = gid;
+                    st.totalLength = dh->getTotalLength();
+                    st.completedLength = dh->getCompletedLength();
+                    st.downloadSpeed = dh->getDownloadSpeed();
+                    st.uploadSpeed = dh->getUploadSpeed();
+                    if(dh->getNumFiles() > 0) {
+                        aria2::FileData file = dh->getFile(1);
+                        st.filename = file.path;
+                    }
+                    v.push_back(std::move(st));
+                    */
+                    qLogx()<<"progress:"<<gid<<dh->getTotalLength()<<dh->getCompletedLength()
+                           <<dh->getDownloadSpeed()<<dh->getUploadSpeed()
+                           <<dh->getNumFiles();
+                    aria2::deleteDownloadHandle(dh);
+                }
+            }
+        }
+    }
+
+    /*
     aria2::error_code::Value exitStatus = aria2::error_code::UNDEFINED;
 //    exitStatus = aria2::MultiUrlRequestInfo(this->requestGroups_, this->option_,
 //                                            getStatCalc(this->option_),
@@ -396,8 +399,5 @@ void Aria2EmbedWorker::run()
         std::shared_ptr<aria2::RequestGroup> rg = this->requestGroups_.at(i);
         qLogx()<<rg->downloadFinished()<<exit_status;
     }
+    */
 }
-
-// 给MultiUriRequestInfo打个补丁，存储并且返回DownloadEngine对象。
-
-
