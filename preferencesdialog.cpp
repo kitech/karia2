@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-16 21:52:25 +0800
-// Version: $Id: preferencesdialog.cpp 198 2013-02-16 03:59:01Z drswinghead $
+// Version: $Id: preferencesdialog.cpp 207 2013-10-05 12:55:47Z drswinghead $
 // 
 
 #include <QtWidgets>
@@ -55,6 +55,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     : QDialog(parent)
 {
 	this->uiwin.setupUi(this);
+
+    // 设置listWidget中的项目选中区域
+    this->uiwin.listWidget->setIconSize(QSize(50,50));
+    QListWidgetItem *item = NULL;
+    for (int i = this->uiwin.listWidget->count() - 1; i >= 0; --i) {
+        item = this->uiwin.listWidget->item(i);
+        item->setSizeHint(QSize(120, 50));
+    }
 
     this->storage = SqliteStorage::instance();
     this->mom = OptionManager::instance();
