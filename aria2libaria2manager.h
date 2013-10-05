@@ -1,3 +1,11 @@
+// aria2libaria2manager.h --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2013-10-05 13:13:57 +0000
+// Version: $Id$
+// 
 #ifndef _ARIA2LIBARIA2MANAGER_H_
 #define _ARIA2LIBARIA2MANAGER_H_
 

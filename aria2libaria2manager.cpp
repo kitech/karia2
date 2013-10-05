@@ -1,3 +1,11 @@
+// aria2libaria2manager.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2013-10-05 13:13:50 +0000
+// Version: $Id$
+// 
 
 
 #ifdef HAVE_CONFIG_H
