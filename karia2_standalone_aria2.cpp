@@ -29,6 +29,7 @@
 #include "catmandlg.h"
 #include "catpropdlg.h"
 #include "preferencesdialog.h"
+#include "dmstatusbar.h"
 
 #include "batchjobmandlg.h"
 #include "webpagelinkdlg.h"
@@ -255,11 +256,11 @@ void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
     // qDebug()<<"TSpeed:"<<speed<<" TLen:"<<totalLength<<" GLen:"<<gotLength;
     double sumSpeed =speed*1.0/1000;
     if (sumSpeed >= 0.0) {
-        this->mDownloadSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
-        this->mSpeedProgressBar->setValue((int)sumSpeed);
+        // this->mDownloadSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
+        // this->mSpeedProgressBar->setValue((int)sumSpeed);
     } else {
-        this->mDownloadSpeedTotalLable->setText(QString("%1 B/s").arg(speed));
-        this->mSpeedProgressBar->setValue((int)sumSpeed);
+        // this->mDownloadSpeedTotalLable->setText(QString("%1 B/s").arg(speed));
+        // this->mSpeedProgressBar->setValue((int)sumSpeed);
     }
 
     this->mISHW->updateSpeedHistogram(sumSpeed);
@@ -608,16 +609,20 @@ void Karia2::onAria2GlobalStatChanged(QMap<int, QVariant> stats)
     int downloadSpeed = stats[ng::stat2::download_speed].toInt();
     int uploadSpeed = stats[ng::stat2::upload_speed].toInt();
     double sumSpeed = downloadSpeed * 1.0/1000;
+    QString s1, s2;
+
     if (sumSpeed >= 0.0) {
-        this->mDownloadSpeedTotalLable->setText(QString("D: %1 KB/s").arg(sumSpeed));
+        s1 = QString("D: %1 KB/s").arg(sumSpeed);
     } else {
-        this->mDownloadSpeedTotalLable->setText(QString("D: %1 B/s").arg(downloadSpeed));
+        s1 = QString("D: %1 KB/s").arg(downloadSpeed);
     } 
 
     sumSpeed = uploadSpeed * 1.0/1000;
     if (sumSpeed >= 0.0) {
-        this->mUploadSpeedTotalLable->setText(QString("U: %1 KB/s").arg(sumSpeed));
+        s2 = QString("D: %1 KB/s").arg(sumSpeed);
     } else {
-        this->mUploadSpeedTotalLable->setText(QString("U: %1 B/s").arg(uploadSpeed));
+        s2 = QString("D: %1 KB/s").arg(uploadSpeed);
     } 
+
+    this->mStatusBar->setSpeedValue(s1, s2);
 }

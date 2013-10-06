@@ -34,7 +34,7 @@ class WalkSiteWndEx;  //网站遍历窗口类。
 class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
-
+class DMStatusBar;
 
 class AsyncTask;
 class AbstractUi;
@@ -185,12 +185,7 @@ private:
 	QSystemTrayIcon *mSysTrayIcon;	//system tray icon
     QToolButton *mAddOtherTaskButton;
 
-	QLabel *mStatusMessageLabel;
-	QSlider *mSpeedBarSlider;
-	QProgressBar *mSpeedProgressBar;
-	QLabel *mSpeedManualLabel;
-	QLabel *mDownloadSpeedTotalLable;
-	QLabel *mUploadSpeedTotalLable;    
+    DMStatusBar *mStatusBar;
 
 	//non ui item
 	// QTimer mAverageSpeedTimer;

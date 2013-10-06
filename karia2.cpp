@@ -31,6 +31,7 @@
 #include "catmandlg.h"
 #include "catpropdlg.h"
 #include "preferencesdialog.h"
+#include "dmstatusbar.h"
 
 #include "batchjobmandlg.h"
 #include "webpagelinkdlg.h"
@@ -83,12 +84,12 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     , mTaskMan(NULL)
     // , mAriaMan(NULL), mAriaRpc(NULL)
     // , mEAria2Man(NULL)
-    , mAria2Manager(NULL)
-    , mLogFile(NULL)
+    , mAria2Manager(NULL), mLogFile(NULL)
+    , mStatusBar(NULL)
     , m_argc(argc), m_argv(argv)
 //    , mSkypeTracer(NULL)
 {
-    //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?
+    //    QDir().setCurrent(qApp->applicationDirPath()); // why do this?可能是打开文件夹时的目录问题
 	mainUI->setupUi(this);	
 	firstShowEvent = true;
 
@@ -514,66 +515,11 @@ void Karia2::initStatusBar()
 {
 	//进度条初始化状态应该从配置读取出来才对。开始结束的最大值也从配置文件来。
 
-	//int begin = 1 , end = 500000;	//K	50M
-	int begin = 1 , end = 500;	//K	500KB/s
-
-	QStatusBar *bar = this->statusBar();
-
-    //
-	QLabel *lab = new QLabel("" );
-	lab->setFixedWidth(0);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
-	//bar->addWidget(lab);
-	bar->addPermanentWidget(lab);
-	this->mStatusMessageLabel = lab;
-
-	QProgressBar *pbar = new QProgressBar();	//进度条
-	pbar->setFixedWidth(120);
-	pbar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-	//bar->addWidget(pbar);
-	bar->addPermanentWidget(pbar);
-	this->mSpeedProgressBar = pbar;
-	pbar->setRange (begin , end );
-	pbar->setValue(begin);
-	pbar->setHidden(true);	//初始化为隐藏
-
-	QSlider *hslider = new QSlider(Qt::Horizontal);	//滑动条
-	hslider->setFixedWidth(120);
-	hslider->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-    hslider->setTracking(false); // avoid drap signal and app busy with socket community
-
-	//bar->addWidget(hslider);
-	bar->addPermanentWidget(hslider);
-	this->mSpeedBarSlider = hslider;
-	hslider->setRange(begin , end);
-	hslider->setValue(begin);
-	hslider->setHidden(false);	////初始化为隐藏
-
-	lab = new QLabel(QString("%1 KB/s").arg(hslider->value()) );	//用户设置下载速度显示条
-	lab->setFixedWidth(100);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-	//bar->addWidget(lab);
-	bar->addPermanentWidget(lab);
-	this->mSpeedManualLabel = lab;
-	lab->setHidden(false);	//初始化为隐藏
-
-	lab = new QLabel("DS: 0.00KB/s" );	//for total task speed，下载速度
-    // lab->setPixmap(QPixmap("icons/crystalsvg/32x32/actions/go-down.png").scaled(16, 16));
-	lab->setFixedWidth(100);
-	//lab->setFixedHeight(28);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-	bar->addPermanentWidget(lab);
-	this->mDownloadSpeedTotalLable = lab;
-	lab->setHidden(false);	//初始化为隐藏/显示
-
-	lab = new QLabel("US: 0.00KB/s" );	//for total task speed，上传速度
-    // lab->setPixmap(QPixmap("icons/crystalsvg/32x32/actions/go-up.png").scaled(16, 16));
-	lab->setFixedWidth(100);
-	//lab->setFixedHeight(28);
-	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-	bar->addPermanentWidget(lab);
-	this->mUploadSpeedTotalLable = lab;
-	lab->setHidden(false);	//初始化为隐藏/显示
+    QSize osize = this->statusBar()->size();
+    // new custom statusbar
+    this->setStatusBar(this->mStatusBar = new DMStatusBar(0));
+    QSize nsize = this->statusBar()->size();
+    qLogx()<<osize<<nsize;
 }
 /**
  *
@@ -684,7 +630,7 @@ void Karia2::connectAllSignalAndSlog()
 	// QObject::connect(this->mainUI->actionDefault_Download_Properties , SIGNAL(triggered()), this, SLOT(onShowDefaultDownloadProperty()));
 
 	//statusbar
-	QObject::connect(this->mSpeedBarSlider, SIGNAL(valueChanged(int)), this, SLOT(onManualSpeedChanged(int)));
+    QObject::connect(this->mStatusBar, &DMStatusBar::speedChanged, this, &Karia2::onManualSpeedChanged);
     QObject::connect(this->mainUI->action_Remember, SIGNAL(triggered(bool)),
                      this, SLOT(onRememberSpeedLimitSetting(bool)));
     
@@ -904,7 +850,7 @@ void Karia2::initUserOptionSetting()
             this->mainUI->action_Manual->setChecked(true);
             QString speedLImitSpeed = om->getSpeedLimitSpeed();
             this->onManualSpeedChanged(speedLImitSpeed.toInt()/1000);
-            this->mSpeedBarSlider->setValue(speedLImitSpeed.toInt()/1000);
+            this->mStatusBar->setSliderValue(speedLImitSpeed.toInt()/1000);
             this->onSwitchSpeedMode(this->mainUI->action_Manual);
         } else if (speedLimitType == "auto") {
             this->mainUI->action_Automatic->setChecked(true);
@@ -1899,25 +1845,16 @@ void Karia2::onSwitchSpeedMode(QAction *action)
 	qLogx()<<__FUNCTION__;
     QString speedLimitType = "unlimited";
 	if (action == mainUI->action_Unlimited) {
-		this->mSpeedBarSlider->hide();
-		this->mSpeedProgressBar->hide();
-		this->mSpeedManualLabel->hide();
-		// GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0);  // set no limit
+        this->mStatusBar->displaySpeedModeControl(speedLimitType);
 	} else if (action == mainUI->action_Manual) {
-		this->mSpeedBarSlider->show();
-		this->mSpeedProgressBar->hide();
-		this->mSpeedManualLabel->show();
-		// GlobalOption::instance()->mIsLimitSpeed = 1;
         // TODO 弹出设置速度对话框
         speedLimitType = "manual";
+        this->mStatusBar->displaySpeedModeControl(speedLimitType);
 	} else if (action == mainUI->action_Automatic ) {
-		this->mSpeedBarSlider->hide();
-		this->mSpeedProgressBar->show();
-		this->mSpeedManualLabel->show();
-		// GlobalOption::instance()->mIsLimitSpeed = 0;
         this->onManualSpeedChanged(0); // no limit now 
         speedLimitType = "auto";
+        this->mStatusBar->displaySpeedModeControl(speedLimitType);
 	}
 
     if (this->mainUI->action_Remember->isChecked()) {
@@ -1939,7 +1876,7 @@ void Karia2::onRememberSpeedLimitSetting(bool checked)
             om->saveSpeedLimitType("unlimited");
         } else if (this->mainUI->action_Manual->isChecked()) {
             om->saveSpeedLimitType("manual");
-            om->saveSpeedLimitSpeed(QString::number(this->mSpeedBarSlider->value()));
+            om->saveSpeedLimitSpeed(QString::number(this->mStatusBar->speedValue()));
         } else if (this->mainUI->action_Automatic->isChecked()) {
             om->saveSpeedLimitType("auto");
         }
@@ -1955,8 +1892,6 @@ void Karia2::onRememberSpeedLimitSetting(bool checked)
 void Karia2::onManualSpeedChanged(int value) 
 {
 	//qLogx()<<__FUNCTION__;
-	this->mSpeedManualLabel->setText(QString("%1 KB/s").arg(value));
-	//this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(value*this->mTaskQueue.size()));
 	// GlobalOption::instance()->mMaxLimitSpeed = value * 1024;	//the value is KB in unit
 
     //this->initXmlRpc();
