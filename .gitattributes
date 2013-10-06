@@ -50,6 +50,9 @@ data/karia2.desktop -text
 /dlrules.cpp -text
 /dlrules.h -text
 /dlrules.ui -text
+/dmstatusbar.cpp -text
+/dmstatusbar.h -text
+/dmstatusbar.ui -text svneol=unset#application/xml
 doc/(un)compress.txt -text
 doc/66985.user.js -text
 doc/C++.txt -text
@@ -102,6 +105,8 @@ icons/configure.png -text
 icons/crystalsvg/128x128/filesystems/network_proxy.png -text svneol=unset#image/png
 icons/crystalsvg/16x16/filesystems/folder_violet_open.png -text svneol=unset#image/png
 icons/crystalsvg/32x32/actions/down.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/go-down.png -text svneol=unset#image/png
+icons/crystalsvg/32x32/actions/go-up.png -text svneol=unset#image/png
 icons/crystalsvg/32x32/actions/messagebox_critical.png -text svneol=unset#image/png
 icons/crystalsvg/32x32/actions/messagebox_info.png -text svneol=unset#image/png
 icons/crystalsvg/32x32/actions/presence_online.png -text svneol=unset#image/png
