@@ -34,7 +34,7 @@ class WalkSiteWndEx;  //网站遍历窗口类。
 class SeedFileItemDelegate;
 class TaskItemDelegate;
 class OptionManager;
-
+class DMStatusBar;
 
 class AsyncTask;
 class AbstractUi;
@@ -185,11 +185,7 @@ private:
 	QSystemTrayIcon *mSysTrayIcon;	//system tray icon
     QToolButton *mAddOtherTaskButton;
 
-	QLabel *mStatusMessageLabel;
-	QSlider *mSpeedBarSlider;
-	QProgressBar *mSpeedProgressBar;
-	QLabel *mSpeedManualLabel;
-	QLabel *mSpeedTotalLable;
+    DMStatusBar *mStatusBar;
 
 	//non ui item
 	// QTimer mAverageSpeedTimer;
@@ -298,7 +294,7 @@ public slots:
     // void onCallSkype();
 
 public slots: // embeded aria2c related
-
+    void onAria2GlobalStatChanged(QMap<int, QVariant> stats);
 
 private slots:
     // aria2rpc related

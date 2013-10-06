@@ -10,6 +10,8 @@
 #include <QtCore>
 #include <QtGui>
 
+#include "simplelog.h"
+
 #include "utility.h"
 #include "karia2.h"
 #include "aboutdialog.h"
@@ -27,6 +29,7 @@
 #include "catmandlg.h"
 #include "catpropdlg.h"
 #include "preferencesdialog.h"
+#include "dmstatusbar.h"
 
 #include "batchjobmandlg.h"
 #include "webpagelinkdlg.h"
@@ -54,7 +57,7 @@
 
 #include "ariaman.h"
 #include "maiaXmlRpcClient.h"
-
+#include "aria2manager.h"
 
 void Karia2::testResponse(QVariant &response, QVariant &payload)
 {
@@ -253,11 +256,11 @@ void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
     // qDebug()<<"TSpeed:"<<speed<<" TLen:"<<totalLength<<" GLen:"<<gotLength;
     double sumSpeed =speed*1.0/1000;
     if (sumSpeed >= 0.0) {
-        this->mSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
-        this->mSpeedProgressBar->setValue((int)sumSpeed);
+        // this->mDownloadSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
+        // this->mSpeedProgressBar->setValue((int)sumSpeed);
     } else {
-        this->mSpeedTotalLable->setText(QString("%1 B/s").arg(speed));
-        this->mSpeedProgressBar->setValue((int)sumSpeed);
+        // this->mDownloadSpeedTotalLable->setText(QString("%1 B/s").arg(speed));
+        // this->mSpeedProgressBar->setValue((int)sumSpeed);
     }
 
     this->mISHW->updateSpeedHistogram(sumSpeed);
@@ -596,4 +599,30 @@ void Karia2::onAriaProcFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
+}
+
+
+////////////// embed aria2
+void Karia2::onAria2GlobalStatChanged(QMap<int, QVariant> stats)
+{
+    // qLogx()<<stats;
+    int downloadSpeed = stats[ng::stat2::download_speed].toInt();
+    int uploadSpeed = stats[ng::stat2::upload_speed].toInt();
+    double sumSpeed = downloadSpeed * 1.0/1000;
+    QString s1, s2;
+
+    if (sumSpeed >= 0.0) {
+        s1 = QString("D: %1 KB/s").arg(sumSpeed);
+    } else {
+        s1 = QString("D: %1 KB/s").arg(downloadSpeed);
+    } 
+
+    sumSpeed = uploadSpeed * 1.0/1000;
+    if (sumSpeed >= 0.0) {
+        s2 = QString("D: %1 KB/s").arg(sumSpeed);
+    } else {
+        s2 = QString("D: %1 KB/s").arg(uploadSpeed);
+    } 
+
+    this->mStatusBar->setSpeedValue(s1, s2);
 }

@@ -514,7 +514,7 @@ int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &recor
             while(dbq.next()) {
                 recs.append(dbq.record());
             }
-            qLogx()<<"select count:..."<<eval << dbq.size() << recs.size() << query;
+            // qLogx()<<"select count:..."<<eval << dbq.size() << recs.size() << query;
         } else if (eval.isValid() && dbq.numRowsAffected() == 1) {
             // insert query;
             qelms = query.trimmed().split(" ");

@@ -43,6 +43,8 @@ public slots:
     /////
     virtual bool onAllStatArrived(int stkey);
 
+    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed);
+
 public slots: // from worker thread
     void onWorkerFinished();
 /**
@@ -74,10 +76,6 @@ protected:
     friend class Aria2Libaria2Manager;
 
     int m_tid;
-    // std::shared_ptr<aria2::MultiUrlRequestInfo> muri;
-    // std::vector<std::shared_ptr<aria2::RequestGroup> > requestGroups_;
-
-    // std::shared_ptr<aria2::Option> option_;
     std::unique_ptr<Karia2StatCalc> statCalc_;
     // aria2::DownloadEngine *e;
     int exit_status;

@@ -121,6 +121,7 @@ HEADERS += aboutdialog.h \
            catpropdlg.h \
            dlrules.h \
            dropzone.h \
+           dmstatusbar.h \
            dircompletermodel.h	\
            hash.h \
            instantspeedhistogramwnd.h \
@@ -186,6 +187,7 @@ SOURCES += aboutdialog.cpp \
            catpropdlg.cpp \
            dlrules.cpp \
            dropzone.cpp \
+           dmstatusbar.cpp \
            dircompletermodel.cpp	\
            hash.cpp \
            instantspeedhistogramwnd.cpp \
@@ -255,6 +257,7 @@ FORMS += aboutdialog.ui \
          catpropdlg.ui \
          columnsmandlg.ui \
          dlrules.ui \
+           dmstatusbar.ui \
          karia2.ui \
          rulesmandlg.ui \
          # skypeclientwnd.ui \
