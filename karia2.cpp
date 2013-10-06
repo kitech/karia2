@@ -282,6 +282,7 @@ void Karia2::asyncFirstShowHandler()
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskServerStatChanged,
                      this->mTaskMan, &TaskQueue::onTaskServerStatusNeedUpdate);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskFinished, this, &Karia2::onTaskDone);
+    QObject::connect(this->mAria2Manager, &Aria2Manager::globalStatChanged, this, &Karia2::onAria2GlobalStatChanged);
 
 
     this->initUserOptionSetting();
@@ -335,7 +336,6 @@ void Karia2::initialMainWindow()
 	splitSize[0] -= 50;
 	splitSize[1] += 50;	
 	//this->mainUI->splitter_2->setSizes(splitSize);
-
 
 	splitSize = this->mainUI->splitter->sizes();
 	//qLogx()<<splitSize;
@@ -518,6 +518,8 @@ void Karia2::initStatusBar()
 	int begin = 1 , end = 500;	//K	500KB/s
 
 	QStatusBar *bar = this->statusBar();
+
+    //
 	QLabel *lab = new QLabel("" );
 	lab->setFixedWidth(0);
 	lab->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
@@ -543,26 +545,35 @@ void Karia2::initStatusBar()
 	//bar->addWidget(hslider);
 	bar->addPermanentWidget(hslider);
 	this->mSpeedBarSlider = hslider;
-	hslider->setRange(begin , end );
+	hslider->setRange(begin , end);
 	hslider->setValue(begin);
-	hslider->setHidden(true);	////初始化为隐藏
+	hslider->setHidden(false);	////初始化为隐藏
 
-	lab = new QLabel(QString("%1 KB/s").arg(hslider->value()) );	//速度显示条
+	lab = new QLabel(QString("%1 KB/s").arg(hslider->value()) );	//用户设置下载速度显示条
 	lab->setFixedWidth(100);
 	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 	//bar->addWidget(lab);
 	bar->addPermanentWidget(lab);
 	this->mSpeedManualLabel = lab;
-	
-	lab->setHidden(true);	//初始化为隐藏
+	lab->setHidden(false);	//初始化为隐藏
 
-	lab = new QLabel("0.00KB/s" );	//for total task speed
+	lab = new QLabel("DS: 0.00KB/s" );	//for total task speed，下载速度
+    // lab->setPixmap(QPixmap("icons/crystalsvg/32x32/actions/go-down.png").scaled(16, 16));
 	lab->setFixedWidth(100);
 	//lab->setFixedHeight(28);
 	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 	bar->addPermanentWidget(lab);
-	this->mSpeedTotalLable = lab;
+	this->mDownloadSpeedTotalLable = lab;
+	lab->setHidden(false);	//初始化为隐藏/显示
 
+	lab = new QLabel("US: 0.00KB/s" );	//for total task speed，上传速度
+    // lab->setPixmap(QPixmap("icons/crystalsvg/32x32/actions/go-up.png").scaled(16, 16));
+	lab->setFixedWidth(100);
+	//lab->setFixedHeight(28);
+	lab->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+	bar->addPermanentWidget(lab);
+	this->mUploadSpeedTotalLable = lab;
+	lab->setHidden(false);	//初始化为隐藏/显示
 }
 /**
  *
@@ -1898,6 +1909,7 @@ void Karia2::onSwitchSpeedMode(QAction *action)
 		this->mSpeedProgressBar->hide();
 		this->mSpeedManualLabel->show();
 		// GlobalOption::instance()->mIsLimitSpeed = 1;
+        // TODO 弹出设置速度对话框
         speedLimitType = "manual";
 	} else if (action == mainUI->action_Automatic ) {
 		this->mSpeedBarSlider->hide();
@@ -1960,9 +1972,11 @@ void Karia2::onManualSpeedChanged(int value)
 //    this->mAriaRpc->call("aria2.changeGlobalOption", args, payload,
 //                         this, SLOT(onAriaChangeGlobalOptionResponse(QVariant &, QVariant &)),
 //                         this, SLOT(onAriaChangeGlobalOptionFault(int, QString, QVariant &)));
+    int revalue = value * 1000; // ::cos(value * 0.01);
+    this->mAria2Manager->setSpeedLimit(revalue, revalue); // 参数单位：B/s
 
     if (this->mainUI->action_Remember->isChecked()) {
-        OptionManager::instance()->saveSpeedLimitSpeed(QString::number(value * 1000));
+        OptionManager::instance()->saveSpeedLimitSpeed(QString::number(revalue));
     }
 }
 ////////////

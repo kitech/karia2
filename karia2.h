@@ -189,7 +189,8 @@ private:
 	QSlider *mSpeedBarSlider;
 	QProgressBar *mSpeedProgressBar;
 	QLabel *mSpeedManualLabel;
-	QLabel *mSpeedTotalLable;
+	QLabel *mDownloadSpeedTotalLable;
+	QLabel *mUploadSpeedTotalLable;    
 
 	//non ui item
 	// QTimer mAverageSpeedTimer;
@@ -298,7 +299,7 @@ public slots:
     // void onCallSkype();
 
 public slots: // embeded aria2c related
-
+    void onAria2GlobalStatChanged(QMap<int, QVariant> stats);
 
 private slots:
     // aria2rpc related

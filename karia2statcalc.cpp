@@ -52,10 +52,11 @@
 #include "PeerStat.h"
 
 QAtomicInt Karia2StatCalc::poolCounter(1);
-Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval)
+Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval, aria2::Session *sess)
     : QObject(0),
       m_tid(tid),
       summaryInterval_(summaryInterval)
+    , a2sess(sess)
 {
     this->cssc.reset(new aria2::ConsoleStatCalc(summaryInterval, true));
 }
@@ -168,7 +169,8 @@ void Karia2StatCalc::calculateStat(aria2::DownloadHandle* dh)
     int stkey = 0;    
     Aria2StatCollector *sclt = new Aria2StatCollector();    
     sclt->tid = m_tid;
-    
+
+    this->setDownloadResultStat(dh, sclt);
     this->setBaseStat(dh, sclt);
     this->setServersStat(dh, sclt);
 
@@ -545,6 +547,13 @@ int Karia2StatCalc::setBittorrentStat(const aria2::DownloadEngine* e, std::share
 // for libaria2
 int Karia2StatCalc::setDownloadResultStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats)
 {
+    assert(this->a2sess != NULL);
+
+    stats->globalStat2 = {0};
+    aria2::GlobalStat a2stat = aria2::getGlobalStat(this->a2sess);
+    stats->globalStat2.downloadSpeed = a2stat.downloadSpeed;
+    stats->globalStat2.uploadSpeed = a2stat.uploadSpeed;
+    
     return 0;
 }
 

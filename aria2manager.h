@@ -52,6 +52,7 @@ signals:
     virtual void taskStatChanged(int tid, QMap<int, QVariant> stats);
     virtual void taskServerStatChanged(int tid, QList<QMap<QString, QString> > stats);
     virtual void taskFinished(int tid, int code);
+    virtual void globalStatChanged(QMap<int, QVariant> stats);
     
 public slots:
     virtual int addTask(int task_id, const QString &url, TaskOption *to) = 0;
@@ -61,6 +62,7 @@ public slots:
     virtual int pauseTask(int task_id)  = 0;
     /////
     virtual bool onAllStatArrived(int stkey) = 0;
+    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {};
                               
 protected slots:
     //// from backend

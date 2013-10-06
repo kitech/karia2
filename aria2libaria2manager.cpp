@@ -45,6 +45,9 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
 
     aria2::KeyVals opt1;
     opt1.push_back(aria2::KeyVal("log", "/tmp/karia2.log"));
+    opt1.push_back(aria2::KeyVal("max-overall-download-limit", "20000"));
+    opt1.push_back(aria2::KeyVal("max-overall-upload-limit", "20000"));
+
     aria2::libraryInit();
     this->a2sess = aria2::sessionNew(opt1, this->a2cfg);
 
@@ -54,7 +57,7 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
 
     eaw = new Aria2Libaria2Worker();
     eaw->m_tid = task_id;
-    eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, 60));
+    eaw->statCalc_.reset(new Karia2StatCalc(eaw->m_tid, 60, this->a2sess));
     QObject::connect(eaw->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2Libaria2Manager::onAllStatArrived);
 
     if (this->m_tasks.contains(task_id)) {
@@ -72,7 +75,7 @@ int Aria2Libaria2Manager::addTask(int task_id, const QString &url, TaskOption *t
     opts.push_back(aria2::KeyVal("split", "3"));
     opts.push_back(aria2::KeyVal("min-split-size", "1M"));
     opts.push_back(aria2::KeyVal("max-connection-per-server", "4"));
-    opts.push_back(aria2::KeyVal("max-download-limit", "20000"));
+    // opts.push_back(aria2::KeyVal("max-download-limit", "20000"));
     QString ugid = QString("%10000000000000000").arg(task_id, 0, 10).left(16);
     opts.push_back(aria2::KeyVal("gid", ugid.toStdString()));
     int rv = aria2::addUri(this->a2sess, nullptr, args, opts);
@@ -149,6 +152,32 @@ int Aria2Libaria2Manager::pauseTask(int task_id)
     return 0;
 }
 
+bool Aria2Libaria2Manager::setSpeedLimit(int downloadSpeed, int uploadSpeed)
+{
+    if (this->a2sess != NULL) {
+        aria2::KeyVals opts;
+        downloadSpeed = (downloadSpeed <= 0) ? INT_MAX : downloadSpeed;
+        uploadSpeed = (uploadSpeed <= 0) ? INT_MAX : uploadSpeed;
+        opts.push_back(aria2::KeyVal("max-overall-download-limit", QString("%1").arg(downloadSpeed).toLatin1().data()));
+        opts.push_back(aria2::KeyVal("max-overall-upload-limit", QString("%1").arg(uploadSpeed).toLatin1().data()));
+
+        // 这个设置可能不管用，因为每个任务都有了限速设置
+        aria2::changeGlobalOption(this->a2sess, opts);
+
+        opts.clear();
+        opts.push_back(aria2::KeyVal("max-download-limit", QString("%1").arg(downloadSpeed).toLatin1().data()));
+        opts.push_back(aria2::KeyVal("max-uplaod-limit", QString("%1").arg(downloadSpeed).toLatin1().data()));
+        std::vector<aria2::A2Gid> gids = aria2::getActiveDownload(this->a2sess);
+        for (auto gid : gids) {
+            aria2::changeOption(this->a2sess, gid, opts);
+        }
+        for (auto item : this->m_tasks) {
+            // item会是什么数据类型呢
+        }
+    }
+    return true;
+}
+
 void Aria2Libaria2Manager::onWorkerFinished()
 {
     /*
@@ -223,7 +252,7 @@ void Aria2Libaria2Manager::run()
 
 bool Aria2Libaria2Manager::checkAndDispatchStat(Aria2StatCollector *sclt)
 {
-    QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
+    QMap<int, QVariant> stats, stats2; // QVariant可能是整数，小数，或者字符串
     qLogx()<<"";
     // emit this->taskStatChanged(sclt->tid, sclt->totalLength, sclt->completedLength,
     //                            sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength),
@@ -247,6 +276,10 @@ bool Aria2Libaria2Manager::checkAndDispatchStat(Aria2StatCollector *sclt)
     // ready, active, waiting, complete, removed, error, pause
     
     emit this->taskStatChanged(sclt->tid, stats);
+
+    stats2[ng::stat2::download_speed] = sclt->globalStat2.downloadSpeed;
+    stats2[ng::stat2::upload_speed] = sclt->globalStat2.uploadSpeed;
+    emit this->globalStatChanged(stats2);
 
     return true;
 }

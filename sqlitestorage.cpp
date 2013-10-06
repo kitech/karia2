@@ -57,7 +57,7 @@ SqliteStorage::SqliteStorage(QObject *parent)
 	this->optionDBName = this->storePath + this->optionsPrefixName + this->dbSuffix;
 	this->taskDBName  = this->storePath + this->tasksPrefixName + this->dbSuffix;
 
-	optInsSql = "INSERT INTO %1 (option_name, option_value, option_type, dirty) "
+	optInsSql = "INSERT OR REPLACE INTO %1 (option_name, option_value, option_type, dirty) "
 		" VALUES ('%2', '%3', '%4', '%5')";
 
 	catInsSql = "INSERT INTO categorys (cat_id, display_name, raw_name, folder, path, can_child, parent_cat_id, create_time , delete_flag, dirty) "
@@ -305,7 +305,7 @@ bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<Q
 		if (i < sl.count() - 1) tempSql += " , ";
 	}
 	createSql = createSql.arg(tempSql);
-    qLogx()<<createSql;
+    // qLogx()<<createSql;
     createSqls.insert("tasks", createSql);
 
 //	QSqlQuery q( this->mTasksDB );
@@ -327,7 +327,7 @@ bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<Q
 	}
 	createSql = createSql.arg(tempSql);
 //	q.exec(createSql);
-    qLogx()<<createSql;
+    // qLogx()<<createSql;
     createSqls.insert("segments", createSql);
 
 	createSql = "CREATE TABLE categorys (%1) ";
@@ -346,7 +346,7 @@ bool SqliteStorage::initDefaultTasks(QMap<QString, QString> &createSqls, QHash<Q
 	}
 	createSql = createSql.arg(tempSql);
 //	q.exec(createSql);
-    qLogx()<<createSql;
+    // qLogx()<<createSql;
     createSqls.insert("categorys", createSql);
 
 	QString insSql = this->catInsSql;
@@ -417,6 +417,7 @@ bool SqliteStorage::dumpDefaultTasksDone(boost::shared_ptr<SqlRequest> req)
     return true;
 }
 
+// TODO 为什么每次启动都会执行这个方法
 bool SqliteStorage::addDefaultOption(QString key, QString value, QString type)
 {
 	QString sql = this->optInsSql.arg("default_options").arg(key).arg(value).arg(type).arg("false");
@@ -437,7 +438,7 @@ bool SqliteStorage::addDefaultOption(QString key, QString value, QString type)
     req->mReqno = this->m_adb->execute(req->mSql);
     this->mRequests.insert(req->mReqno, req);
 
-    qLogx()<<req->mSql;
+    // qLogx()<<req->mSql;
 
 	return true;
 }

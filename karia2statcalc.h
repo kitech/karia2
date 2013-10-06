@@ -19,6 +19,10 @@
 #include "RequestGroup.h"
 #include "RequestGroupMan.h"
 
+namespace aria2 {
+    class Session;
+}
+
 class ConsoleStatCalc;
 class Aria2StatCollector;
 
@@ -30,8 +34,9 @@ private:
     time_t summaryInterval_;
     std::shared_ptr<aria2::ConsoleStatCalc> cssc;
     int m_tid;
+    aria2::Session *a2sess;
 public:
-    Karia2StatCalc(int tid, time_t summaryInterval);
+    Karia2StatCalc(int tid, time_t summaryInterval, aria2::Session *sess = 0);
 
     virtual ~Karia2StatCalc() {}
 
@@ -142,6 +147,7 @@ public:
     };
     TransferStat *globalStat;
     TransferStat *sessionStat;
+    TransferStat globalStat2;
     QMap<uint64_t, TransferStat *> tasksStat;
 
     class ServerStatCollector {
