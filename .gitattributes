@@ -398,3 +398,5 @@ translations/qt_zh_TW.qm -text
 /webpageurlinputdlg.ui -text
 /xmlstorage.cpp -text
 /xmlstorage.h -text
+xui/preferencelistwidget.cpp -text
+xui/preferencelistwidget.h -text
