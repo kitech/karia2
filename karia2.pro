@@ -171,6 +171,7 @@ HEADERS += aboutdialog.h \
            aria2manager.h \
            aria2embedmanager.h \
            aria2libaria2manager.h \
+           aria2rpcserver.h \
            aria2rpcmanager.h \
            aria2jsonmanager.h \
            aria2xmlmanager.h \
@@ -242,6 +243,7 @@ SOURCES += aboutdialog.cpp \
            aria2manager.cpp  \
            aria2embedmanager.cpp \
            aria2libaria2manager.cpp \
+           aria2rpcserver.cpp \
            aria2rpcmanager.cpp \
            aria2jsonmanager.cpp \
            aria2xmlmanager.cpp \
