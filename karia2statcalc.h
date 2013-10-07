@@ -12,6 +12,7 @@
 #include <string>
 #include <functional>
 #include <QtCore>
+#include <QtNetwork>
 
 #include "StatCalc.h"
 #include "TimerA2.h"
@@ -50,6 +51,9 @@ public:
     QMap<uint64_t, Aria2StatCollector*> statPool;
     static QAtomicInt poolCounter;
 
+public slots:
+    void calculateStat(QVariant &response, QNetworkReply *reply, QVariant &payload);
+
 signals:
 //    void progressState(int tid, quint32 gid, quint64 total_length,
 //                   quint64 curr_length, quint32 down_speed, quint32 up_speed,
@@ -66,12 +70,19 @@ private:
     int setServersStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
     int setBittorrentStat(const aria2::DownloadEngine* e, std::shared_ptr<aria2::RequestGroup> &rg, Aria2StatCollector *stats);
 
+    // libaria2
     int setDownloadResultStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
     int setBaseStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
     int setFilesStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
     int setServersStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
     int setBittorrentStat(aria2::DownloadHandle* dh, Aria2StatCollector *stats);
-    
+
+    // xmlrpc
+    int setDownloadResultStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setBaseStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setFilesStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setServersStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setBittorrentStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
 };
 
 typedef std::shared_ptr<Karia2StatCalc> Karia2StatCalcHandle;

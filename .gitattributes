@@ -12,6 +12,8 @@ Resources/nullget-1.png -text
 /abstractstorage.h -text
 /aria2embedmanager.cpp -text
 /aria2embedmanager.h -text
+/aria2jsonmanager.cpp -text
+/aria2jsonmanager.h -text
 /aria2libaria2manager.cpp -text
 /aria2libaria2manager.h -text
 /aria2manager.cpp -text

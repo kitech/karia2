@@ -61,16 +61,16 @@
 
 void Karia2::testResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
 }
 void Karia2::testFault(int status, QString response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<status<<response<<payload;
+    qLogx()<<__FUNCTION__<<status<<response<<payload;
 }
 
 void Karia2::onAriaAddUriResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload; // why this line cause crash?
+    // qLogx()<<__FUNCTION__<<response<<payload; // why this line cause crash?
 
     QMap<QString, QVariant> mPayload = payload.toMap();
     int taskId = mPayload["taskId"].toString().toInt();
@@ -97,18 +97,18 @@ void Karia2::onAriaAddUriResponse(QVariant &response, QVariant &payload)
 }
 void Karia2::onAriaAddUriFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason;
+    qLogx()<<__FUNCTION__<<code<<reason;
     Q_UNUSED(payload);
 }
 
 void Karia2::onAriaGetUriResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response;
+    qLogx()<<__FUNCTION__<<response;
     Q_UNUSED(payload);
 }
 void Karia2::onAriaGetUriFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason;
+    qLogx()<<__FUNCTION__<<code<<reason;
     Q_UNUSED(payload);
 }
 
@@ -119,14 +119,14 @@ QVariant(QVariantMap, QMap(("bitfield", QVariant(QString, "0000") ) ("completedL
 
 void Karia2::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
 
     int taskId = payload.toInt();
     QVariantMap sts = response.toMap();
 
     this->mTaskMan->onTaskStatusNeedUpdate(taskId, sts);
 
-    // qDebug()<<sts["files"];
+    // qLogx()<<sts["files"];
 
     if (sts.contains("bittorrent")) {
         QVariantMap stsbt = sts.value("bittorrent").toMap();
@@ -163,7 +163,7 @@ void Karia2::onAriaGetStatusResponse(QVariant &response, QVariant &payload)
 }
 void Karia2::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason;
+    qLogx()<<__FUNCTION__<<code<<reason;
 
     Q_UNUSED(payload);
 }
@@ -171,7 +171,7 @@ void Karia2::onAriaGetStatusFault(int code, QString reason, QVariant &payload)
 // TODO, combine request to aria2.multicall
 void Karia2::onAriaUpdaterTimeout()
 {
-    // qDebug()<<"time out update";
+    // qLogx()<<"time out update";
 //    QHashIterator<int, QString> hit(this->mRunningMap);
 
 //    if (this->mAriaRpc == NULL) {
@@ -203,7 +203,7 @@ void Karia2::onAriaUpdaterTimeout()
 
 void Karia2::onAriaRemoveResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
     int taskId = payload.toInt();
 //    this->mRunningMap.remove(taskId);
 //    if (this->mTorrentMap.contains(taskId)) {
@@ -216,7 +216,7 @@ void Karia2::onAriaRemoveResponse(QVariant &response, QVariant &payload)
 
 void Karia2::onAriaRemoveFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
     // assert(1 == 2);
 }
 
@@ -226,7 +226,7 @@ void Karia2::onAriaGlobalUpdaterTimeout()
     QVariant payload;
 
 //    if (this->mRunningMap.count() == 0) {
-//        // qDebug()<<"No Running task in queue, don't need run global update";
+//        // qLogx()<<"No Running task in queue, don't need run global update";
 //        return;
 //    }
 //    this->initXmlRpc();
@@ -237,7 +237,7 @@ void Karia2::onAriaGlobalUpdaterTimeout()
 
 void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
     Q_UNUSED(payload);
 
     QVariantList lsts = response.toList();
@@ -253,7 +253,7 @@ void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
         gotLength += sts["completedLength"].toULongLong();
     }
 
-    // qDebug()<<"TSpeed:"<<speed<<" TLen:"<<totalLength<<" GLen:"<<gotLength;
+    // qLogx()<<"TSpeed:"<<speed<<" TLen:"<<totalLength<<" GLen:"<<gotLength;
     double sumSpeed =speed*1.0/1000;
     if (sumSpeed >= 0.0) {
         // this->mDownloadSpeedTotalLable->setText(QString("%1 KB/s").arg(sumSpeed));
@@ -268,12 +268,12 @@ void Karia2::onAriaGetActiveResponse(QVariant &response, QVariant &payload)
 
 void Karia2::onAriaGetActiveFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaGetServersResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
 
     int taskId = payload.toInt();
     TaskServerModel *serverModel = this->mTaskMan->taskServerModel(taskId);
@@ -282,13 +282,13 @@ void Karia2::onAriaGetServersResponse(QVariant &response, QVariant &payload)
         serverModel->setData(servers);
         // QTreeView::rowsInserted internal representation of the model has been corrupted, resetting.
     } else {
-        qDebug()<<"server model not found";
+        qLogx()<<"server model not found";
     }
 }
 
 void Karia2::onAriaGetServersFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payload)
@@ -297,16 +297,16 @@ void Karia2::onAriaGetTorrentPeersResponse(QVariant &response, QVariant &payload
 
     QVariantList peers = response.toList();
     this->mTaskMan->setPeers(taskId, peers);
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
 }
 void Karia2::onAriaGetTorrentPeersFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaParseTorrentFileResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
     /*
       onAriaGetTorrentFilesResponse QVariant(QString, "1") QVariant(QVariantMap, QMap(("cmd", QVariant(QString, "torrent_get_files") ) ("taskId" ,  QVariant(int, 42) ) ("url" ,  QVariant(QString, "file:///home/gzleo/NGDownload/1CA79A2AD33A0C89157E2BE71A0AF8A1A735A83A.torrent") ) )  )
      */
@@ -315,7 +315,7 @@ void Karia2::onAriaParseTorrentFileResponse(QVariant &response, QVariant &payloa
     int taskId = mPayload["taskId"].toInt();
     QString url = mPayload["url"].toString();
     mPayload["ariaGid"] = ariaGid;
-    qDebug()<<__FUNCTION__<<url<<taskId;
+    qLogx()<<__FUNCTION__<<url<<taskId;
 
     //this->initXmlRpc();
 
@@ -332,7 +332,7 @@ void Karia2::onAriaParseTorrentFileResponse(QVariant &response, QVariant &payloa
 
 void Karia2::onAriaParseTorrentFileFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
     // onAriaParseTorrentFileFault 1 "We encountered a problem while processing the option '--select-file'."
     /*
       2010-04-21 10:44:24.049116 ERROR - Exception caught
@@ -342,7 +342,7 @@ void Karia2::onAriaParseTorrentFileFault(int code, QString reason, QVariant &pay
 
 void Karia2::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
     QMap<QString, QVariant> mPayload = payload.toMap();
     // int taskId = payload.toMap().value("taskId").toInt();
     QMap<QString, QVariant> statusMap = response.toMap();
@@ -377,7 +377,7 @@ void Karia2::onAriaGetTorrentFilesResponse(QVariant &response, QVariant &payload
 
 void Karia2::onAriaGetTorrentFilesFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onTorrentRemoveConfirmTimeout()
@@ -400,7 +400,7 @@ void Karia2::onTorrentRemoveConfirmTimeout()
 
 void Karia2::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
     QVariantMap msts = response.toMap();
     QVariantMap mPayload = payload.toMap();
 
@@ -422,13 +422,13 @@ void Karia2::onAriaRemoveGetTorrentFilesConfirmResponse(QVariant &response, QVar
 
 void Karia2::onAriaRemoveGetTorrentFilesConfirmFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
-    qDebug()<<__FUNCTION__<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<payload;
 
     // insert new torrent task
     QMap<QString, QVariant> mPayload = payload.toMap();
@@ -493,7 +493,7 @@ void Karia2::onAriaRemoveTorrentParseFileTaskResponse(QVariant &response, QVaria
 
 void Karia2::onAriaRemoveTorrentParseFileTaskFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaTorrentUpdaterTimeout()
@@ -513,34 +513,34 @@ void Karia2::onAriaTorrentUpdaterTimeout()
 
 void Karia2::onAriaGetVersionResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
 }
 void Karia2::onAriaGetVersionFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 void Karia2::onAriaGetSessionInfoResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
 }
 void Karia2::onAriaGetSessionInfoFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaMultiCallVersionSessionResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
 }
 
 void Karia2::onAriaMultiCallVersionSessionFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payload)
 {
-    // qDebug()<<__FUNCTION__<<response<<payload;
+    // qLogx()<<__FUNCTION__<<response<<payload;
     Q_UNUSED(response);
 
     QString which = payload.toString();
@@ -563,17 +563,17 @@ void Karia2::onAriaChangeGlobalOptionResponse(QVariant &response, QVariant &payl
 
 void Karia2::onAriaChangeGlobalOptionFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaGetGlobalOptionResponse(QVariant &response, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<response<<payload;
+    qLogx()<<__FUNCTION__<<response<<payload;
 }
 
 void Karia2::onAriaGetGlobalOptionFault(int code, QString reason, QVariant &payload)
 {
-    qDebug()<<__FUNCTION__<<code<<reason<<payload;
+    qLogx()<<__FUNCTION__<<code<<reason<<payload;
 }
 
 void Karia2::onAriaTorrentReselectFileMachineResponse(QVariant &response, QVariant &payload)

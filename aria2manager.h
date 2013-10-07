@@ -67,6 +67,10 @@ public slots:
 protected slots:
     //// from backend
     // virtual void onBackendFinished() = 0;
+
+protected:
+    uint64_t tid2gid(int tid);
+    QString  tid2hex(int tid);
     
 protected:
     // > 0 是从下载后端传递过来的事件

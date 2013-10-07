@@ -278,6 +278,32 @@ void Karia2StatCalc::calculateStat(aria2::DownloadHandle* dh)
     */
 }
 
+// for xmlrpc
+void Karia2StatCalc::calculateStat(QVariant &response, QNetworkReply *reply, QVariant &payload)
+{
+    qLogx()<<response<<payload;
+
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+    sclt->tid = m_tid;
+
+    this->setDownloadResultStat(response, reply, payload, sclt);
+    this->setBaseStat(response, reply, payload, sclt);
+    this->setServersStat(response, reply, payload, sclt);
+
+    int stkey = 0;    
+    // stkey
+    this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+    stkey = this->poolCounter.fetchAndAddRelaxed(1);
+    if (this->statPool.contains(stkey)) {
+        qLogx()<<"whooooo, impossible.";
+    } else {
+        this->statPool.insert(stkey, sclt);
+    }
+            
+    emit this->progressStat(stkey);
+}
+
+
 Aria2StatCollector *Karia2StatCalc::getNextStat(int stkey)
 {
     if (this->statPool.contains(stkey)) {
@@ -611,3 +637,107 @@ int Karia2StatCalc::setBittorrentStat(aria2::DownloadHandle* dh, Aria2StatCollec
     return 0;
 }
 
+//// for xmlrpc
+int Karia2StatCalc::setDownloadResultStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+    QVariantList result;
+    QVariantMap globalStatResult;
+
+    result = response.toList();
+    qLogx()<<"result size:"<<result.size();
+
+    for (int i = 0; i < result.size(); i++) {
+        QVariant ln = result.at(i);
+        qLogx()<<"ln:"<<i<<ln.typeName();
+    }
+
+    globalStatResult = result.at(2).toList().at(0).toMap();
+    qLogx()<<globalStatResult.size();
+
+    stats->globalStat2 = {0};
+    stats->globalStat2.downloadSpeed = globalStatResult["downloadSpeed"].toString().toInt();
+    stats->globalStat2.uploadSpeed = globalStatResult["uploadSpeed"].toString().toInt();
+
+    return 0;
+}
+
+int Karia2StatCalc::setBaseStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+    QVariantMap baseResult;
+    baseResult = response.toList().at(0)   .toList().at(0).toMap();
+
+    stats->gid = baseResult["gid"].toString().toULongLong(0, 16);
+    stats->state = 0;
+    stats->totalLength = baseResult["totalLength"].toString().toInt();
+    stats->completedLength = baseResult["completedLength"].toString().toInt();
+    stats->downloadSpeed = baseResult["downloadSpeed"].toString().toInt();
+    stats->pieceLength = baseResult["pieceLength"].toString().toInt();
+    stats->numPieces = baseResult["numPieces"].toString().toInt();
+    stats->connections = baseResult["connections"].toString().toInt();
+    stats->errorCode = 0;
+    if(stats->totalLength > 0 && stats->downloadSpeed > 0) {
+        stats->eta = (stats->totalLength - stats->completedLength)/stats->downloadSpeed;
+    }
+    stats->bitfield = baseResult["bitfield"].toString().toStdString();
+
+    QString status = baseResult["status"].toString();
+    if (status == "waiting") {
+        stats->state = aria2::DOWNLOAD_WAITING;
+    } else if (status == "active") {
+        stats->state = aria2::DOWNLOAD_ACTIVE;
+    } else if (status == "complete") {
+        stats->state = aria2::DOWNLOAD_COMPLETE;
+    } else if (status == "paused") {
+        stats->state = aria2::DOWNLOAD_PAUSED;
+    } else if (status == "removed") {
+        stats->state = aria2::DOWNLOAD_REMOVED;
+    } else if (status == "error") {
+        stats->state = aria2::DOWNLOAD_ERROR;
+        stats->errorCode = aria2::DOWNLOAD_ERROR;
+    }
+
+    return 0;
+}
+
+int Karia2StatCalc::setFilesStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+    return 0;
+}
+
+int Karia2StatCalc::setServersStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+    QVariantList serverResult;
+    serverResult = response.toList().at(1)   .toList().at(0).toList();
+
+    // qLogx()<<serverResult.size() << serverResult;
+    for (int i = 0; i < serverResult.size(); i++) {
+        QVariantMap sn = serverResult.at(i).toMap();
+        
+        QVariantList srvs = sn["servers"].toList();
+        for (int j = 0; j < srvs.size(); j++) {
+            QVariantMap srv = srvs.at(i).toMap();
+
+            Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
+            servInfo.uri = srv["uri"].toString().toStdString();
+            servInfo.downloadSpeed = srv["downloadSpeed"].toString().toInt();
+            servInfo.state = 1;
+            servInfo.hostname = "ab";
+            servInfo.protocol = "cd";
+
+            stats->server_stats.servers.push_back(servInfo);
+
+            qLogx()<<"servinfo:"<<srv
+                   <<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
+                   << servInfo.hostname.c_str() << servInfo.protocol.c_str();
+
+        }
+        stats->server_stats.index = sn["index"].toString().toInt();
+    }
+
+    return 0;
+}
+
+int Karia2StatCalc::setBittorrentStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+    return 0;
+}
