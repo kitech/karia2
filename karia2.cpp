@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 213 2013-10-06 17:20:55Z drswinghead $
+// Version: $Id: karia2.cpp 216 2013-10-07 11:41:07Z drswinghead $
 // 
 
 #include <QtCore>
@@ -262,7 +262,8 @@ void Karia2::asyncFirstShowHandler()
 
     // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_EMBEDED);
     // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_LIBARIA2);
-    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_XMLRPC_HTTP);
+    // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_XMLRPC_HTTP);
+    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_JSONRPC_HTTP);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskServerStatChanged,
                      this->mTaskMan, &TaskQueue::onTaskServerStatusNeedUpdate);

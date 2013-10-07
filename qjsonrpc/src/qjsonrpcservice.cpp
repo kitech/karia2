@@ -97,7 +97,16 @@ void QJsonRpcSocketPrivate::writeData(const QJsonRpcMessage &message)
     QByteArray data = doc.toJson();
 #endif
 
-    device.data()->write(data);
+    QString http_header = QString(
+                                  "POST /jsonrpc HTTP/1.0\r\n"
+                                  "Host: 127.0.0.1\r\n"
+                                  "Content-length: %1\r\n"
+                                  "\r\n"
+                                  ).arg(data.length())
+                                  ;
+    // device.data()->write(http_header.toLatin1());
+
+    device.data()->write(http_header.toLatin1() + data);
     if (qgetenv("QJSONRPC_DEBUG").toInt())
         qDebug() << "sending: " << data;
 }
@@ -532,6 +541,14 @@ void QJsonRpcSocket::processIncomingData()
     }
 
     d->buffer.append(d->device.data()->readAll());
+    qDebug() << "rpc read buffer: " << d->buffer;
+    int pos = d->buffer.indexOf("\r\n\r\n");
+    if (pos > 0) {
+        QByteArray jsonStr = d->buffer.right(d->buffer.length() - pos - 4);
+        d->buffer = jsonStr;
+        qDebug() << "rpc read buffer to jsonstr: " << jsonStr;
+    }
+
     while (!d->buffer.isEmpty()) {
         int dataSize = d->findJsonDocumentEnd(d->buffer);
         if (dataSize == -1) {
