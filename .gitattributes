@@ -283,6 +283,15 @@ qjson/tests/qobjecthelper/person.h -text
 qjson/tests/qobjecthelper/testqobjecthelper.cpp -text
 qjson/tests/serializer/CMakeLists.txt -text
 qjson/tests/serializer/testserializer.cpp -text
+qjsonrpc/qjsonrpc.pri -text
+qjsonrpc/qjsonrpc.pro -text
+qjsonrpc/src/qjsonrpc_export.h -text
+qjsonrpc/src/qjsonrpcmessage.cpp -text
+qjsonrpc/src/qjsonrpcmessage.h -text
+qjsonrpc/src/qjsonrpcservice.cpp -text
+qjsonrpc/src/qjsonrpcservice.h -text
+qjsonrpc/src/qjsonrpcservice_p.h -text
+qjsonrpc/src/src.pro -text
 qtsingleapplication/QtLockedFile -text
 qtsingleapplication/QtSingleApplication -text
 qtsingleapplication/common.pri -text
