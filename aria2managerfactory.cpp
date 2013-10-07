@@ -11,6 +11,7 @@
 #include "aria2embedmanager.h"
 #include "aria2libaria2manager.h"
 #include "aria2xmlmanager.h"
+#include "aria2jsonmanager.h"
 #include "aria2managerfactory.h"
 
 Aria2ManagerFactory::Aria2ManagerFactory()
@@ -40,6 +41,10 @@ Aria2Manager* Aria2ManagerFactory::createManager(int type)
             break;
         case Aria2Manager::BT_XMLRPC_HTTP:
             manager = new Aria2XmlManager();
+            Aria2ManagerFactory::mManagers[type] = manager;
+            break;
+        case Aria2Manager::BT_JSONRPC_HTTP:
+            manager = new Aria2JsonManager();
             Aria2ManagerFactory::mManagers[type] = manager;
             break;
         default:

@@ -113,6 +113,9 @@ QTSAPP_SOURCES = qtsingleapplication/qtsingleapplication.cpp qtsingleapplication
 ## qjson library
 include (./qjson/qjson.pri)
 
+## qjsonrpc library
+include (./qjsonrpc/src/qjsonrpc.pri)
+
 # Input
 HEADERS += aboutdialog.h \
            abstractstorage.h \

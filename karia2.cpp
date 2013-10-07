@@ -262,7 +262,8 @@ void Karia2::asyncFirstShowHandler()
 
     // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_EMBEDED);
     // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_LIBARIA2);
-    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_XMLRPC_HTTP);
+    // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_XMLRPC_HTTP);
+    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_JSONRPC_HTTP);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskServerStatChanged,
                      this->mTaskMan, &TaskQueue::onTaskServerStatusNeedUpdate);
