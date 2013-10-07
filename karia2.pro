@@ -116,6 +116,9 @@ include (./qjson/qjson.pri)
 ## qjsonrpc library
 include (./qjsonrpc/src/qjsonrpc.pri)
 
+## libwebsockets library
+include (./libwebsockets/libwebsockets.pri)
+
 # Input
 HEADERS += aboutdialog.h \
            abstractstorage.h \
@@ -177,6 +180,7 @@ HEADERS += aboutdialog.h \
            aria2rpcserver.h \
            aria2rpcmanager.h \
            aria2jsonmanager.h \
+           aria2wsjsonmanager.h \
            aria2xmlmanager.h \
            aria2managerfactory.h
 
@@ -249,6 +253,7 @@ SOURCES += aboutdialog.cpp \
            aria2rpcserver.cpp \
            aria2rpcmanager.cpp \
            aria2jsonmanager.cpp \
+           aria2wsjsonmanager.cpp \
            aria2xmlmanager.cpp \
            aria2managerfactory.cpp
 
