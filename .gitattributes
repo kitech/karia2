@@ -24,6 +24,8 @@ Resources/nullget-1.png -text
 /aria2rpcmanager.h -text
 /aria2rpcserver.cpp -text
 /aria2rpcserver.h -text
+/aria2wsjsonmanager.cpp -text
+/aria2wsjsonmanager.h -text
 /aria2wsjsonrpcmanager.h -text
 /aria2xmlmanager.cpp -text
 /aria2xmlmanager.h -text
