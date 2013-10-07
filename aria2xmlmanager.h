@@ -35,7 +35,7 @@ public slots:
     virtual int pauseTask(int task_id);
     /////
     virtual bool onAllStatArrived(int stkey);
-    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {};
+    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {return true;};
 
 /**
  * 实现下载状态信息的暂存

@@ -62,7 +62,7 @@ public slots:
     virtual int pauseTask(int task_id)  = 0;
     /////
     virtual bool onAllStatArrived(int stkey) = 0;
-    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {};
+    virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {return true;};
                               
 protected slots:
     //// from backend
