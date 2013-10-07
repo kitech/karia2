@@ -298,9 +298,9 @@ bool Aria2RpcServer::setInitPaths()
 #endif
 
 #ifdef Q_OS_WIN
-    this->mLogFilePath = "aria2c.log";
+    this->mLogFilePath = "karia2.log";
 #else
-    this->mLogFilePath = "/tmp/aria2c.log";
+    this->mLogFilePath = "/tmp/karia2.log";
 #endif
 
     return true;
@@ -358,13 +358,14 @@ bool Aria2RpcServer::setBootArgs()
                      << "--dht-listen-port=6881-6999"
         // << "--interface=localhost"
                      << "--disable-ipv6=true"
-                     << "--log=-"
-        //                     << QString("--log=%1").arg(this->mLogFilePath)
-                     << "--log-level=info"
+        // << "--log=-"
+                     << QString("--log=%1").arg(this->mLogFilePath)
+                     << "--log-level=debug"
         // << "--human-readable=false"   # aria2 1.8.0 can't support this argument
                      << "--check-certificate=false"
                      << "--user-agent=karia2/1.0"
                      << "--continue"
+                     << "--max-connection-per-server=7"
                      << "--max-overall-upload-limit=20000"
                      << "--summary-interval=20"
                      << "--seed-time=60"

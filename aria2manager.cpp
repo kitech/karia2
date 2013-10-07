@@ -24,3 +24,16 @@ void Aria2Manager::run()
 {
 }
 
+uint64_t Aria2Manager::tid2gid(int tid)
+{
+    QString ugid = QString("%10000000000000000").arg(tid, 0, 10).left(16);
+    uint64_t gid = ugid.toULongLong(NULL, 16);
+    return gid;
+}
+
+QString  Aria2Manager::tid2hex(int tid)
+{
+    QString ugid = QString("%10000000000000000").arg(tid, 0, 10).left(16);
+    return ugid;
+}
+

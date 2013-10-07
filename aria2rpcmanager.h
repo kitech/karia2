@@ -47,6 +47,10 @@ protected:
     Aria2RpcTransport *mTransport;
     MaiaXmlRpcClient *mAriaRpc;
     Aria2RpcServer *mRpcServer;
+    QTimer mAriaUpdater;
+    QTimer mAriaGlobalUpdater;
+    QTimer mAriaTorrentUpdater;
+
 };
 
 #endif /* _ARIA2RPCMANAGER_H_ */
