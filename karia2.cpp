@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 206 2013-10-05 09:31:19Z drswinghead $
+// Version: $Id: karia2.cpp 213 2013-10-06 17:20:55Z drswinghead $
 // 
 
 #include <QtCore>
@@ -82,7 +82,6 @@ Karia2::Karia2(int argc, char **argv, QWidget *parent, Qt::WindowFlags flags)
     , mainUI(new Ui::Karia2())
     , mAtask(NULL)
     , mTaskMan(NULL)
-    // , mAriaMan(NULL), mAriaRpc(NULL)
     // , mEAria2Man(NULL)
     , mAria2Manager(NULL), mLogFile(NULL)
     , mStatusBar(NULL)
@@ -198,22 +197,6 @@ void Karia2::firstShowHandler()
 	
 	//this->showMaximized();
 
-    // start backend
-//    this->mAriaMan = new AriaMan();
-//    this->mAriaMan->start();
-//    this->mAriaGlobalUpdater.setInterval(5*1000);
-//    QObject::connect(&this->mAriaGlobalUpdater, SIGNAL(timeout()),
-//                     this, SLOT(onAriaGlobalUpdaterTimeout()));
-//    this->mAriaGlobalUpdater.start();
-//    // QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString, QString, QString)),
-//    //                  this->mTaskMan, SLOT(onTaskLogArrived(QString, QString, QString)));
-//    QObject::connect(this->mAriaMan, SIGNAL(error(QProcess::ProcessError)),
-//                     this, SLOT(onAriaProcError(QProcess::ProcessError)));
-//    QObject::connect(this->mAriaMan, SIGNAL(finished(int, QProcess::ExitStatus)),
-//                     this, SLOT(onAriaProcFinished(int, QProcess::ExitStatus)));
-//    QObject::connect(this->mAriaMan, SIGNAL(taskLogReady(QString)),
-//                     this, SLOT(onTaskLogArrived(QString)));
-
 	///////
 	this->hideUnimplementUiElement();
 	this->hideUnneededUiElement();
@@ -278,7 +261,8 @@ void Karia2::asyncFirstShowHandler()
     }
 
     // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_EMBEDED);
-    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_LIBARIA2);
+    // this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_LIBARIA2);
+    this->mAria2Manager = Aria2ManagerFactory::createManager(Aria2Manager::BT_XMLRPC_HTTP);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskStatChanged, this->mTaskMan, &TaskQueue::onTaskStatusNeedUpdate2);
     QObject::connect(this->mAria2Manager, &Aria2Manager::taskServerStatChanged,
                      this->mTaskMan, &TaskQueue::onTaskServerStatusNeedUpdate);

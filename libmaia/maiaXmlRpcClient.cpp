@@ -76,8 +76,12 @@ QNetworkReply* MaiaXmlRpcClient::call(QString method, QList<QVariant> args, QVar
 							QObject* faultObject, const char* faultSlot) {
 	MaiaObject* call = new MaiaObject(this);
     call->setPayload(payload);
-	connect(call, SIGNAL(aresponse(QVariant &, QNetworkReply *)), responseObject, responseSlot);
-	connect(call, SIGNAL(fault(int, const QString &, QNetworkReply *)), faultObject, faultSlot);
+	// connect(call, SIGNAL(aresponse(QVariant &, QNetworkReply *)), responseObject, responseSlot);
+	// connect(call, SIGNAL(fault(int, const QString &, QNetworkReply *)), faultObject, faultSlot);
+    connect(call, SIGNAL(aresponse(QVariant &, QNetworkReply *, QVariant &)), responseObject, responseSlot);
+    connect(call, SIGNAL(fault(int, const QString &, QNetworkReply *, QVariant &)), faultObject, faultSlot);
+    // connect(call, &MaiaObject::aresponse, responseObject, responseSlot);
+    // connect(call, &MaiaObject::fault, faultObject, faultSlot);
 
 	QNetworkReply* reply = manager.post( request,
 		call->prepareCall(method, args).toUtf8() );

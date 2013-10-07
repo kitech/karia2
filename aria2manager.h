@@ -38,10 +38,10 @@ class Aria2Manager : public QThread
     Q_OBJECT;
 public:
     enum BackendType {
-        BT_UNDEFINED = 0, BT_EMBEDED = 1, BT_XML_ON_HTTP, 
-        BT_XML_ON_WEBSOCKET,
-        BT_JSON_ON_HTTP, BT_JSON_ON_WEBSOCKET,
-        BT_LIBARIA2,
+        BT_UNDEFINED = 0, BT_EMBEDED = 1, BT_LIBARIA2,
+        BT_XMLRPC_HTTP, 
+        BT_JSONRPC_HTTP, BT_JSONRPC_WS, BT_JSONRPC_WSS,
+
     };
     explicit Aria2Manager();
     virtual ~Aria2Manager();
