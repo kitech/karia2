@@ -23,6 +23,8 @@ class Aria2StatCollector;
 namespace aria2 {
     class Session;
     class MultiUrlRequestInfo;
+
+    typedef std::pair<std::string, std::string> KeyVal;
 }
 
 class Aria2Libaria2Manager : public Aria2Manager

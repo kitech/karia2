@@ -66,14 +66,17 @@ QFile *FileLog::stream()
     return this->mStream;
 }
 
-FileLog * FileLog::instance()
+FileLog *FileLog::instance()
 {
-    pthread_mutex_lock(&FileLog::mIMutex);
+    // 双重检查锁定创建单实例对象，减少锁次数优化
     if (FileLog::mInst == NULL) {
-        FileLog *hlog = new FileLog();
-        FileLog::mInst = hlog;
+        pthread_mutex_lock(&FileLog::mIMutex);
+        if (FileLog::mInst == NULL) {
+            FileLog *hlog = new FileLog();
+            FileLog::mInst = hlog;
+        }
+        pthread_mutex_unlock(&FileLog::mIMutex);
     }
-    pthread_mutex_unlock(&FileLog::mIMutex);
 
     return FileLog::mInst;
 }
