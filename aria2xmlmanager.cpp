@@ -420,7 +420,6 @@ void Aria2XmlManager::onAriaGetStatusFault(int code, QString reason, QNetworkRep
     Q_UNUSED(payload);
 }
 
-// TODO, combine request to aria2.multicall
 void Aria2XmlManager::onAriaUpdaterTimeout()
 {
     qLogx()<<"timer out update";
