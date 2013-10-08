@@ -34,9 +34,10 @@ protected:
 
 private:
     static pthread_mutex_t mIMutex;
-    static FileLog *mInst;
+    static FileLog *mInst;  // 只有加上volatile才能真正保证多线程获取单独实例的安全
     QFile* mStream;
 };
+
 
 class XQDebug : public QDebug
 {

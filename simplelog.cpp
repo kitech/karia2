@@ -31,7 +31,7 @@ FileLog::FileLog()
     this->mStream = new QFile(0);
 
     int log_to_file_mode = 1;
-    log_to_file_mode = (QSettings(qApp->applicationDirPath()+"/kitphone.ini", QSettings::IniFormat)
+    log_to_file_mode = (QSettings(qApp->applicationDirPath()+"/karia2.ini", QSettings::IniFormat)
                         .value("logtofile").toString() == "true") ? 1 : 0;
     if (log_to_file_mode) {
         if (!QDir().exists(qApp->applicationDirPath() + "/dlog")) {
