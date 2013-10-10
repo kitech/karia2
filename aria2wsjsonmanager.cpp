@@ -180,8 +180,9 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
 
     char *http_header;
     char *buff;
-    char *rdata = "\"{\"id\": 1,\"jsonrpc\": \"2.0\",\"method\": \"aria2.getVersion\",\"params\": [\"a\"]}\"";
+    char *rdata = "{\"id\": 1,\"jsonrpc\": \"2.0\",\"method\": \"aria2.getVersion\",\"params\": [\"a\"]}";
     char *pname = "default";
+    int rv;
 
 	switch (reason) {
 	case LWS_CALLBACK_CLIENT_ESTABLISHED:
@@ -196,9 +197,9 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         memset(buff, 0, 1024);
         sprintf(buff, http_header, strlen(rdata), rdata);
         strcpy(buff, rdata);
-        qLogx()<<"sending "<<buff;
-        libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
-        qLogx()<<"sending "<<buff;
+        qLogx()<<"sending "<<buff<<strlen(buff);
+        rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
+        qLogx()<<"sending "<<rv<<buff;
 
 		break;
 
@@ -214,7 +215,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
 
 	case LWS_CALLBACK_CLIENT_RECEIVE:
 		((char *)in)[len] = '\0';
-        qLogx()<<"rx %d '%s'";
+        qLogx()<<"rx %d '%s'"<<(char*)in;
 		break;
 
 	/* because we are protocols[0] ... */
@@ -253,12 +254,12 @@ static int QLibwebsockets_loop_callback(struct libwebsocket_context *cthis,
     return qws->wsLoopCallback(cthis, wsi, reason, user, in, len);
 }
 
-static struct libwebsocket_protocols protocols[] = {
+static struct libwebsocket_protocols lws_protocols[] = {
 	{
 		"default",
 		QLibwebsockets_loop_callback, // callback_dumb_increment,
 		0,
-		20,
+		2*1024*104,  // 2M
 	},
 	{ NULL, NULL, 0, 0 } /* end */
 };
@@ -270,12 +271,12 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
 
     struct lws_context_creation_info *lws_ctx_ci = (struct lws_context_creation_info*)calloc(1, sizeof(struct lws_context_creation_info));
     memset(lws_ctx_ci, 0, sizeof(struct lws_context_creation_info));
-    lws_ctx_ci->protocols = protocols;
+    lws_ctx_ci->protocols = lws_protocols;
 
     this->lws_ctx = libwebsocket_create_context(lws_ctx_ci);
     this->h_lws = libwebsocket_client_connect_extended(lws_ctx, "127.0.0.1", 6800, 0,
                                               "/jsonrpc", "127.0.0.1", "127.0.0.1",
-                                              protocols[0].name, -1,
+                                              lws_protocols[0].name, -1,
                                               this);
 
     if (!this->loop_timer.isActive()) {
@@ -295,6 +296,9 @@ void QLibwebsockets::onLoopCycle()
 {
     if (this->lws_ctx != NULL) {
         int rv = libwebsocket_service(lws_ctx, 0); // 立即返回
+        if (rv != 0) {
+            qLogx()<<"Any error for lws loop cycle: "<<rv; 
+        }
     }
 }
 
