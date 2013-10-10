@@ -267,14 +267,20 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 bool QLibwebsockets::connectToHost(QString host, unsigned short port)
 {
-    lws_set_log_level(LLL_DEBUG | LLL_ERR | LLL_WARN | LLL_NOTICE | LLL_CLIENT, NULL);
+    // lws_set_log_level(LLL_DEBUG | LLL_ERR | LLL_WARN | LLL_NOTICE | LLL_CLIENT, NULL);
 
     struct lws_context_creation_info *lws_ctx_ci = (struct lws_context_creation_info*)calloc(1, sizeof(struct lws_context_creation_info));
     memset(lws_ctx_ci, 0, sizeof(struct lws_context_creation_info));
     lws_ctx_ci->protocols = lws_protocols;
+    lws_ctx_ci->ssl_cert_filepath = "rpckey/rpc.pub";
+    lws_ctx_ci->ssl_private_key_filepath = "rpckey/rpc.pri";
+    lws_ctx_ci->ssl_ca_filepath = "rpckey/rpc.pub";
+
+
+    int use_ssl = 2; // 2 or 1 or 0 are all ok
 
     this->lws_ctx = libwebsocket_create_context(lws_ctx_ci);
-    this->h_lws = libwebsocket_client_connect_extended(lws_ctx, "127.0.0.1", 6800, 0,
+    this->h_lws = libwebsocket_client_connect_extended(lws_ctx, "127.0.0.1", 6800, use_ssl,
                                               "/jsonrpc", "127.0.0.1", "127.0.0.1",
                                               lws_protocols[0].name, -1,
                                               this);
