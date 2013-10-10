@@ -4,6 +4,9 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#include "qjsonrpcmessage.h"
+#include "qjsonrpcservice.h"
+
 #include "libwebsockets.h"
 
 #include "aria2rpcmanager.h"
@@ -40,6 +43,40 @@ public:
     Aria2WSJsonRpcClient(QObject *parent = 0);
     virtual ~Aria2WSJsonRpcClient();
 
+    // bool call(QString method, QVariantList arguments);
+    bool call(QString method, QVariantList arguments, QVariant payload, 
+              QObject* responseObject, const char* responseSlot,
+              QObject* faultObject, const char* faultSlot);
+
+protected slots:
+    bool onRawSocketConnectError(QAbstractSocket::SocketError socketError);
+    bool onRawSocketConnected();
+    void onMessageReceived(const QJsonRpcMessage &message);
+    void onDisconnectConnection(void *cbmeta);
+
+signals:
+    void aresponse(QVariant &, QNetworkReply* reply, QVariant &);
+    void fault(int, const QString &, QNetworkReply* reply, QVariant &);
+    void disconnectConnection(void *cbmeta);
+
+private:
+    QString mUrl;
+
+    struct CallbackMeta {
+        QTcpSocket *mRawSock;
+        QJsonRpcSocket *mJsonRpcSock;
+        QString method;
+        QVariantList arguments;
+        QVariant payload;
+        QObject *responseObject;
+        const char *responseSlot;
+        QObject *faultObject;
+        const char *faultSlot;
+    };
+
+    QHash<QTcpSocket*, CallbackMeta*> mCbMeta;
+    QHash<QJsonRpcSocket*, CallbackMeta*> mCbMeta2;
+
 private:
     struct libwebsocket_context *lws_ctx;
     struct libwebsocket *h_lws;
@@ -56,13 +93,20 @@ public:
     virtual ~QLibwebsockets();
 
     bool connectToHost(QString host, unsigned short port);
-
+    int wsLoopCallback(struct libwebsocket_context *ctx,
+                       struct libwebsocket *wsi,
+                       enum libwebsocket_callback_reasons reason,
+                       void *user, void *in, size_t len);
 signals:
     void connected();
     void readyRead();
     void closed();
 
+private slots:
+    void onLoopCycle();
+
 private:
+    QTimer loop_timer;
     struct libwebsocket_context *lws_ctx;
     struct libwebsocket *h_lws;
 };

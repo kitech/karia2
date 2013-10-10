@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 216 2013-10-07 11:41:07Z drswinghead $
+// Version: $Id: karia2.cpp 220 2013-10-10 08:09:09Z drswinghead $
 // 
 
 #include <QtCore>
