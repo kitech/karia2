@@ -31,7 +31,7 @@ FileLog::FileLog()
     this->mStream = new QFile(0);
 
     int log_to_file_mode = 1;
-    log_to_file_mode = (QSettings(qApp->applicationDirPath()+"/kitphone.ini", QSettings::IniFormat)
+    log_to_file_mode = (QSettings(qApp->applicationDirPath()+"/karia2.ini", QSettings::IniFormat)
                         .value("logtofile").toString() == "true") ? 1 : 0;
     if (log_to_file_mode) {
         if (!QDir().exists(qApp->applicationDirPath() + "/dlog")) {
@@ -66,14 +66,17 @@ QFile *FileLog::stream()
     return this->mStream;
 }
 
-FileLog * FileLog::instance()
+FileLog *FileLog::instance()
 {
-    pthread_mutex_lock(&FileLog::mIMutex);
+    // 双重检查锁定创建单实例对象，减少锁次数优化
     if (FileLog::mInst == NULL) {
-        FileLog *hlog = new FileLog();
-        FileLog::mInst = hlog;
+        pthread_mutex_lock(&FileLog::mIMutex);
+        if (FileLog::mInst == NULL) {
+            FileLog *hlog = new FileLog();
+            FileLog::mInst = hlog;
+        }
+        pthread_mutex_unlock(&FileLog::mIMutex);
     }
-    pthread_mutex_unlock(&FileLog::mIMutex);
 
     return FileLog::mInst;
 }
