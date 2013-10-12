@@ -1,6 +1,8 @@
 #ifndef _ARIA2WSJSONMANAGER_H_
 #define _ARIA2WSJSONMANAGER_H_
 
+#include <memory>
+
 #include <QtCore>
 #include <QtNetwork>
 
@@ -11,6 +13,7 @@
 
 #include "aria2rpcmanager.h"
 
+class Karia2StatCalc;
 class Aria2WSJsonRpcClient;
 class QLibwebsockets;
 
@@ -30,8 +33,14 @@ public slots:
     virtual bool onAllStatArrived(int stkey);
     virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {return true;};
 
+public slots:
+    void onAriaAddUriResponse(QVariant &response, QNetworkReply *reply, QVariant &payload);
+    void onAriaAddUriFault(int, QString, QNetworkReply *reply, QVariant &payload);
+    void onAriaUpdaterTimeout();
+
 private:
-    
+    Aria2WSJsonRpcClient *mWSJsonRpc;
+    std::unique_ptr<Karia2StatCalc> statCalc_;    
 };
 
 
@@ -40,7 +49,7 @@ class Aria2WSJsonRpcClient : public QObject
 {
     Q_OBJECT;
 public:
-    Aria2WSJsonRpcClient(QObject *parent = 0);
+    Aria2WSJsonRpcClient(QString url, QObject *parent = 0);
     virtual ~Aria2WSJsonRpcClient();
 
     // bool call(QString method, QVariantList arguments);
@@ -63,8 +72,7 @@ private:
     QString mUrl;
 
     struct CallbackMeta {
-        QTcpSocket *mRawSock;
-        QJsonRpcSocket *mJsonRpcSock;
+        QLibwebsockets *mLws;
         QString method;
         QVariantList arguments;
         QVariant payload;
@@ -74,12 +82,10 @@ private:
         const char *faultSlot;
     };
 
-    QHash<QTcpSocket*, CallbackMeta*> mCbMeta;
-    QHash<QJsonRpcSocket*, CallbackMeta*> mCbMeta2;
+    QHash<QLibwebsockets*, CallbackMeta*> mCbMeta;
 
 private:
-    struct libwebsocket_context *lws_ctx;
-    struct libwebsocket *h_lws;
+
 };
 
 
@@ -93,14 +99,18 @@ public:
     virtual ~QLibwebsockets();
 
     bool connectToHost(QString host, unsigned short port);
+    bool sendMessage(const QJsonRpcMessage &message);
+
     int wsLoopCallback(struct libwebsocket_context *ctx,
                        struct libwebsocket *wsi,
                        enum libwebsocket_callback_reasons reason,
                        void *user, void *in, size_t len);
+
 signals:
     void connected();
     void readyRead();
     void closed();
+    void messageReceived(const QJsonRpcMessage &message);
 
 private slots:
     void onLoopCycle();
