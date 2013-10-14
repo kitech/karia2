@@ -16,9 +16,10 @@
 #include "aria2rpcserver.h"
 #include "aria2wsjsonmanager.h"
 
-Aria2WSJsonManager::Aria2WSJsonManager()
+Aria2WSJsonManager::Aria2WSJsonManager(bool useSsl, QObject *parent)
     : Aria2RpcManager()
 {
+    this->mUseSsl = useSsl;
 }
 
 Aria2WSJsonManager::~Aria2WSJsonManager()
@@ -253,9 +254,11 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
 
 //////////////////////////
 Aria2WSJsonRpcClient::Aria2WSJsonRpcClient(QString url, QObject *parent)
-    : QObject(0)
+    : QObject(parent)
 {
     this->mUrl = url;
+
+    QObject::connect(this, &Aria2WSJsonRpcClient::disconnectConnection, this, &Aria2WSJsonRpcClient::onDisconnectConnection);
 }
 
 Aria2WSJsonRpcClient::~Aria2WSJsonRpcClient()
@@ -264,8 +267,8 @@ Aria2WSJsonRpcClient::~Aria2WSJsonRpcClient()
 }
 
 bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant payload, 
-              QObject* responseObject, const char* responseSlot,
-              QObject* faultObject, const char* faultSlot)
+                                QObject* responseObject, const char* responseSlot,
+                                QObject* faultObject, const char* faultSlot)
 {
     QLibwebsockets *mLws = new QLibwebsockets();
     QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
@@ -380,11 +383,18 @@ void Aria2WSJsonRpcClient::onMessageReceived(const QJsonRpcMessage &message)
 
 void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
 {
-    qLogx()<<cbmeta;
+    qLogx()<<cbmeta<<sender();
 
     CallbackMeta *meta = (CallbackMeta*)cbmeta;
+
+    QObject::disconnect(this, SIGNAL(aresponse(QVariant &, QNetworkReply *, QVariant &)), 
+                        meta->responseObject, meta->responseSlot);
+    QObject::disconnect(this, SIGNAL(fault(int, const QString &, QNetworkReply *, QVariant &)), 
+                     meta->faultObject, meta->faultSlot);
     
     QLibwebsockets *mLws = meta->mLws;
+    mLws->close();
+    // mLws->deleteLater();
 
     /*
     CallbackMeta *meta = (CallbackMeta*)cbmeta;
@@ -419,14 +429,16 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
         libwebsocket_client_connect(lws_ctx, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
+    this->m_closed = false;
     // go on
     QObject::connect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
+    QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
 }
 
 
 QLibwebsockets::~QLibwebsockets()
 {
-
+    qLogx()<<"here";
 }
 
 int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
@@ -532,7 +544,15 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 void QLibwebsockets::onLoopCycle()
 {
-    if (this->lws_ctx != NULL) {
+    if (this->lws_ctx != NULL && this->loop_timer.isActive()) {
+        qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
+        if (this->m_closed) {
+            this->loop_timer.stop();
+            libwebsocket_context_destroy(lws_ctx);
+            qLogx()<<"destroy done.";
+            // this->deleteLater();
+            return;
+        }
         int rv = libwebsocket_service(lws_ctx, 0); // 立即返回
         if (rv != 0) {
             qLogx()<<"Any error for lws loop cycle: "<<rv; 
@@ -583,6 +603,33 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
     qLogx()<<h_lws;
 
     return true;
+}
+
+bool QLibwebsockets::close()
+{
+    struct libwebsocket_context *ctx = this->lws_ctx;
+    // this->lws_ctx = NULL;
+    // this->h_lws = NULL;
+
+    if (this->loop_timer.isActive()) {
+        // this->loop_timer.stop();
+    }
+    // QObject::disconnect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
+    qLogx()<<this->loop_timer.isActive();
+    // int rv = libwebsocket_service(ctx, 0);
+    this->m_closed = true;
+
+    emit destroyContext(ctx);
+
+    return true;
+}
+
+void QLibwebsockets::onDestroyContext(void *ctx)
+{
+    qLogx()<<"destroy context ...";
+
+    struct libwebsocket_context *actx = (struct libwebsocket_context *)ctx;
+    // libwebsocket_context_destroy(actx);    
 }
 
 bool QLibwebsockets::sendMessage(const QJsonRpcMessage &message)

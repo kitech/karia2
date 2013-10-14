@@ -49,7 +49,11 @@ Aria2Manager* Aria2ManagerFactory::createManager(int type)
             Aria2ManagerFactory::mManagers[type] = manager;
             break;
         case Aria2Manager::BT_JSONRPC_WS:
-            manager = new Aria2WSJsonManager();
+            manager = new Aria2WSJsonManager(false);
+            Aria2ManagerFactory::mManagers[type] = manager;
+            break;
+        case Aria2Manager::BT_JSONRPC_WSS:
+            manager = new Aria2WSJsonManager(true);
             Aria2ManagerFactory::mManagers[type] = manager;
             break;
         default:
