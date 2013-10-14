@@ -1298,7 +1298,7 @@ void Karia2::onLogAppended(const QString &path)
         int row = mdl->rowCount();
     
         if (row > 30) {
-            mdl->removeRows(0, row - 10);
+            // mdl->removeRows(0, row - 10);
         }
         row = mdl->rowCount();
         mdl->insertRows(row, 1);

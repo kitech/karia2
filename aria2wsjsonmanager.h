@@ -30,7 +30,7 @@ class Aria2WSJsonManager : public Aria2RpcManager
 {
     Q_OBJECT;
 public:
-    Aria2WSJsonManager();
+    Aria2WSJsonManager(bool useSsl, QObject *parent = 0);
     virtual ~Aria2WSJsonManager();
 
     virtual void run();
@@ -50,6 +50,7 @@ public slots:
 private:
     Aria2WSJsonRpcClient *mWSJsonRpc;
     std::unique_ptr<Karia2StatCalc> statCalc_;    
+    bool mUseSsl;
 };
 
 
@@ -108,6 +109,8 @@ public:
     virtual ~QLibwebsockets();
 
     bool connectToHost(QString host, unsigned short port);
+    bool close();
+
     bool sendMessage(const QJsonRpcMessage &message);
 
     int wsLoopCallback(struct libwebsocket_context *ctx,
@@ -120,14 +123,17 @@ signals:
     void readyRead();
     void closed();
     void messageReceived(const QJsonRpcMessage &message);
-
+    void destroyContext(void *ctx);
+                                                        
 private slots:
     void onLoopCycle();
+    void onDestroyContext(void *ctx);
 
 private:
     QTimer loop_timer;
     struct libwebsocket_context *lws_ctx;
     struct libwebsocket *h_lws;
+    bool m_closed;
 };
 
 #endif /* _ARIA2WSJSONMANAGER_H_ */
