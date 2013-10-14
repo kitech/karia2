@@ -1,3 +1,11 @@
+// aria2wsjsonmanager.cpp --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2013-10-14 13:23:16 +0000
+// Version: $Id$
+// 
 
 #include "simplelog.h"
 
@@ -24,7 +32,7 @@ void Aria2WSJsonManager::run()
 
 int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
-    Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_HTTP));
+    Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WSS));
     this->mWSJsonRpc = jrpc;
 
     this->m_tasks[task_id] = 0;
@@ -131,6 +139,7 @@ void Aria2WSJsonManager::onAriaAddUriFault(int errorCode, QString errorString, Q
 void Aria2WSJsonManager::onAriaUpdaterTimeout()
 {
     qLogx()<<"timer out update";
+    return;
 
     if (this->mWSJsonRpc == NULL) {
         Q_ASSERT(this->mWSJsonRpc != NULL);
@@ -262,6 +271,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
     QObject::connect(mLws, &QLibwebsockets::messageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
 
+    qLogx()<<this->mUrl;
     QUrl uo(this->mUrl);
     mLws->connectToHost(uo.host(), uo.port());
 
@@ -544,11 +554,13 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
 
     // QUrl uo(this->mUrl);
     int use_ssl = 2; // 2 or 1 or 0 are all ok
-    char *h = host.toLatin1().data();
+    char h[32] = {0};
+    strncpy(h, host.toLatin1().data(), host.length());
     unsigned short p = port;
     // char *path = uo.path();
     this->lws_ctx = libwebsocket_create_context(lws_ctx_ci);
 
+    qLogx()<<h<<p<<host<<port;
     this->h_lws = libwebsocket_client_connect_extended(lws_ctx, h, p, use_ssl,
                                               "/jsonrpc", h, h,
                                               lws_protocols[0].name, -1,

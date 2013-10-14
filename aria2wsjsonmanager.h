@@ -1,3 +1,12 @@
+// aria2wsjsonmanager.h --- 
+// 
+// Author: liuguangzhao
+// Copyright (C) 2007-2013 liuguangzhao@users.sf.net
+// URL: 
+// Created: 2013-10-14 13:23:21 +0000
+// Version: $Id$
+// 
+
 #ifndef _ARIA2WSJSONMANAGER_H_
 #define _ARIA2WSJSONMANAGER_H_
 
