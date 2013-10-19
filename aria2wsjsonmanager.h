@@ -131,9 +131,10 @@ private slots:
 
 private:
     QTimer loop_timer;
-    struct libwebsocket_context *lws_ctx;
-    struct libwebsocket *h_lws;
-    bool m_closed;
+    struct libwebsocket_context *lws_ctx = 0;
+    struct libwebsocket *h_lws = 0;
+    bool m_closed = false;
+    struct libwebsocket_context *del_ctx = 0;
 };
 
 #endif /* _ARIA2WSJSONMANAGER_H_ */
