@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:27:02 +0800
-// Version: $Id: karia2.cpp 225 2013-10-14 14:35:58Z drswinghead $
+// Version: $Id: karia2.cpp 226 2013-10-19 04:03:38Z drswinghead $
 // 
 
 #include <QtCore>
@@ -1256,8 +1256,10 @@ void Karia2::onShutdown()
     qLogx()<<__FUNCTION__<<" shutdown OS now";
 }
 
+// has crash!!!
 void Karia2::onLogAppended(const QString &path)
 {
+    return;
     QByteArray aba = this->mLogFile->readAll();
     QList<QByteArray> laba = aba.split('\n');
 
@@ -1298,7 +1300,7 @@ void Karia2::onLogAppended(const QString &path)
         int row = mdl->rowCount();
     
         if (row > 30) {
-            // mdl->removeRows(0, row - 10);
+            mdl->removeRows(0, row - 10);
         }
         row = mdl->rowCount();
         mdl->insertRows(row, 1);

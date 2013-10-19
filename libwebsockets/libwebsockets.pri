@@ -15,6 +15,6 @@ HEADERS +=
 INCLUDEPATH += $$PWD/lib 
 
 DEFINES += LWS_LIBRARY_VERSION=\"\\\"1.2\\\"\" LWS_BUILD_HASH=\"\\\"1.2hash\\\"\"  \
-         LWS_OPENSSL_SUPPORT=1 \
+                        \ # LWS_OPENSSL_SUPPORT=1 \
          LWS_OPENSSL_CLIENT_CERTS=\"\\\"/etc/pki/tls/certs/\\\"\"
 LIBS += -lcrypto

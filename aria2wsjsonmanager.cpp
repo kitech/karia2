@@ -33,7 +33,7 @@ void Aria2WSJsonManager::run()
 
 int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
-    Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WSS));
+    Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WS));
     this->mWSJsonRpc = jrpc;
 
     this->m_tasks[task_id] = 0;
@@ -429,7 +429,6 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
         libwebsocket_client_connect(lws_ctx, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    this->m_closed = false;
     // go on
     QObject::connect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
     QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
@@ -438,7 +437,9 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
 
 QLibwebsockets::~QLibwebsockets()
 {
-    qLogx()<<"here";
+    qLogx()<<"here"<<this->del_ctx;
+    libwebsocket_context_destroy(this->del_ctx);
+    // destory 本身没有问题，出在SSL_free上？为什么呢？
 }
 
 int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
@@ -548,9 +549,12 @@ void QLibwebsockets::onLoopCycle()
         qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
         if (this->m_closed) {
             this->loop_timer.stop();
-            libwebsocket_context_destroy(lws_ctx);
+            this->del_ctx = this->lws_ctx;
+            this->lws_ctx = NULL;
+            this->h_lws = NULL;
+            // libwebsocket_context_destroy(lws_ctx);
             qLogx()<<"destroy done.";
-            // this->deleteLater();
+            this->deleteLater();
             return;
         }
         int rv = libwebsocket_service(lws_ctx, 0); // 立即返回
@@ -573,7 +577,7 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
 
 
     // QUrl uo(this->mUrl);
-    int use_ssl = 2; // 2 or 1 or 0 are all ok
+    int use_ssl = 0; // 2 or 1 or 0 are all ok
     char h[32] = {0};
     strncpy(h, host.toLatin1().data(), host.length());
     unsigned short p = port;
