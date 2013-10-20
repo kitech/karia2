@@ -46,6 +46,7 @@ public slots:
     void onAriaAddUriResponse(QVariant &response, QNetworkReply *reply, QVariant &payload);
     void onAriaAddUriFault(int, QString, QNetworkReply *reply, QVariant &payload);
     void onAriaUpdaterTimeout();
+    void onAriaGetStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
 
 private:
     Aria2WSJsonRpcClient *mWSJsonRpc;
@@ -70,7 +71,7 @@ public:
 protected slots:
     bool onRawSocketConnectError(QAbstractSocket::SocketError socketError);
     bool onRawSocketConnected();
-    void onMessageReceived(const QJsonRpcMessage &message);
+    void onMessageReceived(QJsonObject message);
     void onDisconnectConnection(void *cbmeta);
 
 signals:
@@ -111,7 +112,8 @@ public:
     bool connectToHost(QString host, unsigned short port);
     bool close();
 
-    bool sendMessage(const QJsonRpcMessage &message);
+    bool sendMessage(QJsonRpcMessage message);
+    bool sendMessage(QString method, QVariantList arguments);
 
     int wsLoopCallback(struct libwebsocket_context *ctx,
                        struct libwebsocket *wsi,
@@ -122,7 +124,7 @@ signals:
     void connected();
     void readyRead();
     void closed();
-    void messageReceived(const QJsonRpcMessage &message);
+    void messageReceived(QJsonObject message);
     void destroyContext(void *ctx);
                                                         
 private slots:
