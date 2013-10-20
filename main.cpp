@@ -57,7 +57,7 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
 int main(int argc, char *argv[])
 {
 	//Q_INIT_RESOURCE(styles);
-    setenv("QT_MESSAGE_PATTERN", "[%{type}] %{appname} (%{file}:%{line}) - %{message} ", 1);
+    setenv("QT_MESSAGE_PATTERN", "[%{type}] %{appname} (%{file}:%{line}) T%{threadid} %{function} - %{message} ", 1);
     Karia2Application app(argc, argv);
     app.addLibraryPath(app.applicationDirPath() + "/plugins");
 
