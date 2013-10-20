@@ -102,12 +102,15 @@ private:
 
 
 //////////////
-class QLibwebsockets : public QObject
+class QLibwebsockets : public QThread
 {
     Q_OBJECT;
 public:
     QLibwebsockets(QObject *parent = 0);
     virtual ~QLibwebsockets();
+
+    virtual void run();
+
 
     bool connectToHost(QString host, unsigned short port);
     bool close();

@@ -426,7 +426,7 @@ void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
 //////////////////////
 
 QLibwebsockets::QLibwebsockets(QObject *parent)
-    : QObject(0)
+    : QThread(0)
 {
     // test code
     if (0) {
@@ -435,9 +435,8 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
         libwebsocket_client_connect(lws_ctx, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    // go on
-    QObject::connect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
-    QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
+    this->start();
+
 }
 
 
@@ -448,10 +447,21 @@ QLibwebsockets::~QLibwebsockets()
     // destory 本身没有问题，出在SSL_free上？为什么呢？
 }
 
+void QLibwebsockets::run()
+{
+    // go on
+    QObject::connect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
+    QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
+
+    qLogx()<<"";
+    this->exec();
+}
+
+
 int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
-                   struct libwebsocket *wsi,
-                   enum libwebsocket_callback_reasons reason,
-                   void *user, void *in, size_t len)
+                                   struct libwebsocket *wsi,
+                                   enum libwebsocket_callback_reasons reason,
+                                   void *user, void *in, size_t len)
 {
     qLogx()<<ctx<<wsi<<reason<<user<<in<<len;
 
@@ -551,6 +561,8 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 void QLibwebsockets::onLoopCycle()
 {
+    moveToThread(this);
+
     if (this->lws_ctx != NULL && this->loop_timer.isActive()) {
         qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
         if (this->m_closed) {
