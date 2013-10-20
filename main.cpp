@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-18 12:50:15 +0800
-// Version: $Id: main.cpp 198 2013-02-16 03:59:01Z drswinghead $
+// Version: $Id: main.cpp 227 2013-10-20 04:30:51Z drswinghead $
 // 
 
 
@@ -57,6 +57,7 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
 int main(int argc, char *argv[])
 {
 	//Q_INIT_RESOURCE(styles);
+    setenv("QT_MESSAGE_PATTERN", "[%{type}] %{appname} (%{file}:%{line}) - %{message} ", 1);
     Karia2Application app(argc, argv);
     app.addLibraryPath(app.applicationDirPath() + "/plugins");
 

@@ -140,8 +140,6 @@ void Aria2WSJsonManager::onAriaAddUriFault(int errorCode, QString errorString, Q
 void Aria2WSJsonManager::onAriaUpdaterTimeout()
 {
     qLogx()<<"timer out update";
-    return;
-
     if (this->mWSJsonRpc == NULL) {
         Q_ASSERT(this->mWSJsonRpc != NULL);
     }
@@ -250,8 +248,14 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
 //        args.clear();
 //    }
 }
+void Aria2WSJsonManager::onAriaGetStatusFault(int code, QString reason, QNetworkReply *reply, QVariant &payload)
+{
+    qLogx()<<code<<reason<<payload;
+}
 
 
+//////////////////////////
+// websocket协议是一种长连接协议，这个客户端封装应该能够支持长连接
 //////////////////////////
 Aria2WSJsonRpcClient::Aria2WSJsonRpcClient(QString url, QObject *parent)
     : QObject(parent)
@@ -335,8 +339,9 @@ bool Aria2WSJsonRpcClient::onRawSocketConnected()
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = this->mCbMeta[mLws];
 
-    QJsonRpcMessage request = QJsonRpcMessage::createRequest(meta->method, meta->arguments);
-    mLws->sendMessage(request);
+    // QJsonRpcMessage request = QJsonRpcMessage::createRequest(meta->method, meta->arguments);
+    // mLws->sendMessage(request);
+    mLws->sendMessage(meta->method, meta->arguments);
 
 
     /*
@@ -363,11 +368,12 @@ bool Aria2WSJsonRpcClient::onRawSocketConnected()
     return true;
 }
 
-void Aria2WSJsonRpcClient::onMessageReceived(const QJsonRpcMessage &message)
+void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 {
-    qLogx()<<message<<sender();
+    qLogx()<<jmessage<<sender();
     CallbackMeta *meta = this->mCbMeta[(QLibwebsockets*)(sender())];
 
+    QJsonRpcMessage message(jmessage);
     QVariant result = message.result();
     int errorCode = message.errorCode();
     QString errorMessage = message.errorMessage();
@@ -453,7 +459,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
     char *rdata = "{\"id\": 1,\"jsonrpc\": \"2.0\",\"method\": \"aria2.getVersion\",\"params\": [\"a\"]}";
     char *pname = "default";
     int rv;
-    QJsonRpcMessage request;
+    // QJsonRpcMessage request;
     QJsonDocument jdoc;
 
 	switch (reason) {
@@ -492,8 +498,8 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
 		((char *)in)[len] = '\0';
         qLogx()<<"rx %d '%s'"<<(char*)in;
         jdoc = QJsonDocument::fromJson(QByteArray((char*)in, len));
-        request = QJsonRpcMessage(jdoc.object());
-        emit messageReceived(request);
+        // request = QJsonRpcMessage(jdoc.object());
+        emit messageReceived(jdoc.object());
 
 		break;
 
@@ -554,7 +560,7 @@ void QLibwebsockets::onLoopCycle()
             this->h_lws = NULL;
             // libwebsocket_context_destroy(lws_ctx);
             qLogx()<<"destroy done.";
-            this->deleteLater();
+            // this->deleteLater();
             return;
         }
         int rv = libwebsocket_service(lws_ctx, 0); // 立即返回
@@ -636,7 +642,7 @@ void QLibwebsockets::onDestroyContext(void *ctx)
     // libwebsocket_context_destroy(actx);    
 }
 
-bool QLibwebsockets::sendMessage(const QJsonRpcMessage &message)
+bool QLibwebsockets::sendMessage(QJsonRpcMessage message)
 {
     qLogx()<<message;
 
@@ -650,11 +656,57 @@ bool QLibwebsockets::sendMessage(const QJsonRpcMessage &message)
     qLogx()<<"sending "<<buff<<strlen(buff);
     libwebsocket *wsi = this->h_lws;
     int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
-    qLogx()<<""<<rv;
+    qLogx()<<"vvv="<<rv;
 
     return true;
 }
+bool QLibwebsockets::sendMessage(QString method, QVariantList arguments)
+{
+    /*
+    QJsonRpcMessage request;
+    request.d->object = new QJsonObject;
+    request.d->object->insert("jsonrpc", QLatin1String("2.0"));
+    request.d->object->insert("method", method);
+    if (!params.isEmpty())
+        request.d->object->insert("params", QJsonArray::fromVariantList(params));
+    return request;
 
+    QJsonRpcMessage request = QJsonRpcMessagePrivate::createBasicRequest(method, params);
+    request.d->type = QJsonRpcMessage::Request;
+    QJsonRpcMessagePrivate::uniqueRequestCounter++;
+    request.d->object->insert("id", QJsonRpcMessagePrivate::uniqueRequestCounter);
+    return request;
+    */
+
+    QJsonObject *jobj = new QJsonObject;
+    jobj->insert("jsonrpc", QLatin1String("2.0"));
+    jobj->insert("method", method);
+    if (!arguments.isEmpty()) {
+        jobj->insert("params", QJsonArray::fromVariantList(arguments));
+    }
+
+    static int json_id = 0;
+    jobj->insert("id", (++json_id));
+
+    QJsonDocument jdoc = QJsonDocument(*jobj);
+    jdoc.toJson(QJsonDocument::Compact);
+        
+    char *buff = (char*)calloc(1, 1000);
+    memset(buff, 0, 1000);
+    strcpy(buff, jdoc.toJson(QJsonDocument::Compact).data());
+
+    qLogx()<<"sending "<<buff<<strlen(buff);
+    libwebsocket *wsi = this->h_lws;
+    int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
+    qLogx()<<"vvv="<<rv;
+
+    // QJsonRpcMessage request = QJsonRpcMessage::createRequest(method, arguments);
+    // return this->sendMessage(request);
+    return true;
+}
+
+// 像是qjsonrpc的实现有内存问题
+// 还有libwebsocket库的线程安全问题。
 
 /*
   libwebsockets的函数前缀，
