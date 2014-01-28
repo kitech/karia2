@@ -53,11 +53,9 @@ public:
         #endif        
     }
 
-    /*
     ~XQDebug() {
-        // this->endl();
+        this->endl();
     }
-    */
 };
 
 // 很不错
@@ -67,8 +65,7 @@ public:
 #elif defined(Q_OS_LINUX)
 #include <syscall.h>
 // linux way only
-#define qLogx() qDebug()
-// #define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(syscall(__NR_gettid))
+#define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(syscall(__NR_gettid))
 #else
 #define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(QThread::currentThreadId())
 #endif

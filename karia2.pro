@@ -22,7 +22,7 @@ win32 {
       CONFIG += debug
     #QMAKE_CC = clang       # clang compiled karia2 crash
     #QMAKE_CXX = clang++
-    QMAKE_CXXFLAGS += -std=c++11
+    QMAKE_CXXFLAGS += -g -O2 -std=c++11
     QMAKE_LFLAGS += -g -O2 -std=c++11
 }
 
