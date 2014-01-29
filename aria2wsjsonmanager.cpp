@@ -442,7 +442,7 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
 QLibwebsockets::~QLibwebsockets()
 {
     qLogx()<<"here"<<this->del_ctx;
-    libwebsocket_context_destroy(this->del_ctx);
+    // libwebsocket_context_destroy(this->del_ctx);
     // destory 本身没有问题，出在SSL_free上？为什么呢？
 }
 
@@ -525,6 +525,10 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         free(buff); buff = NULL;
         break;
 
+    case LWS_CALLBACK_PROTOCOL_DESTROY:
+        qLogx()<<"LWS_CALLBACK_PROTOCOL_DESTROY ed";
+        break;
+
 	/* because we are protocols[0] ... */
 	case LWS_CALLBACK_CLIENT_CONFIRM_EXTENSION_SUPPORTED:
         qLogx()<<"not support.";
@@ -573,17 +577,17 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 void QLibwebsockets::onLoopCycle()
 {
-    // moveToThread(this);
-
     if (this->lws_ctx != NULL && this->loop_timer.isActive()) {
         qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
         if (this->m_closed) {
             this->loop_timer.stop();
             this->del_ctx = this->lws_ctx;
+            libwebsocket_context_destroy(this->lws_ctx);
             this->lws_ctx = NULL;
             this->h_lws = NULL;
-            // libwebsocket_context_destroy(lws_ctx);
             qLogx()<<"destroy done.";
+            QObject::connect(this, SIGNAL(finished()), this, SLOT(onSelfFinished()));
+            this->quit();
             // this->deleteLater();
             return;
         }
@@ -646,15 +650,17 @@ bool QLibwebsockets::close()
     // this->lws_ctx = NULL;
     // this->h_lws = NULL;
 
+    /*
     if (this->loop_timer.isActive()) {
-        // this->loop_timer.stop();
+        this->loop_timer.stop();
     }
-    // QObject::disconnect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
+    QObject::disconnect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
     qLogx()<<this->loop_timer.isActive();
-    // int rv = libwebsocket_service(ctx, 0);
+    int rv = libwebsocket_service(ctx, 0);
+    */
     this->m_closed = true;
 
-    emit destroyContext(ctx);
+    // emit destroyContext(ctx);
 
     return true;
 }
@@ -664,7 +670,12 @@ void QLibwebsockets::onDestroyContext(void *ctx)
     qLogx()<<"destroy context ...";
 
     struct libwebsocket_context *actx = (struct libwebsocket_context *)ctx;
-    // libwebsocket_context_destroy(actx);    
+    libwebsocket_context_destroy(actx);    
+}
+
+void QLibwebsockets::onSelfFinished()
+{
+    this->deleteLater();
 }
 
 bool QLibwebsockets::sendMessage(QJsonRpcMessage message)

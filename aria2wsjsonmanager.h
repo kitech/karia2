@@ -133,6 +133,7 @@ signals:
 private slots:
     void onLoopCycle();
     void onDestroyContext(void *ctx);
+    void onSelfFinished();
 
 private:
     QTimer loop_timer;
