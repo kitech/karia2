@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-03 22:19:59 +0800
-// Version: $Id$
+// Version: $Id: karia2.h 209 2013-10-06 12:05:58Z drswinghead $
 // 
 
 #ifndef KARIA2_H

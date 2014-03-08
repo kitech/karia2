@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-02 21:16:57 +0800
-// Version: $Id$
+// Version: $Id: ariaman.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 #ifndef _ARIAMAN_H_
 #define _ARIAMAN_H_

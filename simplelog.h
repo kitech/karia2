@@ -35,7 +35,7 @@ protected:
 private:
     static pthread_mutex_t mIMutex;
     static FileLog *mInst;  // 只有加上volatile才能真正保证多线程获取单独实例的安全
-    QFile* mStream;
+    QFile* mStream = NULL;
 };
 
 
@@ -43,9 +43,13 @@ class XQDebug : public QDebug
 {
 public:
     XQDebug(QIODevice *device) : QDebug(device) {
+        this->mStream = (QFile*)device;
     }
 
     void endl() {
+        this->mStream->write("\n");
+        return;
+
         #ifdef WIN32
         *this<<"\r\n";
         #else
@@ -53,11 +57,10 @@ public:
         #endif        
     }
 
-    /*
     ~XQDebug() {
-        // this->endl();
+        this->endl();
     }
-    */
+    QFile *mStream = NULL;
 };
 
 // 很不错

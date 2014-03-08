@@ -59,6 +59,7 @@ FileLog::~FileLog()
     // qDebug()<<__FILE__<<__LINE__<<__FUNCTION__;
     this->mStream->close();
     delete this->mStream;
+    this->mStream = NULL;
 }
 
 QFile *FileLog::stream()

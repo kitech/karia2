@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-16 21:52:25 +0800
-// Version: $Id$
+// Version: $Id: preferencesdialog.cpp 208 2013-10-05 15:57:46Z drswinghead $
 // 
 
 #include <QtWidgets>

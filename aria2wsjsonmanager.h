@@ -133,6 +133,7 @@ signals:
 private slots:
     void onLoopCycle();
     void onDestroyContext(void *ctx);
+    void onSelfFinished();
 
 private:
     QTimer loop_timer;
@@ -140,6 +141,7 @@ private:
     struct libwebsocket *h_lws = 0;
     bool m_closed = false;
     struct libwebsocket_context *del_ctx = 0;
+    QQueue<QByteArray> m_wrq;
 };
 
 #endif /* _ARIA2WSJSONMANAGER_H_ */

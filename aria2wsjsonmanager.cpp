@@ -278,7 +278,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
     QObject::connect(mLws, &QLibwebsockets::messageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
 
-    qLogx()<<this->mUrl;
+    qLogx()<<this<<this->mUrl;
     QUrl uo(this->mUrl);
     mLws->connectToHost(uo.host(), uo.port());
 
@@ -372,6 +372,10 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 {
     qLogx()<<jmessage<<sender();
     CallbackMeta *meta = this->mCbMeta[(QLibwebsockets*)(sender())];
+    if (meta == NULL) {
+        qLogx()<<"meta object not exists";
+        return;
+    }
 
     QJsonRpcMessage message(jmessage);
     QVariant result = message.result();
@@ -384,6 +388,7 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
         emit this->fault(errorCode, errorMessage, 0, meta->payload);
     }   
 
+    this->mCbMeta.remove((QLibwebsockets*)(sender()));
     emit this->disconnectConnection(meta);
 }
 
@@ -436,14 +441,13 @@ QLibwebsockets::QLibwebsockets(QObject *parent)
     }
 
     this->start();
-
 }
 
 
 QLibwebsockets::~QLibwebsockets()
 {
     qLogx()<<"here"<<this->del_ctx;
-    libwebsocket_context_destroy(this->del_ctx);
+    // libwebsocket_context_destroy(this->del_ctx);
     // destory 本身没有问题，出在SSL_free上？为什么呢？
 }
 
@@ -453,7 +457,7 @@ void QLibwebsockets::run()
     QObject::connect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
     QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
 
-    qLogx()<<"";
+    qLogx()<<"entry loop...";
     this->exec();
 }
 
@@ -471,6 +475,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
     int rv;
     // QJsonRpcMessage request;
     QJsonDocument jdoc;
+    QByteArray tmpba;
 
 	switch (reason) {
 	case LWS_CALLBACK_CLIENT_ESTABLISHED:
@@ -512,6 +517,22 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         emit messageReceived(jdoc.object());
 
 		break;
+
+    case LWS_CALLBACK_CLIENT_WRITEABLE:
+        qLogx()<<"client_writable callback.";
+        if (this->m_wrq.isEmpty()) break;
+        tmpba = this->m_wrq.dequeue();
+        buff = (char *)calloc(1, tmpba.length() + 200 + LWS_SEND_BUFFER_PRE_PADDING + LWS_SEND_BUFFER_POST_PADDING);
+        memset(buff, 0, tmpba.length() + 200 + LWS_SEND_BUFFER_PRE_PADDING + LWS_SEND_BUFFER_POST_PADDING);
+        strncpy(buff + LWS_SEND_BUFFER_PRE_PADDING, tmpba.data(), tmpba.length());
+        rv = libwebsocket_write(wsi, (unsigned char*)buff + LWS_SEND_BUFFER_PRE_PADDING, tmpba.length(), LWS_WRITE_TEXT);
+        qLogx()<<"lws write rv:"<<rv;
+        free(buff); buff = NULL;
+        break;
+
+    case LWS_CALLBACK_PROTOCOL_DESTROY:
+        qLogx()<<"LWS_CALLBACK_PROTOCOL_DESTROY ed";
+        break;
 
 	/* because we are protocols[0] ... */
 	case LWS_CALLBACK_CLIENT_CONFIRM_EXTENSION_SUPPORTED:
@@ -561,17 +582,17 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 void QLibwebsockets::onLoopCycle()
 {
-    moveToThread(this);
-
     if (this->lws_ctx != NULL && this->loop_timer.isActive()) {
         qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
         if (this->m_closed) {
             this->loop_timer.stop();
             this->del_ctx = this->lws_ctx;
+            libwebsocket_context_destroy(this->lws_ctx);
             this->lws_ctx = NULL;
             this->h_lws = NULL;
-            // libwebsocket_context_destroy(lws_ctx);
             qLogx()<<"destroy done.";
+            QObject::connect(this, SIGNAL(finished()), this, SLOT(onSelfFinished()));
+            this->quit();
             // this->deleteLater();
             return;
         }
@@ -618,6 +639,7 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
         this->loop_timer.setInterval(300);
         this->loop_timer.start();
     }
+
     while (false) {
         libwebsocket_service(lws_ctx, 30000);
     }
@@ -633,15 +655,17 @@ bool QLibwebsockets::close()
     // this->lws_ctx = NULL;
     // this->h_lws = NULL;
 
+    /*
     if (this->loop_timer.isActive()) {
-        // this->loop_timer.stop();
+        this->loop_timer.stop();
     }
-    // QObject::disconnect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
+    QObject::disconnect(&this->loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
     qLogx()<<this->loop_timer.isActive();
-    // int rv = libwebsocket_service(ctx, 0);
+    int rv = libwebsocket_service(ctx, 0);
+    */
     this->m_closed = true;
 
-    emit destroyContext(ctx);
+    // emit destroyContext(ctx);
 
     return true;
 }
@@ -651,7 +675,12 @@ void QLibwebsockets::onDestroyContext(void *ctx)
     qLogx()<<"destroy context ...";
 
     struct libwebsocket_context *actx = (struct libwebsocket_context *)ctx;
-    // libwebsocket_context_destroy(actx);    
+    libwebsocket_context_destroy(actx);    
+}
+
+void QLibwebsockets::onSelfFinished()
+{
+    this->deleteLater();
 }
 
 bool QLibwebsockets::sendMessage(QJsonRpcMessage message)
@@ -660,14 +689,10 @@ bool QLibwebsockets::sendMessage(QJsonRpcMessage message)
 
     QJsonDocument jdoc = QJsonDocument(message.toObject());
     jdoc.toJson(QJsonDocument::Compact);
-        
-    char *buff = (char*)calloc(1, 1000);
-    memset(buff, 0, 1000);
-    strcpy(buff, jdoc.toJson(QJsonDocument::Compact).data());
+    this->m_wrq.enqueue(jdoc.toJson(QJsonDocument::Compact));
 
-    qLogx()<<"sending "<<buff<<strlen(buff);
     libwebsocket *wsi = this->h_lws;
-    int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
+    int rv = libwebsocket_callback_on_writable(this->lws_ctx, wsi);
     qLogx()<<"vvv="<<rv;
 
     return true;
@@ -702,14 +727,11 @@ bool QLibwebsockets::sendMessage(QString method, QVariantList arguments)
 
     QJsonDocument jdoc = QJsonDocument(*jobj);
     jdoc.toJson(QJsonDocument::Compact);
+    this->m_wrq.enqueue(jdoc.toJson(QJsonDocument::Compact));
         
-    char *buff = (char*)calloc(1, 1000);
-    memset(buff, 0, 1000);
-    strcpy(buff, jdoc.toJson(QJsonDocument::Compact).data());
-
-    qLogx()<<"sending "<<buff<<strlen(buff);
     libwebsocket *wsi = this->h_lws;
-    int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff), LWS_WRITE_TEXT);
+    // int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff)+1, LWS_WRITE_TEXT);
+    int rv = libwebsocket_callback_on_writable(lws_ctx, wsi);
     qLogx()<<"vvv="<<rv;
 
     // QJsonRpcMessage request = QJsonRpcMessage::createRequest(method, arguments);

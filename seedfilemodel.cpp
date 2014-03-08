@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-21 20:42:02 +0800
-// Version: $Id$
+// Version: $Id: seedfilemodel.cpp 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #include "utility.h"

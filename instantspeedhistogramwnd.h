@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-08 21:39:55 +0800
-// Version: $Id$
+// Version: $Id: instantspeedhistogramwnd.h 198 2013-02-16 03:59:01Z drswinghead $
 // 
 
 #ifndef INSTANTSPEEDHISTOGRAMWND_H

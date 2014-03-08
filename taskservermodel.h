@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-10 18:15:02 +0800
-// Version: $Id$
+// Version: $Id: taskservermodel.h 199 2013-02-17 06:01:35Z drswinghead $
 // 
 
 #ifndef _TASKSERVERMODEL_H_

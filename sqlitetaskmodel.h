@@ -4,7 +4,7 @@
 // Copyright (C) 2007-2013 liuguangzhao@users.sf.net
 // URL: 
 // Created: 2010-04-07 11:21:26 +0800
-// Version: $Id$
+// Version: $Id: sqlitetaskmodel.h 200 2013-10-04 07:13:26Z drswinghead $
 // 
 #ifndef SQLITETASKMODEL_H
 #define SQLITETASKMODEL_H
