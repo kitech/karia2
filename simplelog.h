@@ -35,7 +35,7 @@ protected:
 private:
     static pthread_mutex_t mIMutex;
     static FileLog *mInst;  // 只有加上volatile才能真正保证多线程获取单独实例的安全
-    QFile* mStream;
+    QFile* mStream = NULL;
 };
 
 
@@ -43,9 +43,13 @@ class XQDebug : public QDebug
 {
 public:
     XQDebug(QIODevice *device) : QDebug(device) {
+        this->mStream = (QFile*)device;
     }
 
     void endl() {
+        this->mStream->write("\n");
+        return;
+
         #ifdef WIN32
         *this<<"\r\n";
         #else
@@ -56,6 +60,7 @@ public:
     ~XQDebug() {
         this->endl();
     }
+    QFile *mStream = NULL;
 };
 
 // 很不错
@@ -65,7 +70,8 @@ public:
 #elif defined(Q_OS_LINUX)
 #include <syscall.h>
 // linux way only
-#define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(syscall(__NR_gettid))
+#define qLogx() qDebug()
+// #define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(syscall(__NR_gettid))
 #else
 #define qLogx() XQDebug(FileLog::instance()->stream())<<"["<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")<<"]"<<__FILE__<<__LINE__<<__FUNCTION__<<QString("T%1").arg(QThread::currentThreadId())
 #endif

@@ -278,7 +278,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
     QObject::connect(mLws, &QLibwebsockets::messageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
 
-    qLogx()<<this->mUrl;
+    qLogx()<<this<<this->mUrl;
     QUrl uo(this->mUrl);
     mLws->connectToHost(uo.host(), uo.port());
 
@@ -372,6 +372,10 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 {
     qLogx()<<jmessage<<sender();
     CallbackMeta *meta = this->mCbMeta[(QLibwebsockets*)(sender())];
+    if (meta == NULL) {
+        qLogx()<<"meta object not exists";
+        return;
+    }
 
     QJsonRpcMessage message(jmessage);
     QVariant result = message.result();
@@ -384,6 +388,7 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
         emit this->fault(errorCode, errorMessage, 0, meta->payload);
     }   
 
+    this->mCbMeta.remove((QLibwebsockets*)(sender()));
     emit this->disconnectConnection(meta);
 }
 
