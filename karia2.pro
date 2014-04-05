@@ -304,3 +304,4 @@ documentation.files = release/*.exe
 documentation.extra = cp release/*.exe Z:/temp
 
 INSTALLS += documentation
+
