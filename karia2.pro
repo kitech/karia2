@@ -20,8 +20,10 @@ win32 {
       CONFIG += release
 } else {
       CONFIG += debug
-    #QMAKE_CC = clang       # clang compiled karia2 crash
-    #QMAKE_CXX = clang++
+    QMAKE_CC = clang       # clang compiled karia2 crash
+    QMAKE_CXX = clang++
+    QMAKE_LINK = clang++
+#    QMAKE_AR                = llvm-ar q
     QMAKE_CXXFLAGS += -g -O2 -std=c++11
     QMAKE_LFLAGS += -g -O2 -std=c++11
 }

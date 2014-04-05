@@ -26,10 +26,6 @@ Aria2WSJsonManager::~Aria2WSJsonManager()
 {
 }
 
-void Aria2WSJsonManager::run()
-{
-
-}
 
 int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
@@ -120,9 +116,140 @@ int Aria2WSJsonManager::pauseTask(int task_id)
     return 0;
 }
 
+//////// statqueue members
+// TODO 线程需要一直运行处理等待状态，否则不断启动线程会用掉太多的资源。
+void Aria2WSJsonManager::run()
+{
+    int stkey;
+    Aria2StatCollector *sclt;
+    QPair<int, Aria2StatCollector*> elem;
+    int tid = -1;
+    // Aria2Libaria2Worker *eaw = 0;
+
+    while (!this->stkeys.empty()) {
+        elem = this->stkeys.dequeue();
+        stkey = elem.first;
+        sclt = elem.second;
+        tid = sclt->tid;
+        // eaw = (Aria2Libaria2Worker*)this->m_tasks[tid];
+
+        qLogx()<<"dispatching stat event:"<<stkey;
+
+        if (stkey < 0) {
+            // 任务完成事件
+            this->confirmBackendFinished(tid, NULL);
+        } else {
+            this->checkAndDispatchStat(sclt);
+            this->checkAndDispatchServerStat(sclt);
+        }
+
+        delete sclt;
+    }
+    
+}
+
+bool Aria2WSJsonManager::checkAndDispatchStat(Aria2StatCollector *sclt)
+{
+    QMap<int, QVariant> stats, stats2; // QVariant可能是整数，小数，或者字符串
+    qLogx()<<"";
+    // emit this->taskStatChanged(sclt->tid, sclt->totalLength, sclt->completedLength,
+    //                            sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength),
+    //                            sclt->downloadSpeed, sclt->uploadSpeed);
+
+    stats[ng::stat2::task_id] = sclt->tid;
+    stats[ng::stat2::total_length] = (qulonglong)sclt->totalLength;
+    stats[ng::stat2::completed_length] = (qulonglong)sclt->completedLength;
+    stats[ng::stat2::completed_percent] = (int)(sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength));
+    stats[ng::stat2::download_speed] = sclt->downloadSpeed;
+    stats[ng::stat2::upload_speed] = sclt->uploadSpeed;
+    stats[ng::stat2::gid] = (qulonglong)sclt->gid;
+    stats[ng::stat2::num_connections] = sclt->connections;
+    stats[ng::stat2::hex_bitfield] = QString(sclt->bitfield.c_str());
+    stats[ng::stat2::num_pieces] = sclt->numPieces;
+    stats[ng::stat2::piece_length] = sclt->pieceLength;
+    stats[ng::stat2::eta] = sclt->eta;
+    stats[ng::stat2::str_eta] = ""; //QString::fromStdString(aria2::util::secfmt(sclt->eta));
+    stats[ng::stat2::error_code] = sclt->errorCode;
+    stats[ng::stat2::status] = sclt->state == aria2::DOWNLOAD_ACTIVE ? "active" : "waiting"; 
+    // ready, active, waiting, complete, removed, error, pause
+    
+    emit this->taskStatChanged(sclt->tid, stats);
+
+    stats2[ng::stat2::download_speed] = sclt->globalStat2.downloadSpeed;
+    stats2[ng::stat2::upload_speed] = sclt->globalStat2.uploadSpeed;
+    emit this->globalStatChanged(stats2);
+
+    return true;
+}
+
+bool Aria2WSJsonManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
+{
+    QList<QMap<QString, QString> > servers;
+    QMap<QString, QString> server;
+
+    for (int i = 0; i < sclt->server_stats.servers.size(); i++) {
+        server["index"] = QString("%1,%2").arg(i).arg(sclt->server_stats.servers.at(i).state);
+        server["currentUri"] = sclt->server_stats.servers.at(i).uri.c_str();
+        server["downloadSpeed"] = QString("%1").arg(sclt->server_stats.servers.at(i).downloadSpeed);
+
+        servers.append(server);
+        server.clear();
+    }
+
+    emit this->taskServerStatChanged(sclt->tid, servers);
+}
+
+bool Aria2WSJsonManager::confirmBackendFinished(int tid, void *eaw)
+{
+    QMap<int, QVariant> stats; // QVariant可能是整数，小数，或者字符串
+
+    // aria2::GroupId::clear();
+
+    /*
+    switch(eaw->exit_status) {
+    case aria2::error_code::FINISHED:
+        emit this->taskFinished(eaw->m_tid, eaw->exit_status);
+
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();    
+        break;
+    case aria2::error_code::IN_PROGRESS:
+        stats[ng::stat2::error_code] = eaw->exit_status;
+        stats[ng::stat2::error_string] = "";// QString::fromStdString(aria2::fmt(MSG_DOWNLOAD_NOT_COMPLETE, tid, ""));
+        stats[ng::stat2::status] = "pause";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
+        break;
+    case aria2::error_code::REMOVED:
+        break;
+    case aria2::error_code::RESOURCE_NOT_FOUND:
+        stats[ng::stat2::error_code] = eaw->exit_status;
+        stats[ng::stat2::error_string] = "";// QString(MSG_RESOURCE_NOT_FOUND);
+        stats[ng::stat2::status] = "error";
+        emit this->taskStatChanged(eaw->m_tid, stats);
+        this->m_tasks.remove(eaw->m_tid);
+        this->m_rtasks.remove(eaw);
+        eaw->deleteLater();
+        break;
+    default:
+        break;
+    }
+    */
+    return true;
+}
+
 /////
 bool Aria2WSJsonManager::onAllStatArrived(int stkey)
 {
+    Aria2StatCollector *sclt = static_cast<Karia2StatCalc*>(sender())->getNextStat(stkey);
+    this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
+    if (!this->isRunning()) {
+        this->start();
+    }
+    
     return true;
 }
 
@@ -181,7 +308,7 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
         gargs.insert(0, args);
 
         this->mWSJsonRpc->call(QString("system.multicall"), gargs, QVariant(taskId),
-                             this->statCalc_.get(), SLOT(calculateStat(QVariant&, QNetworkReply*, QVariant&)),
+                             this->statCalc_.get(), SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
                              this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply*, QVariant &)));
 
         /*
@@ -292,6 +419,11 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     meta->faultObject = faultObject;
     meta->faultSlot = faultSlot;
 
+    QObject::connect(this, SIGNAL(jaresponse(QJsonObject &, QNetworkReply *, QVariant &)), 
+                     meta->responseObject, meta->responseSlot);
+    QObject::connect(this, SIGNAL(fault(int, const QString &, QNetworkReply *, QVariant &)), 
+                     meta->faultObject, meta->faultSlot);
+    
     this->mCbMeta[mLws] = meta;
 
     /*
@@ -383,7 +515,8 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
     QString errorMessage = message.errorMessage();
 
     if (errorCode == 0) {
-        emit this->aresponse(result, 0, meta->payload);
+        // emit this->aresponse(result, 0, meta->payload);
+        emit this->jaresponse(jmessage, 0, meta->payload);
     } else {
         emit this->fault(errorCode, errorMessage, 0, meta->payload);
     }   
@@ -398,7 +531,7 @@ void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
 
     CallbackMeta *meta = (CallbackMeta*)cbmeta;
 
-    QObject::disconnect(this, SIGNAL(aresponse(QVariant &, QNetworkReply *, QVariant &)), 
+    QObject::disconnect(this, SIGNAL(jaresponse(QJsonObject &, QNetworkReply *, QVariant &)), 
                         meta->responseObject, meta->responseSlot);
     QObject::disconnect(this, SIGNAL(fault(int, const QString &, QNetworkReply *, QVariant &)), 
                      meta->faultObject, meta->faultSlot);
@@ -514,7 +647,8 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         qLogx()<<"rx %d '%s'"<<(char*)in;
         jdoc = QJsonDocument::fromJson(QByteArray((char*)in, len));
         // request = QJsonRpcMessage(jdoc.object());
-        emit messageReceived(jdoc.object());
+        // emit messageReceived(jdoc.object());
+        this->m_rdq.enqueue(QByteArray((char*)in, len));
 
 		break;
 
@@ -582,6 +716,16 @@ static struct libwebsocket_protocols lws_protocols[] = {
 
 void QLibwebsockets::onLoopCycle()
 {
+    if (this->m_rdq.size() > 0) {
+        QByteArray ba;
+        QJsonDocument jdoc;
+        while (this->m_rdq.size() > 0) {
+            ba = this->m_rdq.dequeue();
+            jdoc = QJsonDocument::fromJson(ba);
+            emit this->messageReceived(jdoc.object());
+        }
+    }
+
     if (this->lws_ctx != NULL && this->loop_timer.isActive()) {
         qLogx()<<this->lws_ctx << this->loop_timer.isActive()<<this->m_closed;
         if (this->m_closed) {
@@ -599,6 +743,16 @@ void QLibwebsockets::onLoopCycle()
         int rv = libwebsocket_service(lws_ctx, 0); // 立即返回
         if (rv != 0) {
             qLogx()<<"Any error for lws loop cycle: "<<rv; 
+        }
+    }
+
+    if (this->m_rdq.size() > 0) {
+        QByteArray ba;
+        QJsonDocument jdoc;
+        while (this->m_rdq.size() > 0) {
+            ba = this->m_rdq.dequeue();
+            jdoc = QJsonDocument::fromJson(ba);
+            emit this->messageReceived(jdoc.object());
         }
     }
 }

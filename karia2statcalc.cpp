@@ -61,6 +61,7 @@ Karia2StatCalc::Karia2StatCalc(int tid, time_t summaryInterval, aria2::Session *
     this->cssc.reset(new aria2::ConsoleStatCalc(summaryInterval, true));
 }
 
+// embeded
 void Karia2StatCalc::calculateStat(const aria2::DownloadEngine* e)
 {
     aria2::TransferStat stat;
@@ -280,6 +281,31 @@ void Karia2StatCalc::calculateStat(aria2::DownloadHandle* dh)
 
 // for xmlrpc
 void Karia2StatCalc::calculateStat(QVariant &response, QNetworkReply *reply, QVariant &payload)
+{
+    qLogx()<<response<<payload;
+
+    Aria2StatCollector *sclt = new Aria2StatCollector();    
+    sclt->tid = m_tid;
+
+    this->setDownloadResultStat(response, reply, payload, sclt);
+    this->setBaseStat(response, reply, payload, sclt);
+    this->setServersStat(response, reply, payload, sclt);
+
+    int stkey = 0;    
+    // stkey
+    this->poolCounter.testAndSetOrdered(INT_MAX, 1);
+    stkey = this->poolCounter.fetchAndAddRelaxed(1);
+    if (this->statPool.contains(stkey)) {
+        qLogx()<<"whooooo, impossible.";
+    } else {
+        this->statPool.insert(stkey, sclt);
+    }
+            
+    emit this->progressStat(stkey);
+}
+
+// for jsonrpc
+void Karia2StatCalc::calculateStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload)
 {
     qLogx()<<response<<payload;
 
@@ -741,3 +767,32 @@ int Karia2StatCalc::setBittorrentStat(QVariant &response, QNetworkReply *reply, 
 {
     return 0;
 }
+
+
+///// for jsonrpc
+int Karia2StatCalc::setDownloadResultStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+
+}
+
+int Karia2StatCalc::setBaseStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+
+}
+
+int Karia2StatCalc::setFilesStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+
+}
+
+int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+
+}
+
+int Karia2StatCalc::setBittorrentStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
+{
+
+}
+
+

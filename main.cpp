@@ -24,6 +24,7 @@ QString packArguments(QCoreApplication *app, int argc, char **argv)
 {
     Q_UNUSED(argc);
     Q_UNUSED(argv);
+    ::qInstallMessageHandler(myMessageOutput);
 
     int cargc = 0;
     QString cmdLine;
