@@ -53,6 +53,7 @@ public:
 
 public slots:
     void calculateStat(QVariant &response, QNetworkReply *reply, QVariant &payload);
+    void calculateStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload);
 
 signals:
 //    void progressState(int tid, quint32 gid, quint64 total_length,
@@ -83,6 +84,13 @@ private:
     int setFilesStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
     int setServersStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
     int setBittorrentStat(QVariant &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+
+    // jsonrpc
+    int setDownloadResultStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setBaseStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setFilesStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setServersStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
+    int setBittorrentStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats);
 };
 
 typedef std::shared_ptr<Karia2StatCalc> Karia2StatCalcHandle;

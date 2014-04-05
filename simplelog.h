@@ -94,6 +94,9 @@ inline void TIMER_END(int seq) {
     qLogx()<<"UT: from ["<<t<<"] to ["<<e<<", eclapse:"<<(e.msecsTo(t));
 }
 
+// 
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+
 #endif /* _LOG_H_ */
 
 

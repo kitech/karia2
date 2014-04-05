@@ -42,6 +42,17 @@ public slots:
     virtual bool onAllStatArrived(int stkey);
     virtual bool setSpeedLimit(int downloadSpeed, int uploadSpeed) {return true;};
 
+/**
+ * 实现下载状态信息的暂存
+ * 实现下载状态状态的合并
+ * 实现下载状态拆分发出
+ * 实现三角通信的一个节点，另两个是GUI和aria2实例
+ */
+public:
+    bool checkAndDispatchStat(Aria2StatCollector *sclt);
+    bool checkAndDispatchServerStat(Aria2StatCollector *sclt);
+    bool confirmBackendFinished(int tid, void *);
+
 public slots:
     void onAriaAddUriResponse(QVariant &response, QNetworkReply *reply, QVariant &payload);
     void onAriaAddUriFault(int, QString, QNetworkReply *reply, QVariant &payload);
@@ -75,8 +86,9 @@ protected slots:
     void onDisconnectConnection(void *cbmeta);
 
 signals:
-    void aresponse(QVariant &, QNetworkReply* reply, QVariant &);
+    // void aresponse(QVariant &, QNetworkReply* reply, QVariant &);
     void fault(int, const QString &, QNetworkReply* reply, QVariant &);
+    void jaresponse(QJsonObject &, QNetworkReply* reply, QVariant &);
     void disconnectConnection(void *cbmeta);
 
 private:
@@ -142,6 +154,7 @@ private:
     bool m_closed = false;
     struct libwebsocket_context *del_ctx = 0;
     QQueue<QByteArray> m_wrq;
+    QQueue<QByteArray> m_rdq;
 };
 
 #endif /* _ARIA2WSJSONMANAGER_H_ */
