@@ -299,6 +299,7 @@ bool Aria2Libaria2Manager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     }
 
     emit this->taskServerStatChanged(sclt->tid, servers);
+    return true;
 }
 
 bool Aria2Libaria2Manager::confirmBackendFinished(int tid, Aria2Libaria2Worker *eaw)

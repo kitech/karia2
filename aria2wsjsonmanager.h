@@ -54,7 +54,7 @@ public:
     bool confirmBackendFinished(int tid, void *);
 
 public slots:
-    void onAriaAddUriResponse(QVariant &response, QNetworkReply *reply, QVariant &payload);
+    void onAriaAddUriResponse(QJsonObject &response, QNetworkReply *reply, QVariant &payload);
     void onAriaAddUriFault(int, QString, QNetworkReply *reply, QVariant &payload);
     void onAriaUpdaterTimeout();
     void onAriaGetStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
@@ -118,7 +118,7 @@ class QLibwebsockets : public QThread
 {
     Q_OBJECT;
 public:
-    QLibwebsockets(QObject *parent = 0);
+    QLibwebsockets(QString host, int port, QObject *parent = 0);
     virtual ~QLibwebsockets();
 
     virtual void run();
@@ -148,9 +148,12 @@ private slots:
     void onSelfFinished();
 
 private:
-    QTimer loop_timer;
+    QTimer *m_loop_timer = NULL;
+    QString m_wshost;
+    int m_wsport;
     struct libwebsocket_context *lws_ctx = 0;
     struct libwebsocket *h_lws = 0;
+    // char m_wsin[4096];
     bool m_closed = false;
     struct libwebsocket_context *del_ctx = 0;
     QQueue<QByteArray> m_wrq;

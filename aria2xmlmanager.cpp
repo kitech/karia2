@@ -191,6 +191,7 @@ bool Aria2XmlManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     }
 
     emit this->taskServerStatChanged(sclt->tid, servers);
+    return true;
 }
 
 bool Aria2XmlManager::confirmBackendFinished(int tid, void *eaw)

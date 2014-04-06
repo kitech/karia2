@@ -307,7 +307,8 @@ void Karia2StatCalc::calculateStat(QVariant &response, QNetworkReply *reply, QVa
 // for jsonrpc
 void Karia2StatCalc::calculateStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload)
 {
-    qLogx()<<response<<payload;
+    QJsonDocument jdoc(response);
+    qLogx()<<response<<payload<<jdoc.toJson();
 
     Aria2StatCollector *sclt = new Aria2StatCollector();    
     sclt->tid = m_tid;
@@ -325,7 +326,7 @@ void Karia2StatCalc::calculateStat(QJsonObject &response, QNetworkReply *reply, 
     } else {
         this->statPool.insert(stkey, sclt);
     }
-            
+
     emit this->progressStat(stkey);
 }
 
@@ -773,26 +774,100 @@ int Karia2StatCalc::setBittorrentStat(QVariant &response, QNetworkReply *reply, 
 int Karia2StatCalc::setDownloadResultStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
 
+    return 0;
 }
 
 int Karia2StatCalc::setBaseStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
+    QJsonObject baseResult;
 
+    baseResult = response["result"].toArray().at(0).toArray()
+        .at(0).toObject();
+
+    stats->gid = baseResult["gid"].toString().toULongLong(0, 16);
+    stats->state = 0;
+    stats->totalLength = baseResult["totalLength"].toString().toInt();
+    stats->completedLength = baseResult["completedLength"].toString().toInt();
+    stats->downloadSpeed = baseResult["downloadSpeed"].toString().toInt();
+    stats->pieceLength = baseResult["pieceLength"].toString().toInt();
+    stats->numPieces = baseResult["numPieces"].toString().toInt();
+    stats->connections = baseResult["connections"].toString().toInt();
+    stats->errorCode = 0;
+    if(stats->totalLength > 0 && stats->downloadSpeed > 0) {
+        stats->eta = (stats->totalLength - stats->completedLength)/stats->downloadSpeed;
+    }
+    stats->bitfield = baseResult["bitfield"].toString().toStdString();
+
+    QString status = baseResult["status"].toString();
+    if (status == "waiting") {
+        stats->state = aria2::DOWNLOAD_WAITING;
+    } else if (status == "active") {
+        stats->state = aria2::DOWNLOAD_ACTIVE;
+    } else if (status == "complete") {
+        stats->state = aria2::DOWNLOAD_COMPLETE;
+    } else if (status == "paused") {
+        stats->state = aria2::DOWNLOAD_PAUSED;
+    } else if (status == "removed") {
+        stats->state = aria2::DOWNLOAD_REMOVED;
+    } else if (status == "error") {
+        stats->state = aria2::DOWNLOAD_ERROR;
+        stats->errorCode = aria2::DOWNLOAD_ERROR;
+    }
+
+    return 0;
 }
 
 int Karia2StatCalc::setFilesStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
-
+    return 0;
 }
 
 int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
+    QJsonValue result;
+    QJsonValue files;
+    QJsonArray jarr1, jarr2, jarr3;
 
+    jarr1 = response.value("result").toArray();
+    jarr2 = jarr1[0].toArray();
+    result = jarr2[0];
+    files = result.toObject().value("files");
+
+    QJsonArray serverResult;
+    serverResult = response["result"].toArray().at(0).toArray()
+        .at(1).toArray();
+
+    // qLogx()<<serverResult.size() << serverResult;
+    for (int i = 0; i < serverResult.size(); i++) {
+        QJsonObject sn = serverResult.at(i).toObject();
+
+        QJsonArray srvs = sn["servers"].toArray();
+        for (int j = 0; j < srvs.size(); j++) {
+            QJsonObject srv = srvs.at(i).toObject();
+
+            Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
+            servInfo.uri = srv["uri"].toString().toStdString();
+            servInfo.downloadSpeed = srv["downloadSpeed"].toString().toInt();
+            servInfo.state = 1;
+            servInfo.hostname = "ab";
+            servInfo.protocol = "cd";
+
+            stats->server_stats.servers.push_back(servInfo);
+
+            qLogx()<<"servinfo:"<<srv
+                   <<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
+                   << servInfo.hostname.c_str() << servInfo.protocol.c_str();
+
+        }
+        stats->server_stats.index = sn["index"].toString().toInt();
+    }
+
+    return 0;
 }
 
 int Karia2StatCalc::setBittorrentStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
-
+    return 0;
 }
 
 

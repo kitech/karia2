@@ -292,6 +292,7 @@ bool Aria2EmbedManager::checkAndDispatchServerStat(Aria2StatCollector *sclt)
     }
 
     emit this->taskServerStatChanged(sclt->tid, servers);
+    return true;
 }
 
 bool Aria2EmbedManager::confirmBackendFinished(int tid, Aria2EmbedWorker *eaw)
