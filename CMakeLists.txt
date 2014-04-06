@@ -8,6 +8,7 @@ set(CMAKE_CXX_LINK clang++)
 set(CMAKE_C_FLAGS "-g -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
+set(LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
 add_definitions(-g -O2)
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DKARIA2_VERSION=\"0.1.62\")
@@ -35,8 +36,11 @@ include_directories("aria2-1.18.5" "aria2-1.18.5/src" "aria2-1.18.5/lib" "aria2-
 include_directories("libmaia" "qjsonrpc/src")
 include_directories("libwebsockets/lib")
 link_directories(aria2-1.18.5/src/.libs aria2-1.18.5/deps/wslay/lib/.libs/)
+link_directories(lib)
 
-add_subdirectory(src)
 add_subdirectory(qtsingleapplication)
-
+add_subdirectory(libwebsockets)
+add_subdirectory(libmaia)
+add_subdirectory(qjsonrpc)
+add_subdirectory(src)
 

@@ -69,31 +69,11 @@ add_executable(karia2
   ../aria2wsjsonmanager.cpp
   ../aria2xmlmanager.cpp
   ../aria2managerfactory.cpp
-
-  ../qtsingleapplication/qtsingleapplication.cpp
-  ../qtsingleapplication/qtlocalpeer.cpp
-
-  ../libmaia/maiaObject.cpp
-  ../libmaia/maiaFault.cpp 
-  ../libmaia/maiaXmlRpcClient.cpp
-  ../libmaia/maiaXmlRpcServer.cpp 
-  ../libmaia/maiaXmlRpcServerConnection.cpp
   
-  ../qjsonrpc/src/qjsonrpcmessage.cpp  ../qjsonrpc/src/qjsonrpcservice.cpp
-
-  ../libwebsockets/lib/base64-decode.c     ../libwebsockets/lib/extension.c 
-  ../libwebsockets/lib/libwebsockets.c  ../libwebsockets/lib/server-handshake.c  
-  ../libwebsockets/lib/client.c            ../libwebsockets/lib/extension-deflate-frame.c  
-  ../libwebsockets/lib/sha-1.c 
-  ../libwebsockets/lib/client-handshake.c  ../libwebsockets/lib/extension-deflate-stream.c 
-  ../libwebsockets/lib/output.c
-  ../libwebsockets/lib/client-parser.c     ../libwebsockets/lib/getifaddrs.c      
-  ../libwebsockets/lib/parsers.c 
-  ../libwebsockets/lib/daemonize.c         ../libwebsockets/lib/handshake.c         
-  ../libwebsockets/lib/server.c
-
   )
 
 qt5_use_modules(karia2 Core Network Widgets Gui Xml Sql)
 target_link_libraries(karia2 -laria2 -lwslay)
+target_link_libraries(karia2 -lwebsockets -lqtsingleapplication -lmaia -lqjsonrpc)
 target_link_libraries(karia2 -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lxml2 -lz -lm)
+
