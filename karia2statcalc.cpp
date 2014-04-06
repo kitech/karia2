@@ -742,7 +742,7 @@ int Karia2StatCalc::setServersStat(QVariant &response, QNetworkReply *reply, QVa
         
         QVariantList srvs = sn["servers"].toList();
         for (int j = 0; j < srvs.size(); j++) {
-            QVariantMap srv = srvs.at(i).toMap();
+            QVariantMap srv = srvs.at(j).toMap();
 
             Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
             servInfo.uri = srv["uri"].toString().toStdString();
@@ -824,26 +824,17 @@ int Karia2StatCalc::setFilesStat(QJsonObject &response, QNetworkReply *reply, QV
 
 int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
-    QJsonValue result;
-    QJsonValue files;
-    QJsonArray jarr1, jarr2, jarr3;
-
-    jarr1 = response.value("result").toArray();
-    jarr2 = jarr1[0].toArray();
-    result = jarr2[0];
-    files = result.toObject().value("files");
-
     QJsonArray serverResult;
-    serverResult = response["result"].toArray().at(0).toArray()
-        .at(1).toArray();
+    serverResult = response["result"].toArray().at(1).toArray()
+        .at(0).toArray();
 
-    // qLogx()<<serverResult.size() << serverResult;
+    qLogx()<<serverResult.size() << serverResult;
     for (int i = 0; i < serverResult.size(); i++) {
         QJsonObject sn = serverResult.at(i).toObject();
 
         QJsonArray srvs = sn["servers"].toArray();
         for (int j = 0; j < srvs.size(); j++) {
-            QJsonObject srv = srvs.at(i).toObject();
+            QJsonObject srv = srvs.at(j).toObject();
 
             Aria2StatCollector::ServerStatCollector::ServerInfo servInfo;
             servInfo.uri = srv["uri"].toString().toStdString();
@@ -861,6 +852,7 @@ int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, 
         }
         stats->server_stats.index = sn["index"].toString().toInt();
     }
+    qLogx()<<stats->server_stats.servers.size();
 
     return 0;
 }
