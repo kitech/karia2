@@ -124,6 +124,7 @@ public:
     std::string sessionId;
     int tid;
     int64_t  gid;
+    QString strGid;
     std::string uri;
     int state;
 

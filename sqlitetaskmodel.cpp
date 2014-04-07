@@ -232,7 +232,20 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 	int count = 0 ;
 
 	if (parent.isValid()) {
-		count =  0 ;
+        return 0; // TODO real tree model
+        if (parent.parent().isValid()) {
+            count = 0;
+        } else {
+            QVariant vv = this->data(parent);
+            QString vs = vv.toString();
+            if (this->mChildModelData.contains(vs)) {
+                count = this->mChildModelData[vs].size();
+                count = 1;
+                qLogx()<<parent<<parent.parent()<<vv<<count;
+            } else {
+                count = 0;
+            }
+        }
 	} else {
 		count = this->mModelData.count();
 	}
@@ -247,23 +260,43 @@ bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent 
 {
 	//qLogx()<<__FUNCTION__<<row;
 
-	assert( ! parent.isValid() ) ;
+	// assert(!parent.isValid()); 针对任务列表模式，二维表格
+    if (parent.isValid()) {
+        QString v = this->data(parent).toString();
+        beginInsertRows(parent, row, row+count - 1);//////////
+        for (int c = 0 ; c < count ; c ++) {
+            QSqlRecord rec;
+            for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
+                QSqlField currField;
+                currField.setName( this->mTasksTableColumns.at(i) );
+                currField.setValue(QVariant());
+                rec.append(currField);
+            }
+            if (this->mChildModelData.contains(v)) {
+                this->mChildModelData[v].insert(row + c, rec);
+            } else {
+                QVector<QSqlRecord> vrec;
+                vrec << rec;
+                this->mChildModelData[v] = vrec;
+            }
+        }
+        endInsertRows(); //////////
+    } else {
+        beginInsertRows(parent, row, row+count - 1);//////////
 
-	beginInsertRows(parent, row, row+count - 1);//////////
-
-	for (int c = 0 ; c < count ; c ++) {
-		QSqlRecord rec;
-		for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
-			QSqlField currField;
-			currField.setName( this->mTasksTableColumns.at(i) );
-			currField.setValue(QVariant());
-			rec.append(currField);
-		}
-		// this->mModelData.append(rec);
-        this->mModelData.insert(row + c, rec);
-	}
-	endInsertRows(); //////////
-
+        for (int c = 0 ; c < count ; c ++) {
+            QSqlRecord rec;
+            for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
+                QSqlField currField;
+                currField.setName( this->mTasksTableColumns.at(i) );
+                currField.setValue(QVariant());
+                rec.append(currField);
+            }
+            // this->mModelData.append(rec);
+            this->mModelData.insert(row + c, rec);
+        }
+        endInsertRows(); //////////
+    }
 	return true ;
 }
 

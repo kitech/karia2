@@ -282,7 +282,7 @@ void Karia2StatCalc::calculateStat(aria2::DownloadHandle* dh)
 // for xmlrpc
 void Karia2StatCalc::calculateStat(QVariant &response, QNetworkReply *reply, QVariant &payload)
 {
-    qLogx()<<response<<payload;
+    // qLogx()<<response<<payload;
 
     Aria2StatCollector *sclt = new Aria2StatCollector();    
     sclt->tid = m_tid;
@@ -308,7 +308,7 @@ void Karia2StatCalc::calculateStat(QVariant &response, QNetworkReply *reply, QVa
 void Karia2StatCalc::calculateStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload)
 {
     QJsonDocument jdoc(response);
-    qLogx()<<response<<payload<<jdoc.toJson();
+    // qLogx()<<response<<payload<<jdoc.toJson();
 
     Aria2StatCollector *sclt = new Aria2StatCollector();    
     sclt->tid = m_tid;
@@ -800,6 +800,7 @@ int Karia2StatCalc::setBaseStat(QJsonObject &response, QNetworkReply *reply, QVa
         .at(0).toObject();
 
     stats->gid = baseResult["gid"].toString().toULongLong(0, 16);
+    stats->strGid = baseResult["gid"].toString();
     stats->state = 0;
     stats->totalLength = baseResult["totalLength"].toString().toInt();
     stats->completedLength = baseResult["completedLength"].toString().toInt();
@@ -850,7 +851,7 @@ int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, 
     serverResult = response["result"].toArray().at(1).toArray()
         .at(0).toArray();
 
-    qLogx()<<serverResult.size() << serverResult;
+    // qLogx()<<serverResult.size() << serverResult;
     for (int i = 0; i < serverResult.size(); i++) {
         QJsonObject sn = serverResult.at(i).toObject();
 
@@ -867,14 +868,16 @@ int Karia2StatCalc::setServersStat(QJsonObject &response, QNetworkReply *reply, 
 
             stats->server_stats.servers.push_back(servInfo);
 
+            /*
             qLogx()<<"servinfo:"<<srv
                    <<servInfo.uri.c_str()<<servInfo.downloadSpeed<<servInfo.state
                    << servInfo.hostname.c_str() << servInfo.protocol.c_str();
+            */
 
         }
         stats->server_stats.index = sn["index"].toString().toInt();
     }
-    qLogx()<<stats->server_stats.servers.size();
+    // qLogx()<<stats->server_stats.servers.size();
 
     return 0;
 }

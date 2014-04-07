@@ -72,7 +72,7 @@ SqliteStorage::SqliteStorage(QObject *parent)
 
     // this is from AbstractStorage.cpp
     // Marks the string literal sourceText for dynamic translation in the current context (class),
-    tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid");
+    tasksModelColumnsOrderShow = QT_TR_NOOP("task_id, file_size, retry_times, create_time, current_speed, average_speed, eclapsed_time, abtained_length, left_length, split_count, block_activity, total_block_count, active_block_count, user_cat_id, comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet, abtained_packet,left_packet, total_timestamp, abtained_timestamp, left_timestamp, file_length_abtained, dirty, aria_gid, belongs_to");
 	this->catsModelColumnsOrderShow = QT_TR_NOOP("display_name, path, cat_id, parent_cat_id, can_child, raw_name, folder, delete_flag, create_time, dirty");
     segsModelColumnsOrderShow = QT_TR_NOOP("seg_id, task_id, start_offset, create_time, finish_time, total_length, abtained_length, current_speed, average_speed, abtained_percent, segment_status, total_packet, abtained_packet, left_packet, total_timestamp, finish_timestamp, left_timestamp, dirty");
 
@@ -1035,6 +1035,26 @@ QVector<QSqlRecord> SqliteStorage::getTaskSet( int cat_id )
 	
 	return dataSet ;
 }
+
+QMap<QString, QVector<QSqlRecord> > SqliteStorage::getTaskSet2(int cat_id, QString parent_id)
+{
+	QVector<QSqlRecord> dataSet;
+    QMap<QString, QVector<QSqlRecord> > childDataSet;
+
+	//
+	//视图中显示的顺序与这里的顺序有直接的关系，可以说是一样的
+	//还有排序的问题。
+	QString sql = QString("SELECT " + QString(this->tasksModelColumnsOrder)
+                          +" FROM tasks WHERE (sys_cat_id='%1' OR sys_cat_id IN (SELECT cat_id FROM categorys WHERE parent_cat_id='%1')) AND belongs_to = '%2' ORDER BY task_id DESC")
+        .arg(cat_id).arg(parent_id);
+	
+    int iret = this->m_adb->syncExecute(sql, dataSet);
+
+    childDataSet.insert(parent_id, dataSet);
+	
+	return childDataSet;
+}
+
 QVector<QSqlRecord> SqliteStorage::getSementSet( int task_id )
 {
 	QVector<QSqlRecord> dataSet ;

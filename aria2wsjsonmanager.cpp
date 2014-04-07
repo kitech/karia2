@@ -124,15 +124,16 @@ void Aria2WSJsonManager::run()
     Aria2StatCollector *sclt;
     QPair<int, Aria2StatCollector*> elem;
     int tid = -1;
-    // Aria2Libaria2Worker *eaw = 0;
 
     while (!this->stkeys.empty()) {
         elem = this->stkeys.dequeue();
         stkey = elem.first;
         sclt = elem.second;
         tid = sclt->tid;
-        // eaw = (Aria2Libaria2Worker*)this->m_tasks[tid];
 
+        if (this->belongsTos.contains(sclt->strGid)) {
+            sclt->strBelongsTo = QString("%1").arg(tid);
+        }
         qLogx()<<"dispatching stat event:"<<stkey;
 
         if (stkey < 0) {
@@ -143,7 +144,13 @@ void Aria2WSJsonManager::run()
             this->checkAndDispatchServerStat(sclt);
         }
 
+        // 子任务关系
         if (sclt->strFollowedBy.size() > 0) {
+            for (int i = 0; i < sclt->strFollowedBy.size(); i++) {
+                if (!this->belongsTos.contains(sclt->strFollowedBy.at(i))) {
+                    this->belongsTos[sclt->strFollowedBy.at(i)] = tid;
+                }
+            }
             this->getAria2ChildStatus(sclt->strFollowedBy);
         }
 
@@ -161,6 +168,7 @@ bool Aria2WSJsonManager::checkAndDispatchStat(Aria2StatCollector *sclt)
     //                            sclt->downloadSpeed, sclt->uploadSpeed);
 
     stats[ng::stat2::task_id] = sclt->tid;
+    stats[ng::stat2::belongs_to] = sclt->strBelongsTo;
     stats[ng::stat2::total_length] = (qulonglong)sclt->totalLength;
     stats[ng::stat2::completed_length] = (qulonglong)sclt->completedLength;
     stats[ng::stat2::completed_percent] = (int)(sclt->totalLength == 0 ? 0: (sclt->completedLength*100/ sclt->totalLength));
@@ -264,7 +272,7 @@ bool Aria2WSJsonManager::onAllStatArrived(int stkey)
 ////////
 void Aria2WSJsonManager::onAriaAddUriResponse(QJsonObject &response, QNetworkReply *reply, QVariant &payload)
 {
-    qLogx()<<response<<reply<<payload;
+    // qLogx()<<response<<reply<<payload;
 }
 
 void Aria2WSJsonManager::onAriaAddUriFault(int errorCode, QString errorString, QNetworkReply *reply, QVariant &payload)
@@ -274,7 +282,7 @@ void Aria2WSJsonManager::onAriaAddUriFault(int errorCode, QString errorString, Q
 
 void Aria2WSJsonManager::onAriaUpdaterTimeout()
 {
-    qLogx()<<"timer out update";
+    // qLogx()<<"timer out update";
     if (this->mWSJsonRpc == NULL) {
         Q_ASSERT(this->mWSJsonRpc != NULL);
     }
@@ -455,7 +463,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
                                 QObject* responseObject, const char* responseSlot,
                                 QObject* faultObject, const char* faultSlot)
 {
-    qLogx()<<this<<this->mUrl;
+    // qLogx()<<this<<this->mUrl;
     QUrl uo(this->mUrl);
     // mLws->connectToHost(uo.host(), uo.port());
 
@@ -521,7 +529,7 @@ bool Aria2WSJsonRpcClient::onRawSocketConnectError(QAbstractSocket::SocketError 
 
 bool Aria2WSJsonRpcClient::onRawSocketConnected()
 {
-    qLogx()<<"sending..."<<(sender());
+    // qLogx()<<"sending..."<<(sender());
 
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = this->mCbMeta[mLws];
@@ -557,7 +565,7 @@ bool Aria2WSJsonRpcClient::onRawSocketConnected()
 
 void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 {
-    qLogx()<<jmessage<<sender();
+    // qLogx()<<jmessage<<sender();
     CallbackMeta *meta = this->mCbMeta[(QLibwebsockets*)(sender())];
     if (meta == NULL) {
         qLogx()<<"meta object not exists";
@@ -582,7 +590,7 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 
 void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
 {
-    qLogx()<<cbmeta<<sender();
+    // qLogx()<<cbmeta<<sender();
 
     CallbackMeta *meta = (CallbackMeta*)cbmeta;
 
@@ -638,7 +646,7 @@ QLibwebsockets::QLibwebsockets(QString host, int port, QObject *parent)
 
 QLibwebsockets::~QLibwebsockets()
 {
-    qLogx()<<"here"<<this->del_ctx;
+    // qLogx()<<"here"<<this->del_ctx;
     // libwebsocket_context_destroy(this->del_ctx);
     // destory 本身没有问题，出在SSL_free上？为什么呢？
 }
@@ -650,10 +658,10 @@ void QLibwebsockets::run()
     // QObject::connect(this->m_loop_timer, &QTimer::timeout, this, &QLibwebsockets::onLoopCycle);
     // QObject::connect(this, &QLibwebsockets::destroyContext, this, &QLibwebsockets::onDestroyContext);
 
-    qLogx()<<"connect lws ...";
+    // qLogx()<<"connect lws ...";
     this->connectToHost(m_wshost, m_wsport);
 
-    qLogx()<<"entry lws loop ...";
+    // qLogx()<<"entry lws loop ...";
     while (true && !this->m_closed) {
         int rv = libwebsocket_service(lws_ctx, 50); // 立即返回
         if (rv != 0) {
@@ -662,13 +670,13 @@ void QLibwebsockets::run()
         }
     }
 
-    qLogx()<<"close lws...";
+    // qLogx()<<"close lws...";
     this->destroyContext(lws_ctx);
 
     this->onSelfFinished();
     return;
 
-    qLogx()<<"entry loop...";
+    // qLogx()<<"entry loop...";
     this->exec();
 }
 
@@ -678,7 +686,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
                                    enum libwebsocket_callback_reasons reason,
                                    void *user, void *in, size_t len)
 {
-    qLogx()<<this<<ctx<<wsi<<reason<<user<<in<<len;
+    // qLogx()<<this<<ctx<<wsi<<reason<<user<<in<<len;
 
     char *buff;
     char *rdata = "{\"id\": 1,\"jsonrpc\": \"2.0\",\"method\": \"aria2.getVersion\",\"params\": [\"a\"]}";
@@ -718,7 +726,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
 		break;
 
 	case LWS_CALLBACK_CLOSED:
-		qLogx()<<"LWS_CALLBACK_CLOSED";
+		// qLogx()<<"LWS_CALLBACK_CLOSED";
 		// was_closed = 1;
 		break;
 
@@ -727,7 +735,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         if (in) {
             memcpy(m_wsin, in, len);
         }
-        qLogx()<<"rx %d '%s'"<<m_wsin;
+        // qLogx()<<"rx %d '%s'"<<m_wsin;
         jdoc = QJsonDocument::fromJson(QByteArray(m_wsin, len));
         // request = QJsonRpcMessage(jdoc.object());
         emit messageReceived(jdoc.object());
@@ -736,14 +744,14 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
 		break;
 
     case LWS_CALLBACK_CLIENT_WRITEABLE:
-        qLogx()<<"client_writable callback.";
+        // qLogx()<<"client_writable callback.";
         if (this->m_wrq.isEmpty()) break;
         tmpba = this->m_wrq.dequeue();
         buff = (char *)calloc(1, tmpba.length() + 200 + LWS_SEND_BUFFER_PRE_PADDING + LWS_SEND_BUFFER_POST_PADDING);
         memset(buff, 0, tmpba.length() + 200 + LWS_SEND_BUFFER_PRE_PADDING + LWS_SEND_BUFFER_POST_PADDING);
         strncpy(buff + LWS_SEND_BUFFER_PRE_PADDING, tmpba.data(), tmpba.length());
         rv = libwebsocket_write(wsi, (unsigned char*)buff + LWS_SEND_BUFFER_PRE_PADDING, tmpba.length(), LWS_WRITE_TEXT);
-        qLogx()<<"lws write rv:"<<rv;
+        // qLogx()<<"lws write rv:"<<rv;
         free(buff); buff = NULL;
         break;
 
@@ -771,7 +779,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
         */
 		break;
 	default:
-        qLogx()<<"what reason:"<<reason;
+        // qLogx()<<"what reason:"<<reason;
 		break;
     }
 
@@ -784,7 +792,7 @@ static int QLibwebsockets_loop_callback(struct libwebsocket_context *cthis,
                                         void *user, void *in, size_t len)
 {
     QLibwebsockets *qws = (QLibwebsockets*)(user);
-    qLogx()<<"user void"<<user<<qws;
+    // qLogx()<<"user void"<<user<<qws;
     if (user == NULL) {
         return 0;
     }
@@ -869,7 +877,7 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
     // char *path = uo.path();
     this->lws_ctx = libwebsocket_create_context(lws_ctx_ci);
 
-    qLogx()<<h<<p<<host<<port;
+    // qLogx()<<h<<p<<host<<port;
     this->h_lws = libwebsocket_client_connect_extended(lws_ctx, h, p, use_ssl,
                                               "/jsonrpc", h, h,
                                               lws_protocols[0].name, -1,
@@ -890,7 +898,7 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
         libwebsocket_service(lws_ctx, 30000);
     }
 
-    qLogx()<<h_lws;
+    // qLogx()<<h_lws;
 
     return true;
 }
@@ -918,7 +926,7 @@ bool QLibwebsockets::close()
 
 void QLibwebsockets::onDestroyContext(void *ctx)
 {
-    qLogx()<<"destroy context ...";
+    // qLogx()<<"destroy context ...";
 
     struct libwebsocket_context *actx = (struct libwebsocket_context *)ctx;
     libwebsocket_context_destroy(actx);    
@@ -931,7 +939,7 @@ void QLibwebsockets::onSelfFinished()
 
 bool QLibwebsockets::sendMessage(QJsonRpcMessage message)
 {
-    qLogx()<<message;
+    // qLogx()<<message;
 
     QJsonDocument jdoc = QJsonDocument(message.toObject());
     jdoc.toJson(QJsonDocument::Compact);
@@ -939,7 +947,7 @@ bool QLibwebsockets::sendMessage(QJsonRpcMessage message)
 
     libwebsocket *wsi = this->h_lws;
     int rv = libwebsocket_callback_on_writable(this->lws_ctx, wsi);
-    qLogx()<<"vvv="<<rv;
+    // qLogx()<<"vvv="<<rv;
 
     return true;
 }
@@ -978,7 +986,7 @@ bool QLibwebsockets::sendMessage(QString method, QVariantList arguments)
     libwebsocket *wsi = this->h_lws;
     // int rv = libwebsocket_write(wsi, (unsigned char*)buff, strlen(buff)+1, LWS_WRITE_TEXT);
     int rv = libwebsocket_callback_on_writable(lws_ctx, wsi);
-    qLogx()<<"vvv="<<rv;
+    // qLogx()<<"vvv="<<rv;
 
     // QJsonRpcMessage request = QJsonRpcMessage::createRequest(method, arguments);
     // return this->sendMessage(request);

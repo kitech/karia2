@@ -62,9 +62,10 @@ public slots:
     void onGetAria2ChildStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
 
 private:
-    Aria2WSJsonRpcClient *mWSJsonRpc;
+    Aria2WSJsonRpcClient *mWSJsonRpc = NULL;
     std::unique_ptr<Karia2StatCalc> statCalc_;    
-    bool mUseSsl;
+    bool mUseSsl = false;
+    QMap<QString, int> belongsTos;
 };
 
 

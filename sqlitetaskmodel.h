@@ -54,8 +54,9 @@ private:
 	
 	SqliteTaskModel(int cat_id, QObject *parent = 0);
 
-	SqliteStorage *mStorage ;
-	QVector<QSqlRecord>  mModelData;
+	SqliteStorage *mStorage = NULL;
+	QVector<QSqlRecord>  mModelData; // 主任务记录
+    QMap<QString, QVector<QSqlRecord> > mChildModelData; // 子任务记录
 	QVector<QString> mTasksTableColumns;
 
 	int mCatID;

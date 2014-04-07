@@ -88,42 +88,45 @@ AbstractStorage::AbstractStorage(QObject *parent)
 		this->defaultCategorys.append(catmap);
 	}
 	
-	this->mTaskColumnStr =  
-			"task_id             ,"
-			"file_size           ,"
-			"retry_times         ,"
-			"create_time         ,"
-			"current_speed       ,"
-			"average_speed       ,"
-			"eclapsed_time       ,"
-			"abtained_length     ,"
-			"left_length         ,"
-        "split_count,"
-			"block_activity      ,"
-			"total_block_count   ,"
-			"active_block_count  ,"
-			"user_cat_id              ,"
-			"comment             ,"
-			"sys_cat_id        ,"
-        "save_path,"
-			"file_name           ,"
-        "select_file,"
-			"abtained_percent    ,"
-			"org_url             ,"
-			"real_url            ,"
-        "referer,"
-			"redirect_times      ,"
-			"finish_time         ,"
-			"task_status         ,"
-			"total_packet        ,"
-			"abtained_packet     ,"
-			"left_packet         ,"
-			"total_timestamp     ,"
-			"abtained_timestamp,"
-			"left_timestamp     ,"
-			"file_length_abtained,"
-			"dirty               ,"
-            "aria_gid            "
+	this->mTaskColumnStr =     
+    this->mTaskColumnStrV2 = R"delimiter(
+			task_id             ,
+			file_size           ,
+			retry_times         ,
+			create_time         ,
+			current_speed       ,
+			average_speed       ,
+			eclapsed_time       ,
+			abtained_length     ,
+			left_length         ,
+        split_count,
+			block_activity      ,
+			total_block_count   ,
+			active_block_count  ,
+			user_cat_id              ,
+			comment             ,
+			sys_cat_id        ,
+        save_path,
+			file_name           ,
+        select_file,
+			abtained_percent    ,
+			org_url             ,
+			real_url            ,
+        referer,
+			redirect_times      ,
+			finish_time         ,
+			task_status         ,
+			total_packet        ,
+			abtained_packet     ,
+			left_packet         ,
+			total_timestamp     ,
+			abtained_timestamp,
+			left_timestamp     ,
+			file_length_abtained,
+			dirty               ,
+            aria_gid            , 
+            belongs_to
+            )delimiter"
             ;
 
 	this->mSegColumnStr = 

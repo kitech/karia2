@@ -209,6 +209,51 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 	return true;
 }
 
+bool TaskQueue::addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &idx)
+{
+    qLogx()<<taskId<<stats.size()<<idx;
+
+    QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
+    QModelIndex index;
+
+    int modelRows = mdl->rowCount();
+    modelRows = 0; // put on top
+    mdl->insertRows(modelRows, 1, idx);
+    index = mdl->index(modelRows, ng::tasks::task_id, idx);
+    mdl->setData(index, taskId);
+    index = mdl->index(modelRows, ng::tasks::task_status, idx);
+    mdl->setData(index, "ready");
+    index = mdl->index(modelRows, ng::tasks::save_path, idx);
+    // mdl->setData(index, option->mSavePath);
+    index = mdl->index(modelRows, ng::tasks::file_name, idx);
+    // mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
+    index = mdl->index(modelRows, ng::tasks::block_activity, idx);
+    mdl->setData(index, QString("0/0") );
+    index = mdl->index(modelRows, ng::tasks::active_block_count, idx);
+    mdl->setData(index, QString("0"));
+    index = mdl->index(modelRows, ng::tasks::split_count, idx);
+    // mdl->setData(index, QString("%1").arg(option->mSplitCount));
+    index = mdl->index(modelRows, ng::tasks::real_url, idx);
+    // mdl->setData(index, option->mTaskUrl);	
+    index = mdl->index(modelRows, ng::tasks::org_url, idx);
+    // mdl->setData(index, option->mTaskUrl);
+    index = mdl->index(modelRows, ng::tasks::referer, idx);
+    // mdl->setData(index, option->mReferer);
+    index = mdl->index(modelRows, ng::tasks::user_cat_id, idx );
+    // mdl->setData(index ,ng::cats::downloading);
+    // mdl->setData(index, option->mCatId);
+    index = mdl->index(modelRows, ng::tasks::sys_cat_id, idx);
+    mdl->setData(index, ng::cats::downloading);
+    index = mdl->index(modelRows, ng::tasks::create_time , idx);
+    mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+    index = mdl->index(modelRows, ng::tasks::file_length_abtained, idx);
+    mdl->setData(index, QString("false"));
+    index = mdl->index(modelRows, ng::tasks::comment, idx);
+    // mdl->setData(index, option->mCookies);
+    
+    return true;
+}
+
 //static 
 QString TaskQueue::getFileNameByUrl(QString text)
 {
@@ -477,6 +522,7 @@ void TaskQueue::onLogSegment(int taskId, int segId, QString log, int type)
 	mdl->setData(index,log);
 }
 
+
 void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
 {
     int totalLength, completedLength, completedPercent,
@@ -489,6 +535,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     downloadSpeed = stats.value(ng::stat::download_speed).toInt();
     uploadSpeed = stats.value(ng::stat::upload_speed).toInt();
 
+    QString belongs_to = stats.value(ng::stat::belongs_to).toString();
     int numConnections = stats.value(ng::stat::num_connections).toInt();
     int numPieces = stats.value(ng::stat::num_pieces).toInt();
     int pieceLength = stats.value(ng::stat::piece_length).toInt();
@@ -501,9 +548,9 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
 
     qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
 
-	QModelIndex idx , idx2,idx3;
-	quint64 fsize , abtained ;
-	double  percent ;
+	QModelIndex idx, idx2, idx3;
+	quint64 fsize, abtained;
+	double  percent;
     // bool found = false;
     unsigned short bitfield = 0;
     QStringList bitList;
@@ -518,18 +565,21 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id), Qt::DisplayRole,
                                      QVariant(QString("%1").arg(taskId)), 1, Qt::MatchExactly | Qt::MatchWrap);
 
+
     if (mil.count() == 1) {
         idx = mil.at(0);
+        if (belongs_to.isEmpty()) {
+        } else {
+            this->addSubTaskModel(taskId, stats, idx);
+        }
+    } else {
+        qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
+    }
+
+    if (idx.isValid()) {
         if (completedLength == 0 && totalLength == 0) {
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
         } else if (completedLength == totalLength && completedLength > 0) {
-            // mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time), QDateTime::currentDateTime().toString());
-            // // fix no need download data case, the file is already downloaded, user readd it.
-            // if (files.count() > 0 
-            //     && files.at(0).toMap().value("length").toLongLong() > 
-            //     mdl->index(idx.row(), ng::tasks::file_size).data().toLongLong()) {
-            //     mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), files.at(0).toMap().value("length"));
-            // }
             mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
             mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), "complete");
@@ -553,50 +603,8 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
             mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid), gid);
             mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), str_bitfield);
             mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), str_eta);
-
         }
-
-        // 计算完成的pieces
-        // if (sts["status"].toString() == "complete") {
-        //     int blockCount = mdl->data(mdl->index(idx.row(), ng::tasks::total_block_count)).toInt();
-        //     QStringList bitList;
-        //     for (int i = 0 ; i < blockCount; i ++) bitList << "1";
-        //     mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), bitList.join(","));
-        // } else {
-        //     mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), 
-        //                  this->fromBitArray(this->fromHexBitString(sts["bitfield"].toString())));
-        // }
-
-        // fix case that can not resovle file from url, must conntect to server 
-        // if (!sts.contains("bittorrent")) {
-        //     QVariantMap  fileMap0;
-        //     QString fileName;
-        //     QString fileSize;
-        //     if (files.count() > 0) {
-        //         fileMap0 = files.at(0).toMap();
-        //         fileName = fileMap0.value("path").toString();
-        //         if (sts.contains("dir")) {
-        //             fileName = fileName.right(fileName.length() - sts["dir"].toString().length() - 1);                    
-        //         } else {
-        //             fileName = QFileInfo(fileName).fileName();
-        //         }
-        //         mdl->setData(mdl->index(idx.row(), ng::tasks::file_name), fileName);
-        //     }
-        // }
-
-        // 处理bt信息
-        // if (sts.contains("bittorrent")) {
-        //     QVariantMap btSts = sts["bittorrent"].toMap();
-        //     qLogx()<<"announceList:"<<btSts["announceList"]
-        //             <<"comment:"<<btSts["comment"]
-        //             <<"createDate:"<<btSts["createDate"]
-        //             <<"mode:"<<btSts["mode"]
-        //             <<"info:"<<btSts["info"];
-        // }
-    } else {
-        qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
     }
-
 }
 
 void TaskQueue::onTaskStatusNeedUpdate(int taskId, QVariantMap &sts)

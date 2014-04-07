@@ -35,7 +35,7 @@ namespace ng {
             task_id=1, gid, total_length, completed_length, completed_percent, download_speed, upload_speed,
             bitfield, hex_bitfield, piece_length, num_pieces, num_connections, eta, str_eta,
             num_active, num_waiting, num_stopped,
-            error_code, error_string, status,
+            error_code, error_string, status, belongs_to
         };
     };
 };

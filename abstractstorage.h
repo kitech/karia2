@@ -76,9 +76,11 @@ protected:
 	QMap<QString , QString> defaultOptions ;
 	QVector< QMap<QString , QString> > defaultCategorys ;
 
-	char * mTaskColumnStr ; 
-	char * mSegColumnStr ;
-	char * mCatColumnStr ;
+	char * mTaskColumnStr = NULL; 
+	char * mSegColumnStr  = NULL;
+	char * mCatColumnStr  = NULL;
+
+    char * mTaskColumnStrV2 = NULL;
 
 private:
     

@@ -236,6 +236,7 @@ public:
 	QVector<QSqlRecord> getCatSet();
 
 	QVector<QSqlRecord> getTaskSet(int cat_id);
+	QMap<QString, QVector<QSqlRecord> > getTaskSet2(int cat_id, QString parent_id);
 	QVector<QSqlRecord> getSementSet(int task_id);
 
 	QVector<QString> getCatsColumns();
