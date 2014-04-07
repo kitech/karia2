@@ -370,7 +370,7 @@ bool Aria2RpcServer::setBootArgs()
                      << "--summary-interval=20"
                      << "--seed-time=60"
                      << "--follow-torrent=false"
-                     << "--follow-metalink=false"
+                     << "--follow-metalink=true"
 
         //           << "--rpc-certificate=rpckey/rpc.pub"
         //           << "--rpc-private-key=rpckey/rpc.pri"

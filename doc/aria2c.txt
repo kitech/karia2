@@ -27,3 +27,8 @@ The HTTP 1.0 standard per http://www.w3.org/Protocols/rfc2109/rfc2109 in section
 
 当一个url指向的是一个.torrent文件，aria2有一个参数--follow-torrent=true|false|mem, 如果为true，则会继续分析这个.torrent文件并下载。
 否则停止任务。
+
+follow-metalink=true参数，对有些服务器响应一个metalink地址，附带着文件的相关信息，
+这时如果不开启这个参数的话，则无法正常下载，
+如果开启的话，aria2会生成一个新子任务，而不能通过当前任务监控到任务下载状态了。
+

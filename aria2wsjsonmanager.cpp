@@ -143,6 +143,10 @@ void Aria2WSJsonManager::run()
             this->checkAndDispatchServerStat(sclt);
         }
 
+        if (sclt->strFollowedBy.size() > 0) {
+            this->getAria2ChildStatus(sclt->strFollowedBy);
+        }
+
         delete sclt;
     }
     
@@ -383,6 +387,52 @@ void Aria2WSJsonManager::onAriaGetStatusFault(int code, QString reason, QNetwork
 {
     qLogx()<<code<<reason<<payload;
 }
+
+void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs)
+{
+    QVariantList args;
+    int taskId;
+    QString ariaGid;
+
+    if (true) {
+        QVariantMap  tellStatusMethod;
+        QVariantMap getServersMethod;
+        QVariantMap getGlobalStatMethod;
+        QVariantList gargs;
+        QVariantList args;
+        QVariantMap options;
+        QVariantList loptions;
+
+        for (int i = 0; i < childs.count() ; i ++) {
+            ariaGid = childs.at(i);
+            loptions << ariaGid;
+        }
+
+        tellStatusMethod["methodName"] = QString("aria2.tellStatus");
+        tellStatusMethod["params"] = loptions;
+        getServersMethod["methodName"] = QString("aria2.getServers");
+        getServersMethod["params"] = loptions;
+        getGlobalStatMethod["methodName"] = QString("aria2.getGlobalStat");
+        getGlobalStatMethod["params"] = QVariant(""); // Failed to marshal unknown variant type:  QVariant::Invalid
+
+
+        args << tellStatusMethod;
+        args << getServersMethod;
+        args << getGlobalStatMethod;
+
+        gargs.insert(0, args);
+
+        this->mWSJsonRpc->call(QString("system.multicall"), gargs, QVariant(taskId),
+                               this->statCalc_.get(), SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
+                               this, SLOT(onGetAria2ChildStatusFault(int, QString, QNetworkReply*, QVariant &)));
+    }
+}
+
+void Aria2WSJsonManager::onGetAria2ChildStatusFault(int code, QString reason, QNetworkReply *reply, QVariant &payload)
+{
+    qLogx()<<code<<reason<<payload;
+}
+
 
 
 //////////////////////////
@@ -638,7 +688,7 @@ int QLibwebsockets::wsLoopCallback(struct libwebsocket_context *ctx,
     QJsonDocument jdoc;
     QByteArray tmpba;
 
-    char m_wsin[4096];
+    char m_wsin[8192];
 
 	switch (reason) {
 	case LWS_CALLBACK_CLIENT_ESTABLISHED:

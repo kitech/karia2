@@ -779,9 +779,24 @@ int Karia2StatCalc::setDownloadResultStat(QJsonObject &response, QNetworkReply *
 
 int Karia2StatCalc::setBaseStat(QJsonObject &response, QNetworkReply *reply, QVariant &payload, Aria2StatCollector *stats)
 {
+    QJsonArray allResults;
+    QJsonValue statusResult;
+    QJsonValue serverResult;
+    QJsonValue gstatResult;
+
+    allResults = response["result"].toArray();
+    assert(allResults.size() == 3); // tellStatus,getServers,getGlobalStat
+    statusResult = allResults.at(0);
+    serverResult = allResults.at(1);
+    gstatResult = allResults.at(2);
+
     QJsonObject baseResult;
 
-    baseResult = response["result"].toArray().at(0).toArray()
+    if (!statusResult.isArray()) {
+        // maybe {code:1, message:"aaaaa"}
+    }
+
+    baseResult = statusResult.toArray()
         .at(0).toObject();
 
     stats->gid = baseResult["gid"].toString().toULongLong(0, 16);
@@ -797,6 +812,13 @@ int Karia2StatCalc::setBaseStat(QJsonObject &response, QNetworkReply *reply, QVa
         stats->eta = (stats->totalLength - stats->completedLength)/stats->downloadSpeed;
     }
     stats->bitfield = baseResult["bitfield"].toString().toStdString();
+    if (baseResult.contains("followedBy")) {
+        stats->strFollowedBy = QVariant(baseResult["followedBy"].toArray().toVariantList()).toStringList();
+    }
+    if (baseResult.contains("belongsTo")) {
+        stats->strBelongsTo = baseResult["belongsTo"].toString();
+    }
+    
 
     QString status = baseResult["status"].toString();
     if (status == "waiting") {

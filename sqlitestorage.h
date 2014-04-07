@@ -68,7 +68,7 @@ namespace ng
               abtained_percent,
               org_url, real_url, referer, redirect_times, finish_time, task_status, total_packet,
               abtained_packet, left_packet, total_timestamp, abtained_timestamp, left_timestamp,
-              file_length_abtained, dirty, aria_gid
+              file_length_abtained, dirty, aria_gid, belongs_to
         };
 	};
 	namespace cats

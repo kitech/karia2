@@ -144,6 +144,8 @@ public:
 
     std::vector<int64_t> followedBy;
     int64_t belongsTo;
+    QStringList strFollowedBy;
+    QString strBelongsTo;
     std::string dir;
 
     uint32_t eta;
