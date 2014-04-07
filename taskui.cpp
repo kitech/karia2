@@ -443,7 +443,7 @@ void TaskUi::showNewMetalinkFileDialog()
     QString url;
     
     url = QFileDialog::getOpenFileName(this->mpwin, tr("Open a .metalink file..."), QString(),
-                                       tr("Metalink File (*.metalink)"), NULL, 0);
+                                       tr("Metalink File (*.metalink *.meta4)"), NULL, 0);
 
     if (url == QString::null) {
         // cancel

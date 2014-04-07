@@ -124,6 +124,7 @@ void Karia2::firstShowHandler()
     addTaskMenuList->addAction(this->mainUI->action_New_Download);
     addTaskMenuList->addAction(this->mainUI->action_New_Bittorrent);
     addTaskMenuList->addAction(this->mainUI->action_New_Metalink);
+    addTaskMenuList->addAction(this->mainUI->action_New_Magnet);
     addTaskMenuList->addAction(this->mainUI->actionAdd_batch_download); // batch
     this->mAddOtherTaskButton = new QToolButton(this);
     this->mAddOtherTaskButton->setPopupMode(QToolButton::MenuButtonPopup); // new, nice
@@ -595,6 +596,7 @@ void Karia2::connectAllSignalAndSlog()
 	QObject::connect(this->mainUI->action_New_Download, SIGNAL(triggered()), this, SLOT(showNewDownloadDialog()));
     QObject::connect(this->mainUI->action_New_Bittorrent, SIGNAL(triggered()), this, SLOT(showNewBittorrentFileDialog())); 
     QObject::connect(this->mainUI->action_New_Metalink, SIGNAL(triggered()), this, SLOT(showNewMetalinkFileDialog()));
+    QObject::connect(this->mainUI->action_New_Magnet, &QAction::triggered, this, &Karia2::showNewMagnetFileDialog);
 	QObject::connect(this->mainUI->actionAdd_batch_download, SIGNAL(triggered()), this, SLOT(showBatchDownloadDialog()));
 	
 	QObject::connect(this->mainUI->action_Start , SIGNAL(triggered()), this, SLOT(onStartTask()));
@@ -939,7 +941,8 @@ void Karia2::onStartTask()
             options["split"] = taskOptions->mSplitCount;
             options["dir"] = taskOptions->mSavePath;
             args.insert(2, options);
-        } else if (url.startsWith("file://") && url.endsWith(".metalink")) {
+        } else if (url.startsWith("file://")
+                   && (url.endsWith(".metalink") || url.endsWith(".meta4"))) {
             aria2RpcMethod = QString("aria2.addMetalink");
         
             QFile metalinkFile(url.right(url.length() - 7));
@@ -2681,7 +2684,7 @@ void Karia2::showNewMetalinkFileDialog()
     QString url;
     
     url = QFileDialog::getOpenFileName(this, tr("Open a .metalink file..."), QString(),
-                                       tr("Metalink File (*.metalink)"), NULL, 0);
+                                       tr("Metalink File (*.metalink *.meta4)"), NULL, 0);
 
     if (url == QString::null) {
         // cancel
@@ -2730,6 +2733,11 @@ void Karia2::showNewMetalinkFileDialog()
 //            this->mAriaTorrentUpdater.start();
 //        }
     }
+}
+
+void Karia2::showNewMagnetFileDialog()
+{
+    qLogx()<<"hehe";
 }
 
 void Karia2::showBatchDownloadDialog()

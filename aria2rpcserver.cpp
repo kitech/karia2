@@ -384,5 +384,21 @@ bool Aria2RpcServer::setBootArgs()
 
     // qLogx()<<this->mStartArgs<<this->mStartArgs.join(" ");
     return true;
+
+    // follow-metalink=true参数，对有些服务器响应一个metalink地址，附带着文件的相关信息，
+    // 这时如果不开启这个参数的话，则无法正常下载，
+    // 如果开启的话，aria2会生成一个新子任务，而不能通过当前任务监控到任务下载状态了。
+    /*
+      Date: Sun, 06 Apr 2014 14:01:17 GMT
+      Server: Apache/2.2.15 (CentOS)
+      X-Prefix: 223.72.0.0/16
+      X-AS: 56048
+      Vary: accept
+      Content-Disposition: attachment; filename="qt-everywhere-opensource-src-5.3.0-beta.tar.xz.meta4"
+      Connection: close
+      Transfer-Encoding: chunked
+      Content-Type: application/metalink4+xml; charset=UTF-8
+
+     */
 }
 

@@ -71,6 +71,7 @@ public slots:
 	void showNewDownloadDialog();
     void showNewBittorrentFileDialog();
     void showNewMetalinkFileDialog();
+    void showNewMagnetFileDialog();
 	void showBatchDownloadDialog();	//添加批量下载对话框
 	void showProcessWebPageInputDiglog();	//处理WEB页面，取其中链接并下载
 	void onShowTaskProperty();
