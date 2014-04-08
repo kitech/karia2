@@ -13,6 +13,7 @@
 
 #include "sqlitestorage.h"
 
+class ModelTreeNode;
 /*
 这个模型的目的是做成现有模型的替代品，这个是类似Flashget有一个任务视图和一个任务所属的线程视图
 */
@@ -57,6 +58,7 @@ private:
 	SqliteStorage *mStorage = NULL;
 	QVector<QSqlRecord>  mModelData; // 主任务记录
     QMap<QString, QVector<QSqlRecord> > mChildModelData; // 子任务记录
+    ModelTreeNode *mTaskRoot = NULL;
 	QVector<QString> mTasksTableColumns;
 
 	int mCatID;
