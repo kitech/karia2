@@ -11,6 +11,9 @@
 
 #include "sqlitetaskmodel.h"
 
+#include "sqlitetasktreemodel.h"
+
+
 //static
 QHash<int, SqliteTaskModel*> SqliteTaskModel::mHandle;
 
@@ -53,7 +56,7 @@ SqliteTaskModel::SqliteTaskModel(int cat_id , QObject *parent)
 //	this->mStorage->open();
 	this->mModelData = this->mStorage->getTaskSet( this->mCatID );
 	mTasksTableColumns = this->mStorage->getInternalTasksColumns();
-
+    mTaskRoot = new ModelTreeNode;
 }
 
 SqliteTaskModel::~SqliteTaskModel()

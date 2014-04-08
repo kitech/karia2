@@ -257,7 +257,8 @@ SOURCES += aboutdialog.cpp \
            aria2jsonmanager.cpp \
            aria2wsjsonmanager.cpp \
            aria2xmlmanager.cpp \
-           aria2managerfactory.cpp
+           aria2managerfactory.cpp \
+           sqlitetasktreemodel.cpp
 
 win32 {
     SOURCES += DiskInfo.cpp
