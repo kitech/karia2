@@ -2,7 +2,8 @@
 file (GLOB Resources ../*.qrc)
 QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
-set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../tmp)
+# 导到progname_automoc.cpp位置不对。
+# set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../tmp)
 
 qt5_wrap_ui(UIS_HDRS
   ../aboutdialog.ui
@@ -100,6 +101,8 @@ add_executable(karia2
   ../aria2wsjsonmanager.cpp
   ../aria2xmlmanager.cpp
   ../aria2managerfactory.cpp
+  ../sqlitetasktreemodel.cpp
+
   ${ResourceSources}
   ${UIS_HDRS}  
   )

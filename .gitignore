@@ -1,3 +1,8 @@
 *~
 *.o
+moc_*.cpp
+ui_*.h
+cmake_install.cmake
+CMakeFiles
+
 

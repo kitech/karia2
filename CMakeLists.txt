@@ -43,4 +43,5 @@ add_subdirectory(libwebsockets)
 add_subdirectory(libmaia)
 add_subdirectory(qjsonrpc)
 add_subdirectory(src)
+add_subdirectory(tests)
 
