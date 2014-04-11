@@ -1,4 +1,6 @@
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/..")
+
 ### tasktreeview
 qt5_wrap_ui (tasktreeview_UIS_HDRS  tasktreeview/tasktreeview.ui)
 add_executable(tasktreeview
@@ -8,9 +10,9 @@ add_executable(tasktreeview
 
   ## dev
   ../sqlitetasktreemodel.cpp
+  ../sqlitetaskmodel.cpp
   
   ## depends
-  ../sqlitetaskmodel.cpp
   ../sqlitestorage.cpp
   ../abstractstorage.cpp
   ../asyncdatabase.cpp
