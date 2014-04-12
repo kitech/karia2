@@ -5,6 +5,9 @@
 #include <QtWidgets>
 #include <QtGui>
 
+class SqliteStorage;
+class SqliteTaskModel;
+
 namespace Ui {
     class TaskTreeView;
 };
@@ -16,8 +19,17 @@ public:
     TaskTreeView(QWidget *parent = 0);
     virtual ~TaskTreeView();
 
+public slots:
+    void onStorageOpened();
+
+    void testInsertChild();
+    void testRemoveChild();
+    void testMoveTask();
+
 private:
     Ui::TaskTreeView *mwin = NULL;
+    SqliteStorage *mStorage = NULL;
+    SqliteTaskModel *mModel = NULL;
 };
 
 #endif /* _TASKTREEVIEW_H_ */

@@ -48,8 +48,10 @@ public:
 public slots:
 	//inherient
 	bool submit();
+	bool submitTree(ModelTreeNode *pnode);
 	//inherient
 	void revert();
+    void revertTree(ModelTreeNode *pnode);
 
 private:
 	
@@ -61,7 +63,7 @@ private:
     ModelTreeNode *mTaskRoot = NULL;
 	QVector<QString> mTasksTableColumns;
 
-	int mCatID;
+	int mCatID = -1;
 };
 
 #endif // SQLITETASKMODEL_H

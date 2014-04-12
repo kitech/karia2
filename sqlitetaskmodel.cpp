@@ -56,7 +56,16 @@ SqliteTaskModel::SqliteTaskModel(int cat_id , QObject *parent)
 //	this->mStorage->open();
 	this->mModelData = this->mStorage->getTaskSet( this->mCatID );
 	mTasksTableColumns = this->mStorage->getInternalTasksColumns();
+
     mTaskRoot = new ModelTreeNode;
+    for (int i = 0; i < mModelData.size(); i++) {
+        QSqlRecord rec = mModelData.at(i);
+        QSqlRecord *prec = new QSqlRecord(rec);
+        ModelTreeNode *pnode = new ModelTreeNode();
+        pnode->_data = prec;
+        pnode->_parent = mTaskRoot;
+        mTaskRoot->_childs.append(pnode);
+    }
 }
 
 SqliteTaskModel::~SqliteTaskModel()
@@ -100,7 +109,10 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
         }
 	}
 
-    QVariant cellData = this->mModelData.at(row).value(col);
+    // QVariant cellData = this->mModelData.at(row).value(col);
+    // QVariant cellData = ((QSqlRecord*)(mTaskRoot->_childs.at(row)->_data))->value(col);
+    ModelTreeNode *node = (ModelTreeNode*)index.internalPointer();
+    QVariant cellData = ((QSqlRecord*)node->_data)->value(col);
     QVariant rv;
     qint64 size;
 
@@ -171,14 +183,27 @@ QVariant SqliteTaskModel::headerData(int section, Qt::Orientation orientation, i
 QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &parent)   const
 {
 	// qLogx()<<__FUNCTION__ << row <<":"<< column  ;
+    if (parent.isValid()) {
+        ModelTreeNode *pnode = (ModelTreeNode*)parent.internalPointer();
+        ModelTreeNode *node = (ModelTreeNode*)pnode->_childs.at(row);
+        if (node == NULL) {
+            return QModelIndex();
+        }
+        Q_ASSERT(node != NULL);
+        return createIndex(row, column, (void*)node);
+    } else {
+        ModelTreeNode *node = (ModelTreeNode*)mTaskRoot->_childs.at(row);
+        Q_ASSERT(node != NULL);
+        return createIndex(row, column, (void*)node);
+    }
 
 	//assert( ! parent.isValid()  ) ;
 
 	//int parentCatID = -1 ;
 
-		//int taskID = this->mModelData.at(row).value("task_id").toInt(); 
+    //int taskID = this->mModelData.at(row).value("task_id").toInt(); 
     // return createIndex( row , column , (void*)0 );
-    return createIndex( row , column , (quintptr)0 );
+    return createIndex( row , column , (quintptr)0);
 
 	if (parent.isValid() == false) {
 
@@ -225,6 +250,13 @@ QModelIndex SqliteTaskModel::parent(const QModelIndex &child) const
 	if (!child.isValid())
 		return QModelIndex();
 
+    ModelTreeNode *node = (ModelTreeNode*)child.internalPointer();
+    if (node->_parent == mTaskRoot) {
+        return QModelIndex();
+    } else {
+        return createIndex(0, 0, (void*)node->_parent);
+    }
+
 	return QModelIndex();
 }
 
@@ -232,7 +264,16 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 {
 	// qLogx()<<__FUNCTION__  << parent;
 
-	int count = 0 ;
+	int count = 0;
+
+    if (parent.isValid()) {
+        ModelTreeNode *node = (ModelTreeNode*)parent.internalPointer();
+        count = node->_childs.size();
+    } else {
+        count = mTaskRoot->_childs.size();
+    }
+
+    return count;
 
 	if (parent.isValid()) {
         return 0; // TODO real tree model
@@ -262,6 +303,46 @@ int SqliteTaskModel::rowCount(const QModelIndex &parent) const
 bool SqliteTaskModel::insertRows(int row, int count, const QModelIndex & parent  )
 {
 	//qLogx()<<__FUNCTION__<<row;
+
+    if (parent.isValid()) {
+        ModelTreeNode *pnode = (ModelTreeNode*)parent.internalPointer();
+        qLogx()<<parent<<pnode;
+
+        beginInsertRows(parent, row, row+count - 1);//////////
+        QSqlRecord rec;
+        for (int i = 0 ; i < this->mTasksTableColumns.count(); i ++) {
+            QSqlField currField;
+            currField.setName(this->mTasksTableColumns.at(i));
+            currField.setValue(QVariant());
+            rec.append(currField);
+        }
+
+        ModelTreeNode *node = new ModelTreeNode;
+        node->_parent = pnode;
+        node->_data = new QSqlRecord(rec);
+        pnode->_childs.insert(row, node);
+
+        endInsertRows(); //////////
+    } else {
+        beginInsertRows(parent, row, row+count - 1);//////////
+
+        for (int c = 0 ; c < count ; c ++) {
+            QSqlRecord rec;
+            for (int i = 0 ; i < this->mTasksTableColumns.count() ; i ++) {
+                QSqlField currField;
+                currField.setName( this->mTasksTableColumns.at(i) );
+                currField.setValue(QVariant());
+                rec.append(currField);
+            }
+            ModelTreeNode *node = new ModelTreeNode;
+            node->_parent = mTaskRoot;
+            node->_data = new QSqlRecord(rec);
+            mTaskRoot->_childs.insert(c, node);
+        }
+        endInsertRows(); //////////
+    }
+
+    return true;
 
 	// assert(!parent.isValid()); 针对任务列表模式，二维表格
     if (parent.isValid()) {
@@ -309,9 +390,32 @@ bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex &parent, 
 	
 	int atrow = 0 ;
 	int delete_begin = row ;
-	int delete_end = row + count - 1 ;
+	int delete_end = row + count - 1;
 
+    ModelTreeNode *pnode = NULL;
+    if (parent.isValid()) {
+        pnode = (ModelTreeNode*)parent.internalPointer();
+    } else {
+        pnode = mTaskRoot;
+    }
+    
 	beginRemoveRows  ( parent, delete_begin, delete_end ) ;	
+
+	for (int i = delete_end; i >= delete_begin; i --) {
+        // qLogx()<<pnode<<pnode->_childs.size()<<i;
+        if (i <= pnode->_childs.size() - 1) {
+            pnode->_childs.remove(i);
+            emit layoutChanged () ;	//这是必须，否则视图不能正常画出模型。
+        } else {
+            // qLogx()<<"index exceed";
+        }
+	}
+
+	endRemoveRows ();
+
+	return true;
+
+	beginRemoveRows  ( parent, delete_begin, delete_end );	
 
 	for (int i = delete_end; i >= delete_begin ; i --) {
 		int taskID = this->mModelData.at(i).value("task_id").toInt();
@@ -327,21 +431,27 @@ bool SqliteTaskModel::removeRows(int row, int count, const QModelIndex &parent, 
 	return true ;
 }
 
-bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value, int role )
+bool SqliteTaskModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
 	// qLogx()<<__FUNCTION__<<index.row()<<index.column()<<index.data()<<value ;
 
 	int row = index.row();
 	int col = index.column();
 
+    ModelTreeNode *node = (ModelTreeNode*)index.internalPointer();
+    Q_ASSERT(node != NULL);
+    QSqlRecord *prec = (QSqlRecord*)node->_data;
+
 	if (col == ng::tasks::dirty) {
 		
 	} else {
-		this->mModelData[row].setValue(col, value);
+        prec->setValue(col, value);
+		// this->mModelData[row].setValue(col, value);
 		//qLogx()<<row<<":"<<col <<" " << value ;
 	}
 	// this->mModelData[row].setValue(this->mTasksTableColumns.count()-1,"true");
-    this->mModelData[row].setValue(ng::tasks::dirty, "true");
+    // this->mModelData[row].setValue(ng::tasks::dirty, "true");
+    prec->setValue(ng::tasks::dirty, "true");
 	emit dataChanged(index,index);
 
 	return true;
@@ -350,6 +460,9 @@ bool SqliteTaskModel::setData(const QModelIndex & index , const QVariant & value
 
 bool SqliteTaskModel::submit () 
 {
+    // new
+    return this->submitTree(mTaskRoot);
+
 	// sync dirty data to disk
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
@@ -428,8 +541,96 @@ bool SqliteTaskModel::submit ()
 	return true;
 }
 
+bool SqliteTaskModel::submitTree (ModelTreeNode *pnode) 
+{
+	// sync dirty data to disk
+	int dirtycnt = 0;
+	int rowcnt = pnode->_childs.size();
+    ModelTreeNode *node = NULL;
+    QSqlRecord *prec = NULL;
+
+    this->mStorage->transaction();
+	for (int i = rowcnt - 1 ; i >= 0 ; i --) {
+        node = (ModelTreeNode*)pnode->_childs.at(i);
+        prec = (QSqlRecord*)node->_data;
+		if (prec->value("dirty").toString() == "true") {
+			dirtycnt ++;
+			QSqlRecord rec(*prec);
+
+			int taskID = rec.value("task_id").toInt();
+			
+			QString  file_size = rec.value("file_size").toString();
+			QString  retry_times = rec.value("retry_times").toString();
+			QString  create_time = rec.value("create_time").toString();
+			QString  current_speed = rec.value("current_speed").toString();
+			QString  average_speed = rec.value("average_speed").toString();
+			QString  eclapsed_time = rec.value("eclapsed_time").toString();
+			QString  abtained_length = rec.value("abtained_length").toString();
+			QString  left_length = rec.value("left_length").toString();
+            QString  split_count = rec.value("split_count").toString();
+			QString  block_activity = rec.value("block_activity").toString();
+			QString  total_block_count = rec.value("total_block_count").toString();
+			QString  active_block_count = rec.value("active_block_count").toString();
+			QString  user_cat_id = rec.value("user_cat_id").toString();
+			QString  comment = rec.value("comment").toString();
+			QString  sys_cat_id = rec.value("sys_cat_id").toString();
+            QString  save_path = rec.value("save_path").toString();
+			QString  file_name = rec.value("file_name").toString();
+            QString  select_file = rec.value("select_file").toString();
+			QString  abtained_percent = rec.value("abtained_percent").toString();
+			QString  org_url = rec.value("org_url").toString();
+			QString  real_url = rec.value("real_url").toString();
+            QString  referer = rec.value("referer").toString();
+			QString  redirect_times = rec.value("redirect_times").toString();
+			QString  finish_time = rec.value("finish_time").toString();
+			QString  task_status = rec.value("task_status").toString();
+			QString  total_packet = rec.value("total_packet").toString();
+			QString  abtained_packet = rec.value("abtained_packet").toString();
+			QString  left_packet = rec.value("left_packet").toString();
+			QString  total_timestamp = rec.value("total_timestamp").toString();
+			QString  abtained_time_stamp = rec.value("abtained_time_stamp").toString();
+			QString  left_timestamp = rec.value("left_timestamp").toString();
+			QString  file_length_abtained = rec.value("file_length_abtained").toString();
+			QString  dirty = rec.value("dirty").toString();
+            QString  aria_gid = rec.value("aria_gid").toString();
+
+			if (this->mStorage->containsTask(taskID)) {
+				//update 
+				this->mStorage->updateTask(taskID, file_size, retry_times, create_time, current_speed, average_speed,
+                                           eclapsed_time, abtained_length, left_length, split_count, block_activity,
+                                           total_block_count, active_block_count, user_cat_id, comment, sys_cat_id,
+                                           save_path, file_name, select_file, abtained_percent, org_url, real_url, referer, 
+                                           redirect_times, finish_time,
+                                           task_status, total_packet, abtained_packet, left_packet, total_timestamp,
+                                           abtained_time_stamp, left_timestamp, file_length_abtained, dirty, aria_gid);
+			} else {
+				//insert
+				this->mStorage->addTask(taskID, file_size, retry_times, create_time, current_speed,
+                                        average_speed, eclapsed_time, abtained_length, left_length, 
+                                        split_count, block_activity, total_block_count, active_block_count, user_cat_id,
+                                        comment, sys_cat_id, save_path, file_name, select_file, abtained_percent, org_url, 
+                                        real_url, referer,
+                                        redirect_times, finish_time, task_status, total_packet, abtained_packet,
+                                        left_packet, total_timestamp, abtained_time_stamp, left_timestamp,
+                                        file_length_abtained, dirty);
+			}
+
+            prec->setValue("dirty", "false");	 //清除dirty 标记
+		}
+	}
+    this->mStorage->commit();
+
+	qLogx()<<"there is about "<<dirtycnt<<"dirty rows to submit"<<this->mModelData.count();
+
+	return true;
+}
+
+
 void SqliteTaskModel::revert()
 {
+    return revertTree(mTaskRoot);
+
+    /// 
 	int dirtycnt = 0 ;
 	int rowcnt = this->mModelData.count();
 	for (int i = 0 ; i < rowcnt ; i ++) {
@@ -442,6 +643,25 @@ void SqliteTaskModel::revert()
 	return;
 }
 
+void SqliteTaskModel::revertTree(ModelTreeNode *pnode)
+{
+	int dirtycnt = 0 ;
+	int rowcnt = pnode->_childs.size();
+    ModelTreeNode *node = NULL;
+    QSqlRecord *prec = NULL;
+
+	for (int i = 0 ; i < rowcnt ; i ++) {
+        node = (ModelTreeNode*)pnode->_childs.at(i);
+        prec = (QSqlRecord*)node->_data;
+        
+		if (prec->contains("dirty") && prec->value("dirty").toString() == "true") {
+			dirtycnt ++;
+		}
+	}
+
+	qLogx()<<"there is about "<< dirtycnt <<" dirty rows to revert ";
+	return;
+}
 
 bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mil, bool persistRemove)
 {
@@ -460,9 +680,15 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
             rowItemData.append(srcModel->itemData(mil.at(row * columnCount + col)));
         }
 
+        if (srcModel->rowCount(mil.at(row * columnCount)) > 0) {
+            qLogx()<<"Maybe need remove childs first";
+        }
+
         // 
         srcModel->removeRows(mil.at(row * columnCount).row(), 1, QModelIndex(), false);
         destModel->insertRows(0, 1);
+        Q_ASSERT(destModel->rowCount() > 0);
+
         for (int col = 0 ; col < columnCount; col ++) {
             QMap<int, QVariant> itemData = rowItemData.at(col);
             itemData[Qt::DisplayRole] = itemData[Qt::EditRole];
@@ -474,6 +700,8 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
                 itemData[Qt::DisplayRole] = QString("true");
             }
             
+            QModelIndex idx = destModel->index(0, col);
+            Q_ASSERT(idx.isValid());
             destModel->setData(destModel->index(0, col), itemData[Qt::DisplayRole], Qt::DisplayRole);
         }
     }
@@ -481,4 +709,6 @@ bool SqliteTaskModel::moveTasks(int srcCatId, int destCatId, QModelIndexList &mi
 
     return true;
 }
+
+
 

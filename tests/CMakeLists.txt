@@ -13,6 +13,7 @@ add_executable(tasktreeview
   ../sqlitetaskmodel.cpp
   
   ## depends
+  ../simplelog.cpp
   ../sqlitestorage.cpp
   ../abstractstorage.cpp
   ../asyncdatabase.cpp
