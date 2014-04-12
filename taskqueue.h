@@ -64,7 +64,7 @@ public:
     bool containsInstance(int taskId) ;
 
     bool addTaskModel(int taskId, TaskOption * option);
-    bool addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &idx);
+    bool addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &pindex, QModelIndex &newIndex);
 	static QString getFileNameByUrl(QString url );
 
     bool onStartTask(int pTaskId);

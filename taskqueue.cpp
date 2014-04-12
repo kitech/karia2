@@ -209,48 +209,65 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 	return true;
 }
 
-bool TaskQueue::addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &idx)
+bool TaskQueue::addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &pindex, QModelIndex &newIndex)
 {
-    qLogx()<<taskId<<stats.size()<<idx;
+    qLogx()<<taskId<<stats.size()<<pindex;
 
-    QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
     QModelIndex index;
+    QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
+    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::aria_gid, pindex), Qt::DisplayRole, 
+                                     QString("%1").arg(stats.value(ng::stat::gid).toString()),
+                                     1, Qt::MatchExactly | Qt::MatchWrap);
 
-    int modelRows = mdl->rowCount();
-    modelRows = 0; // put on top
-    mdl->insertRows(modelRows, 1, idx);
-    index = mdl->index(modelRows, ng::tasks::task_id, idx);
-    mdl->setData(index, taskId);
-    index = mdl->index(modelRows, ng::tasks::task_status, idx);
-    mdl->setData(index, "ready");
-    index = mdl->index(modelRows, ng::tasks::save_path, idx);
-    // mdl->setData(index, option->mSavePath);
-    index = mdl->index(modelRows, ng::tasks::file_name, idx);
-    // mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
-    index = mdl->index(modelRows, ng::tasks::block_activity, idx);
-    mdl->setData(index, QString("0/0") );
-    index = mdl->index(modelRows, ng::tasks::active_block_count, idx);
-    mdl->setData(index, QString("0"));
-    index = mdl->index(modelRows, ng::tasks::split_count, idx);
-    // mdl->setData(index, QString("%1").arg(option->mSplitCount));
-    index = mdl->index(modelRows, ng::tasks::real_url, idx);
-    // mdl->setData(index, option->mTaskUrl);	
-    index = mdl->index(modelRows, ng::tasks::org_url, idx);
-    // mdl->setData(index, option->mTaskUrl);
-    index = mdl->index(modelRows, ng::tasks::referer, idx);
-    // mdl->setData(index, option->mReferer);
-    index = mdl->index(modelRows, ng::tasks::user_cat_id, idx );
-    // mdl->setData(index ,ng::cats::downloading);
-    // mdl->setData(index, option->mCatId);
-    index = mdl->index(modelRows, ng::tasks::sys_cat_id, idx);
-    mdl->setData(index, ng::cats::downloading);
-    index = mdl->index(modelRows, ng::tasks::create_time , idx);
-    mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
-    index = mdl->index(modelRows, ng::tasks::file_length_abtained, idx);
-    mdl->setData(index, QString("false"));
-    index = mdl->index(modelRows, ng::tasks::comment, idx);
-    // mdl->setData(index, option->mCookies);
-    
+    newIndex = QModelIndex();
+
+    if (mil.count() > 0) {
+        newIndex = mil.at(0);
+    } else if (mil.count() == 0) {
+        int modelRows = mdl->rowCount();
+        modelRows = 0; // put on top
+        mdl->insertRows(modelRows, 1, pindex);
+        index = mdl->index(modelRows, ng::tasks::task_id, pindex);
+        newIndex = index;
+
+        // mdl->setData(index, taskId);
+        mdl->setData(index, stats.value(ng::stat::gid).toString());
+
+        index = mdl->index(modelRows, ng::tasks::task_status, pindex);
+        mdl->setData(index, "ready");
+        index = mdl->index(modelRows, ng::tasks::save_path, pindex);
+        // mdl->setData(index, option->mSavePath);
+        index = mdl->index(modelRows, ng::tasks::file_name, pindex);
+        // mdl->setData(index, TaskQueue::getFileNameByUrl(option->mTaskUrl));
+        index = mdl->index(modelRows, ng::tasks::block_activity, pindex);
+        mdl->setData(index, QString("0/0") );
+        index = mdl->index(modelRows, ng::tasks::active_block_count, pindex);
+        mdl->setData(index, QString("0"));
+        index = mdl->index(modelRows, ng::tasks::split_count, pindex);
+        // mdl->setData(index, QString("%1").arg(option->mSplitCount));
+        index = mdl->index(modelRows, ng::tasks::real_url, pindex);
+        // mdl->setData(index, option->mTaskUrl);	
+        index = mdl->index(modelRows, ng::tasks::org_url, pindex);
+        // mdl->setData(index, option->mTaskUrl);
+        index = mdl->index(modelRows, ng::tasks::referer, pindex);
+        // mdl->setData(index, option->mReferer);
+        index = mdl->index(modelRows, ng::tasks::user_cat_id, pindex);
+        // mdl->setData(index ,ng::cats::downloading);
+        // mdl->setData(index, option->mCatId);
+        index = mdl->index(modelRows, ng::tasks::sys_cat_id, pindex);
+        mdl->setData(index, ng::cats::downloading);
+        index = mdl->index(modelRows, ng::tasks::create_time , pindex);
+        mdl->setData(index, QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
+        index = mdl->index(modelRows, ng::tasks::file_length_abtained, pindex);
+        mdl->setData(index, QString("false"));
+        index = mdl->index(modelRows, ng::tasks::comment, pindex);
+        // mdl->setData(index, option->mCookies);
+        index = mdl->index(modelRows, ng::tasks::aria_gid, pindex);
+        mdl->setData(index, stats.value(ng::stat::gid).toString());
+        index = mdl->index(modelRows, ng::tasks::belongs_to, pindex);
+        mdl->setData(index, taskId);
+    }
+
     return true;
 }
 
@@ -548,7 +565,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
 
     qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
 
-	QModelIndex idx, idx2, idx3;
+	QModelIndex pindex, idx, idx2, idx3, subidx;
 	quint64 fsize, abtained;
 	double  percent;
     // bool found = false;
@@ -570,39 +587,44 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
         idx = mil.at(0);
         if (belongs_to.isEmpty()) {
         } else {
-            this->addSubTaskModel(taskId, stats, idx);
+            this->addSubTaskModel(taskId, stats, idx, subidx);
+            if (subidx.isValid()) {
+                pindex = idx;
+                idx = subidx;
+            }
         }
     } else {
         qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
     }
+    qLogx()<<pindex<<idx;
 
     if (idx.isValid()) {
         if (completedLength == 0 && totalLength == 0) {
-            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status, pindex), status);
         } else if (completedLength == totalLength && completedLength > 0) {
-            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), "complete");
-            mdl->setData(mdl->index(idx.row(), ng::tasks::comment), error_string);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), QVariant("0"));
-            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), QString("%1").arg(100));
-            mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time),
+            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size, pindex), totalLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length, pindex), completedLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status, pindex), "complete");
+            mdl->setData(mdl->index(idx.row(), ng::tasks::comment, pindex), error_string);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length, pindex), QVariant("0"));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent, pindex), QString("%1").arg(100));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::finish_time, pindex),
                          QDateTime::currentDateTime().toString("hh:mm:ss yyyy-MM-dd"));
-            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), QString::number(0));
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp, pindex), QString::number(0));
         } else {
-            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size), totalLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed), downloadSpeed);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length), completedLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status), status);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::active_block_count), numConnections);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length), totalLength - completedLength);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::total_block_count), numPieces);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::block_activity), 
+            mdl->setData(mdl->index(idx.row(), ng::tasks::file_size, pindex), totalLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::current_speed, pindex), downloadSpeed);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_length, pindex), completedLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::task_status, pindex), status);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::active_block_count, pindex), numConnections);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_length, pindex), totalLength - completedLength);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::total_block_count, pindex), numPieces);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::block_activity, pindex), 
                          QString("%1/%2").arg(numConnections).arg(numPieces));
-            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent), completedPercent);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid), gid);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet), str_bitfield);
-            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp), str_eta);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::abtained_percent, pindex), completedPercent);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::aria_gid, pindex), gid);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::total_packet, pindex), str_bitfield);
+            mdl->setData(mdl->index(idx.row(), ng::tasks::left_timestamp, pindex), str_eta);
         }
     }
 }
