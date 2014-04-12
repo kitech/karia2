@@ -9,12 +9,15 @@ set(CMAKE_C_FLAGS "-g -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")  #-std=c++11 -stdlib=libc++ -lc++abi
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
+set(CMAKE_BUILD_TYPE "debug")
+
 add_definitions(-g -O2)
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DKARIA2_VERSION=\"0.1.62\")
 add_definitions(-DNXDATADIR=\"\\\"DATADIR\\\"\")
 add_definitions(-DNXPKGDATADIR=\"\\\"PKGDATADIR\\\"\")
 add_definitions(-DTHREADSAFE=1)   # for sqlite thread-safe feature
+
 
 ###
 add_definitions(-DLWS_LIBRARY_VERSION=\"\\\"1.2\\\"\" -DLWS_BUILD_HASH=\"\\\"1.2hash\\\"\"

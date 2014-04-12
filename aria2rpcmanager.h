@@ -30,6 +30,8 @@ public:
     Aria2RpcManager();
     virtual ~Aria2RpcManager();
 
+    virtual void cleanup();
+
 public slots: // from user action
 
 protected slots:
@@ -44,9 +46,9 @@ public:
 public slots: // from internal trigger   
 
 protected:
-    Aria2RpcTransport *mTransport;
-    MaiaXmlRpcClient *mAriaRpc;
-    Aria2RpcServer *mRpcServer;
+    Aria2RpcTransport *mTransport = NULL;
+    MaiaXmlRpcClient *mAriaRpc = NULL;
+    Aria2RpcServer *mRpcServer = NULL;
     QTimer mAriaUpdater;
     QTimer mAriaGlobalUpdater;
     QTimer mAriaTorrentUpdater;

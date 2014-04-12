@@ -224,11 +224,11 @@ private:
 
     //////// using embeded aria2c procedue
     //EAria2Man *mEAria2Man;
-    QFile *mLogFile;
-    QFileSystemWatcher *mLogWatcher;
+    QFile *mLogFile = NULL;
+    QFileSystemWatcher *mLogWatcher = NULL;
     
     // all aria2 xmlrpc/json/websocket manager
-    Aria2Manager *mAria2Manager;
+    Aria2Manager *mAria2Manager = NULL;
 
     // Skype *mSkype;
     // SkypeTracer *mSkypeTracer;
@@ -350,7 +350,6 @@ private slots:
     void onAriaTorrentReselectFileMachineFault(int code, QString reason, QVariant &payload);
 
 private:	//method
-
 	void connectAllSignalAndSlog();
 
 	void initPopupMenus();
@@ -358,6 +357,8 @@ private:	//method
 	void initSystemTray();
     void initAppIcons();
     void initUserOptionSetting();
+
+    void cleanup(); // 退出之前的清理工作。
 
 	//overload
 	void moveEvent(QMoveEvent *event);
@@ -373,8 +374,8 @@ private:	//method
 //    QMap<QString, QVariant> taskOptionToAria2RpcOption(TaskOption *to);
 
     QString showCommandLineArguments();
-    int m_argc;
-    char **m_argv;
+    int m_argc = -1;
+    char **m_argv = NULL;
 
 protected:
 	virtual void paintEvent(QPaintEvent *event);

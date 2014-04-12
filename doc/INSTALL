@@ -22,10 +22,11 @@ At last you can type ./NullGet .
 2. On Windows platform
 
 Requirement:
-        >= VC++ 2005
+        >= VC++ 2008
           zlib
           openssl
-        >= Qt 4.4.0
+        >= Qt 5.0.0
+        >= cmake 2.8.9
 
 Notes:
     We assumed that zlib and openssl library put at Z:\librarys\

@@ -22,6 +22,12 @@ Aria2Manager::~Aria2Manager()
 
 void Aria2Manager::run()
 {
+    Q_ASSERT(1 == 2);
+}
+
+void Aria2Manager::cleanup()
+{
+    Q_ASSERT(1 == 2);
 }
 
 uint64_t Aria2Manager::tid2gid(int tid)

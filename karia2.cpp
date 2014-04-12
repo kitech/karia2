@@ -735,6 +735,14 @@ void Karia2::hideUnimplementUiElement()
 	this->mainUI->action_Seg_List_Restart->setVisible(false);
 }
 
+void Karia2::cleanup()
+{
+    // 清理aria2manager
+    this->mAria2Manager->cleanup();
+
+    // TODO more cleanup
+}
+
 void Karia2::onStorageOpened()
 {
     qLogx()<<"";
@@ -2120,6 +2128,9 @@ void Karia2::closeEvent (QCloseEvent * event )
     } else if (this->sender()->objectName() == "actionQuit") {
         event->setAccepted(true);	//不再传递了
         // TODO clean resouce before quit
+        this->hide();
+        this->cleanup();
+
         qApp->quit();
         return;        
 	} else {//通过点击退出菜单，可认为用户是想退出的。

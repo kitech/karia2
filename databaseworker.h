@@ -49,6 +49,7 @@ private:
     // QSqlDatabase m_database;
     QMap<QString, QString> createSqls; // table_name -> create table
     QHash<QString, QStringList> cinitSqls; // table_name -> insert after create table
+    QMap<QString, QSqlQuery*> mStmts;
 };
 
 /*

@@ -211,11 +211,11 @@ bool TaskQueue::addTaskModel(int taskId , TaskOption *option)
 
 bool TaskQueue::addSubTaskModel(int taskId, QMap<int, QVariant> stats, QModelIndex &pindex, QModelIndex &newIndex)
 {
-    qLogx()<<taskId<<stats.size()<<pindex;
+    // qLogx()<<taskId<<stats.size()<<pindex;
 
     QModelIndex index;
     QAbstractItemModel * mdl = SqliteTaskModel::instance(ng::cats::downloading, 0);
-    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::aria_gid, pindex), Qt::DisplayRole, 
+    QModelIndexList mil = mdl->match(mdl->index(0, ng::tasks::task_id, pindex), Qt::DisplayRole, 
                                      QString("%1").arg(stats.value(ng::stat::gid).toString()),
                                      1, Qt::MatchExactly | Qt::MatchWrap);
 

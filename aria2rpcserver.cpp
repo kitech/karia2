@@ -28,6 +28,20 @@ Aria2RpcServer::Aria2RpcServer()
 
 Aria2RpcServer::~Aria2RpcServer()
 {
+    if (this->mAriaProc) {
+        if (this->mAriaProc->state() == QProcess::Running) {
+            this->mAriaProc->terminate();
+        }
+        delete this->mAriaProc;
+        this->mAriaProc = NULL;
+    }
+
+    if (this->mLogFile) {
+        this->mLogFile->close();
+        delete this->mLogFile;
+        this->mLogFile = NULL;
+    }
+    qLogx()<<"";
 }
 
 void Aria2RpcServer::run()

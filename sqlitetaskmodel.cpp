@@ -180,21 +180,49 @@ QVariant SqliteTaskModel::headerData(int section, Qt::Orientation orientation, i
 	return QVariant();
 }
 
-QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &parent)   const
+QModelIndex SqliteTaskModel::index(int row, int column, const QModelIndex &parent) const
 {
-	// qLogx()<<__FUNCTION__ << row <<":"<< column  ;
+    QModelIndex rindex;
+
+    if (row < 0 || column < 0) {
+        // return rindex;
+    }
+
+	// qLogx()<<__FUNCTION__ << row <<":"<< column;
     if (parent.isValid()) {
         ModelTreeNode *pnode = (ModelTreeNode*)parent.internalPointer();
-        ModelTreeNode *node = (ModelTreeNode*)pnode->_childs.at(row);
-        if (node == NULL) {
-            return QModelIndex();
+        // qLogx()<<pnode<<pnode->_childs.size()<<row<<qrand();
+
+        if (pnode == NULL || pnode->_childs.size() <= row) {
+            qLogx()<<pnode<<pnode->_childs.size()<<row<<qrand();
+
+            qLogx()<<rindex<<parent;
+            return rindex;
+            // Q_ASSERT(pnode->_childs.size() > row);
+        } else {
+            // qLogx()<<pnode<<pnode->_childs.size()<<row<<qrand();
+
+            // ModelTreeNode *node = (ModelTreeNode*)pnode->_childs.at(row);
+            ModelTreeNode *node = NULL, *tnode = NULL;
+            for (int i = 0; i < pnode->_childs.size(); i ++) {
+                tnode = (ModelTreeNode*)pnode->_childs.at(i);
+                if (row == i) {
+                    node = tnode;
+                    break;
+                }
+            }
+            if (node == NULL) {
+                return QModelIndex();
+            }
+            Q_ASSERT(node != NULL);
+            return createIndex(row, column, (void*)node);
         }
-        Q_ASSERT(node != NULL);
-        return createIndex(row, column, (void*)node);
     } else {
-        ModelTreeNode *node = (ModelTreeNode*)mTaskRoot->_childs.at(row);
-        Q_ASSERT(node != NULL);
-        return createIndex(row, column, (void*)node);
+        if (row >= 0) {
+            ModelTreeNode *node = (ModelTreeNode*)mTaskRoot->_childs.at(row);
+            Q_ASSERT(node != NULL);
+            return createIndex(row, column, (void*)node);
+        }
     }
 
 	return QModelIndex();

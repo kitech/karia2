@@ -59,7 +59,7 @@ public slots:
     void onAriaUpdaterTimeout();
 
 private:
-    Aria2JsonRpcClient *mJsonRpc;
+    Aria2JsonRpcClient *mJsonRpc = NULL;
     std::unique_ptr<Karia2StatCalc> statCalc_;
 };
 

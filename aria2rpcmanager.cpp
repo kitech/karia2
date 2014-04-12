@@ -65,3 +65,12 @@ bool Aria2RpcManager::initialize()
     return true;
 }
 
+void Aria2RpcManager::cleanup()
+{
+    if (this->mRpcServer) {
+        this->mRpcServer->stopBackend();
+        delete this->mRpcServer;
+        this->mRpcServer = NULL;
+    }
+}
+

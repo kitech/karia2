@@ -62,7 +62,7 @@ private:
     bool setBootArgs();
 
 private:
-    QProcess *mAriaProc;
+    QProcess *mAriaProc = NULL;
     Q_PID mAriaPid;
     int mRpcType;
     QStringList mStartArgs;
@@ -70,8 +70,8 @@ private:
     int currentRpcPort;
     QString mPidFile;
     QString mLogFilePath;
-    QFile  *mLogFile;
-    QTextCodec *mCodec;
+    QFile  *mLogFile = NULL;
+    QTextCodec *mCodec = NULL;
     QString dhtFilePath;
 };
 

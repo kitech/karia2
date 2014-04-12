@@ -47,12 +47,13 @@ public:
     virtual ~Aria2Manager();
     
     virtual void run();
+    virtual void cleanup();
     
 signals:
-    virtual void taskStatChanged(int tid, QMap<int, QVariant> stats);
-    virtual void taskServerStatChanged(int tid, QList<QMap<QString, QString> > stats);
-    virtual void taskFinished(int tid, int code);
-    virtual void globalStatChanged(QMap<int, QVariant> stats);
+    /*virtual */void taskStatChanged(int tid, QMap<int, QVariant> stats);
+    /*virtual */void taskServerStatChanged(int tid, QList<QMap<QString, QString> > stats);
+    /*virtual */void taskFinished(int tid, int code);
+    /*virtual */void globalStatChanged(QMap<int, QVariant> stats);
     
 public slots:
     virtual int addTask(int task_id, const QString &url, TaskOption *to) = 0;

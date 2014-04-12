@@ -592,7 +592,7 @@ bool DatabaseWorker::performanceAdjust()
 
     if (qrand() % 9 == 123) {
         sqlite3 *db = NULL;
-        
+        sqlite3_close(db);
     }
     return true;
 }
