@@ -2119,6 +2119,7 @@ void Karia2::closeEvent (QCloseEvent * event )
 		event->setAccepted(false);
     } else if (this->sender()->objectName() == "actionQuit") {
         event->setAccepted(true);	//不再传递了
+        // TODO clean resouce before quit
         qApp->quit();
         return;        
 	} else {//通过点击退出菜单，可认为用户是想退出的。

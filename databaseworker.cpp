@@ -249,6 +249,8 @@ bool DatabaseWorker::connectDatabase()
 
     emit this->connected();
 
+    this->performanceAdjust();
+
     return true;
     // std::for_each(tbls.begin(), tbls.end(),
     //               [&tbls,&m_database] (const QString &tbl) {
@@ -339,6 +341,8 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
     QStringList qelms;
     QString sql;
 
+    QDateTime btime = QDateTime::currentDateTime();
+
     eret = dbq.exec(query);
     if (!eret) {
         edb = dbq.lastError();
@@ -385,7 +389,9 @@ void DatabaseWorker::slotExecute(const QString& query, int reqno)
             }
         }
     }
-    // qLogx()<<"QQQQ: "<<query<<recs.count();
+    QDateTime etime = QDateTime::currentDateTime();
+    qint64 dtime = btime.msecsTo(etime); // 300-600ms, two slow // 优化后应该为0-10的级别。
+    // qLogx()<<"QQQQ: "<<query<<recs.count()<<"used:(ms)"<<dtime;
     emit results(recs, reqno, eret, estr, eval);
 }
 
@@ -561,4 +567,32 @@ int DatabaseWorker::syncExecute(const QString &query, QVector<QSqlRecord> &recor
     records = recs;
     
     return 0;
+}
+
+/**
+ * TODO 使用prepare预编译sql进一步优化。
+ */
+bool DatabaseWorker::performanceAdjust()
+{
+    QSqlDatabase m_database = QSqlDatabase::database(SESSDB_CONN_NAME);
+    QSqlQuery dbq(m_database);
+
+    QStringList sqls = {
+        "PRAGMA synchronous = OFF",  // 让操作系统确认何时写入磁盘，而数据则写到操作系统即可。
+        "PRAGMA journal_mode = MEMORY"  // 事务回滚数据放在内存中。
+    };
+
+    QVector<QSqlRecord> results;
+    bool bret = false;
+    for (QString sql : sqls) {
+        results.clear();
+        bret = this->syncExecute(sql, results);
+        qLogx()<<results.size();
+    }
+
+    if (qrand() % 9 == 123) {
+        sqlite3 *db = NULL;
+        
+    }
+    return true;
 }

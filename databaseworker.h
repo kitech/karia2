@@ -33,7 +33,11 @@ public slots:
     void slotExecute( const QStringList& querys, int reqno);
     int syncExecute(const QString &query, QList<QSqlRecord> &records);
     int syncExecute(const QString &query, QVector<QSqlRecord> &records);
- 
+
+private:
+    // 数据库存储优化。
+    bool performanceAdjust();
+
 signals:
     void connected();
     void connect_error(const QString &errmsg);
