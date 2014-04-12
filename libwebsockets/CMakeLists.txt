@@ -9,6 +9,15 @@ add_library(websockets STATIC
   lib/parsers.c 
   lib/daemonize.c         lib/handshake.c         
   lib/server.c
+
+  lib/service.c
+  lib/context.c
+#  lib/libev.c
+  lib/lws-plat-unix.c
+#  lib/lws-plat-win.c
+  lib/pollfd.c
+#  lib/ssl-http2.c
+#  lib/ssl.c
 )
 
 target_link_libraries(websockets -lcrypto)

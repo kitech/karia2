@@ -867,6 +867,7 @@ bool QLibwebsockets::connectToHost(QString host, unsigned short port)
     lws_ctx_ci->ssl_cert_filepath = "rpckey/rpc.pub";
     lws_ctx_ci->ssl_private_key_filepath = "rpckey/rpc.pri";
     lws_ctx_ci->ssl_ca_filepath = "rpckey/rpc.pub";
+    lws_ctx_ci->gid = lws_ctx_ci->uid = -1;
 
 
     // QUrl uo(this->mUrl);

@@ -2,7 +2,10 @@
 *.o
 moc_*.cpp
 ui_*.h
+*_automoc.cpp
+qrc_*.cpp
 cmake_install.cmake
 CMakeFiles
+Makefile
 
 
