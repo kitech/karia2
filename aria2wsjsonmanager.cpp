@@ -671,7 +671,7 @@ void QLibwebsockets::run()
     }
 
     // qLogx()<<"close lws...";
-    this->destroyContext(lws_ctx);
+    this->onDestroyContext(lws_ctx);
 
     this->onSelfFinished();
     return;
@@ -926,7 +926,7 @@ bool QLibwebsockets::close()
 
 void QLibwebsockets::onDestroyContext(void *ctx)
 {
-    // qLogx()<<"destroy context ...";
+    // qLogx()<<"destroy context ..."<<ctx;
 
     struct libwebsocket_context *actx = (struct libwebsocket_context *)ctx;
     libwebsocket_context_destroy(actx);    
