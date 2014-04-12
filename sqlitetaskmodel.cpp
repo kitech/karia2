@@ -88,21 +88,24 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 	int col = index.column();
 	int row = index.row();
 
+    ModelTreeNode *node = (ModelTreeNode*)index.internalPointer();
+    QSqlRecord *prec = (QSqlRecord*)node->_data;
+
 	if (role == Qt::DecorationRole && index.column() == ng::tasks::task_id
         || role == Qt::DecorationRole && index.column() == ng::tasks::task_status)	{ // task_id and status column
-        if (this->mModelData.at(row).value(ng::tasks::task_status) == "ready") {
+        if (prec->value(ng::tasks::task_status) == "ready") {
             return QImage(qApp->applicationDirPath() + "/icons/status/flag-green.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "active") {
+        } else if (prec->value(ng::tasks::task_status) == "active") {
             return QImage(qApp->applicationDirPath() + "/icons/status/media-playback-start.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "waiting") {
+        } else if (prec->value(ng::tasks::task_status) == "waiting") {
             return QImage(qApp->applicationDirPath() + "/icons/status/user-away.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "complete") {
+        } else if (prec->value(ng::tasks::task_status) == "complete") {
             return QImage(qApp->applicationDirPath() + "/icons/status/task-complete.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "removed") {
+        } else if (prec->value(ng::tasks::task_status) == "removed") {
             return QImage(qApp->applicationDirPath() + "/icons/status/list-remove.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "error") {
+        } else if (prec->value(ng::tasks::task_status) == "error") {
             return QImage(qApp->applicationDirPath() + "/icons/status/dialog-error.png").scaled(20, 20);
-        } else if (this->mModelData.at(row).value(ng::tasks::task_status) == "pause") {
+        } else if (prec->value(ng::tasks::task_status) == "pause") {
             return QImage(qApp->applicationDirPath() + "/icons/status/media-playback-pause.png").scaled(20, 20);
         } else {
             return QImage(qApp->applicationDirPath() + "/icons/status/unknown.png").scaled(20, 20);
@@ -111,7 +114,6 @@ QVariant SqliteTaskModel::data(const QModelIndex &index, int role) const
 
     // QVariant cellData = this->mModelData.at(row).value(col);
     // QVariant cellData = ((QSqlRecord*)(mTaskRoot->_childs.at(row)->_data))->value(col);
-    ModelTreeNode *node = (ModelTreeNode*)index.internalPointer();
     QVariant cellData = ((QSqlRecord*)node->_data)->value(col);
     QVariant rv;
     qint64 size;
