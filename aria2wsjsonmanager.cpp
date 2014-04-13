@@ -30,11 +30,15 @@ Aria2WSJsonManager::~Aria2WSJsonManager()
 int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
     Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WS));
-    this->mWSJsonRpc = jrpc;
+    mWSJsonRpcs[task_id] = jrpc;
 
+    Karia2StatCalc* sc = NULL;
     this->m_tasks[task_id] = 0;
-    this->statCalc_.reset(new Karia2StatCalc(task_id, 1000));
-    QObject::connect(this->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2WSJsonManager::onAllStatArrived);
+    // this->statCalc_.reset(new Karia2StatCalc(task_id, 1000));
+    sc = new Karia2StatCalc(task_id, 1000);
+    // QObject::connect(this->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2WSJsonManager::onAllStatArrived);
+    QObject::connect(sc, &Karia2StatCalc::progressStat, this, &Aria2WSJsonManager::onAllStatArrived);
+    statCalcs_.insert(task_id, sc);
 
     QMap<QString, QVariant> payload;
     QVariantList args;
@@ -94,8 +98,8 @@ int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
     }
 
     jrpc->call(aria2RpcMethod, args, QVariant(payload),
-                         this, SLOT(onAriaAddUriResponse(QJsonObject&, QNetworkReply*, QVariant &)),
-                         this, SLOT(onAriaAddUriFault(int, QString, QNetworkReply*, QVariant &)));
+               this, SLOT(onAriaAddUriResponse(QJsonObject&, QNetworkReply*, QVariant &)),
+               this, SLOT(onAriaAddUriFault(int, QString, QNetworkReply*, QVariant &)));
 
     if (!this->mAriaUpdater.isActive()) {
         this->mAriaUpdater.setInterval(3000);
@@ -151,7 +155,7 @@ void Aria2WSJsonManager::run()
                     this->belongsTos[sclt->strFollowedBy.at(i)] = tid;
                 }
             }
-            this->getAria2ChildStatus(sclt->strFollowedBy);
+            this->getAria2ChildStatus(sclt->strFollowedBy, tid);
         }
 
         delete sclt;
@@ -283,13 +287,11 @@ void Aria2WSJsonManager::onAriaAddUriFault(int errorCode, QString errorString, Q
 void Aria2WSJsonManager::onAriaUpdaterTimeout()
 {
     // qLogx()<<"timer out update";
-    if (this->mWSJsonRpc == NULL) {
-        Q_ASSERT(this->mWSJsonRpc != NULL);
-    }
-
     QVariantList args;
     int taskId;
     QString ariaGid;
+    Karia2StatCalc *sc = NULL;
+    Aria2WSJsonRpcClient *jrpc = NULL;
 
     QHashIterator<int, void*> hit(this->m_tasks);
     
@@ -297,6 +299,8 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
         hit.next();
         taskId = hit.key();
         ariaGid = this->tid2hex(taskId);
+        sc = statCalcs_[taskId];
+        jrpc = mWSJsonRpcs[taskId];
 
         QVariantMap  tellStatusMethod;
         QVariantMap getServersMethod;
@@ -323,9 +327,9 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
 
         gargs.insert(0, args);
 
-        this->mWSJsonRpc->call(QString("system.multicall"), gargs, QVariant(taskId),
-                             this->statCalc_.get(), SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
-                             this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply*, QVariant &)));
+        jrpc->call(QString("system.multicall"), gargs, QVariant(taskId),
+                   sc, SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
+                   this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply*, QVariant &)));
 
         /*
         args<<ariaGid;
@@ -396,11 +400,16 @@ void Aria2WSJsonManager::onAriaGetStatusFault(int code, QString reason, QNetwork
     qLogx()<<code<<reason<<payload;
 }
 
-void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs)
+void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs, int tid)
 {
     QVariantList args;
     int taskId;
     QString ariaGid;
+    Karia2StatCalc *sc = NULL;
+    Aria2WSJsonRpcClient *jrpc = NULL;
+
+    sc = statCalcs_[tid];
+    jrpc = mWSJsonRpcs[tid];
 
     if (true) {
         QVariantMap  tellStatusMethod;
@@ -430,9 +439,9 @@ void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs)
 
         gargs.insert(0, args);
 
-        this->mWSJsonRpc->call(QString("system.multicall"), gargs, QVariant(taskId),
-                               this->statCalc_.get(), SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
-                               this, SLOT(onGetAria2ChildStatusFault(int, QString, QNetworkReply*, QVariant &)));
+        jrpc->call(QString("system.multicall"), gargs, QVariant(taskId),
+                   sc, SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
+                   this, SLOT(onGetAria2ChildStatusFault(int, QString, QNetworkReply*, QVariant &)));
     }
 }
 

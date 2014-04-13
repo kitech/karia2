@@ -58,12 +58,12 @@ public slots:
     void onAriaAddUriFault(int, QString, QNetworkReply *reply, QVariant &payload);
     void onAriaUpdaterTimeout();
     void onAriaGetStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
-    void getAria2ChildStatus(QStringList childs);
+    void getAria2ChildStatus(QStringList childs, int tid);
     void onGetAria2ChildStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
 
 private:
-    Aria2WSJsonRpcClient *mWSJsonRpc = NULL;
-    std::unique_ptr<Karia2StatCalc> statCalc_;    
+    QMap<int, Karia2StatCalc*> statCalcs_;
+    QMap<int, Aria2WSJsonRpcClient*> mWSJsonRpcs;
     bool mUseSsl = false;
     QMap<QString, int> belongsTos;
 };
