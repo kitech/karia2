@@ -563,7 +563,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     QString str_eta = stats.value(ng::stat::str_eta).toString();
     QString error_string = stats.value(ng::stat::error_string).toString();
 
-    qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
+    // qLogx()<<taskId << totalLength << completedLength<< completedPercent<< downloadSpeed<< uploadSpeed << status;
 
 	QModelIndex pindex, idx, idx2, idx3, subidx;
 	quint64 fsize, abtained;
@@ -596,7 +596,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     } else {
         qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
     }
-    qLogx()<<pindex<<idx;
+    qLogx()<<taskId<<pindex<<idx;
 
     if (idx.isValid()) {
         if (completedLength == 0 && totalLength == 0) {
