@@ -108,7 +108,7 @@ add_executable(karia2
   )
 
 
-qt5_use_modules(karia2 Core Network Widgets Gui Xml Sql)
+qt5_use_modules(karia2 Core Network Widgets Gui Xml Sql WebSockets)
 target_link_libraries(karia2 -laria2 -lwslay)
-target_link_libraries(karia2 -lwebsockets -lqtsingleapplication -lmaia -lqjsonrpc)
+target_link_libraries(karia2 -lcwebsockets -lqtsingleapplication -lmaia -lqjsonrpc)
 target_link_libraries(karia2 -lgcrypt  -lrt -lnettle -lgmp -lz   -lcares   -lgnutls   -lsqlite3 -lxml2 -lz -lm)

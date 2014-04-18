@@ -33,6 +33,7 @@ find_package(Qt5Gui)
 find_package(Qt5Widgets)
 find_package(Qt5Xml)
 find_package(Qt5Sql)
+find_package(Qt5WebSockets)
 
 include_directories("qtsingleapplication" "tmp")
 include_directories("aria2-1.18.5" "aria2-1.18.5/src" "aria2-1.18.5/lib" "aria2-1.18.5/src/includes")

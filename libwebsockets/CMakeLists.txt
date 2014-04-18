@@ -1,4 +1,4 @@
-add_library(websockets STATIC
+add_library(cwebsockets STATIC
   lib/base64-decode.c     lib/extension.c 
   lib/libwebsockets.c  lib/server-handshake.c  
   lib/client.c            lib/extension-deflate-frame.c  
@@ -20,4 +20,4 @@ add_library(websockets STATIC
 #  lib/ssl.c
 )
 
-target_link_libraries(websockets -lcrypto)
+target_link_libraries(cwebsockets -lcrypto)

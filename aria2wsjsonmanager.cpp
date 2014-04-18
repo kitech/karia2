@@ -477,8 +477,10 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     // mLws->connectToHost(uo.host(), uo.port());
 
     QLibwebsockets *mLws = new QLibwebsockets(uo.host(), uo.port());
+    QWebSocket *ws = new QWebSocket();
     CallbackMeta *meta = new CallbackMeta();
     meta->mLws = mLws;
+    meta->mws = ws;
     meta->method = method;
     meta->arguments = arguments;
     meta->payload = payload;
@@ -493,14 +495,21 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
                      meta->faultObject, meta->faultSlot);
 
     qLogx()<<""<<mCbMeta.size()<<mCbAddCounter.size()<<mCbDelCounter.size();
-    this->mCbMeta[mLws] = meta;
-    this->mCbAddCounter[mLws] = 1;
+    this->mCbMeta[ws] = meta;
+    this->mCbAddCounter[ws] = 1;
 
-    QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
-    QObject::connect(mLws, &QLibwebsockets::messageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
-    QObject::connect(mLws, &QLibwebsockets::websocketError, this, &Aria2WSJsonRpcClient::onWebsocketError);
+    // QObject::connect(mLws, &QLibwebsockets::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
+    // QObject::connect(mLws, &QLibwebsockets::messageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
+    // QObject::connect(mLws, &QLibwebsockets::websocketError, this, &Aria2WSJsonRpcClient::onWebsocketError);
 
-    mLws->start();
+    // mLws->start();
+
+    QObject::connect(ws, &QWebSocket::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
+    QObject::connect(ws, &QWebSocket::textMessageReceived, this, &Aria2WSJsonRpcClient::onMessageReceived);
+    QObject::connect(ws, SIGNAL(error(QAbstractSocket::SocketError)),
+                     this, SLOT(onRawSocketConnectError(QAbstractSocket::SocketError)));
+
+    ws->open(uo);
 
     /*
     QTcpSocket *mRawSock = new QTcpSocket();
@@ -534,6 +543,20 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
 bool Aria2WSJsonRpcClient::onRawSocketConnectError(QAbstractSocket::SocketError socketError)
 {
     qLogx()<<socketError;
+
+    QWebSocket *ws = (QWebSocket*)(sender());
+    CallbackMeta *meta = mCbMeta.contains(ws) ? this->mCbMeta.value(ws) : NULL;
+
+    if (meta == NULL) {
+        Q_ASSERT(meta != NULL);
+    } else {
+        emit this->disconnectConnection(this->mCbMeta.value(ws));
+    }
+
+    return true;
+
+    ///// 
+    /*
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = mCbMeta.contains(mLws) ? this->mCbMeta.value(mLws) : NULL;
 
@@ -542,14 +565,26 @@ bool Aria2WSJsonRpcClient::onRawSocketConnectError(QAbstractSocket::SocketError 
     } else {
         emit this->disconnectConnection(this->mCbMeta.value(mLws));
     }
-
+    */
     return true;
 }
 
 bool Aria2WSJsonRpcClient::onRawSocketConnected()
 {
     // qLogx()<<"sending..."<<(sender());
+    QWebSocket *ws = (QWebSocket*)(sender());
+    CallbackMeta *meta2 = mCbMeta.contains(ws) ? this->mCbMeta.value(ws) : NULL;
 
+    if (meta2 == NULL) {
+        Q_ASSERT(meta2 != NULL);
+    } else {
+        this->sendMessage(ws, meta2->method, meta2->arguments);
+    }
+
+    return true;
+
+    /////
+    /*
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = mCbMeta.contains(mLws) ? this->mCbMeta.value(mLws) : NULL;
 
@@ -561,6 +596,7 @@ bool Aria2WSJsonRpcClient::onRawSocketConnected()
         mLws->sendMessage(meta->method, meta->arguments);
     }
 
+    */
 
     /*
     QTcpSocket *mRawSock = (QTcpSocket*)(sender());
@@ -589,6 +625,7 @@ bool Aria2WSJsonRpcClient::onRawSocketConnected()
 void Aria2WSJsonRpcClient::onWebsocketError()
 {
     qLogx()<<"errrrrrrrrr";
+    /*
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = mCbMeta.contains(mLws) ? this->mCbMeta.value(mLws) : NULL;
 
@@ -597,11 +634,75 @@ void Aria2WSJsonRpcClient::onWebsocketError()
     } else {
         this->onDisconnectConnection(meta);
     }
+    */
 }
 
-void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
+void Aria2WSJsonRpcClient::onMessageReceived(QString rjmessage)
+{
+
+    QWebSocket *ws = (QWebSocket*)(sender());
+    CallbackMeta *meta = mCbMeta.contains(ws) ? this->mCbMeta.value(ws) : NULL;
+
+    if (meta == NULL) {
+        qLogx()<<"meta object not exists"<<ws<<mCbMeta.contains(ws)
+               <<mCbAddCounter.contains(ws) <<mCbDelCounter.contains(ws);
+        return;
+    }
+
+    this->mCbDelCounter[ws] = 1;
+
+    QJsonDocument jdoc = QJsonDocument::fromJson(rjmessage.toLatin1());
+    QJsonObject jmessage = jdoc.object();
+
+    QJsonRpcMessage message(jmessage);
+    QVariant result = message.result();
+    int errorCode = message.errorCode();
+    QString errorMessage = message.errorMessage();
+
+    if (errorCode == 0) {
+        // emit this->aresponse(result, 0, meta->payload);
+        emit this->jaresponse(jmessage, 0, meta->payload);
+    } else {
+        emit this->fault(errorCode, errorMessage, 0, meta->payload);
+    }   
+
+    this->mCbMeta.remove(ws);
+    emit this->disconnectConnection(meta);
+    
+}
+
+void Aria2WSJsonRpcClient::onMessageReceived2(QJsonObject jmessage)
 {
     // qLogx()<<jmessage<<sender();
+
+    QWebSocket *ws = (QWebSocket*)(sender());
+    CallbackMeta *meta = mCbMeta.contains(ws) ? this->mCbMeta.value(ws) : NULL;
+
+    if (meta == NULL) {
+        qLogx()<<"meta object not exists"<<ws<<mCbMeta.contains(ws)
+               <<mCbAddCounter.contains(ws) <<mCbDelCounter.contains(ws);
+        return;
+    }
+
+    this->mCbDelCounter[ws] = 1;
+
+    QJsonRpcMessage message(jmessage);
+    QVariant result = message.result();
+    int errorCode = message.errorCode();
+    QString errorMessage = message.errorMessage();
+
+    if (errorCode == 0) {
+        // emit this->aresponse(result, 0, meta->payload);
+        emit this->jaresponse(jmessage, 0, meta->payload);
+    } else {
+        emit this->fault(errorCode, errorMessage, 0, meta->payload);
+    }   
+
+    this->mCbMeta.remove(ws);
+    emit this->disconnectConnection(meta);
+
+
+    /*
     QLibwebsockets *mLws = (QLibwebsockets*)(sender());
     CallbackMeta *meta = mCbMeta.contains(mLws) ? this->mCbMeta.value(mLws) : NULL;
 
@@ -627,6 +728,7 @@ void Aria2WSJsonRpcClient::onMessageReceived(QJsonObject jmessage)
 
     this->mCbMeta.remove(mLws);
     emit this->disconnectConnection(meta);
+    */
 }
 
 void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
@@ -660,6 +762,27 @@ void Aria2WSJsonRpcClient::onDisconnectConnection(void *cbmeta)
     rsock->deleteLater();
     if (jsock) jsock->deleteLater();
     */
+}
+
+bool Aria2WSJsonRpcClient::sendMessage(QWebSocket *ws, QString method, QVariantList arguments)
+{
+    QJsonObject *jobj = new QJsonObject;
+    jobj->insert("jsonrpc", QLatin1String("2.0"));
+    jobj->insert("method", method);
+    if (!arguments.isEmpty()) {
+        jobj->insert("params", QJsonArray::fromVariantList(arguments));
+    }
+
+    static int json_id = 0;
+    jobj->insert("id", (++json_id));
+
+    QJsonDocument jdoc = QJsonDocument(*jobj);
+    jdoc.toJson(QJsonDocument::Compact);
+    QString call_msg = jdoc.toJson(QJsonDocument::Compact);
+
+    qint64 ret = ws->sendTextMessage(call_msg);
+
+    return true;
 }
 
 

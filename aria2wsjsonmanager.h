@@ -14,6 +14,7 @@
 
 #include <QtCore>
 #include <QtNetwork>
+#include <QtWebSockets>
 
 #include "qjsonrpcmessage.h"
 #include "qjsonrpcservice.h"
@@ -86,8 +87,10 @@ protected slots:
     bool onRawSocketConnectError(QAbstractSocket::SocketError socketError);
     bool onRawSocketConnected();
     void onWebsocketError();
-    void onMessageReceived(QJsonObject message);
+    void onMessageReceived(QString message);
+    void onMessageReceived2(QJsonObject message);
     void onDisconnectConnection(void *cbmeta);
+    bool sendMessage(QWebSocket *ws, QString method, QVariantList arguments);
 
 signals:
     // void aresponse(QVariant &, QNetworkReply* reply, QVariant &);
@@ -100,6 +103,7 @@ private:
 
     struct CallbackMeta {
         QLibwebsockets *mLws;
+        QWebSocket *mws;
         QString method;
         QVariantList arguments;
         QVariant payload;
@@ -110,9 +114,9 @@ private:
         QDateTime ctime;
     };
 
-    QHash<QLibwebsockets*, CallbackMeta*> mCbMeta;
-    QHash<QLibwebsockets*, int> mCbAddCounter;
-    QHash<QLibwebsockets*, int> mCbDelCounter;
+    QHash<QWebSocket*, CallbackMeta*> mCbMeta;
+    QHash<QWebSocket*, int> mCbAddCounter;
+    QHash<QWebSocket*, int> mCbDelCounter;
 
 private:
 

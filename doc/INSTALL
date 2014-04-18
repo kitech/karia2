@@ -25,7 +25,7 @@ Requirement:
         >= VC++ 2008
           zlib
           openssl
-        >= Qt 5.0.0
+        >= Qt 5.3.0
         >= cmake 2.8.9
 
 Notes:
