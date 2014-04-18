@@ -596,7 +596,7 @@ void TaskQueue::onTaskStatusNeedUpdate2(int taskId, QMap<int, QVariant> stats)
     } else {
         qLogx()<<__FUNCTION__<<"Can not found update model" << mil.count();
     }
-    qLogx()<<taskId<<pindex<<idx;
+    // qLogx()<<taskId<<pindex<<idx;
 
     if (idx.isValid()) {
         if (completedLength == 0 && totalLength == 0) {

@@ -20,6 +20,7 @@ add_executable(tasktreeview
   ../databaseworker.cpp
   )
 qt5_use_modules(tasktreeview Core Widgets Gui Xml Sql)
+target_link_libraries(tasktreeview -lQt5WebSockets)
 
 ### dummy
 qt5_wrap_ui (dummy_UIS_HDRS dummy/dummy.ui)

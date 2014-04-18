@@ -85,6 +85,7 @@ public:
 protected slots:
     bool onRawSocketConnectError(QAbstractSocket::SocketError socketError);
     bool onRawSocketConnected();
+    void onWebsocketError();
     void onMessageReceived(QJsonObject message);
     void onDisconnectConnection(void *cbmeta);
 
@@ -106,9 +107,12 @@ private:
         const char *responseSlot;
         QObject *faultObject;
         const char *faultSlot;
+        QDateTime ctime;
     };
 
     QHash<QLibwebsockets*, CallbackMeta*> mCbMeta;
+    QHash<QLibwebsockets*, int> mCbAddCounter;
+    QHash<QLibwebsockets*, int> mCbDelCounter;
 
 private:
 
@@ -142,6 +146,7 @@ signals:
     void connected();
     void readyRead();
     void closed();
+    void websocketError();
     void messageReceived(QJsonObject message);
     void destroyContext(void *ctx);
                                                         

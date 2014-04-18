@@ -1,6 +1,7 @@
+cmake_minimum_required(VERSION 2.8.11)
 
 project(karia2)
-cmake_minimum_required(VERSION 2.8.9)
+
 set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)
@@ -17,7 +18,6 @@ add_definitions(-DKARIA2_VERSION=\"0.1.62\")
 add_definitions(-DNXDATADIR=\"\\\"DATADIR\\\"\")
 add_definitions(-DNXPKGDATADIR=\"\\\"PKGDATADIR\\\"\")
 add_definitions(-DTHREADSAFE=1)   # for sqlite thread-safe feature
-
 
 ###
 add_definitions(-DLWS_LIBRARY_VERSION=\"\\\"1.2\\\"\" -DLWS_BUILD_HASH=\"\\\"1.2hash\\\"\"
