@@ -62,9 +62,23 @@ public slots:
     void getAria2ChildStatus(QStringList childs, int tid);
     void onGetAria2ChildStatusFault(int code, QString reason, QNetworkReply *, QVariant &payload);
 
+private slots:
+    void onWSClientError(QAbstractSocket::SocketError error);
+    void onWSClientConnected();
+    void onWSClientDisconnected();
+    void onWSMessageReceived(QString jsmessage);
+    bool sendMessage(QWebSocket *ws, QString method, QVariantList arguments, QVariant payload);
+    void onStatArrived(QJsonObject &response, QNetworkReply *reply, QVariant &payload);
+
+signals:
+    void jaresponse(QJsonObject &, QNetworkReply* reply, QVariant &);
+
 private:
     QMap<int, Karia2StatCalc*> statCalcs_;
     QMap<int, Aria2WSJsonRpcClient*> mWSJsonRpcs;
+    QWebSocket *mws = NULL;
+    QQueue<QString> mWaitConnectQueue;
+    QHash<int, QVariant> mCbMeta;
     bool mUseSsl = false;
     QMap<QString, int> belongsTos;
 };

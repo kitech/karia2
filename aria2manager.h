@@ -85,6 +85,7 @@ protected:
 
     // statqueue member
     QQueue<QPair<int, Aria2StatCollector*> > stkeys;
+    QMutex stkLocker;
     Aria2StatCollector *lastStat;
     static QAtomicInt doneCounter; // 小于0的counter
 };

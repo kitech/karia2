@@ -20,23 +20,34 @@ Aria2WSJsonManager::Aria2WSJsonManager(bool useSsl, QObject *parent)
     : Aria2RpcManager()
 {
     this->mUseSsl = useSsl;
+    QObject::connect(&this->mAriaUpdater, &QTimer::timeout, this, &Aria2WSJsonManager::onAriaUpdaterTimeout);
+    QObject::connect(this, &Aria2WSJsonManager::jaresponse, this, &Aria2WSJsonManager::onStatArrived);
 }
 
 Aria2WSJsonManager::~Aria2WSJsonManager()
 {
 }
 
-
 int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
 {
-    Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WS));
-    mWSJsonRpcs[task_id] = jrpc;
+    // Aria2WSJsonRpcClient *jrpc = new Aria2WSJsonRpcClient(this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WS));
+    // mWSJsonRpcs[task_id] = jrpc;
+
+    if (mws == NULL) {
+        mws = new QWebSocket();
+        QObject::connect(mws, &QWebSocket::connected, this, &Aria2WSJsonManager::onWSClientConnected);
+        QObject::connect(mws, &QWebSocket::disconnected, this, &Aria2WSJsonManager::onWSClientDisconnected);
+        QObject::connect(mws, &QWebSocket::textMessageReceived, this, &Aria2WSJsonManager::onWSMessageReceived);
+        QObject::connect(mws, SIGNAL(error(QAbstractSocket::SocketError)),
+                         this, SLOT(onWSClientError(QAbstractSocket::SocketError)));
+
+        QString wsuri = this->mRpcServer->getRpcUri(Aria2RpcServer::AST_JSONRPC_WS);
+        mws->open(wsuri);
+    }
 
     Karia2StatCalc* sc = NULL;
     this->m_tasks[task_id] = 0;
-    // this->statCalc_.reset(new Karia2StatCalc(task_id, 1000));
     sc = new Karia2StatCalc(task_id, 1000);
-    // QObject::connect(this->statCalc_.get(), &Karia2StatCalc::progressStat, this, &Aria2WSJsonManager::onAllStatArrived);
     QObject::connect(sc, &Karia2StatCalc::progressStat, this, &Aria2WSJsonManager::onAllStatArrived);
     statCalcs_.insert(task_id, sc);
 
@@ -97,20 +108,17 @@ int Aria2WSJsonManager::addTask(int task_id, const QString &url, TaskOption *to)
         args.insert(1, options);
     }
 
+    this->sendMessage(mws, aria2RpcMethod, args, QVariant(payload));
+    /*
     jrpc->call(aria2RpcMethod, args, QVariant(payload),
                this, SLOT(onAriaAddUriResponse(QJsonObject&, QNetworkReply*, QVariant &)),
                this, SLOT(onAriaAddUriFault(int, QString, QNetworkReply*, QVariant &)));
-
+    */
     if (!this->mAriaUpdater.isActive()) {
         this->mAriaUpdater.setInterval(3000);
-        QObject::connect(&this->mAriaUpdater, &QTimer::timeout, this, &Aria2WSJsonManager::onAriaUpdaterTimeout);
+        // QObject::connect(&this->mAriaUpdater, &QTimer::timeout, this, &Aria2WSJsonManager::onAriaUpdaterTimeout);
         this->mAriaUpdater.start();
     }
-
-    /*
-    QLibwebsockets *qws = new QLibwebsockets();
-    qws->connectToHost("", 0);
-    */
 
     return 0;
 }
@@ -130,7 +138,10 @@ void Aria2WSJsonManager::run()
     int tid = -1;
 
     while (!this->stkeys.empty()) {
+        this->stkLocker.lock();
         elem = this->stkeys.dequeue();
+        this->stkLocker.unlock();
+
         stkey = elem.first;
         sclt = elem.second;
         tid = sclt->tid;
@@ -138,7 +149,7 @@ void Aria2WSJsonManager::run()
         if (this->belongsTos.contains(sclt->strGid)) {
             sclt->strBelongsTo = QString("%1").arg(tid);
         }
-        // qLogx()<<"dispatching stat event:"<<stkey;
+        qLogx()<<"dispatching stat event:"<<stkey<<tid;
 
         if (stkey < 0) {
             // 任务完成事件
@@ -265,7 +276,12 @@ bool Aria2WSJsonManager::confirmBackendFinished(int tid, void *eaw)
 bool Aria2WSJsonManager::onAllStatArrived(int stkey)
 {
     Aria2StatCollector *sclt = static_cast<Karia2StatCalc*>(sender())->getNextStat(stkey);
-    this->stkeys.enqueue(QPair<int, Aria2StatCollector*>(stkey, sclt));
+    QPair<int, Aria2StatCollector*> stval(stkey, sclt);
+
+    this->stkLocker.lock();
+    this->stkeys.enqueue(stval);
+    this->stkLocker.unlock();
+
     if (!this->isRunning()) {
         this->start();
     }
@@ -293,6 +309,7 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
     Karia2StatCalc *sc = NULL;
     Aria2WSJsonRpcClient *jrpc = NULL;
 
+    qLogx()<<m_tasks.size()<<mWSJsonRpcs.size()<<QDateTime::currentDateTime();
     QHashIterator<int, void*> hit(this->m_tasks);
     
     while (hit.hasNext()) {
@@ -327,73 +344,14 @@ void Aria2WSJsonManager::onAriaUpdaterTimeout()
 
         gargs.insert(0, args);
 
+        this->sendMessage(mws, QString("system.multicall"), gargs, QVariant(taskId));
+        /*
         jrpc->call(QString("system.multicall"), gargs, QVariant(taskId),
                    sc, SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
                    this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply*, QVariant &)));
-
-        /*
-        args<<ariaGid;
-        this->mAriaRpc->call(QString("aria2.tellStatus"), args, QVariant(taskId),
-                             this, SLOT(onAriaGetStatusResponse(QVariant &, QNetworkReply*, QVariant &)),
-                             this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply *, QVariant &)));
-        args.clear();
-
-        //
-        args<<ariaGid;
-        this->mAriaRpc->call(QString("aria2.getServers"), args, QVariant(taskId),
-                             this, SLOT(onAriaGetServersResponse(QVariant &, QNetworkReply*, QVariant &)),
-                             this, SLOT(onAriaGetServersFault(int, QString, QNetworkReply *, QVariant &)));
-        args.clear();
         */
     }
 
-    /*
-    // get version and session
-    // use aria2's multicall method
-    QVariantMap  getVersion;
-    QVariantMap getSession;
-    QVariantList gargs;
-    QVariantList args;
-    QVariantMap options;
-    QVariant payload;
-        
-    getVersion["methodName"] = QString("aria2.getVersion");
-    getVersion["params"] = QVariant(options);
-    getSession["methodName"] = QString("aria2.getSessionInfo");
-    getSession["params"] = QVariant(options);
-
-    args.insert(0, getVersion);
-    args.insert(1, getSession);
-
-    gargs.insert(0, args);
-
-    this->mAriaRpc->call(QString("system.multicall"), gargs, payload,
-                         this, SLOT(onAriaGetFeatureResponse(QVariant&, QVariant&)),
-                         this, SLOT(onAriaGetFeatureFault(int, QString, QVariant &)));
-*/
-    // QVariantList args;
-    // int taskId;
-    // QString ariaGid;
-
-    //    QHashIterator<int, QString> hit(this->mRunningMap);
-//    while (hit.hasNext()) {
-//        hit.next();
-//        taskId = hit.key();
-//        ariaGid = hit.value();
-
-//        args<<ariaGid;
-//        this->mAriaRpc->call(QString("aria2.tellStatus"), args, QVariant(taskId),
-//                             this, SLOT(onAriaGetStatusResponse(QVariant &, QNetworkReply*, QVariant &)),
-//                             this, SLOT(onAriaGetStatusFault(int, QString, QNetworkReply *, QVariant &)));
-//        args.clear();
-
-//        //
-//        args<<ariaGid;
-//        this->mAriaRpc->call(QString("aria2.getServers"), args, QVariant(taskId),
-//                             this, SLOT(onAriaGetServersResponse(QVariant &, QNetworkReply*, QVariant &)),
-//                             this, SLOT(onAriaGetServersFault(int, QString, QNetworkReply *, QVariant &)));
-//        args.clear();
-//    }
 }
 void Aria2WSJsonManager::onAriaGetStatusFault(int code, QString reason, QNetworkReply *reply, QVariant &payload)
 {
@@ -406,10 +364,12 @@ void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs, int tid)
     int taskId;
     QString ariaGid;
     Karia2StatCalc *sc = NULL;
-    Aria2WSJsonRpcClient *jrpc = NULL;
+    // Aria2WSJsonRpcClient *jrpc = NULL;
 
+    taskId = tid;
     sc = statCalcs_[tid];
-    jrpc = mWSJsonRpcs[tid];
+    // jrpc = mWSJsonRpcs[tid];
+    // qLogx()<<jrpc<<tid<<mWSJsonRpcs.size()<<childs<<m_tasks.size()<<sender()<<QDateTime::currentDateTime();
 
     if (true) {
         QVariantMap  tellStatusMethod;
@@ -439,9 +399,12 @@ void Aria2WSJsonManager::getAria2ChildStatus(QStringList childs, int tid)
 
         gargs.insert(0, args);
 
+        this->sendMessage(mws, QString("system.multicall"), gargs, QVariant(taskId));
+        /*
         jrpc->call(QString("system.multicall"), gargs, QVariant(taskId),
                    sc, SLOT(calculateStat(QJsonObject&, QNetworkReply*, QVariant&)),
                    this, SLOT(onGetAria2ChildStatusFault(int, QString, QNetworkReply*, QVariant &)));
+        */
     }
 }
 
@@ -450,6 +413,101 @@ void Aria2WSJsonManager::onGetAria2ChildStatusFault(int code, QString reason, QN
     qLogx()<<code<<reason<<payload;
 }
 
+void Aria2WSJsonManager::onWSClientError(QAbstractSocket::SocketError error)
+{
+    qLogx()<<error;
+}
+
+void Aria2WSJsonManager::onWSClientConnected()
+{
+    qLogx()<<"";
+    QString call_msg;
+    qint64 slen;
+
+    while (!this->mWaitConnectQueue.empty()) {
+        call_msg = this->mWaitConnectQueue.dequeue();
+        slen = this->mws->sendTextMessage(call_msg);
+    }
+}
+
+void Aria2WSJsonManager::onWSClientDisconnected()
+{
+    qLogx()<<"";
+}
+
+void Aria2WSJsonManager::onWSMessageReceived(QString jsmessage)
+{
+    qLogx()<<""<<jsmessage.length()<<jsmessage;
+    QJsonDocument jdoc = QJsonDocument::fromJson(jsmessage.toLatin1());
+    QJsonObject jmessage = jdoc.object();
+    int taskId;
+    QVariant payload;
+
+    if (jmessage.contains("id") &&jmessage.contains("result")
+        && jmessage.value("result").isArray()) {
+
+        taskId = mCbMeta.value(jmessage.value("id").toInt()).toInt();
+        payload = QVariant(taskId);
+        emit this->jaresponse(jmessage, 0, payload);
+        mCbMeta.remove(jmessage.value("id").toInt());
+    } else {
+        // notify event
+    }
+
+    /*
+    QJsonRpcMessage message(jmessage);
+    QVariant result = message.result();
+    int errorCode = message.errorCode();
+    QString errorMessage = message.errorMessage();
+
+    if (errorCode == 0) {
+        // emit this->jaresponse(jmessage, 0, meta->payload);
+    } else {
+        // emit this->fault(errorCode, errorMessage, 0, meta->payload);
+    } 
+    */  
+}
+
+bool Aria2WSJsonManager::sendMessage(QWebSocket *ws, QString method, QVariantList arguments, QVariant payload)
+{
+    QJsonObject *jobj = new QJsonObject;
+    jobj->insert("jsonrpc", QLatin1String("2.0"));
+    jobj->insert("method", method);
+    if (!arguments.isEmpty()) {
+        jobj->insert("params", QJsonArray::fromVariantList(arguments));
+    }
+
+    static int json_id = 0;
+    jobj->insert("id", ++ json_id);
+    mCbMeta[json_id] = payload;
+
+    QJsonDocument jdoc = QJsonDocument(*jobj);
+    jdoc.toJson(QJsonDocument::Compact);
+    QString call_msg = jdoc.toJson(QJsonDocument::Compact);
+
+    if (ws->isValid()) {
+        qint64 ret = ws->sendTextMessage(call_msg);
+    } else {
+        this->mWaitConnectQueue.enqueue(call_msg);
+    }
+
+    return true;
+}
+
+void Aria2WSJsonManager::onStatArrived(QJsonObject &response, QNetworkReply *reply, QVariant &payload)
+{
+    int taskId;
+    Karia2StatCalc *sch = NULL;
+
+    taskId = payload.toInt();
+    if (!statCalcs_.contains(taskId)) {
+        Q_ASSERT(1 == 2);
+        return;
+    }
+
+    sch = statCalcs_.value(taskId);
+    sch->calculateStat(response, reply, payload);
+}
 
 
 //////////////////////////
@@ -460,7 +518,7 @@ Aria2WSJsonRpcClient::Aria2WSJsonRpcClient(QString url, QObject *parent)
 {
     this->mUrl = url;
 
-    QObject::connect(this, &Aria2WSJsonRpcClient::disconnectConnection, this, &Aria2WSJsonRpcClient::onDisconnectConnection);
+    // QObject::connect(this, &Aria2WSJsonRpcClient::disconnectConnection, this, &Aria2WSJsonRpcClient::onDisconnectConnection);
 }
 
 Aria2WSJsonRpcClient::~Aria2WSJsonRpcClient()
@@ -494,7 +552,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
     QObject::connect(this, SIGNAL(fault(int, const QString &, QNetworkReply *, QVariant &)), 
                      meta->faultObject, meta->faultSlot);
 
-    qLogx()<<""<<mCbMeta.size()<<mCbAddCounter.size()<<mCbDelCounter.size();
+    qLogx()<<""<<mCbMeta.size()<<mCbAddCounter.size()<<mCbDelCounter.size()<<ws<<payload<<QDateTime::currentDateTime();
     this->mCbMeta[ws] = meta;
     this->mCbAddCounter[ws] = 1;
 
@@ -511,32 +569,7 @@ bool Aria2WSJsonRpcClient::call(QString method, QVariantList arguments, QVariant
 
     ws->open(uo);
 
-    /*
-    QTcpSocket *mRawSock = new QTcpSocket();
-    QObject::connect(mRawSock, SIGNAL(error(QAbstractSocket::SocketError)),
-                     this, SLOT(onRawSocketConnectError(QAbstractSocket::SocketError)));
-    QObject::connect(mRawSock, &QTcpSocket::connected, this, &Aria2WSJsonRpcClient::onRawSocketConnected);
-
-    QUrl uo(this->mUrl);
-    mRawSock->connectToHost(uo.host(), uo.port());
-
-    CallbackMeta *meta = new CallbackMeta();
-    meta->mRawSock = mRawSock;
-    meta->mJsonRpcSock = NULL;
-    meta->method = method;
-    meta->arguments = arguments;
-    meta->payload = payload;
-    meta->responseObject = responseObject;
-    meta->responseSlot = responseSlot;
-    meta->faultObject = faultObject;
-    meta->faultSlot = faultSlot;
-
-    this->mCbMeta[mRawSock] = meta;
-    */
-
     // qLogx()<<"connecting...";
-    // TODO onRawSocketConnectError
-
     return true;
 }
 
@@ -639,13 +672,14 @@ void Aria2WSJsonRpcClient::onWebsocketError()
 
 void Aria2WSJsonRpcClient::onMessageReceived(QString rjmessage)
 {
-
     QWebSocket *ws = (QWebSocket*)(sender());
     CallbackMeta *meta = mCbMeta.contains(ws) ? this->mCbMeta.value(ws) : NULL;
+    qLogx()<<ws<<meta<<rjmessage.length()<<rjmessage;
 
     if (meta == NULL) {
         qLogx()<<"meta object not exists"<<ws<<mCbMeta.contains(ws)
-               <<mCbAddCounter.contains(ws) <<mCbDelCounter.contains(ws);
+               <<mCbAddCounter.contains(ws) <<mCbDelCounter.contains(ws)
+               <<rjmessage.length();
         return;
     }
 
