@@ -99,6 +99,7 @@ add_executable(karia2
   ../aria2rpcmanager.cpp
   ../aria2jsonmanager.cpp
   ../aria2wsjsonmanager.cpp
+  ../aria2cwsjsonmanager.cpp
   ../aria2xmlmanager.cpp
   ../aria2managerfactory.cpp
   ../sqlitetasktreemodel.cpp

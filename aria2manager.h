@@ -41,6 +41,7 @@ public:
         BT_UNDEFINED = 0, BT_EMBEDED = 1, BT_LIBARIA2,
         BT_XMLRPC_HTTP, 
         BT_JSONRPC_HTTP, BT_JSONRPC_WS, BT_JSONRPC_WSS,
+        BT_JSONRPC_CWS, BT_JSONRPC_CWSS,
 
     };
     explicit Aria2Manager();

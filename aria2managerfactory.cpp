@@ -13,6 +13,7 @@
 #include "aria2xmlmanager.h"
 #include "aria2jsonmanager.h"
 #include "aria2wsjsonmanager.h"
+#include "aria2cwsjsonmanager.h"
 #include "aria2managerfactory.h"
 
 Aria2ManagerFactory::Aria2ManagerFactory()
@@ -55,6 +56,12 @@ Aria2Manager* Aria2ManagerFactory::createManager(int type)
         case Aria2Manager::BT_JSONRPC_WSS:
             manager = new Aria2WSJsonManager(true);
             Aria2ManagerFactory::mManagers[type] = manager;
+            break;
+        case Aria2Manager::BT_JSONRPC_CWS:
+            manager = new Aria2CWSJsonManager(false);
+            break;
+        case Aria2Manager::BT_JSONRPC_CWSS:
+            manager = new Aria2CWSJsonManager(true);
             break;
         default:
             break;
